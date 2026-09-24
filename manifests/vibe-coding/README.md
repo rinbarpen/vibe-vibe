@@ -4,15 +4,15 @@ Full lifecycle engineering manifest covering 0-to-1 project building → develop
 
 ## What's Included
 
-- **CLAUDE.md / AGENTS.md**: Comprehensive AI instructions for full lifecycle development.
-- **14 Scenarios**: agent-dev, api-service, cli-tool, cross-platform, data-pipeline, distributed, frontend, fullstack-web, llm-dev, research, saas, desktop-electron, desktop-tauri, desktop-flutter.
+- **MANIFEST.md**: Canonical AI instructions; `AGENTS.md` and `CLAUDE.md` are symlinks to it in the manifest and initialized projects.
+- **15 Scenarios**: agent-dev, api-service, cli-tool, cross-platform, data-pipeline, distributed, frontend, fullstack-web, llm-dev, research, saas, desktop-electron, desktop-tauri, desktop-flutter, wechat-miniprogram.
 - **17 Rules**: Core, standards, collaboration, lifecycle, deployment, backend, frontend, testing, refactoring, optimization, UI design, cloud, enterprise, agent-dev, desktop, frontend-scenario, CLAUDE.md maintenance.
 - **15 Commands**: plan, scaffold, implement, quality-gate, deploy-check, lang-select, cloud-deploy, release, agent-eval, frontend-check, desktop-build, update-docker, update-docs, update-examples, update-scripts.
 - **5 Cloud Platform References**: Vercel, Cloudflare, Tencent Cloud, Alibaba Cloud, Huawei Cloud.
 - **5 Language Specs + Decision Trees**: Go, Rust, Python, TypeScript/JavaScript, Java.
 - **GitHub Enterprise Governance**: 12 CI/CD workflows, issue/PR templates, CODEOWNERS, SECURITY.md, dependabot config.
 - **Enterprise References**: Branching strategy, release process, PR conventions, tag conventions.
-- **6 Skills**: Domain dispatcher, language advisor, lifecycle orchestrator, CLAUDE.md maintenance, development workflow, open source standards.
+- **8 Skills installed on init**: Four manifest-bundled skills, `canvas-design`, and the three `wxa-skills-*` skills from the managed `ai-mode-skills` submodule.
 - **Templates**: CHANGELOG, README, release checklist, roadmap.
 
 ## Quick Start
@@ -30,10 +30,11 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
 ### Available Init Flags
 
 ```
---scenario=<name>[,<name>...]   14 scenarios (agent-dev, api-service, cli-tool, cross-platform,
+--scenario=<name>[,<name>...]   15 scenarios (agent-dev, api-service, cli-tool, cross-platform,
                                   data-pipeline, distributed, frontend, fullstack-web,
                                   llm-dev, research, saas,
-                                  desktop-electron, desktop-tauri, desktop-flutter)
+                                  desktop-electron, desktop-tauri, desktop-flutter,
+                                  wechat-miniprogram)
 --cloud=<provider>              vercel / cloudflare / tencent / alibaba / huawei
 -o, --owner <owner>             CODEOWNERS default owner
 --org <org>                     GitHub organization
@@ -62,6 +63,7 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
 | `desktop-electron` | Electron desktop | TypeScript + Node.js |
 | `desktop-tauri` | Tauri desktop | TypeScript + Rust |
 | `desktop-flutter` | Flutter desktop | Dart |
+| `wechat-miniprogram` | WeChat Mini Program and AI mode skills | TypeScript/JavaScript, WXML, WXSS |
 
 ## Language Support
 

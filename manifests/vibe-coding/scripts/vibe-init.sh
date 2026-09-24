@@ -41,7 +41,8 @@ Scenarios:
                                      agent-dev / api-service / cli-tool / cross-platform /
                                      data-pipeline / distributed / frontend / fullstack-web /
                                      llm-dev / research / saas /
-                                     desktop-electron / desktop-tauri / desktop-flutter
+                                     desktop-electron / desktop-tauri / desktop-flutter /
+                                     wechat-miniprogram
 
 Cloud Platform:
   --cloud=<provider>               Configure cloud deployment support
@@ -130,6 +131,25 @@ copy_file() {
   echo "  COPY  $label"
 }
 
+link_file() {
+  local src="$1" dst="$2"
+  local label="${dst#$TARGET/}"
+  mkdir -p "$(dirname "$dst")"
+
+  if { [[ -e "$dst" ]] || [[ -L "$dst" ]]; } && [[ "$FORCE" != true ]]; then
+    echo "  SKIP  $label (exists)"
+    return
+  fi
+
+  if $DRY_RUN; then
+    echo "  WILL  $label -> $src"
+    return
+  fi
+
+  ln -sfn "$src" "$dst"
+  echo "  LINK  $label -> $src"
+}
+
 copy_with_subst() {
   local src="$1" dst="$2"
   local label="${dst#$TARGET/}"
@@ -180,8 +200,9 @@ fi
 # ── Zone 2: Core Files ──
 echo ""
 echo "── Zone 2: Core Files ──"
-copy_file "$MANIFEST_DIR/CLAUDE.md"     "$TARGET/CLAUDE.md"
-copy_file "$MANIFEST_DIR/AGENTS.md"      "$TARGET/AGENTS.md"
+copy_file "$MANIFEST_DIR/MANIFEST.md"   "$TARGET/MANIFEST.md"
+link_file "MANIFEST.md"                 "$TARGET/CLAUDE.md"
+link_file "MANIFEST.md"                 "$TARGET/AGENTS.md"
 copy_file "$MANIFEST_DIR/README.md"      "$TARGET/README.md"
 copy_file "$MANIFEST_DIR/CONTRIBUTING.md" "$TARGET/CONTRIBUTING.md"
 copy_file "$MANIFEST_DIR/.cursorrules"   "$TARGET/.cursorrules"

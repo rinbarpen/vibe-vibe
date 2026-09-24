@@ -137,3 +137,6 @@
 [submodule "skills/nature-skills"]
 	path = skills/nature-skills
 	url = https://github.com/Yuan1z0825/nature-skills.git
+[submodule "skills/ai-mode-skills"]
+	path = skills/ai-mode-skills
+	url = https://github.com/wechat-miniprogram/ai-mode-skills.git

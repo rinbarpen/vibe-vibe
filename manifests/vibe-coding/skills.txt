@@ -1,0 +1,14 @@
+# Skills required by the unified Vibe Coding manifest and its scenarios.
+# Manifest-bundled orchestrators are installed alongside shared skills.
+domain-dispatcher
+language-advisor
+lifecycle-orchestrator
+vibe-coding
+
+# Frontend scenario design skill.
+canvas-design
+
+# WeChat Mini Program AI mode workflow skills (provided by skills/ai-mode-skills).
+wxa-skills-generate
+wxa-skills-validate
+wxa-skills-eval

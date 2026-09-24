@@ -1,0 +1,14 @@
+---
+description: WeChat Mini Program scenario rules for native project structure, runtime APIs, and AI mode skills
+globs: ["**/*.{wxml,wxss,json,ts,js}"]
+alwaysApply: false
+---
+
+# WeChat Mini Program Rules
+
+- Follow the project's existing native Mini Program or framework conventions; do not mix runtimes without an explicit architectural reason.
+- Use WXML/WXSS and supported Mini Program APIs rather than assuming browser DOM or unrestricted Node.js capabilities.
+- Keep route, component, permission, and subpackage declarations synchronized with `app.json` and page/component JSON files.
+- Check platform API availability and runtime compatibility in the relevant Developer Tools configuration before relying on an API.
+- Keep secrets out of client-side code and handle permission denial, network failures, and asynchronous errors.
+- For AI mode skill generation, validation, or evaluation, use the corresponding `ai-mode-skills` repository skill and follow its own instructions.

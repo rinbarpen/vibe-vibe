@@ -325,9 +325,10 @@ def _install_required_skills(
 
     from .skill import add_skill
 
-    # Skills live both in skills/ and mine/ first-party skills
+    # Skills can be shared from skills/, first-party mine/, or bundled with
+    # the manifest itself (manifest-local skills/).
     repo_root = manifests_dir.parent
-    roots = (repo_root / "skills", repo_root / "mine")
+    roots = (repo_root / "skills", repo_root / "mine", manifest.path / "skills")
 
     missing: list[str] = []
     installed = 0
