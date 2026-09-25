@@ -1,5 +1,5 @@
 ---
-description: Vibe Coding Core Rules — intent-driven, plan-first, verify-every-change, quality gates, git-native workflow
+description: Vibe Coding Core Rules — intent-driven, right-sized workflow, verify-every-change, quality gates, git-native workflow
 globs: ["**/*"]
 alwaysApply: true
 ---
@@ -13,12 +13,13 @@ alwaysApply: true
 - If you cannot state the intent in one sentence, you need more research, not more code.
 - Prioritize understanding the user's intent rather than executing literal instructions.
 
-## 2. Plan-First
+## 2. Right-Sized Workflow
 
-- Create a plan in `.cursor/plans/` before any architectural or multi-file change.
-- Plans must include: problem statement, approach, files to change, test strategy, risk assessment.
-- Plans must be approved by the user before implementation begins.
-- A plan is not a design document; it is an actionable step list.
+- Clear, local requests use lightweight vibe coding; do not activate planning skills by default.
+- Bug fixes use Matt's `grilling` followed by `implement`.
+- Complex features (cross-module, API/contract changes, or multi-stage delivery) use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For persistent planning notes on complex work, choose `planning-with-files` for English or `planning-with-files-zh` for Chinese conversations.
+- Do not use or route to `superpowers` in this manifest.
 
 ## 3. Verification-Driven
 
@@ -27,7 +28,7 @@ alwaysApply: true
   - **Test**: all existing tests still pass.
   - **Build**: project compiles without errors.
 - Provide evidence of verification (test output, lint results) — do not assert "it works".
-- Use subagents to parallelize verification: lint + test + build can run concurrently.
+- Parallelize independent verification checks (lint, tests, build, security, docs) when the host runtime supports subagents; collect results and verify them in the coordinating agent.
 
 ## 4. Language-Appropriate Code
 
@@ -48,7 +49,7 @@ When uncertain, consult `references/language-specs/` for the target language.
 1. **Lint Gate**: Zero warnings from language-appropriate linter
 2. **Test Gate**: All tests pass, coverage >= 80%
 3. **Security Gate**: No secrets in diff, no injection vulnerabilities
-4. **Review Gate**: Language-appropriate reviewer agent approval
+4. **Review Gate**: `implement`'s embedded dual-axis subagent review; no separate generic review dispatch
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## 6. Git-Native Workflow
@@ -63,13 +64,15 @@ When uncertain, consult `references/language-specs/` for the target language.
 
 - Git commit 必须清晰描述 "Why" 而非仅仅是 "What"。
 - **自动化同步 (Post-Commit)**: 每次 commit 后，必须确保 README.md 和 CLAUDE.md 已同步更新。
-- **自动化测试**: 关键功能实现后，必须调用 `tdd-guide` 或相关 subagent 自动生成并运行全面的测试用例。
+- **自动化测试**: 对非平凡功能变更，按需使用 `tdd-guide` 或语言测试技能；简单局部改动不因该规则默认启动 subagent。
 - **GitHub 集成**: 优先使用 `gh` CLI 进行 PR 创建、CI 状态监控和自动化流程触发。
 - 创建 PR 时，必须包含详细的测试计划。
 
-## 8. Subagent-First Execution
+## 8. Bounded Subagent Use
 
-- Actively dispatch subagents for parallel execution whenever possible.
-- Independent work (different modules, parallel tests, multi-language builds) should run concurrently.
-- Use language-specific reviewer agents after every meaningful code change.
-- For complex tasks, use split-role subagents: security + quality + consistency reviewers in parallel.
+- Simple/local requests stay with the main agent; do not start subagents by default.
+- For complex work, delegate only independent tasks with non-overlapping file ownership; run dependent steps sequentially.
+- Use the host runtime's available subagent/task-delegation mechanism; if unavailable, continue sequentially.
+- Provide each subagent a bounded goal, relevant context, ownership/read-only boundary, expected output, and verification request. The coordinating agent gathers all results, resolves conflicts, integrates changes, and runs combined verification.
+- `implement` owns its embedded two-axis parallel review; do not launch a separate generic reviewer workflow.
+- Retain relevant security, test, and documentation checks in the quality gate.

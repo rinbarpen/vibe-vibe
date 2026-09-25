@@ -26,9 +26,9 @@ Dispatch agents and skills at each phase of the engineering lifecycle.
 | Phase | Agent/Skill | Action |
 |-------|-------------|--------|
 | Research | `lang-select` command | Choose language and approach |
-| Design | `code-architect` agent | Design architecture, create plan |
-| Implement | `tdd-guide` agent | TDD loop, per-language tooling |
-| Test | Language-specific reviewer | Review, security check |
+| Design | `code-architect` agent when needed | Design architecture for complex features |
+| Implement | Selected workflow + `implement` | Right-sized implementation; embedded dual-axis subagent review |
+| Test | Language-specific tools | Run relevant tests and security checks |
 | Deploy | `deployment-patterns` skill | CI/CD, containerization |
 | Maintain | `refactor-cleaner` agent | Tech debt, dead code removal |
 
@@ -37,8 +37,8 @@ Dispatch agents and skills at each phase of the engineering lifecycle.
 | Phase | Gate | Tool |
 |-------|------|------|
 | Research | Language selected, rationale documented | `references/language-specs/` |
-| Design | Plan written, approved | `.cursor/plans/` |
+| Design | Complex-work plan/spec when needed | `planning-with-files` or `planning-with-files-zh` |
 | Implement | Tests pass, lint clean, coverage >= 80% | Language-specific tools |
-| Test | Reviewer approved | Language-specific reviewer agent |
+| Test | Relevant tests/security checks pass; embedded review addressed | `implement` workflow |
 | Deploy | CI green, rollback tested | `deploy-check` command |
 | Maintain | Docs current, debt tracked | CLAUDE.md audit |

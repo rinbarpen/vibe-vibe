@@ -12,7 +12,7 @@ triggers:
 
 ## Dispatch Logic
 
-Map task keywords to domain, then dispatch the appropriate agent, skill, and rule set.
+Map task keywords to domain, then select relevant resources. Dispatch a subagent only for complex work with a bounded, independent task; simple/local tasks remain with the main agent. Follow the bounded-subagent protocol in `AGENTS.md`.
 
 | Task Keywords | Domain | Agent | Skill | Rule File |
 |---------------|--------|-------|-------|-----------|
@@ -24,20 +24,19 @@ Map task keywords to domain, then dispatch the appropriate agent, skill, and rul
 | "test", "coverage", "TDD", "integration", "e2e" | Testing | `tdd-guide` | Language-specific testing skills | `vibe-coding-testing.mdc` |
 | "deploy", "CI/CD", "Docker", "release", "rollout" | Deployment | — | `deployment-patterns`, `docker-patterns` | `vibe-coding-deployment.mdc` |
 | "refactor", "clean", "migrate", "extract", "dead code" | Refactoring | `refactor-cleaner` | — | `vibe-coding-refactoring.mdc` |
-| "agent", "eval", "prompt quality", "llm eval" | Agent Eval | `eval-harness` | `prompt-optimizer`, `superpowers` | `vibe-coding-agent-dev.mdc` |
-| "agent", "context engineering", "multi-agent", "agent architecture" | Agent Dev | `code-architect` | `Agent-Skills-for-Context-Engineering`, `agent-skills`, `superpowers` | `vibe-coding-agent-dev.mdc` |
+| "agent", "eval", "prompt quality", "llm eval" | Agent Eval | `eval-harness` | `prompt-optimizer` | `vibe-coding-agent-dev.mdc` |
+| "agent", "context engineering", "multi-agent", "agent architecture" | Agent Dev | `code-architect` | `Agent-Skills-for-Context-Engineering`, `agent-skills` | `vibe-coding-agent-dev.mdc` |
 | "desktop", "electron", "tauri", "flutter desktop", "native app" | Desktop | `build-error-resolver` + framework reviewer | `dart-flutter-patterns` | `vibe-coding-desktop.mdc` |
 | "frontend", "css", "i18n", "a11y", "component library" | Frontend | `frontend-patterns` | `design-taste-frontend`, `frontend-design`, `ui-ux-pro-max-skill`, `taste-skill` | `vibe-coding-frontend.mdc` |
 
 ## Cross-Domain Dispatch
 
-When a task spans multiple domains (e.g., "refactor the backend API and add tests"):
+When a complex task spans multiple domains (e.g., "refactor the backend API and add tests"):
 
 1. Identify all domains involved
-2. Dispatch sequentially in dependency order:
-   - Backend (change the code)
-   - Testing (write tests for the change)
-3. Each domain uses its own rule set and agents
+2. Identify dependencies: run independent discovery/checks concurrently; implement dependent steps in order (backend change before integration tests).
+3. Give each delegated task explicit context, non-overlapping ownership, output, and verification; coordinate integration and final tests centrally.
+4. Each domain uses its own rule set and relevant skills. `implement` owns embedded parallel two-axis review; do not dispatch a duplicate generic reviewer.
 
 ## Language Dispatch
 

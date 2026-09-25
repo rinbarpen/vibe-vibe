@@ -21,18 +21,17 @@ Exit: Language selected, dependencies audited, rationale documented
 ## Phase 2: Architecture Design
 
 Entry: Language selected, requirements clear
-Exit: Plan written in `.cursor/plans/`, architecture validated
+Exit: For complex work, planning notes and architecture are sufficiently validated; simple requests bypass this phase.
 
 **Gate criteria:**
 - [ ] Architecture pattern chosen (microservices, monolith, event-driven, etc.)
 - [ ] Data model designed (entities, relationships, storage)
 - [ ] API contracts defined (OpenAPI / Protobuf)
-- [ ] Plan document created with approach, file manifest, test strategy, risks
-- [ ] Plan approved by user
+- [ ] For complex work, plan/spec captures approach, affected areas, test strategy, and material risks
 
 ## Phase 3: Implementation
 
-Entry: Approved plan exists
+Entry: Appropriate task workflow selected; a plan is not required for simple/local work.
 Exit: All tests pass, lint clean, coverage >= 80%
 
 **Gate criteria:**
@@ -43,20 +42,9 @@ Exit: All tests pass, lint clean, coverage >= 80%
 - [ ] Coverage >= 80%
 - [ ] Commit with conventional message
 
-## Phase 4: Code Review
+## Phase 4: Deployment
 
-Entry: Quality gates passed, code committed
-Exit: No CRITICAL or HIGH issues, reviewer approved
-
-**Gate criteria:**
-- [ ] Language-appropriate reviewer agent dispatched
-- [ ] Security reviewer dispatched for auth/payments/user-data code
-- [ ] All CRITICAL and HIGH issues resolved
-- [ ] MEDIUM issues documented or resolved
-
-## Phase 5: Deployment
-
-Entry: Code reviewed and approved
+Entry: Implementation and embedded review completed
 Exit: Deployment verified, monitoring confirms health
 
 **Gate criteria:**
@@ -67,7 +55,7 @@ Exit: Deployment verified, monitoring confirms health
 - [ ] Rollback plan documented
 - [ ] Monitoring and alerting configured
 
-## Phase 6: Maintenance
+## Phase 5: Maintenance
 
 Entry: System is deployed
 Exit: (ongoing — no terminal exit, but periodic checkpoints)
@@ -80,7 +68,6 @@ Exit: (ongoing — no terminal exit, but periodic checkpoints)
 
 ## Blocking Rules
 
-- You CANNOT skip phases
-- You CANNOT implement without an approved plan (Phase 2 exit)
-- You CANNOT deploy without review approval (Phase 4 exit)
+- Follow the right-sized workflow; do not impose full lifecycle phases on simple requests.
+- Deploy only after applicable quality checks and embedded implementation review are complete.
 - You CANNOT bypass quality gates with "I'll fix it later"

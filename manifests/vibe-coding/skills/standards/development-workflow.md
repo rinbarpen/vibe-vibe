@@ -21,7 +21,7 @@
 
 ## 阶段 4：质量把关 (Review)
 1.  **自我审查**: 检查是否引入了 AI 产生的冗余代码 (Deslop)。
-2.  **Subagent 评审**: 调用 `code-reviewer` 进行深度审查。
+2.  **Subagent 评审**: `implement` 内含双轴 subagent review，不单独发起通用 code-review。
 3.  **测试运行**: 确保所有测试通过。
 
 ## 阶段 5：交付与归档

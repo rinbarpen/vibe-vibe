@@ -17,18 +17,12 @@ Execute all 5 quality gates before committing.
 - **Exit**: All tests pass, coverage >= 80%
 
 ### 3. Security Gate
-- Dispatch `security-reviewer` agent for changed files
-- Check for: hardcoded secrets, injection vulnerabilities, auth bypasses
+- Check changed files for hardcoded secrets, injection vulnerabilities, and auth bypasses; invoke focused security review when warranted by the change.
 - **Exit**: No CRITICAL or HIGH security issues
 
 ### 4. Review Gate
-- Dispatch language-appropriate reviewer agent:
-  - Go: `go-reviewer`
-  - Rust: `rust-reviewer`
-  - Python: `python-reviewer`
-  - TypeScript: `typescript-reviewer`
-  - Java: `java-reviewer`
-- **Exit**: Reviewer approved, no CRITICAL or HIGH issues
+- Implementation review is included in `implement` as two-axis subagent review; do not launch a separate generic code-review workflow.
+- **Exit**: Embedded review findings addressed; no CRITICAL or HIGH issues remain.
 
 ### 5. Doc Gate
 - Verify CLAUDE.md reflects current architecture

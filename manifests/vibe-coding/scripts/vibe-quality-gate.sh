@@ -91,8 +91,7 @@ check "Secrets scan" '! grep -rn "AKIA[0-9A-Z]\{16\}\|ghp_\|gho_\|ghu_\|ghs_\|gi
 
 # ── Gate 4: Review ────────────────────────────────────────
 echo "[4/5] Review Gate"
-echo "  (Run manually: dispatch language-appropriate code-reviewer agent)"
-echo "  Go: go-reviewer | Rust: rust-reviewer | Python: python-reviewer | TS: typescript-reviewer | Java: java-reviewer"
+echo "  (Implementation review is included in the implement workflow; retain applicable security checks.)"
 
 # ── Gate 5: Docs ──────────────────────────────────────────
 echo "[5/5] Documentation Gate"

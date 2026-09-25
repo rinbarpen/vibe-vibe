@@ -10,21 +10,24 @@ Brief description of the project and its goals.
 
 Follow these phases for development:
 
-1.  **Plan**: Create a detailed plan in `.cursor/plans/` before major changes.
-2.  **Explore**: Use `SemanticSearch` or `explore` subagent to understand existing logic.
-3.  **Implement**: Small, incremental changes with immediate `ReadLints` verification.
-4.  **Verify**: Run tests and provide evidence of success.
-5.  **Review**: Call `code-reviewer` subagent for quality check.
-6.  **Ship**: Create PR with a detailed test plan and update `CLAUDE.md`.
+1.  **Route**: Simple/local requests use lightweight vibe coding; bug fixes use `grilling` → `implement`; complex features use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+2.  **Planning notes**: For complex work only, use `planning-with-files` (English) or `planning-with-files-zh` (Chinese).
+3.  **Explore**: Inspect directly for local work; use `SemanticSearch` or an `explore` subagent when broader codebase discovery is needed.
+4.  **Implement**: Small, incremental changes with immediate `ReadLints` verification.
+5.  **Verify**: Run tests and provide evidence of success.
+6.  **Review**: `implement` includes subagent review across two independent axes; do not launch a separate generic code-review workflow.
+7.  **Ship**: Create PR with a detailed test plan and update `CLAUDE.md`.
 
 ## Subagent Dispatching
 
-Actively suggest and launch subagents based on task complexity:
+Use subagents only for complex tasks with independent work; simple/local requests remain with the main agent. Use the host runtime's available delegation mechanism; if unavailable, proceed sequentially.
 
 - **`explore`**: For codebase analysis and navigation.
 - **`code-architect`**: For high-level design and refactoring.
-- **`code-reviewer`**: For pre-commit quality checks.
+- **Embedded implement review**: Dual-axis subagent review as part of implementation.
 - **`shell`**: For complex environment or Git operations.
+
+For every delegation, specify the goal, context, file ownership/read-only boundary, expected deliverable, and verification. Start independent tasks together, wait for results, integrate in the coordinating agent, and run final combined checks. Never split dependent steps or permit concurrent edits to the same files.
 
 ## Development Standards
 

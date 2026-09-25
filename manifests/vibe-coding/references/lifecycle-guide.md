@@ -25,7 +25,7 @@ End-to-end guide for taking a software project from idea to deployed system, cov
 
 ## Phase 2: Design
 
-**Goal**: Create an actionable plan before writing code.
+**Goal**: Create an actionable design for complex work; simple/local requests use direct lightweight iteration.
 
 ### Steps
 1. **Architecture selection**: Choose patterns from `references/decision-trees/architecture-patterns.md`.
@@ -36,7 +36,7 @@ End-to-end guide for taking a software project from idea to deployed system, cov
 6. **Test strategy**: Define what to test at each level of the test pyramid.
 
 ### Outputs
-- Plan document saved to `.cursor/plans/<name>.md`
+- For complex work, planning notes saved using `planning-with-files` or `planning-with-files-zh`.
 - Architecture Decision Record (ADR) if the decision is non-trivial
 - API contract (OpenAPI / Protobuf)
 - Data model (ERD or schema definition)

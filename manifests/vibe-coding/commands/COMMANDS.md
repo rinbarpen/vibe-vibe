@@ -26,7 +26,7 @@ Complete command index for the unified development manifest. All commands are av
 
 | Command | File | Description |
 |---------|------|-------------|
-| `/quality-gate` | `quality-gate/COMMAND.md` | Run all 5 quality gates: Lint, Test (80%+), Security, Review, Doc |
+| `/quality-gate` | `quality-gate/COMMAND.md` | Run quality gates: Lint, Test (80%+), Security, embedded Review, Doc |
 | `/deploy-check` | `deploy-check/COMMAND.md` | Pre-deployment verification: CI status, migration reversibility, rollback plan, env vars |
 
 ## Deployment
@@ -61,12 +61,12 @@ Complete command index for the unified development manifest. All commands are av
 
 ## Subagent Dispatch
 
-Actively dispatch these agents based on task context:
+Use the host runtime's subagent/task-delegation mechanism for bounded, independent work on complex tasks only. Keep simple/local work in the main agent, run dependent tasks sequentially, specify ownership and deliverables, then collect/integrate results and verify centrally. If delegation is unavailable, proceed sequentially.
 
 | Agent | When | Effect |
 |-------|------|--------|
 | `code-architect` | Architecture changes | Design review, module boundaries |
-| `code-reviewer` | All code changes | Code quality, patterns |
+| Embedded `implement` review | Implementation workflow | Dual-axis subagent review; no separate generic review dispatch |
 | `security-reviewer` | Auth/payments/data | Security audit |
 | `tdd-guide` | New features | TDD workflow enforcement |
 | `performance-optimizer` | Slow code | Profile, optimize |

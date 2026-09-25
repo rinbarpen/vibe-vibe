@@ -88,7 +88,7 @@ See `references/decision-trees/language-selection.md` for the full decision tree
 1. **Lint Gate**: Zero warnings from language-appropriate linter
 2. **Test Gate**: 80%+ coverage, all tests pass
 3. **Security Gate**: No secrets, validated inputs, authorized access
-4. **Review Gate**: Language-appropriate code reviewer approval
+4. **Review Gate**: Embedded dual-axis subagent review in `implement`; no separate generic reviewer dispatch
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## Enterprise Conventions
@@ -176,13 +176,23 @@ Secrets managed via environment variables or platform secret stores. Never hardc
 
 ## Workflow
 
-1. **Research & Language Selection** — Use `/lang-select` for unbiased choices
-2. **Architecture Design** — Create plan in `.cursor/plans/` via `/plan`
-3. **Scaffold** — `/scaffold <lang> <archetype>` to bootstrap
-4. **Implement** — `/implement <task>` with TDD loop
-5. **Quality Gate** — `/quality-gate` before every commit
-6. **Code Review** — Language-specific reviewer + security reviewer
-7. **Deploy Check** — `/deploy-check` before release
-8. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets
-9. **Release** — `/release` for enterprise release workflow
-10. **Maintain** — Keep CLAUDE.md current, refactor as debt accrues
+### Route by Request Size
+
+- **Simple, clear, local request**: work directly in the codebase with lightweight vibe coding; do not activate planning/workflow skills by default.
+- **Bug fix**: use Matt's `grilling` to clarify/diagnose, then `implement` to fix and verify.
+- **Complex feature** (cross-module, API/contract changes, or multi-stage delivery): `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- `implement` includes subagent review across two independent axes. Do not start a separate generic code-review workflow; keep applicable test, security, and documentation checks.
+- For persistent plans on complex tasks, use `planning-with-files` in English conversations or `planning-with-files-zh` in Chinese conversations. Do not require these for simple requests.
+- Do not use or route to `superpowers` in this manifest.
+
+### Delivery Lifecycle
+
+1. **Research & Language Selection** — Use `/lang-select` when language choice is genuinely open.
+2. **Architecture / Planning** — Apply the request-size routing above; use `/plan` only when a project-specific architecture plan is needed.
+3. **Scaffold** — `/scaffold <lang> <archetype>` when bootstrapping a project.
+4. **Implement** — Use the selected workflow; `/implement <task>` for the implementation phase.
+5. **Quality Gate** — `/quality-gate` before every commit.
+6. **Deploy Check** — `/deploy-check` before release.
+7. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets.
+8. **Release** — `/release` for enterprise release workflow.
+9. **Maintain** — Keep CLAUDE.md current, refactor as debt accrues.
