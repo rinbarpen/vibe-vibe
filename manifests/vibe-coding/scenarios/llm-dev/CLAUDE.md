@@ -30,7 +30,7 @@ Actively dispatch these skills for LLM development tasks:
 
 | Skill | Use When |
 |-------|----------|
-| `superpowers` | Brainstorming, subagent-driven dev, systematic debugging, verification |
+| `planning-with-files` / `planning-with-files-zh` | Persistent planning notes for complex work (choose by conversation language) |
 | `Agent-Skills-for-Context-Engineering` | Prompt chain design, context window optimization, multi-model orchestration |
 | `agent-skills` | Agent coding conventions, tool use patterns |
 | `claude-api` | Claude API integration, prompt caching, extended thinking, streaming |

@@ -30,7 +30,7 @@ Get language recommendation for a specific use case.
 4. Show relevant language spec sheet from `references/language-specs/`
 
 5. Suggest relevant agents and skills:
-   - Which reviewer agent to use
+   - Relevant implementation review expectations (embedded in `implement`)
    - Which patterns skill to reference
    - Which build resolver to use if errors arise
 

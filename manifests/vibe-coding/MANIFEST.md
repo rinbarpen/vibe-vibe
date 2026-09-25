@@ -6,7 +6,7 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the 
 
 ## Role Definition
 
-You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the complete engineering lifecycle. Actively dispatch subagents for parallel execution to maximize speed and result quality.
+You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the appropriate engineering workflow. Use subagents only when parallel work is genuinely independent; simple/local requests stay with the main agent.
 
 ## All 15 Scenarios
 
@@ -30,16 +30,23 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 
 ## Core Flow: Unified Engineering Lifecycle
 
+### Request Routing (Use the Lightest Suitable Workflow)
+- **Simple request** — For clear, local changes with limited scope, work directly in the codebase using normal vibe-coding iteration. Do not start a planning or workflow skill by default.
+- **Bug fix** — Use Matt's `grilling` to clarify and diagnose the issue, then `implement` to make and verify the fix.
+- **Complex feature** — For cross-module work, API/contract changes, or multi-stage delivery, use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- `implement` includes subagent review across two independent axes. Do not launch a separate generic code-review workflow; retain relevant test, security, and documentation quality checks.
+- When a complex task needs persistent planning notes, use `planning-with-files` for English conversations and `planning-with-files-zh` for Chinese conversations. These skills are not a prerequisite for simple requests.
+- Do not use or route to the `superpowers` skill from this manifest.
+
 ### Phase 1: Research & Language Selection
-- Use `/lang-select <context>` for unbiased language recommendation.
-- Consult `references/language-specs/` for detailed capability breakdowns.
-- Run `vibe-lang-audit.sh` for multi-language project consistency.
+- Use `/lang-select <context>` only when language choice is open; consult `references/language-specs/` as needed.
+- Run `vibe-lang-audit.sh` only for relevant multi-language projects.
 - **Exit criteria**: Language selected with documented rationale.
 
 ### Phase 2: Architecture Design
-- Dispatch `code-architect` agent for high-level system design.
-- Create plan document in `.cursor/plans/` via `/plan`.
-- Validate architecture against `references/decision-trees/architecture-patterns.md`.
+- For complex features, use `code-architect` for bounded independent design analysis when useful; keep architecture decisions and integration with the coordinator.
+- Use the complex-feature workflow and persistent planning notes as routed above. Do not require `/plan` for simple requests or bug fixes.
+- Validate architecture against `references/decision-trees/architecture-patterns.md` when architectural choices are in scope.
 - **Exit criteria**: Plan written, architecture validated, approved by user.
 
 ### Phase 3: Scaffold
@@ -50,7 +57,7 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 
 ### Phase 4: Implement (TDD)
 - RED: Write failing test → GREEN: Minimal implementation → IMPROVE: Refactor.
-- Run `/quality-gate` after each feature.
+- Run `/quality-gate` when the change warrants a full gate, not after every local edit.
 - Dispatch language-specific build-resolver if build fails.
 - **Exit criteria**: All tests pass, lint clean, coverage >= 80%.
 
@@ -60,8 +67,8 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 - **Exit criteria**: Zero lint warnings, tests pass, no secrets, reviewer approved.
 
 ### Phase 6: Code Review
-- Dispatch language-appropriate reviewer agent.
-- For auth/payments/user-data: also dispatch `security-reviewer`.
+- `implement` owns the two-axis parallel subagent review for implementation work; do not dispatch a separate generic reviewer workflow.
+- Run focused security review when the change warrants it.
 - Fix CRITICAL and HIGH issues; document MEDIUM.
 - **Exit criteria**: No CRITICAL or HIGH issues.
 
@@ -111,12 +118,14 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 
 ## Parallel Execution Patterns
 
-### Pattern A: Plan + Research (3 agents parallel)
-Launch concurrently:
-1. `code-architect` → architecture design
-2. `explore` → codebase analysis
-3. Context7 / docs-lookup → library docs
-→ Merge findings into plan document.
+### Dispatch Protocol
+- Use the host agent runtime's available subagent/task-delegation mechanism; the manifest does not assume a specific tool name. If no such mechanism is available, work sequentially.
+- Dispatch only after carving work into independent, bounded tasks. Do not parallelize dependent steps, overlapping edits, or simple/local requests just to use subagents.
+- Start independent tasks in the same batch. Give each subagent the goal, relevant context/paths, explicit ownership or read-only boundary, expected deliverable, and verification requested.
+- For parallel implementation, assign disjoint modules/files to each implementer. Keep integration and shared-file edits with the coordinator unless ownership is explicitly transferred.
+- Wait for every dispatched task, inspect its result, resolve conflicts, integrate changes, and run combined verification before reporting completion.
+- Subagents report findings or artifacts; they do not independently declare the overall task complete.
+- `implement` owns its embedded two-axis subagent review. Do not launch Pattern D or another generic reviewer in parallel with it. Launch a separate focused security audit only when the task's risk warrants it.
 
 ### Pattern B: Implement + Test (multi-module parallel)
 When implementing independent modules:
@@ -130,11 +139,8 @@ When implementing independent modules:
 2. Cloud platform deploy → execute deployment
 → CI-watcher reports status while deploy runs.
 
-### Pattern D: Review + Security (2 agents parallel)
-After every significant code change:
-1. Language-appropriate `reviewer` → code quality review
-2. `security-reviewer` → vulnerability scan
-→ Fix issues from both before proceeding.
+### Pattern D: Embedded Implementation Review
+`implement` launches its two review axes in parallel as part of its own workflow. The coordinator consumes the combined findings and resolves required issues; do not separately dispatch a generic reviewer. A focused `security-reviewer` may run alongside independent read-only checks for security-sensitive changes, without duplicating the embedded review.
 
 ### Pattern E: Quality Gate (5 checks parallel)
 Run all 5 quality gates concurrently:
@@ -393,13 +399,21 @@ Secrets managed via environment variables or platform secret stores. Never hardc
 
 ## Workflow
 
-1. **Research & Language Selection** — Use `/lang-select` for unbiased choices
-2. **Architecture Design** — Create plan in `.cursor/plans/` via `/plan`
-3. **Scaffold** — `/scaffold <lang> <archetype>` to bootstrap
-4. **Implement** — `/implement <task>` with TDD loop
-5. **Quality Gate** — `/quality-gate` before every commit
-6. **Code Review** — Language-specific reviewer + security reviewer
-7. **Deploy Check** — `/deploy-check` before release
-8. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets
-9. **Release** — `/release` for enterprise release workflow
-10. **Maintain** — Keep CLAUDE.md current, refactor as debt accrues
+### Route by Request Size
+- **Simple, clear, local request**: work directly in the codebase with lightweight vibe coding; do not activate planning/workflow skills by default.
+- **Bug fix**: use Matt's `grilling` to clarify/diagnose, then `implement` to fix and verify.
+- **Complex feature** (cross-module, API/contract changes, or multi-stage delivery): `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- `implement` includes subagent review across two independent axes. Do not start a separate generic code-review workflow; keep applicable test, security, and documentation checks.
+- For persistent plans on complex tasks, use `planning-with-files` in English conversations or `planning-with-files-zh` in Chinese conversations. Do not require these for simple requests.
+- Do not use or route to `superpowers` in this manifest.
+
+### Delivery Lifecycle
+1. **Research & Language Selection** — Use `/lang-select` when language choice is genuinely open.
+2. **Architecture / Planning** — Apply the request-size routing above; use `/plan` only when a project-specific architecture plan is needed.
+3. **Scaffold** — `/scaffold <lang> <archetype>` when bootstrapping a project.
+4. **Implement** — Use the selected workflow; `/implement <task>` for the implementation phase.
+5. **Quality Gate** — `/quality-gate` before every commit.
+6. **Deploy Check** — `/deploy-check` before release.
+7. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets.
+8. **Release** — `/release` for enterprise release workflow.
+9. **Maintain** — Keep CLAUDE.md current, refactor as debt accrues.

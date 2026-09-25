@@ -50,5 +50,6 @@ Required:
 
 ## Workflow
 
-- Always create a plan in `.cursor/plans/` before major changes.
+- Route simple/local requests directly; bug fixes use `grilling` → `implement`; complex features use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For persistent notes on complex work, choose `planning-with-files` (English) or `planning-with-files-zh` (Chinese).
 - Use `vibe-check` to verify changes before submission.

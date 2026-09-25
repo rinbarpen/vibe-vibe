@@ -32,11 +32,11 @@ alwaysApply: true
 | release | Merge commit | Preserve release history |
 | hotfix | Merge commit | Preserve fix history |
 
-## 4. Code Review
+## 4. Review
 
 - CODEOWNERS 自动分配 reviewer。
-- 提交 PR 前，必须先调用 `code-reviewer` 进行本地预审。
-- 安全相关改动必须有 `security-reviewer` 参与。
+- `implement` 内含双轴 subagent review，不要额外启动通用 code-review 流程。
+- 质量门禁继续执行适用的安全、测试与文档检查。
 - 必须解决所有 conversation 后才能合并。
 
 ## 5. Release & Tag
