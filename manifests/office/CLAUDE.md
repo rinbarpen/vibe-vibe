@@ -1,5 +1,7 @@
 # Office Document Automation Suite
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 Unified manifest for operating Microsoft Office three-piece suite — Word (docx), Excel (xlsx), and PowerPoint (pptx) — through specialised sub-manifests. Quality first, instructions 100% followed.
 
 ## Planning Phase (MANDATORY)

@@ -16,6 +16,7 @@ mkdir -p draft outline refs assets final .cursor/rules .cursor/plans
 # 2. 复制核心配置文件
 [ ! -f CLAUDE.md ] && cp "$MANIFEST_DIR/CLAUDE.md" CLAUDE.md && echo "Created CLAUDE.md"
 [ ! -f AGENTS.md ] && cp "$MANIFEST_DIR/AGENTS.md" AGENTS.md && echo "Created AGENTS.md"
+[ ! -f MANIFEST.md ] && cp "$MANIFEST_DIR/MANIFEST.md" MANIFEST.md && echo "Created MANIFEST.md"
 [ ! -f .cursorrules ] && cp "$MANIFEST_DIR/.cursorrules" .cursorrules && echo "Created .cursorrules"
 
 # 3. 复制规则文件

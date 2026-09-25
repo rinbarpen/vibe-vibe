@@ -28,6 +28,10 @@ fi
 TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
 echo "Initializing ARS Auto-Research project in: $TARGET_DIR"
 
+for file in CLAUDE.md AGENTS.md MANIFEST.md README.md; do
+  if [[ ! -e "$TARGET_DIR/$file" ]]; then cp "$MANIFEST_DIR/$file" "$TARGET_DIR/$file"; fi
+done
+
 mkdir -p "$TARGET_DIR/references"
 mkdir -p "$TARGET_DIR/templates"
 mkdir -p "$TARGET_DIR/paper"

@@ -123,6 +123,7 @@ done
 echo "  → Installing manifest instructions..."
 install_file "$MANIFEST_DIR/CLAUDE.md" "$TARGET_DIR/CLAUDE.md"
 install_file "$MANIFEST_DIR/AGENTS.md" "$TARGET_DIR/AGENTS.md"
+install_file "$MANIFEST_DIR/MANIFEST.md" "$TARGET_DIR/MANIFEST.md"
 install_file "$MANIFEST_DIR/README.md" "$TARGET_DIR/README.md"
 
 for wf in "$MANIFEST_DIR/.github/workflows/"*.yml; do

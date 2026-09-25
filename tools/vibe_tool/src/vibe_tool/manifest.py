@@ -205,7 +205,7 @@ def _generic_init(
             dest.mkdir(parents=True, exist_ok=True)
 
     # Root-level files (non-overwriting unless --force)
-    root_files = ["CLAUDE.md", "AGENTS.md", ".cursorrules", "README.md", "CONTRIBUTING.md"]
+    root_files = ["CLAUDE.md", "AGENTS.md", "MANIFEST.md", ".cursorrules", "README.md", "CONTRIBUTING.md"]
     for filename in root_files:
         src_file = src / filename
         if not src_file.is_file():

@@ -38,6 +38,12 @@ TARGET_DIR="$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")"
 echo "[ui-testing-init] Installing UI Testing Manifest to: $TARGET_DIR"
 echo ""
 
+for file in CLAUDE.md AGENTS.md MANIFEST.md README.md; do
+    if [[ -f "$MANIFEST_DIR/$file" && ! -f "$TARGET_DIR/$file" ]]; then
+        cp "$MANIFEST_DIR/$file" "$TARGET_DIR/$file"
+    fi
+done
+
 # Create .cursor/rules if it doesn't exist
 mkdir -p "$TARGET_DIR/.cursor/rules"
 

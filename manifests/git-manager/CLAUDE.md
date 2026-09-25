@@ -1,5 +1,7 @@
 # Git 仓库跨平台管理 Manifest
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 跨平台 Git 仓库管理项目。支持 GitHub、Gitee、自搭建 Git 服务（GitLab、Gitea 等）的仓库同步、镜像、审计与批量操作。
 
 ## 🚀 Getting Started（初始化流程）

@@ -1,5 +1,7 @@
 # Knowledge-Learning Manifest
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 面向多种知识载体格式的系统化学习 manifest。提供从材料导入到复习巩固的全流程管理：
 **导入各种学习材料 → Source-grounded 提取知识 → 结构化笔记 → 间隔重复复习巩固**。
 

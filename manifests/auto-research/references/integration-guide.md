@@ -121,15 +121,7 @@ aris/research-pipeline "topic description"
 
 ## 输出清单
 
-每次产出记录到 `MANIFEST.md`：
-
-```
-| Timestamp | Source | File | Stage | Description |
-|-----------|--------|------|-------|-------------|
-| 2025-06-15 | research-lit | LIT_REVIEW.md | idea-discovery | 文献综述 |
-| 2025-06-16 | auto-review-loop | REVIEW.md | review | 评审报告 |
-| 2025-06-17 | figure-spec | FIGURE_1.svg | paper | 架构图 |
-```
+每次产出追加到研究项目根目录的唯一账本 [`MANIFEST.md`](../MANIFEST.md)，格式、状态记录和审稿登记规则均以该文件为准；其他说明文档只链接，不复制清单协议。
 
 ## 生命周期优先规则
 

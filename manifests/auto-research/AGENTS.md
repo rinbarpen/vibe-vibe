@@ -54,15 +54,16 @@
 10. 需要写作原则审计时，按语言调用 `skills/anti-defensive-writing/SKILL.md` 或 `skills/anti-defensive-writing-en/SKILL.md`；默认不开启自动防御性写作改写
 11. 运行 `writing_plan.py review`，只局部重写 `warning`、`fail` 或 `blocked_missing_evidence` 节点；结构变化后回到步骤 3
 12. 使用 `mine/paper-version-manager init` 初始化版本追踪（v1）
-13. 使用 `paper-review` 进行证据驱动的投稿前自审，重点核对贡献、baseline、消融和引用
-14. 使用 `aris/auto-review-loop` 启动自动评审循环（最多 4 轮）
-15. 根据评审意见修改论文，并使用 `mine/paper-version-manager bump --minor` 标记修改（v1 → v1.1 等）
-16. 重复步骤 14-15 直到评审收敛（每轮评审后 bump --minor）
-17. 使用 `mine/paperreview-ai-review` 提交 paperreview.ai 外部评审
-18. 使用 `aris/paper-claim-audit` 校验数值声明一致性，并使用 `aris/citation-audit` 校验引用
-19. 对重大改写使用 `mine/paper-version-manager bump --major`，并重新 validate/resolve/render/approval
-20. 使用 `aris/auto-paper-improvement-loop` 深度改进论文
-21. 产出：逐节点写作记录、Writing Review、评审意见、改进清单和版本历史
+13. 投稿前完整评审默认并行启动三路独立 reviewer：`paper-review`、`academic-paper-reviewer` 和 gptweb ICLR prompt；三者均直接读取原始论文与附录，各自使用 fresh session，互不传递摘要或评审意见。流程、API 配置和 prompt 见 `references/multi-review.md` 与 `references/iclr-review-prompt.md`
+14. 三路各自保存报告后，综合共识、分歧和贡献/缺陷权衡，给出有理由的 ICLR 综合分；保留单路分数，禁止简单平均代替判断
+15. 使用 `aris/auto-review-loop` 启动自动评审循环（最多 4 轮）
+16. 根据评审意见修改论文，并使用 `mine/paper-version-manager bump --minor` 标记修改（v1 → v1.1 等）
+17. 重复步骤 15-16 直到评审收敛（每轮评审后 bump --minor）
+18. 使用 `mine/paperreview-ai-review` 提交 paperreview.ai 外部评审
+19. 使用 `aris/paper-claim-audit` 校验数值声明一致性，并使用 `aris/citation-audit` 校验引用
+20. 对重大改写使用 `mine/paper-version-manager bump --major`，并重新 validate/resolve/render/approval
+21. 使用 `aris/auto-paper-improvement-loop` 深度改进论文
+22. 产出：逐节点写作记录、Writing Review、三份独立评审、综合评审/评分、改进清单和版本历史
 
 #### Writing Plan 职责边界
 
@@ -86,7 +87,7 @@
 
 1. 使用 `mine/export-paper-zip "path" --mode submission --venue <venue>` 导出投稿 ZIP
 2. 或使用 `mine/export-paper-zip "path" --mode bundle --include <files...>` 自定义打包
-3. 产出：`paper-submission_<venue>_YYYYMMDD.zip` + 记录到 MANIFEST.md
+3. 产出：`paper-submission_<venue>_YYYYMMDD.zip` + 记录到 [`MANIFEST.md`](MANIFEST.md)
 
 ## Subagent Dispatch
 
@@ -95,15 +96,18 @@
 | lit-reviewer | Phase 1 | 文献调研和综述 |
 | idea-generator | Phase 1 | 研究想法生成 |
 | experiment-designer | Phase 2 | 实验方案设计 |
-| paper-reviewer | Phase 3 | 自动评审（调用 auto-review-loop） |
+| paper-reviewer-paper-review | Phase 3 | 独立调用 `paper-review` 技能，从论文原件审查贡献、证据链、baseline、消融与引用 |
+| paper-reviewer-academic | Phase 3 | 独立调用 `academic-paper-reviewer`，执行完整学术评审 |
+| paper-reviewer-gptweb | Phase 3 | 独立读取论文原件，调用 gptweb ICLR prompt/API 并保存单路报告 |
+| review-synthesizer | Phase 3 | 三份单路报告完成后汇总共识/分歧并解释综合 ICLR 分数；不替代原始报告 |
 | figure-designer | Phase 4 | 图表规格和生成 |
 | citation-auditor | Phase 3 | 引用校验 |
 | version-manager | Phase 3 | 版本追踪和变更记录 |
 
-## Output Manifest 协议
+## 产物登记
 
-- 每个阶段产出记录到 `MANIFEST.md`
-- 格式：`| Timestamp | Skill | File | Stage | Description |`
+所有产物登记规则、唯一账本与表格格式见 [`MANIFEST.md`](MANIFEST.md)。本文件不维护重复的清单协议。
+
 - 阶段值：`idea-discovery` / `implementation` / `review` / `paper` / `version`
 - 文件版本化：带时间戳副本 + 固定名称最新副本并存；使用 `mine/paper-version-manager` 管理论文版本历史
 

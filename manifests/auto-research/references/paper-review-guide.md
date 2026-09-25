@@ -1,5 +1,7 @@
 # Automated Paper Review Guide
 
+投稿前默认采用三路并行独立评审（`paper-review`、`academic-paper-reviewer`、gptweb ICLR prompt）；评审派发、gptweb API 调用和综合规则见 [`multi-review.md`](multi-review.md)，可直接使用的 gptweb prompt 见 [`iclr-review-prompt.md`](iclr-review-prompt.md)。下文描述的 ARIS `auto-review-loop` 是另外的循环评审流程，不取代三路独立评审。
+
 ## 概述
 
 自动论文评审能力由 aris 中的三个技能提供：

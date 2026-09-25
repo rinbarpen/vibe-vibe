@@ -72,6 +72,7 @@ copy_file() {
 
 copy_file "$MANIFEST_DIR/CLAUDE.md" "$PROJECT_ROOT/CLAUDE.md"
 copy_file "$MANIFEST_DIR/AGENTS.md" "$PROJECT_ROOT/AGENTS.md"
+copy_file "$MANIFEST_DIR/MANIFEST.md" "$PROJECT_ROOT/MANIFEST.md"
 copy_file "$MANIFEST_DIR/README.md" "$PROJECT_ROOT/README.md"
 
 # Copy rules

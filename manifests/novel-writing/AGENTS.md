@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 AI 创作助手（Cursor, Claude Code 等）在小说创作项目中的协作指南。
 
 ## 创作角色分工 (Subagent Roles)

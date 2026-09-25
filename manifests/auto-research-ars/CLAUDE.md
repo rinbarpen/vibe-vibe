@@ -1,5 +1,7 @@
 # Auto-Research ARS Manifest
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 面向 Academic Research Skills (ARS) 的自动科研 manifest 包。以 ARS 为核心，提供深度研究、论文写作、多角色评审、端到端流水线四套技能。
 
 ## Commands

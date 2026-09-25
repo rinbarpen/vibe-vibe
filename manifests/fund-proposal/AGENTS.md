@@ -1,5 +1,7 @@
 # AGENTS.md (Fund_Craft_Pro 专家工作流)
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 AI 助手（Cursor, Claude Code 等）在撰写与修改中文基金申请书时的协作角色与工作流指南。
 
 ## 角色定义: Fund_Craft_Pro

@@ -1,5 +1,7 @@
 # UI Testing — AI Agent Instructions
 
+> 产物记录的唯一账本是项目根目录 [`MANIFEST.md`](MANIFEST.md)；请追加记录，不要在指令文档中复制清单。
+
 ## Core Flow
 
 1. **Analyze** — Read source code, understand component/page structure, identify test gaps

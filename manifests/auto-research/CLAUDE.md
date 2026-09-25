@@ -107,7 +107,7 @@ aris/research-pipeline 端到端：文献调研 → 想法生成 → 新颖性�
 - review 按节点执行；失败后仅重写不合格节点。`auto_fix: constrained` 不得改变核心结论、证据标准、章节结构或已审批目标。
 - 详细字段、继承和审批语义见 `writing/README.md`。
 
-先由 `paper-review` 进行证据驱动的投稿前自审，再由 aris/auto-review-loop 进行独立论文评审：节点写作与审查 → 论文草稿 → 自审 → AI 评审 → 改进 → 再审 → 收敛。
+投稿前完整审稿默认并行运行三个独立 reviewer：`paper-review`、`academic-paper-reviewer` 和 gptweb ICLR prompt。每路从原始论文及附录直接评估，在 fresh session 中运行，互不共享上下文；三份报告落盘后再综合共识、分歧和有依据的 ICLR 分数。gptweb API 与综合流程见 [`references/multi-review.md`](references/multi-review.md)，prompt 见 [`references/iclr-review-prompt.md`](references/iclr-review-prompt.md)。之后可运行 aris/auto-review-loop 进行迭代改进：节点写作与审查 → 论文草稿 → 三路独立审稿 → 综合 → 改进 → 再审 → 收敛。
 
 ### 3. Evidence-based Paper Review
 
@@ -147,7 +147,7 @@ aris/figure-spec + aris/paper-illustration：图规格 (JSON) → 确定性 SVG 
 ## Gotchas
 
 - 评审者独立性：评审者必须从原始工件直接评估，执行者不可提前消化或总结
-- 输出清单协议：每次输出后向 MANIFEST.md 追加一行（Timestamp / Skill / File / Stage / Description）
+- 输出登记的唯一账本及追加规则见 [`MANIFEST.md`](MANIFEST.md)；本文件不重复维护清单格式
 - 跨模型协议：建议执行者和评审者使用不同模型家族
 - 文件版本化：每个产出需要带时间戳副本 + 固定名称最新副本
 - 论文版本管理：每次修改后使用 `mine/paper-version-manager` 创建版本快照，v1/v2 为大改、vx.1/vx.2 为小改
