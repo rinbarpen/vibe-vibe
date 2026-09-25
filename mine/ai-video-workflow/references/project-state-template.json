@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "project_id": "PROJECT-ID",
+  "scenario": "video",
+  "mode": "fast",
+  "references": [
+    {
+      "reference_id": "REF-001",
+      "type": "image",
+      "path": "assets/reference-01.png",
+      "purpose": [
+        "identity",
+        "appearance"
+      ],
+      "applies_to": [
+        "ENTITY-001",
+        "SEQ-001"
+      ],
+      "time_range": null,
+      "notes": "替换为实际参考素材及用途"
+    }
+  ],
+  "entities": [
+    {
+      "entity_id": "ENTITY-001",
+      "entity_type": "character",
+      "stable_traits": [
+        "填写不可漂移的身份/外观/商品事实"
+      ],
+      "variable_state": {
+        "scene": "填写本段场景",
+        "pose_or_action": "填写当前姿态或动作",
+        "emotion_or_condition": "填写情绪、损伤、商品状态等"
+      }
+    }
+  ],
+  "sequence": [
+    {
+      "sequence_id": "SEQ-001",
+      "order": 1,
+      "kind": "shot",
+      "reference_ids": [
+        "REF-001"
+      ],
+      "state_before": {
+        "ENTITY-001": {
+          "pose_or_action": "起始状态"
+        }
+      },
+      "action": "填写动作起点→过程→结果；单图任务填写画面目标",
+      "state_after": {
+        "ENTITY-001": {
+          "pose_or_action": "结束状态"
+        }
+      },
+      "prompt_zh": "填写中文提示词",
+      "prompt_en": "Fill in the equivalent English prompt without adding new facts.",
+      "output_path": "outputs/SEQ-001.<ext>",
+      "qa_status": "draft",
+      "qa_notes": [],
+      "repair_notes": [],
+      "generation": {
+        "tool": "填写实际工具",
+        "workflow_id": "填写实际工作流/图配置",
+        "model": "填写实际模型",
+        "model_version": "填写可获得的版本",
+        "seed": null,
+        "settings": {},
+        "run_id": ""
+      },
+      "prompt_revision": "1",
+      "quality_checks": {
+        "identity_or_product_facts": "pending",
+        "action_and_relationship": "pending",
+        "state_continuity": "pending",
+        "reference_alignment": "pending",
+        "detail_and_delivery": "pending"
+      }
+    }
+  ],
+  "outputs": [],
+  "qa_issues": []
+}

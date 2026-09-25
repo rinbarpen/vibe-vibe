@@ -1,0 +1,4 @@
+interface:
+  display_name: "ai-manhua-workflow"
+  short_description: "双模式AI视觉创作工作流：快速校准与高质量连续生产"
+  default_prompt: "按目标场景和快版或质量版，完成AI视觉创作并维护连续性状态。"
