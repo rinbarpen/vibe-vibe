@@ -6,10 +6,13 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+from review_requirements import fetch_guidelines, load_requirements, make_snapshot, venue_prompt
 
 
 PROMPT_PATH = Path(__file__).resolve().parents[1] / "references" / "iclr-review-prompt.md"
@@ -20,6 +23,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("inputs", nargs="+", type=Path, help="UTF-8 manuscript/supplement text or Markdown files")
     parser.add_argument("--output", type=Path, required=True, help="Path for the independent review report")
+    parser.add_argument("--venue", help="Target journal or conference")
+    parser.add_argument("--year", help="Submission year or cycle")
+    parser.add_argument("--track", help="Conference track or journal article type")
+    parser.add_argument("--guidelines-url", help="Official reviewer-guidelines page URL (HTTP/HTTPS)")
+    parser.add_argument("--requirements-file", type=Path, help="JSON snapshot containing venue and explicit criteria")
+    parser.add_argument("--requirements-output", type=Path, help="Write fetched guideline source snapshot as JSON")
     parser.add_argument("--timeout", type=int, default=300)
     args = parser.parse_args()
 
@@ -33,7 +42,36 @@ def main() -> int:
         for path in args.inputs:
             manuscript_parts.append(f"\n\n===== SOURCE: {path.name} =====\n{path.read_text(encoding='utf-8')}")
         prompt = PROMPT_PATH.read_text(encoding="utf-8")
-    except (OSError, UnicodeError) as exc:
+        if args.requirements_file and args.guidelines_url:
+            raise ValueError("choose either --requirements-file or --guidelines-url")
+        snapshot = None
+        venue = args.venue
+        if args.requirements_file:
+            snapshot = load_requirements(args.requirements_file)
+            if venue and venue.casefold() != str(snapshot["venue"]).casefold():
+                raise ValueError("--venue does not match the venue in --requirements-file")
+            venue = venue or str(snapshot["venue"])
+        elif args.guidelines_url:
+            if not venue:
+                raise ValueError("--venue is required with --guidelines-url")
+            source = fetch_guidelines(args.guidelines_url, timeout=min(args.timeout, 60))
+            snapshot = make_snapshot(venue, args.year, args.track, source)
+            if args.requirements_output:
+                args.requirements_output.parent.mkdir(parents=True, exist_ok=True)
+                args.requirements_output.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        elif args.requirements_output:
+            raise ValueError("--requirements-output requires --guidelines-url")
+        if venue:
+            prompt = prompt.replace("ICLR", "target venue")
+            prompt = re.sub(
+                r"随后给出 target venue 风格 1–10 分：.*?评分必须与上述评审一致，不得只给分数或以单一小问题决定结论。",
+                "评分与建议优先采用已提供的官方 venue rubric；若来源未定义评分量表，则不给虚构的 venue score，只提供定性判断。",
+                prompt,
+                count=1,
+                flags=re.DOTALL,
+            )
+            prompt += venue_prompt(snapshot, venue)
+    except (OSError, UnicodeError, ValueError, json.JSONDecodeError) as exc:
         print(f"Input error: {exc}", file=sys.stderr)
         return 2
 

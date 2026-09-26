@@ -6,6 +6,8 @@
 
 每个大/小/小小阶段进入、结束、失败、暂停、恢复和计划修订都使用 research_workflow.py checkpoint 留档并本地 Git 提交。阶段完成不等于假设成立。详见 references/lifecycle-runtime.md。
 
+反复修改、返修或重试必须在独立迭代 worktree 中完成；阶段 branch 本身不提供工作目录隔离。先创建 workspace attempt，在其中修改并运行验证命令，通过后才可晋级到阶段目标 branch。失败的 attempt 保留原目录、分支和记录；从可信基线另起新 attempt，不覆盖失败现场。
+
 ### 模型职责（项目默认）
 - 科研问题与科学判断：GPT-6 Pro。
 - 规划：GPT-6 medium。
@@ -54,8 +56,8 @@
 10. 需要写作原则审计时，按语言调用 `skills/anti-defensive-writing/SKILL.md` 或 `skills/anti-defensive-writing-en/SKILL.md`；默认不开启自动防御性写作改写
 11. 运行 `writing_plan.py review`，只局部重写 `warning`、`fail` 或 `blocked_missing_evidence` 节点；结构变化后回到步骤 3
 12. 使用 `mine/paper-version-manager init` 初始化版本追踪（v1）
-13. 投稿前完整评审默认并行启动三路独立 reviewer：`paper-review`、`academic-paper-reviewer` 和 gptweb ICLR prompt；三者均直接读取原始论文与附录，各自使用 fresh session，互不传递摘要或评审意见。流程、API 配置和 prompt 见 `references/multi-review.md` 与 `references/iclr-review-prompt.md`
-14. 三路各自保存报告后，综合共识、分歧和贡献/缺陷权衡，给出有理由的 ICLR 综合分；保留单路分数，禁止简单平均代替判断
+13. 投稿前完整评审默认并行启动三路独立 reviewer：`paper-review`、`academic-paper-reviewer` 和 gptweb review；三者均直接读取原始论文与附录，各自使用 fresh session，互不传递摘要或评审意见。目标期刊/会议已知时，先检索其官方 reviewer-guidelines/review form/CFP，再提供 venue、年份/track 与来源 URL，生成要求快照并应用特异化 rubric；流程、API 配置和 prompt 见 `references/multi-review.md`
+14. 三路各自保存报告后，综合共识、分歧和贡献/缺陷权衡；目标 venue 有官方评分量表时按该量表报告，无量表时不虚构 venue 分数；保留单路判断，禁止简单平均代替综合判断
 15. 使用 `aris/auto-review-loop` 启动自动评审循环（最多 4 轮）
 16. 根据评审意见修改论文，并使用 `mine/paper-version-manager bump --minor` 标记修改（v1 → v1.1 等）
 17. 重复步骤 15-16 直到评审收敛（每轮评审后 bump --minor）

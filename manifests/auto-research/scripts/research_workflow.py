@@ -18,6 +18,7 @@ import uuid
 RUNTIME = Path('.auto-research/lifecycle')
 BRANCH_LOG = RUNTIME / 'branches.jsonl'
 BRANCH_STATE = RUNTIME / 'local/branch-state.json'
+WORKSPACE_DIR = RUNTIME / 'local/workspaces'
 STATES = {'started', 'completed', 'failed', 'blocked', 'paused', 'resumed', 'skipped', 'revised'}
 TERMINAL = {'completed', 'skipped'}
 ACTIVE = {'started', 'resumed', 'revised'}
@@ -350,6 +351,140 @@ def branch_status(root, cycle):
             'idea_slug':state.get('idea_slug') or b.get('idea_slug'),
             'stages':state.get('stages',{}),'events':len(branch_events(root))}
 
+def workspace_record_path(root, identifier):
+    identifier=branch_slug(identifier,'attempt id')
+    return root/WORKSPACE_DIR/(identifier+'.json')
+
+def workspace_record(root, identifier):
+    path=workspace_record_path(root,identifier)
+    if not path.is_file(): raise Invalid('Unknown workspace attempt: '+identifier)
+    return read(path)
+
+def workspace_manifest(root):
+    """Hash every tracked file and enumerate untracked files at the baseline."""
+    tracked=git(root,'ls-files','-z').split('\0')
+    files={}
+    for name in filter(None,tracked):
+        path=root/name
+        if path.is_file(): files[name]=hashlib.sha256(path.read_bytes()).hexdigest()
+    untracked=[line[3:] for line in git(root,'status','--porcelain','--untracked-files=all').splitlines() if line.startswith('?? ')]
+    return {'tracked':files,'untracked':sorted(untracked)}
+
+def workspace_events(root, record):
+    record.setdefault('history',[]).append({'time':now(),'state':record['state'],
+                                              'changed':record.get('changed',[]),
+                                              'verification':record.get('verification')})
+    save(workspace_record_path(root,record['id']),record)
+
+def workspace_start(root, cycle, stage_id, attempt):
+    cfg=config(root)
+    if not branching_cfg(cfg): raise Invalid('Workspace iterations require lifecycle branching enabled')
+    require_clean(root,'start workspace iteration')
+    if stage_id not in {s['id'] for s in cfg['stages']}: raise Invalid('Unknown stage: '+stage_id)
+    attempt=branch_slug(attempt,'attempt id')
+    identifier=branch_slug(cycle+'-'+stage_id.replace('/','-')+'-'+attempt,'workspace id')
+    path=workspace_record_path(root,identifier)
+    if path.exists(): raise Invalid('Workspace attempt already exists: '+identifier)
+    state=branch_state(root); idea=state.get('idea_slug') or branching_cfg(cfg).get('idea_slug') or 'research'
+    target=branch_names(cfg,idea,stage_id)[0]
+    if not branch_exists(root,target):
+        parent=branch_target(cfg,idea,stage_id)
+        if not branch_exists(root,parent): raise Invalid('Initialize parent lifecycle branch before starting an iteration')
+        git(root,'branch',target,parent)
+    base=target
+    branch=branch_ref_ok(f'{branch_slug(idea)}/iterations/{branch_slug(cycle)}/{branch_slug(stage_id.replace("/","-"))}/{attempt}')
+    if branch_exists(root,branch): raise Invalid('Workspace branch already exists: '+branch)
+    worktree=(root/'.auto-research/workspaces'/identifier).resolve()
+    worktree.parent.mkdir(parents=True,exist_ok=True)
+    baseline_manifest=workspace_manifest(root)
+    git(root,'worktree','add','-b',branch,str(worktree),base)
+    record={'version':1,'id':identifier,'cycle':cycle,'stage_id':stage_id,'attempt':attempt,
+            'branch':branch,'target_branch':target,'baseline_commit':git(root,'rev-parse',base),
+            'worktree':str(worktree),'baseline':baseline_manifest,'state':'active',
+            'changed':[],'verification':None,'created_at':now(),'history':[]}
+    save(path,record); workspace_events(root,record)
+    return {'status':'started','id':identifier,'branch':branch,'target_branch':target,
+            'baseline_commit':record['baseline_commit'],'worktree':str(worktree)}
+
+def workspace_diff(root, record):
+    wt=Path(record['worktree'])
+    if not wt.is_dir(): raise Invalid('Workspace directory is missing; record retained')
+    base=record['baseline_commit']
+    committed=git(wt,'diff','--name-status',base+'...HEAD').splitlines()
+    working=git(wt,'status','--porcelain','--untracked-files=all').splitlines()
+    changes=sorted(set(committed+[line[3:] for line in working]))
+    return changes
+
+def workspace_baseline_drift(root, record):
+    current=workspace_manifest(root); baseline=record['baseline']
+    before,after=baseline['tracked'],current['tracked']
+    changed=sorted(name for name in set(before)|set(after) if before.get(name)!=after.get(name))
+    untracked=sorted(name for name in set(current['untracked'])-set(baseline['untracked'])
+                     if not name.startswith('.auto-research/workspaces/'))
+    return {'clean':not changed and not untracked,'changed_tracked':changed,'new_untracked':untracked}
+
+def workspace_status(root, identifier):
+    record=workspace_record(root,identifier)
+    changes=workspace_diff(root,record) if record['state'] not in {'closed'} else record.get('changed',[])
+    return {'id':identifier,'state':record['state'],'cycle':record['cycle'],'stage_id':record['stage_id'],
+            'attempt':record['attempt'],'baseline_commit':record['baseline_commit'],'branch':record['branch'],
+            'worktree':record['worktree'],'changed':changes,'baseline_drift':workspace_baseline_drift(root,record) if record['state']!='closed' else None,
+            'verification':record.get('verification')}
+
+def workspace_verify(root, identifier, commands):
+    record=workspace_record(root,identifier)
+    if record['state']!='active': raise Invalid('Only active workspaces can be verified')
+    wt=Path(record['worktree']); results=[]
+    if not commands: raise Invalid('At least one --command is required for verification')
+    for command in commands:
+        proc=subprocess.run(command,shell=True,cwd=wt,capture_output=True,text=True)
+        results.append({'command':command,'exit_status':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr})
+    record['changed']=workspace_diff(root,record)
+    drift=workspace_baseline_drift(root,record)
+    record['verification']={'time':now(),'commands':results,'passed':all(x['exit_status']==0 for x in results) and drift['clean'],
+                            'baseline_drift':drift}
+    if record['verification']['passed']:
+        if git(wt,'status','--porcelain','--untracked-files=all'):
+            for key in ('user.name','user.email'):
+                if not git(wt,'config','--get',key,check=False):
+                    raise Invalid('Configure project Git '+key+' before promoting an iteration')
+            git(wt,'add','-A')
+            git(wt,'commit','-m',f"research[{record['stage_id']}]: iteration {record['attempt']} verified")
+        if git(wt,'rev-parse','HEAD')==record['baseline_commit']:
+            raise Invalid('Verified iteration contains no committed changes')
+    record['state']='verified' if record['verification']['passed'] else 'verification_failed'
+    workspace_events(root,record)
+    return {'status':record['state'],'id':identifier,'changed':record['changed'],'verification':record['verification']}
+
+def workspace_promote(root, identifier):
+    record=workspace_record(root,identifier)
+    if record['state']!='verified' or not record.get('verification',{}).get('passed'):
+        raise Invalid('Workspace must pass verification before promotion')
+    require_clean(root,'promote workspace')
+    if not workspace_baseline_drift(root,record)['clean']:
+        raise Invalid('Project workspace drifted from iteration baseline; preserve attempt and create a fresh iteration')
+    if current_branch(root)!=record['target_branch']:
+        raise Invalid('Switch to target branch '+record['target_branch']+' before promotion')
+    if git(root,'merge-base',record['baseline_commit'],'HEAD')!=record['baseline_commit']:
+        raise Invalid('Target branch diverged from iteration baseline; create a fresh attempt')
+    git(root,'merge','--no-ff','--no-edit',record['branch'])
+    record['state']='promoted'; record['promoted_commit']=git(root,'rev-parse','HEAD')
+    record['changed']=workspace_diff(root,record); workspace_events(root,record)
+    return {'status':'promoted','id':identifier,'target_branch':record['target_branch'],'commit':record['promoted_commit']}
+
+def workspace_close(root, identifier):
+    record=workspace_record(root,identifier)
+    if record['state']=='active': raise Invalid('Verify or retain the active workspace before closing')
+    wt=Path(record['worktree'])
+    if wt.exists():
+        registered=git(root,'worktree','list','--porcelain')
+        if str(wt) not in registered: raise Invalid('Workspace path is not registered as a Git worktree')
+        dirty=git(wt,'status','--porcelain','--untracked-files=all')
+        if dirty: raise Invalid('Workspace has uncommitted changes; preserve it and commit or archive before closing')
+        git(root,'worktree','remove',str(wt))
+    record['state']='closed'; workspace_events(root,record)
+    return {'status':'closed','id':identifier,'branch_retained':record['branch'],'record':str(workspace_record_path(root,identifier))}
+
 def init(root):
     root.mkdir(parents=True, exist_ok=True)
     repo = git(root, 'rev-parse', '--show-toplevel', check=False)
@@ -531,6 +666,12 @@ def main(argv=None):
     bc=bps.add_parser('close'); bc.add_argument('--cycle',default='cycle-001')
     br=bps.add_parser('revision'); br.add_argument('--cycle',default='cycle-001'); br.add_argument('--kind',choices=['submission','revision'],required=True); br.add_argument('--id',dest='identifier',required=True)
     bstatus=bps.add_parser('status'); bstatus.add_argument('--cycle',default='cycle-001')
+    wp=sub.add_parser('workspace'); wps=wp.add_subparsers(dest='workspace_action',required=True)
+    ws=wps.add_parser('start'); ws.add_argument('--cycle',default='cycle-001'); ws.add_argument('--stage',required=True); ws.add_argument('--attempt',required=True)
+    wst=wps.add_parser('status'); wst.add_argument('id')
+    wv=wps.add_parser('verify'); wv.add_argument('id'); wv.add_argument('--command',action='append',default=[])
+    wprom=wps.add_parser('promote'); wprom.add_argument('id')
+    wcl=wps.add_parser('close'); wcl.add_argument('id')
     cp=sub.add_parser('checkpoint')
     cp.add_argument('--stage',required=True); cp.add_argument('--state',choices=sorted(STATES),required=True)
     cp.add_argument('--cycle',default='cycle-001'); cp.add_argument('--role',choices=['research','planner','executor','writer'],required=True)
@@ -551,6 +692,12 @@ def main(argv=None):
             elif a.branch_action=='close': result=branch_close(root,a.cycle)
             elif a.branch_action=='revision': result=branch_revision(root,a.cycle,a.kind,a.identifier)
             else: result=branch_status(root,a.cycle)
+        elif a.action=='workspace':
+            if a.workspace_action=='start': result=workspace_start(root,a.cycle,a.stage,a.attempt)
+            elif a.workspace_action=='status': result=workspace_status(root,a.id)
+            elif a.workspace_action=='verify': result=workspace_verify(root,a.id,a.command)
+            elif a.workspace_action=='promote': result=workspace_promote(root,a.id)
+            else: result=workspace_close(root,a.id)
         else:
             with lock(root):
                 pending=root/RUNTIME/'local/pending.json'

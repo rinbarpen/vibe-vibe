@@ -77,6 +77,23 @@ python3 scripts/research_workflow.py branch close --cycle cycle-001
 但不会吸收无关 staged/unstaged 文件；默认不删除已合并 branch、不 push、不 reset。
 合并失败时保留事件和当前 branch，先修复冲突，再用同一 stage/cycle 重试。
 
+### 隔离迭代 workspace
+
+阶段 branch 负责阶段汇总，不代表工作目录隔离。对同一产物进行反复修改、返修或失败重试时，每轮应新建 worktree attempt；attempt 从阶段目标 branch 的当前 commit 起步，失败时保留现场并从该可信基线创建新 attempt，不覆盖旧目录。
+
+```bash
+python3 scripts/research_workflow.py branch init --cycle cycle-001 --idea research
+python3 scripts/research_workflow.py workspace start --cycle cycle-001 --stage writing/draft --attempt attempt-001
+python3 scripts/research_workflow.py workspace status research-cycle-001-writing-draft-attempt-001
+# 在返回的 worktree 路径中修改文件
+python3 scripts/research_workflow.py workspace verify research-cycle-001-writing-draft-attempt-001 --command 'pytest -q'
+git switch research/writing/draft
+python3 scripts/research_workflow.py workspace promote research-cycle-001-writing-draft-attempt-001
+python3 scripts/research_workflow.py workspace close research-cycle-001-writing-draft-attempt-001
+```
+
+`verify` 要求显式提供至少一个 `--command`，保存每条命令的 stdout/stderr/exit status；全部通过且根目录未发生基线漂移后，自动将隔离 worktree 中的改动提交为候选 commit。`promote` 仅接受通过验证的 attempt，并要求项目根目录干净、当前分支是记录的阶段 branch，且该 branch 仍包含 attempt 基线；冲突或漂移时保留候选现场，另开 attempt 处理。`close` 只移除工具登记、已验证或已晋级且无未提交改动的 worktree；分支和 attempt 记录保留在 `.auto-research/lifecycle/local/workspaces/`。
+
 ### Research writing gate
 
 研究场景 `writing_policy` 的默认值是 LaTeX、中文/英文双语、95% CI 省略和防御性

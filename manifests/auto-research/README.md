@@ -31,7 +31,7 @@
 7. 按 `writing/figure-types.yaml` 为架构图、流程图、对比图、消融图、曲线、热力图、定性图和概念图创建 figure node
 8. 写作后运行 `review`，只局部修订未通过节点，再运行 `aris/auto-review-loop`
 9. 需要投稿前自审时调用 `paper-review`，将问题绑定到论文中的表格、公式、实验设置或引用
-10. 投稿前完整评审默认并行启动 `paper-review`、`academic-paper-reviewer` 与 gptweb ICLR prompt 三路独立 reviewer；每路直接读取原始论文及附录，分别保存报告后再综合。见 [`references/multi-review.md`](references/multi-review.md) 和 [`references/iclr-review-prompt.md`](references/iclr-review-prompt.md)
+10. 投稿前完整评审默认并行启动 `paper-review`、`academic-paper-reviewer` 与 gptweb review 三路独立 reviewer；每路直接读取原始论文及附录。已知目标 venue 时，提供官方 reviewer-guidelines，保存 venue 要求快照并按其 rubric 特异化评审；无官方评分量表时不虚构 venue 分数。见 [`references/multi-review.md`](references/multi-review.md)
 11. 按 `CLAUDE.md` 的图表路由选择 `nature-figure`、`aris/figure-spec`、`aris/paper-figure` 或 `aris/paper-illustration`；Nature 级数据图、多面板结果图和 venue-aware QA 优先读取 `nature-figure`
 12. 论文正文使用官方 venue LaTeX 模板；锁定 `.cls`/`.sty`/字体/参考文献/table/figure styles，不修改模板样式文件
 13. 默认省略 95% CI；只有 venue、研究方案、作者或审稿意见明确要求时才启用，并在 Writing Plan 记录理由

@@ -1,0 +1,15 @@
+{
+  "venue": "VENUE_NAME",
+  "year": "YEAR_OR_CYCLE",
+  "track": "TRACK_OR_ARTICLE_TYPE",
+  "source_url": "https://official.example.org/reviewer-guidelines",
+  "source_validation": "official domain checked by operator",
+  "checked_at": "YYYY-MM-DDTHH:MM:SS+00:00",
+  "requirements": [
+    {
+      "criterion": "Official criterion copied or faithfully summarized",
+      "score_labels": [],
+      "source_section": "Section heading / form field"
+    }
+  ]
+}

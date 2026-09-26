@@ -148,6 +148,47 @@ def test_path_escape_and_wrong_model(project):
     with pytest.raises(rw.Invalid): checkpoint(project,artifact=['../elsewhere'])
     with pytest.raises(rw.Invalid): checkpoint(project,actual_model='different-model')
 
+def test_isolated_workspace_verify_promote_close(project):
+    (project/'seed.txt').write_text('baseline')
+    rw.git(project,'add','seed.txt'); rw.git(project,'commit','-m','fixture baseline')
+    rw.branch_init(project,'cycle-001','research')
+    started=rw.workspace_start(project,'cycle-001','startup','attempt-001')
+    wt=Path(started['worktree'])
+    assert wt.is_dir() and wt!=project
+    (wt/'seed.txt').write_text('candidate')
+    assert (project/'seed.txt').read_text()=='baseline'
+    verified=rw.workspace_verify(project,started['id'],["python -c \"from pathlib import Path; assert Path('seed.txt').read_text() == 'candidate'\""])
+    assert verified['status']=='verified'
+    rw.git(project,'switch',started['target_branch'])
+    promoted=rw.workspace_promote(project,started['id'])
+    assert promoted['status']=='promoted'
+    assert (project/'seed.txt').read_text()=='candidate'
+    closed=rw.workspace_close(project,started['id'])
+    assert closed['status']=='closed' and not wt.exists()
+    assert rw.workspace_status(project,started['id'])['state']=='closed'
+
+def test_failed_workspace_verification_retains_attempt(project):
+    (project/'seed.txt').write_text('baseline')
+    rw.git(project,'add','seed.txt'); rw.git(project,'commit','-m','fixture baseline')
+    rw.branch_init(project,'cycle-001','research')
+    started=rw.workspace_start(project,'cycle-001','startup','attempt-001')
+    wt=Path(started['worktree']); (wt/'seed.txt').write_text('candidate')
+    result=rw.workspace_verify(project,started['id'],['exit 7'])
+    assert result['status']=='verification_failed'
+    with pytest.raises(rw.Invalid): rw.workspace_promote(project,started['id'])
+    assert wt.is_dir() and rw.workspace_status(project,started['id'])['state']=='verification_failed'
+
+def test_workspace_detects_root_drift(project):
+    (project/'seed.txt').write_text('baseline')
+    rw.git(project,'add','seed.txt'); rw.git(project,'commit','-m','fixture baseline')
+    rw.branch_init(project,'cycle-001','research')
+    started=rw.workspace_start(project,'cycle-001','startup','attempt-001')
+    (Path(started['worktree'])/'seed.txt').write_text('candidate')
+    (project/'seed.txt').write_text('out-of-band change')
+    result=rw.workspace_verify(project,started['id'],['true'])
+    assert result['status']=='verification_failed'
+    assert result['verification']['baseline_drift']['changed_tracked']==['seed.txt']
+
 
 def test_end_to_end_all_stages_submission_revision_acceptance(project):
     cfg=rw.config(project)
