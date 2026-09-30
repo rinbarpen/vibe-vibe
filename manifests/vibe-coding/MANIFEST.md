@@ -28,7 +28,7 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 | `desktop-flutter` | Flutter desktop | flutter-reviewer + dart-flutter-patterns |
 | `wechat-miniprogram` | WeChat Mini Program and AI mode | `ai-mode-skills` + TypeScript reviewer |
 
-## Core Flow: Unified Engineering Lifecycle
+## Core Flow: Task-Sized Engineering Lifecycle
 
 ### Request Routing (Use the Lightest Suitable Workflow)
 - **Simple request** — For clear, local changes with limited scope, work directly in the codebase using normal vibe-coding iteration. Do not start a planning or workflow skill by default.
@@ -36,7 +36,6 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 - **Complex feature** — For cross-module work, API/contract changes, or multi-stage delivery, use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
 - `implement` includes subagent review across two independent axes. Do not launch a separate generic code-review workflow; retain relevant test, security, and documentation quality checks.
 - When a complex task needs persistent planning notes, use `planning-with-files` for English conversations and `planning-with-files-zh` for Chinese conversations. These skills are not a prerequisite for simple requests.
-- Do not use or route to the `superpowers` skill from this manifest.
 
 ### Phase 1: Research & Language Selection
 - Use `/lang-select <context>` only when language choice is open; consult `references/language-specs/` as needed.
@@ -55,22 +54,21 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 - Initialize cloud platform config if deploying to cloud.
 - **Exit criteria**: Project skeleton compiles, CI passes first check.
 
-### Phase 4: Implement (TDD)
-- RED: Write failing test → GREEN: Minimal implementation → IMPROVE: Refactor.
-- Run `/quality-gate` when the change warrants a full gate, not after every local edit.
+### Phase 4: Implement
+- Implement the selected task directly or from accepted tickets; add focused tests and verification proportional to behavior, risk, and project conventions. Use RED-GREEN-IMPROVE when it fits.
+- `implement` includes parallel subagent review across requirement correctness/behavior/tests and code quality/design/maintainability; do not start a separate general review.
+- Run `/quality-gate` when a commit or release warrants a full gate, not after every local edit.
 - Dispatch language-specific build-resolver if build fails.
-- **Exit criteria**: All tests pass, lint clean, coverage >= 80%.
+- **Exit criteria**: Relevant checks pass; when `implement` is used, its review findings are addressed.
 
 ### Phase 5: Quality Gate
-- Run `/quality-gate` — all 5 gates must pass.
-- Security scan via CodeQL and dependency review workflows.
-- **Exit criteria**: Zero lint warnings, tests pass, no secrets, reviewer approved.
+- Run `/quality-gate` at the appropriate commit/release boundary; apply checks proportional to the change and repository requirements.
+- Security scan via CodeQL and dependency review workflows where configured.
+- **Exit criteria**: Relevant checks pass, and applicable security or implement-review findings are resolved or documented.
 
-### Phase 6: Code Review
-- `implement` owns the two-axis parallel subagent review for implementation work; do not dispatch a separate generic reviewer workflow.
-- Run focused security review when the change warrants it.
-- Fix CRITICAL and HIGH issues; document MEDIUM.
-- **Exit criteria**: No CRITICAL or HIGH issues.
+### Review (inside implement)
+- `implement` owns two independent subagent axes: requirement correctness, behavior boundaries, and tests; plus code quality, design, and maintainability.
+- Do not dispatch a separate generic reviewer workflow. Run a focused security review when the change warrants it.
 
 ### Phase 7: Deploy
 - Run `/deploy-check` before any deployment.
@@ -98,7 +96,7 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 | **Security** | `security-reviewer` | Auth/payments/user-data changes |
 | **Architecture** | `code-architect`, `architect` | Multi-file changes, new systems |
 | **Doc/Sync** | `doc-updater` | "update docs", "sync documentation" |
-| **Agent Dev** | `superpowers`, `Agent-Skills-for-Context-Engineering`, `agent-skills` | "build an agent", "agent architecture", "context engineering", "multi-agent" |
+| **Agent Dev** | `Agent-Skills-for-Context-Engineering`, `agent-skills` | "build an agent", "agent architecture", "context engineering", "multi-agent" |
 | **Agent Eval** | `eval-harness`, `prompt-optimizer` | "evaluate agent", "run eval", "prompt quality" |
 | **Desktop** | `build-error-resolver` + framework reviewer | "desktop app", "package", "sign", "Electron", "Tauri" |
 
@@ -175,7 +173,6 @@ When the project spans multiple languages:
 | Agent | When | Responsibility |
 |-------|------|----------------|
 | `code-architect` | Architecture-changing PRs | Review design decisions, module boundaries |
-| `code-reviewer` | All PRs | Code quality, pattern consistency |
 | `security-reviewer` | Auth/payment/data handling | Security check |
 | `ci-watcher` | After PR submission | Monitor CI status until pass |
 
@@ -207,7 +204,7 @@ When the project spans multiple languages:
 ## Development Standards
 
 - **Package Management**: Prefer language-native tools (go mod, cargo, uv, pnpm, maven/gradle).
-- **Testing**: TDD mandatory. Test pyramid: 70% unit, 20% integration, 10% e2e.
+- **Testing**: Add and run tests appropriate to the change; preserve project conventions and meaningful coverage. Use TDD when it fits the behavior.
 - **Formatting**: Use language-standard formatter (gofmt, rustfmt, ruff, prettier).
 - **Commits**: Conventional commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`).
 - **PRs**: Must include change summary, test plan, and quality gate evidence.
@@ -230,7 +227,7 @@ Unified Development Manifest — full lifecycle engineering from idea to product
 |---------|-------------|
 | `/plan <domain>` | Create implementation plan for a domain or feature |
 | `/scaffold <language> <archetype>` | Bootstrap new project from scenario template |
-| `/implement <task>` | Implement a feature following TDD (RED-GREEN-IMPROVE) |
+| `/implement <task>` | Implement a bug fix or feature with proportional verification and embedded dual-axis subagent review |
 | `/quality-gate` | Run all 5 quality gates before commit |
 | `/deploy-check` | Pre-deployment verification checklist |
 | `/lang-select <context>` | Get language recommendation for a use case |
@@ -306,12 +303,12 @@ Unified Development Manifest — full lifecycle engineering from idea to product
 
 See `references/decision-trees/language-selection.md` for the full decision tree.
 
-## Quality Gates (Mandatory Before Every Commit)
+## Quality Gates (When Preparing a Commit or Release)
 
 1. **Lint Gate**: Zero warnings from language-appropriate linter
-2. **Test Gate**: 80%+ coverage, all tests pass
+2. **Test Gate**: Relevant tests pass; maintain the project coverage target
 3. **Security Gate**: No secrets, validated inputs, authorized access
-4. **Review Gate**: Language-appropriate code reviewer approval
+4. **Review Gate**: For work using `implement`, confirm its embedded dual-axis review; do not dispatch a separate generic reviewer
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## Enterprise Conventions
@@ -405,14 +402,13 @@ Secrets managed via environment variables or platform secret stores. Never hardc
 - **Complex feature** (cross-module, API/contract changes, or multi-stage delivery): `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
 - `implement` includes subagent review across two independent axes. Do not start a separate generic code-review workflow; keep applicable test, security, and documentation checks.
 - For persistent plans on complex tasks, use `planning-with-files` in English conversations or `planning-with-files-zh` in Chinese conversations. Do not require these for simple requests.
-- Do not use or route to `superpowers` in this manifest.
 
 ### Delivery Lifecycle
 1. **Research & Language Selection** — Use `/lang-select` when language choice is genuinely open.
 2. **Architecture / Planning** — Apply the request-size routing above; use `/plan` only when a project-specific architecture plan is needed.
 3. **Scaffold** — `/scaffold <lang> <archetype>` when bootstrapping a project.
 4. **Implement** — Use the selected workflow; `/implement <task>` for the implementation phase.
-5. **Quality Gate** — `/quality-gate` before every commit.
+5. **Quality Gate** — `/quality-gate` at relevant commit/release boundaries when the change warrants it.
 6. **Deploy Check** — `/deploy-check` before release.
 7. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets.
 8. **Release** — `/release` for enterprise release workflow.

@@ -12,9 +12,9 @@
 - **用途**: 设计复杂功能、制定重构计划、选择技术栈。
 - **触发**: "我们需要增加一个缓存层", "如何重构这个模块以支持多数据库？"
 
-### 3. Embedded implementation review
-- **用途**: `implement` 内含双轴 subagent review；适用的安全检查仍由 quality gate 执行。
-- **触发**: 随 `implement` 流程运行，不单独启动通用 code-review。
+### 3. Implement Review Subagents (双轴评审)
+- **用途**: `implement` 流程内并行检查需求正确性、行为边界与测试，以及代码质量、设计与可维护性。
+- **触发**: 由 `implement` 自动包含；无需手动单独发起通用 code-review。安全敏感改动仍可追加 `security-reviewer`。
 
 ### 4. `shell` (执行者)
 - **用途**: 执行复杂的终端操作、Git 工作流、环境配置。
@@ -35,5 +35,5 @@
 ## 调度建议
 
 - **并行处理**: 当有多个独立任务（如编写测试和更新文档）时，应并行启动多个 subagent。
-- **链式协作**: 复杂需求按对应的 grill/spec/ticket 流程澄清后实现；review 随 implement 完成。
+- **链式协作**: 复杂需求由架构师协助设计，implement 实现并隐含触发双轴 subagent review。
 - **反馈闭环**: 如果评审员发现问题，应自动返回开发者阶段进行修复。

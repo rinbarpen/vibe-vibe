@@ -10,6 +10,18 @@ triggers:
 
 # Domain Dispatcher
 
+## Workflow Selection (first)
+
+Choose one path by scope and uncertainty; domain routing below only adds relevant technical expertise and must not escalate a simple task by itself.
+
+| Request shape | Workflow |
+|---------------|----------|
+| Clear, bounded, low-risk change | Direct vibe coding → relevant verification; no planning skill or plan artifact |
+| Bug requiring diagnosis | `grilling` → `implement` |
+| Complex feature with unresolved product/design or cross-module decisions | `grill-with-docs` → `to-spec` → `to-tickets` → `implement` |
+
+For medium/large work, track progress with `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks. `implement` includes two-axis subagent review: requirements/behavior/tests and code quality/design/maintainability. Do not manually start a separate code-review step. Add security review only where the change is security-sensitive.
+
 ## Dispatch Logic
 
 Map task keywords to domain, then select relevant resources. Dispatch a subagent only for complex work with a bounded, independent task; simple/local tasks remain with the main agent. Follow the bounded-subagent protocol in `AGENTS.md`.

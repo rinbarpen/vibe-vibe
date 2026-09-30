@@ -1,34 +1,29 @@
 ---
 name: lifecycle-orchestrator
-description: Orchestrates the full software engineering lifecycle — research, design,
-  implement, test, deploy, maintain — dispatching domain-specific subagents and
-  skills at each phase. Integrates with code-programming manifest rules.
+description: Selects a proportionate software workflow by task size, then applies domain-specific expertise only where useful.
 triggers:
   - pattern: "(build|create|ship) a (system|service|feature)"
-    description: End-to-end lifecycle orchestration
-phases:
-  - research: Validate approach, select language, audit dependencies
-  - design: Create plan, define architecture, specify API contracts
-  - implement: TDD loop across RED-GREEN-IMPROVE
-  - test: Test pyramid (unit/integration/e2e), property-based testing
-  - deploy: CI/CD, containerization, monitoring, rollback
-  - maintain: Dependency updates, tech debt, documentation
-entry_criteria: Requirements exist (even if rough)
-exit_criteria: System is deployed, monitoring confirms health
+    description: Classify task size before choosing a workflow
+workflow_routing:
+  simple: Direct vibe coding; relevant verification; no planning artifact by default
+  bug_fix: grilling → implement
+  complex_feature: grill-with-docs → to-spec → to-tickets → implement
+  planning_files: Medium/large tasks only; choose planning-with-files-zh for Chinese or planning-with-files for English
+review: Implement includes separate correctness and code-quality subagent review; no manual code-review step
 ---
 
 # Lifecycle Orchestrator
 
-Dispatch agents and skills at each phase of the engineering lifecycle.
+Choose the task-sized route first; dispatch technical agents and skills only for relevant phases.
 
-## Phase Dispatch Table
+## Phase Dispatch Table (only relevant phases; skip non-applicable orchestration for simple changes)
 
 | Phase | Agent/Skill | Action |
 |-------|-------------|--------|
 | Research | `lang-select` command | Choose language and approach |
-| Design | `code-architect` agent when needed | Design architecture for complex features |
-| Implement | Selected workflow + `implement` | Right-sized implementation; embedded dual-axis subagent review |
-| Test | Language-specific tools | Run relevant tests and security checks |
+| Design | `code-architect` agent | Design architecture, create plan |
+| Implement | `implement` workflow | Focused implementation and proportional verification; TDD when appropriate |
+| Test/review | `implement` workflow | Two-axis correctness and code-quality subagent review; add security review when sensitive |
 | Deploy | `deployment-patterns` skill | CI/CD, containerization |
 | Maintain | `refactor-cleaner` agent | Tech debt, dead code removal |
 
@@ -37,8 +32,8 @@ Dispatch agents and skills at each phase of the engineering lifecycle.
 | Phase | Gate | Tool |
 |-------|------|------|
 | Research | Language selected, rationale documented | `references/language-specs/` |
-| Design | Complex-work plan/spec when needed | `planning-with-files` or `planning-with-files-zh` |
-| Implement | Tests pass, lint clean, coverage >= 80% | Language-specific tools |
-| Test | Relevant tests/security checks pass; embedded review addressed | `implement` workflow |
+| Design | Complex feature decisions captured | Spec/tickets; planning files for medium/large work |
+| Implement | Relevant tests and checks pass | Language-specific tools |
+| Test/review | Both review axes completed | `implement` workflow |
 | Deploy | CI green, rollback tested | `deploy-check` command |
 | Maintain | Docs current, debt tracked | CLAUDE.md audit |

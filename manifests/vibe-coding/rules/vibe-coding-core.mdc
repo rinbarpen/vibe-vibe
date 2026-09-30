@@ -1,5 +1,5 @@
 ---
-description: Vibe Coding Core Rules — intent-driven, right-sized workflow, verify-every-change, quality gates, git-native workflow
+description: Vibe Coding Core Rules — intent-driven, task-sized workflows, verification, quality gates, git-native workflow
 globs: ["**/*"]
 alwaysApply: true
 ---
@@ -13,22 +13,22 @@ alwaysApply: true
 - If you cannot state the intent in one sentence, you need more research, not more code.
 - Prioritize understanding the user's intent rather than executing literal instructions.
 
-## 2. Right-Sized Workflow
+## 2. Task-Sized Workflow
 
-- Clear, local requests use lightweight vibe coding; do not activate planning skills by default.
-- Bug fixes use Matt's `grilling` followed by `implement`.
-- Complex features (cross-module, API/contract changes, or multi-stage delivery) use `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
-- For persistent planning notes on complex work, choose `planning-with-files` for English or `planning-with-files-zh` for Chinese conversations.
-- Do not use or route to `superpowers` in this manifest.
+- Simple, bounded requests use direct vibe coding: inspect, make the smallest useful change, verify relevant behavior, and report. Do not create a plan artifact or invoke planning skills by default.
+- Bug fixes requiring diagnosis follow `grilling` → `implement`.
+- Complex features follow `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For medium/large work, use `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks to track progress; planning is not a prerequisite for every code change.
+- Get user input on unresolved product decisions when needed; do not require approval of a plan for clear, bounded work.
 
 ## 3. Verification-Driven
 
-- After every substantive change, verify with appropriate tooling:
+- After every substantive change, verify with tooling proportional to scope and risk:
   - **Lint**: language-appropriate linter with zero warnings.
   - **Test**: all existing tests still pass.
   - **Build**: project compiles without errors.
 - Provide evidence of verification (test output, lint results) — do not assert "it works".
-- Parallelize independent verification checks (lint, tests, build, security, docs) when the host runtime supports subagents; collect results and verify them in the coordinating agent.
+- Parallelize verification with subagents only when it materially improves turnaround.
 
 ## 4. Language-Appropriate Code
 
@@ -44,12 +44,12 @@ Write idiomatic code for each language, not translated patterns from another lan
 
 When uncertain, consult `references/language-specs/` for the target language.
 
-## 5. Quality Gates (Mandatory Before Every Commit)
+## 5. Quality Gates (When Preparing a Commit or Release)
 
 1. **Lint Gate**: Zero warnings from language-appropriate linter
-2. **Test Gate**: All tests pass, coverage >= 80%
+2. **Test Gate**: Relevant tests pass; maintain the project coverage target
 3. **Security Gate**: No secrets in diff, no injection vulnerabilities
-4. **Review Gate**: `implement`'s embedded dual-axis subagent review; no separate generic review dispatch
+4. **Review Gate**: Review is part of `implement`, using independent correctness and code-quality subagents; do not launch a separate code-review step
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## 6. Git-Native Workflow
@@ -64,15 +64,13 @@ When uncertain, consult `references/language-specs/` for the target language.
 
 - Git commit 必须清晰描述 "Why" 而非仅仅是 "What"。
 - **自动化同步 (Post-Commit)**: 每次 commit 后，必须确保 README.md 和 CLAUDE.md 已同步更新。
-- **自动化测试**: 对非平凡功能变更，按需使用 `tdd-guide` 或语言测试技能；简单局部改动不因该规则默认启动 subagent。
+- **自动化测试**: 按变更风险和项目约定选择针对性测试；不要为简单改动强制启动专用测试技能。
 - **GitHub 集成**: 优先使用 `gh` CLI 进行 PR 创建、CI 状态监控和自动化流程触发。
 - 创建 PR 时，必须包含详细的测试计划。
 
-## 8. Bounded Subagent Use
+## 8. Proportionate Subagent Use
 
-- Simple/local requests stay with the main agent; do not start subagents by default.
-- For complex work, delegate only independent tasks with non-overlapping file ownership; run dependent steps sequentially.
-- Use the host runtime's available subagent/task-delegation mechanism; if unavailable, continue sequentially.
-- Provide each subagent a bounded goal, relevant context, ownership/read-only boundary, expected output, and verification request. The coordinating agent gathers all results, resolves conflicts, integrates changes, and runs combined verification.
-- `implement` owns its embedded two-axis parallel review; do not launch a separate generic reviewer workflow.
-- Retain relevant security, test, and documentation checks in the quality gate.
+- Use subagents when parallel work or independent expertise materially improves a task; do not dispatch them by default for simple changes.
+- Independent modules, parallel tests, and multi-language builds may run concurrently when coordination cost is justified.
+- `implement` delegates two independent review axes: requirement correctness/behavior/tests and code quality/design/maintainability. No separate manual code-review invocation is needed.
+- Add a security reviewer for security-sensitive changes.

@@ -1,30 +1,23 @@
 # /implement
 
-Implement a feature following TDD (RED-GREEN-IMPROVE).
+Implement a bug fix or feature with verification proportional to its scope. This workflow includes two-axis subagent review; do not start a separate code-review workflow.
 
 ## Execution
 
-1. Follow the workflow selected by request scope; a plan is not required for simple/local requests.
-2. Write failing test first (RED) — define the expected behavior
-3. Run test — confirm it fails
-4. Write minimal code to pass (GREEN) — do not optimize yet
-5. Run full test suite — confirm all pass
-6. Run language-appropriate linter — confirm zero warnings
-7. Run type checker if applicable (tsc, mypy)
-8. Refactor (IMPROVE) — improve naming, extract helpers, remove duplication
-9. Verify coverage >= 80%
-10. Complete the embedded subagent review across two independent axes
+1. Read accepted tickets/spec or the bug investigation notes when provided; a plan artifact is not required for a small fix.
+2. Inspect the affected code and tests; reproduce the bug or establish the requested behavior.
+3. Make the smallest coherent change and add/update focused tests where appropriate. Use RED-GREEN-IMPROVE when it fits the behavior and project conventions.
+4. Run relevant tests, then the broader suite as scope warrants; run applicable lint/type checks.
+5. Refactor only where it improves clarity without broadening scope.
+6. Delegate two independent reviews: (a) requirement correctness, behavior boundaries, and test coverage; (b) code quality, design, and maintainability.
+7. Resolve material findings and report exact verification performed.
 
 ## Per-Implementation Checklist
 
-- [ ] RED: failing test written first
-- [ ] GREEN: minimal implementation passes test
-- [ ] All existing tests still pass
-- [ ] Linter: zero warnings
-- [ ] Type checker passes (for typed languages)
-- [ ] IMPROVE: code refactored
-- [ ] Coverage >= 80%
-- [ ] No console.log / debug statements
-- [ ] No hardcoded secrets
-- [ ] Embedded dual-axis subagent review completed
-- [ ] Commit with conventional message
+- [ ] Bug reproduced or requested behavior grounded in the existing code
+- [ ] Focused tests added/updated where appropriate; existing relevant tests pass
+- [ ] Relevant lint/type/build checks run for the change
+- [ ] Correctness/behavior/test review subagent completed
+- [ ] Code quality/design/maintainability review subagent completed
+- [ ] Material findings resolved; no debug artifacts or hardcoded secrets
+- [ ] Report verification and remaining caveats

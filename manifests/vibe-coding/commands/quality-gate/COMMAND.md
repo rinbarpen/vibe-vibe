@@ -1,6 +1,6 @@
 # /quality-gate
 
-Execute all 5 quality gates before committing.
+Run applicable quality checks at an appropriate commit or release boundary; use the full gate when scope or repository requirements warrant it.
 
 ## Gates
 
@@ -13,16 +13,17 @@ Execute all 5 quality gates before committing.
 - **Exit**: Zero warnings
 
 ### 2. Test Gate
-- Run full test suite with coverage
-- **Exit**: All tests pass, coverage >= 80%
+- Run relevant tests; run the full suite when the change warrants it
+- **Exit**: Relevant tests pass and project coverage targets are maintained
 
 ### 3. Security Gate
 - Check changed files for hardcoded secrets, injection vulnerabilities, and auth bypasses; invoke focused security review when warranted by the change.
 - **Exit**: No CRITICAL or HIGH security issues
 
-### 4. Review Gate
-- Implementation review is included in `implement` as two-axis subagent review; do not launch a separate generic code-review workflow.
-- **Exit**: Embedded review findings addressed; no CRITICAL or HIGH issues remain.
+### 4. Review Confirmation
+- If `implement` was used, confirm both embedded axes completed: correctness (requirements, behavior, tests) and code quality (design, maintainability).
+- Do not dispatch a separate generic code-review workflow.
+- **Exit**: Material findings addressed or documented.
 
 ### 5. Doc Gate
 - Verify CLAUDE.md reflects current architecture

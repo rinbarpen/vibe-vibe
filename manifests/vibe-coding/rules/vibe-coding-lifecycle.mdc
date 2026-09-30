@@ -1,11 +1,18 @@
 ---
-description: Full engineering lifecycle phases with entry/exit gates — each phase
-  has mandatory criteria that must be met before proceeding
+description: Task-sized engineering workflow gates; apply planning, architecture, and delivery checks in proportion to change scope
 globs: ["**/*"]
 alwaysApply: true
 ---
 
-# Engineering Lifecycle Gates
+# Task-Sized Engineering Workflow
+
+## Workflow Selection
+
+- Simple bounded change: direct vibe coding and relevant verification; skip plan artifacts and extra workflow skills.
+- Bug requiring diagnosis: `grilling` → `implement`.
+- Complex feature: `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For medium/large work, track progress with `planning-with-files-zh` for Chinese or `planning-with-files` for English.
+- The `implement` workflow performs correctness and code-quality reviews with separate subagents; do not manually trigger a separate code-review step.
 
 ## Phase 1: Research & Language Selection
 
@@ -20,31 +27,37 @@ Exit: Language selected, dependencies audited, rationale documented
 
 ## Phase 2: Architecture Design
 
-Entry: Language selected, requirements clear
-Exit: For complex work, planning notes and architecture are sufficiently validated; simple requests bypass this phase.
+Entry: For complex work, language selected and requirements clear
+Exit: For complex features, spec/tickets capture required design decisions
 
 **Gate criteria:**
 - [ ] Architecture pattern chosen (microservices, monolith, event-driven, etc.)
 - [ ] Data model designed (entities, relationships, storage)
 - [ ] API contracts defined (OpenAPI / Protobuf)
-- [ ] For complex work, plan/spec captures approach, affected areas, test strategy, and material risks
+- [ ] For complex features, agreed spec/tickets capture approach, scope, and verification
+- [ ] Medium/large work is tracked with the matching planning-with-files skill
 
 ## Phase 3: Implementation
 
-Entry: Appropriate task workflow selected; a plan is not required for simple/local work.
-Exit: All tests pass, lint clean, coverage >= 80%
+Entry: Clear task intent; accepted spec/tickets when complex
+Exit: Relevant checks pass; implement review is complete when that workflow is used
 
 **Gate criteria:**
-- [ ] TDD followed: RED (failing test) → GREEN (minimal impl) → IMPROVE (refactor)
-- [ ] Lint gate: zero warnings
-- [ ] Test gate: all tests pass
+- [ ] Focused tests and verification match behavior, risk, and project conventions; use TDD when it fits
+- [ ] Run relevant lint checks with no new warnings
+- [ ] Relevant test suite passes
 - [ ] Security gate: no secrets, inputs validated
-- [ ] Coverage >= 80%
-- [ ] Commit with conventional message
+- [ ] Maintain the project coverage target for changed code
+
+## Review (inside implement, when that workflow is used)
+
+- When `implement` is used, confirm correctness subagent reviewed requirements, behavior boundaries, and tests.
+- When `implement` is used, confirm code-quality subagent reviewed design and maintainability.
+- Resolve material findings; add security review for security-sensitive code.
 
 ## Phase 4: Deployment
 
-Entry: Implementation and embedded review completed
+Entry: Applicable quality checks passed; implement review is complete when that workflow was used
 Exit: Deployment verified, monitoring confirms health
 
 **Gate criteria:**
@@ -68,6 +81,6 @@ Exit: (ongoing — no terminal exit, but periodic checkpoints)
 
 ## Blocking Rules
 
-- Follow the right-sized workflow; do not impose full lifecycle phases on simple requests.
-- Deploy only after applicable quality checks and embedded implementation review are complete.
-- You CANNOT bypass quality gates with "I'll fix it later"
+- Apply only phases relevant to the task; simple changes do not require architecture or planning phases.
+- Complex feature work proceeds from agreed spec/tickets into implementation.
+- Deployment still requires applicable quality, security, and rollback checks.
