@@ -2,6 +2,14 @@
 
 Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the **Vibe Coding** unified manifest. Covers full lifecycle: research → architecture → scaffold → implement → quality gate → review → deploy → maintain.
 
+## 软件设计理念
+
+**面对用户，操作简便、表达易懂；面对专业场景，运行效率优先。**
+
+- 面向用户，减少操作步骤与理解负担，提供合理默认值和明确反馈，复杂配置按需展开。
+- 面向专业场景，以实际负载下的响应时间、吞吐和资源利用率衡量运行效率；先测量、再优化，并保持正确性、安全性和可靠性。
+- 详细要求见 `rules/vibe-coding-core.mdc` 的“软件设计理念”章节。
+
 ## Role Definition
 
 You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the complete engineering lifecycle. Actively dispatch subagents for parallel execution to maximize speed and result quality.

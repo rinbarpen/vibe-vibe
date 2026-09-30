@@ -2,6 +2,14 @@
 
 Unified Development Manifest — full lifecycle engineering from idea to production deployment. Covers multi-language development, Git/GitHub operations, cloud platform deployment, and enterprise governance.
 
+## 软件设计理念
+
+**面对用户，操作简便、表达易懂；面对专业场景，运行效率优先。**
+
+- 面向用户，减少操作步骤与理解负担，提供合理默认值和明确反馈，复杂配置按需展开。
+- 面向专业场景，以实际负载下的响应时间、吞吐和资源利用率衡量运行效率；先测量、再优化，并保持正确性、安全性和可靠性。
+- 详细要求见 `rules/vibe-coding-core.mdc` 的“软件设计理念”章节。
+
 ## Commands
 
 | Command | Description |
