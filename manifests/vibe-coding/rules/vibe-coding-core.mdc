@@ -74,3 +74,11 @@ When uncertain, consult `references/language-specs/` for the target language.
 - Independent modules, parallel tests, and multi-language builds may run concurrently when coordination cost is justified.
 - `implement` delegates two independent review axes: requirement correctness/behavior/tests and code quality/design/maintainability. No separate manual code-review invocation is needed.
 - Add a security reviewer for security-sensitive changes.
+## 9. 软件设计理念
+
+**面对用户，操作简便、表达易懂；面对专业场景，运行效率优先。**
+
+- **面向用户**：减少完成任务所需的步骤，使用易懂的术语、合理的默认值和明确的操作反馈；将复杂配置按需展开，避免暴露内部实现细节。
+- **面向专业场景**：高效指软件运行性能，而非专业用户的快捷操作。根据实际负载确定关键性能指标，优先考虑响应时间、处理吞吐、内存和计算资源消耗；性能目标由具体项目根据需求与基线确定，不设统一阈值。
+- **设计取舍**：简单易懂的交互与高效的内部实现并行追求；确有冲突时，以目标场景和可测量的收益说明选择，不为了表面简洁牺牲关键性能。
+- **优化依据**：先测量、再优化；通过基准测试和性能分析验证收益，避免无依据的复杂化。效率优先不降低正确性、安全性和可靠性要求。
