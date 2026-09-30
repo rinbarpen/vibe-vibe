@@ -1,6 +1,6 @@
 # /quality-gate
 
-Execute all 5 quality gates before committing.
+Run applicable quality checks at a commit or release boundary. A simple change does not need this full workflow unless requested or required by the project.
 
 ## Gates
 
@@ -14,21 +14,17 @@ Execute all 5 quality gates before committing.
 
 ### 2. Test Gate
 - Run full test suite with coverage
-- **Exit**: All tests pass, coverage >= 80%
+- **Exit**: Relevant tests pass and project coverage targets are maintained
 
 ### 3. Security Gate
 - Dispatch `security-reviewer` agent for changed files
 - Check for: hardcoded secrets, injection vulnerabilities, auth bypasses
 - **Exit**: No CRITICAL or HIGH security issues
 
-### 4. Review Gate
-- Dispatch language-appropriate reviewer agent:
-  - Go: `go-reviewer`
-  - Rust: `rust-reviewer`
-  - Python: `python-reviewer`
-  - TypeScript: `typescript-reviewer`
-  - Java: `java-reviewer`
-- **Exit**: Reviewer approved, no CRITICAL or HIGH issues
+### 4. Review Confirmation
+- For changes implemented through `implement`, confirm both included subagent reviews are complete: correctness (requirements, behavior, tests) and code quality (design, maintainability).
+- Do not dispatch a separate general code reviewer. Use the conditional security review in Gate 3 for sensitive changes.
+- **Exit**: Any material findings are resolved or documented
 
 ### 5. Doc Gate
 - Verify CLAUDE.md reflects current architecture

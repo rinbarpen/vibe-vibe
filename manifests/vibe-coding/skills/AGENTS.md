@@ -8,14 +8,13 @@ Brief description of the project and its goals.
 
 ## Core Flow (Vibe Coding)
 
-Follow these phases for development:
-
-1.  **Plan**: Create a detailed plan in `.cursor/plans/` before major changes.
-2.  **Explore**: Use `SemanticSearch` or `explore` subagent to understand existing logic.
-3.  **Implement**: Small, incremental changes with immediate `ReadLints` verification.
-4.  **Verify**: Run tests and provide evidence of success.
-5.  **Review**: Call `code-reviewer` subagent for quality check.
-6.  **Ship**: Create PR with a detailed test plan and update `CLAUDE.md`.
+Choose a workflow by task size:
+- Simple bounded change: inspect, vibe code directly, and run relevant checks; no plan artifact or extra process skill by default.
+- Bug requiring diagnosis: `grilling` → `implement`.
+- Complex feature: `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For medium/large work, track progress with `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks.
+- `implement` includes independent subagent reviews for correctness (requirements, behavior, tests) and code quality (design, maintainability); do not manually invoke a separate code-review step.
+- Explore, verify, and ship in proportion to the change; preserve applicable project quality/security checks.
 
 ## Subagent Dispatching
 
@@ -23,7 +22,6 @@ Actively suggest and launch subagents based on task complexity:
 
 - **`explore`**: For codebase analysis and navigation.
 - **`code-architect`**: For high-level design and refactoring.
-- **`code-reviewer`**: For pre-commit quality checks.
 - **`shell`**: For complex environment or Git operations.
 
 ## Development Standards

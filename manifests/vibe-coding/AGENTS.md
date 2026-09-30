@@ -1,10 +1,10 @@
 # Agent Instructions for Unified Development
 
-Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the **Vibe Coding** unified manifest. Covers full lifecycle: research → architecture → scaffold → implement → quality gate → review → deploy → maintain.
+Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the **Vibe Coding** unified manifest. Select the lightest workflow that fits: direct vibe coding for simple requests, focused debugging for bugs, and staged planning for complex features.
 
 ## Role Definition
 
-You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the complete engineering lifecycle. Actively dispatch subagents for parallel execution to maximize speed and result quality.
+You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Choose a task-sized workflow first; use subagents only when parallel execution or independent expertise materially improves the result.
 
 ## All 14 Scenarios
 
@@ -25,50 +25,56 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 | `desktop-tauri` | Tauri desktop | rust-reviewer + frontend-patterns |
 | `desktop-flutter` | Flutter desktop | flutter-reviewer + dart-flutter-patterns |
 
-## Core Flow: Unified Engineering Lifecycle
+## Core Flow: Task-Sized Engineering Lifecycle
 
-### Phase 1: Research & Language Selection
-- Use `/lang-select <context>` for unbiased language recommendation.
+Apply only the phases relevant to the selected workflow; a simple change does not need every lifecycle phase.
+
+## Task-Size Workflow Routing
+
+Classify the request before invoking workflow skills; do not dispatch a planning or process skill just because a task is a coding task.
+
+| Task | Workflow |
+|------|----------|
+| Simple, bounded change with clear intent and low coordination risk | Vibe code directly: inspect, make the smallest change, run relevant verification, report results. No plan artifacts or extra workflow skills. |
+| Bug fix requiring diagnosis | `grilling` → `implement`: investigate root cause and expected behavior, then implement and verify the fix. |
+| Complex feature with meaningful product/design or cross-module decisions | `grill-with-docs` → `to-spec` → `to-tickets` → `implement`; use `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks to track the medium/large work. |
+
+Keep planning proportional. Do not promote a simple task to the complex path unless its scope or unresolved decisions warrant it. The implement workflow includes code review: it uses subagents for two independent axes—(1) requirement correctness, behavior boundaries, and tests; (2) code quality, design, and maintainability. Do not manually launch a separate code-review step. Keep specialized security review for security-sensitive changes.
+
+### Phase 1: Research & Language Selection (when a choice is needed)
+- Use `/lang-select <context>` when choosing a language or stack.
 - Consult `references/language-specs/` for detailed capability breakdowns.
 - Run `vibe-lang-audit.sh` for multi-language project consistency.
-- **Exit criteria**: Language selected with documented rationale.
+- **Exit criteria**: Relevant technology choices are grounded; skip this phase for changes that do not require them.
 
-### Phase 2: Architecture Design
-- Dispatch `code-architect` agent for high-level system design.
-- Create plan document in `.cursor/plans/` via `/plan`.
-- Validate architecture against `references/decision-trees/architecture-patterns.md`.
-- **Exit criteria**: Plan written, architecture validated, approved by user.
+### Phase 2: Architecture Design (complex features only)
+- Follow the complex-feature workflow above; use `/plan` or `code-architect` only when architecture decisions are needed.
+- Validate applicable architecture choices against `references/decision-trees/architecture-patterns.md`.
+- **Exit criteria**: The feature spec/tickets capture agreed decisions and verification criteria.
 
-### Phase 3: Scaffold
+### Phase 3: Scaffold (new projects only)
 - Use `/scaffold <language> <archetype>` to bootstrap from scenario templates.
-- Set up `.github/` governance if enterprise project.
-- Initialize cloud platform config if deploying to cloud.
-- **Exit criteria**: Project skeleton compiles, CI passes first check.
+- Set up `.github/` governance for enterprise projects and cloud configuration when deploying.
+- **Exit criteria**: New project skeleton compiles and its initial CI check passes.
 
-### Phase 4: Implement (TDD)
-- RED: Write failing test → GREEN: Minimal implementation → IMPROVE: Refactor.
-- Run `/quality-gate` after each feature.
-- Dispatch language-specific build-resolver if build fails.
-- **Exit criteria**: All tests pass, lint clean, coverage >= 80%.
+### Phase 4: Implement
+- Implement the selected task directly or from its accepted tickets; use focused tests appropriate to the behavior and project.
+- When the `implement` workflow is used, it performs its two-axis subagent code review; do not start a separate code-review step.
+- Run `/quality-gate` at the appropriate commit/release boundary, not after every small edit. Dispatch a language-specific build resolver if a build fails.
+- **Exit criteria**: Relevant checks pass; when `implement` is used, its review is complete.
 
 ### Phase 5: Quality Gate
-- Run `/quality-gate` — all 5 gates must pass.
-- Security scan via CodeQL and dependency review workflows.
-- **Exit criteria**: Zero lint warnings, tests pass, no secrets, reviewer approved.
+- Run `/quality-gate` at the appropriate commit/release boundary.
+- Security checks remain required for security-sensitive changes; use CodeQL and dependency review in CI where configured.
+- **Exit criteria**: Relevant lint/build/test checks pass; security findings are resolved or documented.
 
-### Phase 6: Code Review
-- Dispatch language-appropriate reviewer agent.
-- For auth/payments/user-data: also dispatch `security-reviewer`.
-- Fix CRITICAL and HIGH issues; document MEDIUM.
-- **Exit criteria**: No CRITICAL or HIGH issues.
-
-### Phase 7: Deploy
+### Phase 6: Deploy
 - Run `/deploy-check` before any deployment.
 - Use `/cloud-deploy <target> <platform>` for cloud deployments.
 - Verify: CI green, migration reversible, rollback plan documented.
 - **Exit criteria**: Deployment verified, monitoring confirms health.
 
-### Phase 8: Maintain
+### Phase 7: Maintain
 - Keep CLAUDE.md and README.md updated.
 - Process Dependabot PRs, monitor stale issues.
 - Schedule periodic `/quality-gate` on the full codebase.
@@ -88,13 +94,13 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 | **Security** | `security-reviewer` | Auth/payments/user-data changes |
 | **Architecture** | `code-architect`, `architect` | Multi-file changes, new systems |
 | **Doc/Sync** | `doc-updater` | "update docs", "sync documentation" |
-| **Agent Dev** | `superpowers`, `Agent-Skills-for-Context-Engineering`, `agent-skills` | "build an agent", "agent architecture", "context engineering", "multi-agent" |
+| **Agent Dev** | `Agent-Skills-for-Context-Engineering`, `agent-skills` | "build an agent", "agent architecture", "context engineering", "multi-agent" |
 | **Agent Eval** | `eval-harness`, `prompt-optimizer` | "evaluate agent", "run eval", "prompt quality" |
 | **Desktop** | `build-error-resolver` + framework reviewer | "desktop app", "package", "sign", "Electron", "Tauri" |
 
 ## Language-Specific Agents
 
-| Language | Reviewer | Build Resolver | Patterns Skill | Testing Skill |
+| Language | Review specialization | Build Resolver | Patterns Skill | Testing Skill |
 |----------|----------|----------------|----------------|---------------|
 | Go | `go-reviewer` | `go-build-resolver` | `golang-patterns` | `golang-testing` |
 | Rust | `rust-reviewer` | `rust-build-resolver` | `rust-patterns` | `rust-testing` |
@@ -108,12 +114,12 @@ You are a **senior full-stack engineer** with deep expertise across Go, Rust, Py
 
 ## Parallel Execution Patterns
 
-### Pattern A: Plan + Research (3 agents parallel)
-Launch concurrently:
+### Pattern A: Plan + Research (complex features only; 3 agents parallel)
+After `grill-with-docs` and task decomposition, launch concurrently:
 1. `code-architect` → architecture design
 2. `explore` → codebase analysis
 3. Context7 / docs-lookup → library docs
-→ Merge findings into plan document.
+→ Merge findings into the spec/tickets and planning files.
 
 ### Pattern B: Implement + Test (multi-module parallel)
 When implementing independent modules:
@@ -127,11 +133,10 @@ When implementing independent modules:
 2. Cloud platform deploy → execute deployment
 → CI-watcher reports status while deploy runs.
 
-### Pattern D: Review + Security (2 agents parallel)
-After every significant code change:
-1. Language-appropriate `reviewer` → code quality review
-2. `security-reviewer` → vulnerability scan
-→ Fix issues from both before proceeding.
+### Pattern D: Implement Review + Security (2 axes, security conditional)
+- `implement` automatically delegates independent review subagents: requirement correctness/behavior/tests and code quality/design/maintainability. Do not launch a separate code-review step.
+- For security-sensitive changes, additionally dispatch `security-reviewer` for vulnerability analysis.
+→ Resolve critical/high findings before proceeding.
 
 ### Pattern E: Quality Gate (5 checks parallel)
 Run all 5 quality gates concurrently:
@@ -166,7 +171,6 @@ When the project spans multiple languages:
 | Agent | When | Responsibility |
 |-------|------|----------------|
 | `code-architect` | Architecture-changing PRs | Review design decisions, module boundaries |
-| `code-reviewer` | All PRs | Code quality, pattern consistency |
 | `security-reviewer` | Auth/payment/data handling | Security check |
 | `ci-watcher` | After PR submission | Monitor CI status until pass |
 
@@ -198,7 +202,7 @@ When the project spans multiple languages:
 ## Development Standards
 
 - **Package Management**: Prefer language-native tools (go mod, cargo, uv, pnpm, maven/gradle).
-- **Testing**: TDD mandatory. Test pyramid: 70% unit, 20% integration, 10% e2e.
+- **Testing**: Add and run tests appropriate to the change; preserve the project's test conventions and meaningful coverage.
 - **Formatting**: Use language-standard formatter (gofmt, rustfmt, ruff, prettier).
 - **Commits**: Conventional commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`).
 - **PRs**: Must include change summary, test plan, and quality gate evidence.

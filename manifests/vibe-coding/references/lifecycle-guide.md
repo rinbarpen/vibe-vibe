@@ -4,9 +4,9 @@ End-to-end guide for taking a software project from idea to deployed system, cov
 
 ---
 
-## Phase 1: Research
+## Phase 1: Research (when scope or uncertainty warrants it)
 
-**Goal**: Validate the approach before writing code.
+**Goal**: Validate the approach before writing code. Simple bounded changes can go directly to a focused implementation and relevant verification.
 
 ### Steps
 1. **Problem definition**: State the problem in one sentence. Define success criteria.
@@ -23,9 +23,9 @@ End-to-end guide for taking a software project from idea to deployed system, cov
 
 ---
 
-## Phase 2: Design
+## Phase 2: Design (complex features and coordinated work)
 
-**Goal**: Create an actionable plan before writing code.
+**Goal**: Create an actionable plan when architecture, product decisions, or coordination warrant it.
 
 ### Steps
 1. **Architecture selection**: Choose patterns from `references/decision-trees/architecture-patterns.md`.
@@ -47,7 +47,7 @@ End-to-end guide for taking a software project from idea to deployed system, cov
 
 **Goal**: Ship working code with tests.
 
-### TDD Loop (mandatory for every feature)
+### TDD Loop (when useful for the behavior and project)
 
 ```
 RED   → Write a failing test that defines the desired behavior
@@ -65,10 +65,11 @@ IMPROVE → Refactor while keeping tests green, improve naming, extract helpers
 | TypeScript | `vitest` or `jest` | `eslint` | `prettier` | `vitest --coverage` |
 | Java | `mvn test` or `gradle test` | `checkstyle` | `spotless` | JaCoCo plugin |
 
-### After Each Change
-- [ ] Tests pass
-- [ ] Lint passes (zero warnings)
-- [ ] Build succeeds
+### After a Substantive Change
+Run the checks relevant to the changed behavior and project conventions:
+- [ ] Relevant tests pass
+- [ ] Applicable lint passes without new warnings
+- [ ] Build succeeds when relevant
 - [ ] No console.log or debug statements
 - [ ] No hardcoded secrets
 
@@ -102,7 +103,7 @@ IMPROVE → Refactor while keeping tests green, improve naming, extract helpers
 
 ### Quality Gate
 - [ ] All tests pass
-- [ ] Coverage >= 80%
+- [ ] Coverage meets the project target when the change is large enough to affect meaningful coverage
 - [ ] Performance-sensitive code has benchmarks
 - [ ] Fuzz testing for parsing/decoding code
 - [ ] Edge cases documented (empty state, error state, loading state)

@@ -90,9 +90,9 @@ echo "[3/5] Security Gate"
 check "Secrets scan" '! grep -rn "AKIA[0-9A-Z]\{16\}\|ghp_\|gho_\|ghu_\|ghs_\|github_pat_" --include="*.go" --include="*.rs" --include="*.py" --include="*.ts" --include="*.tsx" --include="*.java" . 2>/dev/null | grep -v node_modules | grep -v ".env" | grep -v ".git/" || echo "  (scan complete, no secrets found)"'
 
 # ── Gate 4: Review ────────────────────────────────────────
-echo "[4/5] Review Gate"
-echo "  (Run manually: dispatch language-appropriate code-reviewer agent)"
-echo "  Go: go-reviewer | Rust: rust-reviewer | Python: python-reviewer | TS: typescript-reviewer | Java: java-reviewer"
+echo "[4/5] Review Confirmation"
+echo "  Confirm implement workflow recorded both correctness and code-quality subagent reviews (when applicable)."
+echo "  No separate general code-review dispatch is needed."
 
 # ── Gate 5: Docs ──────────────────────────────────────────
 echo "[5/5] Documentation Gate"

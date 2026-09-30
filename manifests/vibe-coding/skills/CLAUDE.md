@@ -50,5 +50,7 @@ Required:
 
 ## Workflow
 
-- Always create a plan in `.cursor/plans/` before major changes.
-- Use `vibe-check` to verify changes before submission.
+- Use direct vibe coding for simple bounded changes; avoid unnecessary plan artifacts.
+- For medium/large work, choose `planning-with-files-zh` for Chinese or `planning-with-files` for English.
+- Use the task-sized workflow routing in the manifest; `implement` includes correctness and code-quality subagent review.
+- Use `vibe-check` to verify changes when applicable.

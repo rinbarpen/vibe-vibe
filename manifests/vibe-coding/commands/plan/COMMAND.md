@@ -1,8 +1,11 @@
 # /plan
 
-Create a detailed implementation plan for a domain or feature.
+Create an implementation plan for work with meaningful architecture, coordination, or cross-module decisions. For simple changes use direct vibe coding instead.
 
 ## Execution
+
+Use this command for complex feature planning or medium/large coordinated work, not as a required entry step for every coding task. Complex feature work follows `grill-with-docs` → `to-spec` → `to-tickets` before implementation. Use the matching `planning-with-files-zh` (Chinese) or `planning-with-files` (English) skill for medium/large progress tracking.
+
 
 1. Determine the domain (ui, frontend, backend, optimization, testing, deployment, refactoring)
 2. Determine the target language(s) (see `references/decision-trees/language-selection.md`)
@@ -36,4 +39,4 @@ Create a detailed implementation plan for a domain or feature.
 ## Exit Criteria
 
 - [ ] Plan includes: problem statement, approach, file manifest, test strategy, risks
-- [ ] Plan approved by user
+- [ ] Open product/architecture decisions confirmed before implementation

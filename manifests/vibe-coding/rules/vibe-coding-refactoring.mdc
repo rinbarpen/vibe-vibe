@@ -65,7 +65,7 @@ Each phase is a separate deployment. Never combine expand and contract in one re
 - [ ] Characterization tests written and passing before refactoring begins
 - [ ] No behavioral changes during refactoring (diff is purely structural)
 - [ ] All existing tests pass after each refactoring step
-- [ ] Coverage >= 80% (or at least not lower than before)
+- [ ] Maintain the project coverage target (or at least do not lower existing coverage)
 - [ ] Commit message distinguishes refactoring from feature work
 - [ ] Dead code removed, not commented
 

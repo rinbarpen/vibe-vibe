@@ -1,14 +1,14 @@
 # CLAUDE.md
 
-Unified Development Manifest — full lifecycle engineering from idea to production deployment. Covers multi-language development, Git/GitHub operations, cloud platform deployment, and enterprise governance.
+Unified Development Manifest — multi-language engineering with task-sized workflows, verification, Git/GitHub operations, cloud deployment, and enterprise governance.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/plan <domain>` | Create implementation plan for a domain or feature |
+| `/plan <domain>` | Create a plan when a task has meaningful architecture or coordination needs |
 | `/scaffold <language> <archetype>` | Bootstrap new project from scenario template |
-| `/implement <task>` | Implement a feature following TDD (RED-GREEN-IMPROVE) |
+| `/implement <task>` | Implement a bug fix or feature; includes two-axis subagent review |
 | `/quality-gate` | Run all 5 quality gates before commit |
 | `/deploy-check` | Pre-deployment verification checklist |
 | `/lang-select <context>` | Get language recommendation for a use case |
@@ -40,7 +40,7 @@ Unified Development Manifest — full lifecycle engineering from idea to product
     ├── ISSUE_TEMPLATE/
     └── PULL_REQUEST_TEMPLATE/
   .cursor/
-    plans/          # Implementation plans (Plan-First)
+    plans/          # Planning files for medium/large work
     rules/          # Active manifest rules
     commands/       # Slash command definitions
     references/     # Language specs, decision trees, cloud guides
@@ -83,12 +83,12 @@ Unified Development Manifest — full lifecycle engineering from idea to product
 
 See `references/decision-trees/language-selection.md` for the full decision tree.
 
-## Quality Gates (Mandatory Before Every Commit)
+## Quality Gates (When Preparing a Commit or Release)
 
 1. **Lint Gate**: Zero warnings from language-appropriate linter
-2. **Test Gate**: 80%+ coverage, all tests pass
+2. **Test Gate**: Relevant tests pass; maintain the project coverage target
 3. **Security Gate**: No secrets, validated inputs, authorized access
-4. **Review Gate**: Language-appropriate code reviewer approval
+4. **Review Gate**: For work using `implement`, confirm its independent correctness and code-quality review; do not dispatch a second general review
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## Enterprise Conventions
@@ -176,13 +176,8 @@ Secrets managed via environment variables or platform secret stores. Never hardc
 
 ## Workflow
 
-1. **Research & Language Selection** — Use `/lang-select` for unbiased choices
-2. **Architecture Design** — Create plan in `.cursor/plans/` via `/plan`
-3. **Scaffold** — `/scaffold <lang> <archetype>` to bootstrap
-4. **Implement** — `/implement <task>` with TDD loop
-5. **Quality Gate** — `/quality-gate` before every commit
-6. **Code Review** — Language-specific reviewer + security reviewer
-7. **Deploy Check** — `/deploy-check` before release
-8. **Cloud Deploy** — `/cloud-deploy <target> <platform>` for cloud targets
-9. **Release** — `/release` for enterprise release workflow
-10. **Maintain** — Keep CLAUDE.md current, refactor as debt accrues
+- **Simple request**: vibe code directly; make the smallest change and run relevant checks without creating planning artifacts or invoking extra workflow skills.
+- **Bug fix**: `grilling` → `implement`.
+- **Complex feature**: `grill-with-docs` → `to-spec` → `to-tickets` → `implement`. For medium/large work, track progress with `planning-with-files-zh` for Chinese or `planning-with-files` for English.
+- **Review**: `implement` includes two independent subagent review axes—correctness (requirements, behavior, tests) and code quality (design, maintainability). Do not manually initiate a separate code-review step. Invoke security review for security-sensitive changes.
+- Use `/scaffold`, `/quality-gate`, `/deploy-check`, `/cloud-deploy`, and `/release` when their concrete project or delivery need applies; they are not mandatory steps for every request.

@@ -35,8 +35,8 @@ alwaysApply: true
 ## 4. Code Review
 
 - CODEOWNERS 自动分配 reviewer。
-- 提交 PR 前，必须先调用 `code-reviewer` 进行本地预审。
-- 安全相关改动必须有 `security-reviewer` 参与。
+- `implement` 流程已通过两个独立 subagent 执行正确性与代码质量评审；无需手工单独启动 code-review。
+- 安全相关改动仍须由 `security-reviewer` 参与。
 - 必须解决所有 conversation 后才能合并。
 
 ## 5. Release & Tag

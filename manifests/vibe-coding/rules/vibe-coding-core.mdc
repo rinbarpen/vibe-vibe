@@ -1,5 +1,5 @@
 ---
-description: Vibe Coding Core Rules — intent-driven, plan-first, verify-every-change, quality gates, git-native workflow
+description: Vibe Coding Core Rules — intent-driven, task-sized workflows, verification, quality gates, git-native workflow
 globs: ["**/*"]
 alwaysApply: true
 ---
@@ -13,21 +13,22 @@ alwaysApply: true
 - If you cannot state the intent in one sentence, you need more research, not more code.
 - Prioritize understanding the user's intent rather than executing literal instructions.
 
-## 2. Plan-First
+## 2. Task-Sized Workflow
 
-- Create a plan in `.cursor/plans/` before any architectural or multi-file change.
-- Plans must include: problem statement, approach, files to change, test strategy, risk assessment.
-- Plans must be approved by the user before implementation begins.
-- A plan is not a design document; it is an actionable step list.
+- Simple, bounded requests use direct vibe coding: inspect, make the smallest useful change, verify relevant behavior, and report. Do not create a plan artifact or invoke planning skills by default.
+- Bug fixes requiring diagnosis follow `grilling` → `implement`.
+- Complex features follow `grill-with-docs` → `to-spec` → `to-tickets` → `implement`.
+- For medium/large work, use `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks to track progress; planning is not a prerequisite for every code change.
+- Get user input on unresolved product decisions when needed; do not require approval of a plan for clear, bounded work.
 
 ## 3. Verification-Driven
 
-- After every substantive change, verify with appropriate tooling:
+- After every substantive change, verify with tooling proportional to scope and risk:
   - **Lint**: language-appropriate linter with zero warnings.
   - **Test**: all existing tests still pass.
   - **Build**: project compiles without errors.
 - Provide evidence of verification (test output, lint results) — do not assert "it works".
-- Use subagents to parallelize verification: lint + test + build can run concurrently.
+- Parallelize verification with subagents only when it materially improves turnaround.
 
 ## 4. Language-Appropriate Code
 
@@ -43,12 +44,12 @@ Write idiomatic code for each language, not translated patterns from another lan
 
 When uncertain, consult `references/language-specs/` for the target language.
 
-## 5. Quality Gates (Mandatory Before Every Commit)
+## 5. Quality Gates (When Preparing a Commit or Release)
 
 1. **Lint Gate**: Zero warnings from language-appropriate linter
-2. **Test Gate**: All tests pass, coverage >= 80%
+2. **Test Gate**: Relevant tests pass; maintain the project coverage target
 3. **Security Gate**: No secrets in diff, no injection vulnerabilities
-4. **Review Gate**: Language-appropriate reviewer agent approval
+4. **Review Gate**: Review is part of `implement`, using independent correctness and code-quality subagents; do not launch a separate code-review step
 5. **Doc Gate**: CLAUDE.md and README.md reflect current state
 
 ## 6. Git-Native Workflow
@@ -63,13 +64,13 @@ When uncertain, consult `references/language-specs/` for the target language.
 
 - Git commit 必须清晰描述 "Why" 而非仅仅是 "What"。
 - **自动化同步 (Post-Commit)**: 每次 commit 后，必须确保 README.md 和 CLAUDE.md 已同步更新。
-- **自动化测试**: 关键功能实现后，必须调用 `tdd-guide` 或相关 subagent 自动生成并运行全面的测试用例。
+- **自动化测试**: 按变更风险和项目约定选择针对性测试；不要为简单改动强制启动专用测试技能。
 - **GitHub 集成**: 优先使用 `gh` CLI 进行 PR 创建、CI 状态监控和自动化流程触发。
 - 创建 PR 时，必须包含详细的测试计划。
 
-## 8. Subagent-First Execution
+## 8. Proportionate Subagent Use
 
-- Actively dispatch subagents for parallel execution whenever possible.
-- Independent work (different modules, parallel tests, multi-language builds) should run concurrently.
-- Use language-specific reviewer agents after every meaningful code change.
-- For complex tasks, use split-role subagents: security + quality + consistency reviewers in parallel.
+- Use subagents when parallel work or independent expertise materially improves a task; do not dispatch them by default for simple changes.
+- Independent modules, parallel tests, and multi-language builds may run concurrently when coordination cost is justified.
+- `implement` delegates two independent review axes: requirement correctness/behavior/tests and code quality/design/maintainability. No separate manual code-review invocation is needed.
+- Add a security reviewer for security-sensitive changes.

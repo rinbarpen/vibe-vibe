@@ -66,7 +66,6 @@ alwaysApply: false
 
 ## References
 
-- Skills (repo): `skills/superpowers/` — brainstorming, TDD, subagent-driven dev, systematic debugging, code review
 - Skills (repo): `skills/Agent-Skills-for-Context-Engineering/` — context engineering, multi-agent architecture, production optimization
 - Skills (repo): `skills/agent-skills/` — Vercel agent coding guidelines and patterns
 - Skills (system): `claude-api`, `agentic-engineering`, `autonomous-loops`

@@ -10,6 +10,18 @@ triggers:
 
 # Domain Dispatcher
 
+## Workflow Selection (first)
+
+Choose one path by scope and uncertainty; domain routing below only adds relevant technical expertise and must not escalate a simple task by itself.
+
+| Request shape | Workflow |
+|---------------|----------|
+| Clear, bounded, low-risk change | Direct vibe coding → relevant verification; no planning skill or plan artifact |
+| Bug requiring diagnosis | `grilling` → `implement` |
+| Complex feature with unresolved product/design or cross-module decisions | `grill-with-docs` → `to-spec` → `to-tickets` → `implement` |
+
+For medium/large work, track progress with `planning-with-files-zh` for Chinese tasks or `planning-with-files` for English tasks. `implement` includes two-axis subagent review: requirements/behavior/tests and code quality/design/maintainability. Do not manually start a separate code-review step. Add security review only where the change is security-sensitive.
+
 ## Dispatch Logic
 
 Map task keywords to domain, then dispatch the appropriate agent, skill, and rule set.
@@ -24,8 +36,8 @@ Map task keywords to domain, then dispatch the appropriate agent, skill, and rul
 | "test", "coverage", "TDD", "integration", "e2e" | Testing | `tdd-guide` | Language-specific testing skills | `vibe-coding-testing.mdc` |
 | "deploy", "CI/CD", "Docker", "release", "rollout" | Deployment | — | `deployment-patterns`, `docker-patterns` | `vibe-coding-deployment.mdc` |
 | "refactor", "clean", "migrate", "extract", "dead code" | Refactoring | `refactor-cleaner` | — | `vibe-coding-refactoring.mdc` |
-| "agent", "eval", "prompt quality", "llm eval" | Agent Eval | `eval-harness` | `prompt-optimizer`, `superpowers` | `vibe-coding-agent-dev.mdc` |
-| "agent", "context engineering", "multi-agent", "agent architecture" | Agent Dev | `code-architect` | `Agent-Skills-for-Context-Engineering`, `agent-skills`, `superpowers` | `vibe-coding-agent-dev.mdc` |
+| "agent", "eval", "prompt quality", "llm eval" | Agent Eval | `eval-harness` | `prompt-optimizer` | `vibe-coding-agent-dev.mdc` |
+| "agent", "context engineering", "multi-agent", "agent architecture" | Agent Dev | `code-architect` | `Agent-Skills-for-Context-Engineering`, `agent-skills` | `vibe-coding-agent-dev.mdc` |
 | "desktop", "electron", "tauri", "flutter desktop", "native app" | Desktop | `build-error-resolver` + framework reviewer | `dart-flutter-patterns` | `vibe-coding-desktop.mdc` |
 | "frontend", "css", "i18n", "a11y", "component library" | Frontend | `frontend-patterns` | `design-taste-frontend`, `frontend-design`, `ui-ux-pro-max-skill`, `taste-skill` | `vibe-coding-frontend.mdc` |
 

@@ -1,21 +1,20 @@
 ---
-description: System Testing rules — TDD workflow, test pyramid, property-based testing,
-  coverage requirements, test quality standards
+description: System Testing guidance — proportional test strategy, TDD where appropriate, property-based testing, and test quality standards
 globs: ["**/*"]
 alwaysApply: false
 ---
 
 # System Testing Rules
 
-## TDD is Mandatory
+## Proportional Test Strategy
 
-Every feature follows RED → GREEN → IMPROVE:
+Use focused tests appropriate to scope and risk. For feature work where behavior can be specified in advance, use RED → GREEN → IMPROVE:
 
 1. **RED**: Write a failing test that defines the desired behavior. Run it. It fails.
 2. **GREEN**: Write minimal code to make the test pass. Do not optimize yet.
 3. **IMPROVE**: Refactor the implementation and tests. Improve naming. Extract helpers.
 
-No feature implementation may start without a preceding failing test.
+A failing test first is preferred when it provides a clear executable specification; small fixes may use another focused verification path consistent with the project.
 
 ## Test Pyramid
 

@@ -14,7 +14,7 @@ Complete command index for the unified development manifest. All commands are av
 | Command | File | Description |
 |---------|------|-------------|
 | `/scaffold <language> <archetype>` | `scaffold/COMMAND.md` | Bootstrap new project from scenario template with language-appropriate structure |
-| `/implement <task>` | `implement/COMMAND.md` | Implement a feature following TDD: RED (failing test) → GREEN (minimal impl) → IMPROVE (refactor) |
+| `/implement <task>` | `implement/COMMAND.md` | Implement a bug fix or feature with proportional verification and implicit two-axis subagent review |
 
 ## Agent Development
 
@@ -26,7 +26,7 @@ Complete command index for the unified development manifest. All commands are av
 
 | Command | File | Description |
 |---------|------|-------------|
-| `/quality-gate` | `quality-gate/COMMAND.md` | Run all 5 quality gates: Lint, Test (80%+), Security, Review, Doc |
+| `/quality-gate` | `quality-gate/COMMAND.md` | Run applicable lint, test, security, implement-review confirmation, and documentation checks |
 | `/deploy-check` | `deploy-check/COMMAND.md` | Pre-deployment verification: CI status, migration reversibility, rollback plan, env vars |
 
 ## Deployment
@@ -66,9 +66,7 @@ Actively dispatch these agents based on task context:
 | Agent | When | Effect |
 |-------|------|--------|
 | `code-architect` | Architecture changes | Design review, module boundaries |
-| `code-reviewer` | All code changes | Code quality, patterns |
 | `security-reviewer` | Auth/payments/data | Security audit |
-| `tdd-guide` | New features | TDD workflow enforcement |
 | `performance-optimizer` | Slow code | Profile, optimize |
 | `refactor-cleaner` | Tech debt | Clean up, extract |
 | `build-error-resolver` | Build fails | Fix compilation errors |
