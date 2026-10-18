@@ -1,6 +1,6 @@
 ---
 description: Enterprise Governance — branch protection, CODEOWNERS, release management, security compliance
-globs: ["**/.github/**", "**/CHANGELOG.md", "**/SECURITY.md"]
+globs: ["**/.github/**", "**/.gitlab-ci.yml", "**/.workflow/**", "**/VERSION", "**/CHANGELOG.md", "**/SECURITY.md"]
 alwaysApply: true
 ---
 
@@ -8,16 +8,15 @@ alwaysApply: true
 
 ## 1. Repository Governance
 
-- CODEOWNERS assigns ownership per directory/path for automated review assignments.
-- CODE_OF_CONDUCT.md and SECURITY.md are required in every repository.
-- Branch protection on `main`: requires 2+ reviews, all status checks passing, up-to-date branch.
+- On GitHub, CODEOWNERS assigns ownership; CODE_OF_CONDUCT.md and SECURITY.md are supplied by the GitHub template.
+- Protect the primary branch and release tags on the selected host; use reviews and required CI checks where supported.
 
 ## 2. Release Management
 
 1. Only release managers can create and push tags.
-2. All releases must have a corresponding CHANGELOG.md entry.
+2. Every VERSION bump requires a corresponding substantive CHANGELOG.md entry added in the same change; all releases use that entry.
 3. Hotfixes must go through the hotfix branch process — never modify a release tag directly.
-4. Version numbers must be consistent: git tag = package version = CHANGELOG entry.
+4. Version numbers must be consistent: git tag = VERSION = known package versions = CHANGELOG entry.
 5. All release tags must be GPG signed.
 
 ## 3. Release Workflow
@@ -50,28 +49,31 @@ feature branch → PR → squash merge to main
 | Documentation | 04-documentation.yml | docs |
 | Epic | 05-epic.yml | epic |
 
-## 6. CI/CD Workflows (12 workflows)
+## 6. GitHub CI/CD Workflows (12 workflows, GitHub provider only)
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci.yml` | Push to any branch | Build, lint, matrix test, coverage |
+| `ci.yml` | PR/push/reusable | Version check and optional project CI hook |
 | `pr-conventions.yml` | PR opened/edited | Title format, size check |
-| `pr-auto-assign.yml` | PR opened | Auto-assign reviewer from CODEOWNERS |
+| `pr-auto-assign.yml` | PR opened | Assign PR author; GitHub handles CODEOWNERS |
 | `merge-queue.yml` | Merge queue | Validate before merge |
 | `codeql-analysis.yml` | PR + schedule | Security code scanning |
 | `dependency-review.yml` | PR | License + CVE checks |
-| `release.yml` | Tag push | Build, test, publish artifacts |
+| `release.yml` | Tag push | Validate, optional build, create GitHub Release |
 | `release-branch.yml` | Branch `release/*` | Release branch CI |
-| `hotfix.yml` | Branch `hotfix/*` | Hotfix CI + deploy |
-| `deploy-pages.yml` | Push to main | GitHub Pages deployment |
+| `hotfix.yml` | Branch `hotfix/*` | Validate hotfix before manual signed tag |
+| `deploy-pages.yml` | Manual dispatch | Explicit GitHub Pages deployment |
 | `issue-triage.yml` | Issue opened/edited | Auto-label, assign |
 | `stale.yml` | Schedule | Mark/close stale issues and PRs |
 
-## 7. Environment Variables (Required for CI)
+## 7. Host-specific CI Credentials
 
 | Variable | Permission | Purpose |
 |----------|-----------|---------|
-| `GITHUB_TOKEN` | `contents: write`, `pull-requests: write` | PR/Release operations |
-| `CODECOV_TOKEN` | N/A | Coverage reporting |
-| `DOCKER_USERNAME` / `DOCKER_PASSWORD` | N/A | Docker Hub publishing |
-| `NPM_TOKEN` / `PYPI_TOKEN` | N/A | Package registry publishing |
+| `GITHUB_TOKEN` | Scoped by each GitHub job | PR metadata and GitHub Release operations |
+| `CI_JOB_TOKEN` | GitLab Releases API | GitLab tag Release job |
+| `GITEE_OWNER` / `GITEE_REPO` / `GITEE_TOKEN` | Gitee project / secret | Gitee Go Release job |
+
+## 8. Other code hosts
+
+GitLab uses `.gitlab-ci.yml` and Gitee uses `.workflow/` pipelines. `git` provider has local release checks only. All hosted pipelines use `scripts/version_guard.py` and never deploy production automatically.

@@ -1,0 +1,56 @@
+image: python:3.12
+
+stages: [validate, build, release]
+
+variables:
+  GIT_DEPTH: '0'
+
+before_script:
+  - command -v git >/dev/null || (apt-get update -qq && apt-get install -y -qq git)
+
+validate:
+  stage: validate
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - |
+      set -eu
+      if [ -n "${CI_COMMIT_TAG:-}" ]; then
+        python3 scripts/version_guard.py check --tag "$CI_COMMIT_TAG"
+      else
+        BASE="${CI_MERGE_REQUEST_DIFF_BASE_SHA:-${CI_COMMIT_BEFORE_SHA:-}}"
+        if [ -n "$BASE" ] && [ "$(printf %s "$BASE" | tr -d 0)" != "" ] && git rev-parse --verify "$BASE^{commit}" >/dev/null 2>&1; then
+          python3 scripts/version_guard.py check --base-ref "$BASE"
+        else
+          python3 scripts/version_guard.py check
+        fi
+      fi
+      if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
+
+build:
+  stage: build
+  needs: [validate]
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
+    - mkdir -p dist
+  artifacts:
+    when: on_success
+    paths: [dist/]
+
+release:
+  stage: release
+  needs:
+    - job: validate
+    - job: build
+      artifacts: true
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - >-
+      python3 scripts/version_guard.py publish-gitlab
+      --tag "$CI_COMMIT_TAG" --project-id "$CI_PROJECT_ID"
+      --api-base "$CI_API_V4_URL" --project-url "$CI_PROJECT_URL"

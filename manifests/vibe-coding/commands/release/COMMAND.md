@@ -1,80 +1,17 @@
 # /release
 
-Execute the enterprise release workflow.
+Release a project initialized with the vibe-coding manifest. The selected provider is the one used during initialization (`git`, `github`, `gitlab`, or `gitee`).
 
 ## Usage
 
-```
-/release <version> [options]
-```
+`/release <major|minor|patch|X.Y.Z[-prerelease]> [--dry-run]`
 
-### Version Format
+1. Read `VERSION`; calculate the requested SemVer. Never treat a Git tag or a package manifest as the sole source of truth.
+2. Update `VERSION`, every existing package version field, and `CHANGELOG.md` **in the same change**. Add `## [X.Y.Z] - YYYY-MM-DD` with at least one meaningful bullet under `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`. Keep `Unreleased` for future changes. Do not insert generic placeholder notes.
+3. Run `python3 scripts/version_guard.py check --base-ref <base-commit>` and project checks (`sh scripts/ci.sh` if present). For `--dry-run`, report proposed edits and checks without writing or tagging.
+4. Merge the reviewed change, then run `python3 scripts/version_guard.py check --tag vX.Y.Z` on the release commit. Sign an annotated tag (`git tag -s vX.Y.Z -m "Release vX.Y.Z"`) and push it to the selected remote. Never move an existing release tag.
+5. On GitHub, GitLab, and Gitee the selected tag pipeline creates a Release from the exact Changelog section. Git-only mode: run `python3 scripts/version_guard.py notes --tag vX.Y.Z --output release_notes.md` and publish notes manually if desired. Build/test hooks are `scripts/build.sh` and `scripts/ci.sh` (POSIX shell); no deployment is implied.
 
-SemVer 2.0: `MAJOR.MINOR.PATCH`
+For hotfixes, validate the branch's VERSION and Changelog before creating its signed tag. The hotfix workflow does not create tags or deploy automatically.
 
-```
-/release major        # Bump major version (breaking changes)
-/release minor        # Bump minor version (new features)
-/release patch        # Bump patch version (bug fixes)
-/release 1.2.3        # Specific version
-```
-
-### Options
-
-| Option | Description |
-|--------|-------------|
-| `--pre=<label>` | Pre-release label (alpha, beta, rc) |
-| `--notes=<file>` | Release notes file |
-| `--dry-run` | Preview release without executing |
-
-## Workflow
-
-1. **Verify Pre-Release Checklist**
-   - [ ] All quality gates passed
-   - [ ] CHANGELOG.md updated with new version entry
-   - [ ] README.md reflects current state
-
-2. **Create Release Branch** (if not already on one)
-   ```bash
-   git checkout -b release/v1.2.3
-   ```
-
-3. **Bump Version**
-   - Update version in package files (package.json, pyproject.toml, Cargo.toml, go.mod, etc.)
-   - Commit: `chore: bump version to 1.2.3`
-
-4. **Create GPG-Signed Tag**
-   ```bash
-   git tag -s v1.2.3 -m "Release v1.2.3"
-   ```
-
-5. **Push Tag**
-   ```bash
-   git push origin v1.2.3
-   ```
-
-6. **Verify Release**
-   - `release.yml` workflow triggers automatically
-   - Monitor: `gh run watch`
-   - Verify release appears: `gh release view v1.2.3`
-
-## Merge Strategy
-
-| Branch | Merge Method | Target |
-|--------|-------------|--------|
-| Feature → main | Squash merge | Clean history |
-| Release → main | Merge commit | Preserve release record |
-| Hotfix → main | Merge commit | Preserve fix record |
-
-## Post-Release
-
-- [ ] Verify deployment health
-- [ ] Update project board
-- [ ] Notify stakeholders
-- [ ] Close related milestone/issues
-
-## References
-
-- `references/release-process.md` — detailed release process
-- `references/tag-convention.md` — tag naming and GPG signing
-- `references/branching-strategy.md` — branch strategy decision guide
+See `.cursor/references/release-process.md` for provider setup, CI credentials, and verification.

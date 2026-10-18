@@ -74,7 +74,7 @@ Image generation via fal-ai MCP server using Nano Banana Pro models. Zero additi
 - Direct MCP integration in Claude Code
 
 ### When NOT to Use
-- Precise diagrams → [drawio](../drawio/SKILL.md)
+- Precise diagrams → [mermaid](../mermaid/SKILL.md)
 - Detailed prompt following required → [gpt-image-2](../gpt-image-2/SKILL.md)
 - Text in images → not reliable with any image gen tool
 

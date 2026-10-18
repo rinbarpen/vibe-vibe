@@ -17,6 +17,7 @@ from .types import ManifestInfo
 _SCRIPT_FLAG_MAP: dict[str, dict[str, str]] = {
     "vibe-coding": {
         "scenario": "--scenario={value}",
+        "provider": "--provider={value}",
         "owner": "-o {value}",
         "org": "--org {value}",
         "repo": "--repo {value}",
@@ -153,11 +154,10 @@ def _run_init_script(
         if key in flag_map:
             script_args.append(flag_map[key].format(value=value))
 
-    # force/dry_run for manifests where they aren't in flag_map
-    if force and "force" not in flag_map:
-        script_args.append("-f")
-    if dry_run and "dry_run" not in flag_map:
-        script_args.append("-n")
+    if force:
+        script_args.append(flag_map.get("force", "-f"))
+    if dry_run:
+        script_args.append(flag_map.get("dry_run", "-n"))
 
     # Build environment (VIBE_MANIFEST needed by vibe-coding init)
     env = dict(subprocess.os.environ)
@@ -165,16 +165,12 @@ def _run_init_script(
 
     cmd = [str(script_path)] + script_args
 
-    if dry_run:
-        print(f"[dry-run] Would run: {' '.join(cmd)}")
-        print(f"[dry-run]   in: {target}")
-        return 0
-
-    print(f"Running: {' '.join(cmd)}")
+    print(f"{'[dry-run] ' if dry_run else ''}Running: {' '.join(cmd)}")
     result = subprocess.run(
         cmd,
-        cwd=str(target),
+        cwd=str(target if target.is_dir() else Path.cwd()),
         env=env,
+        check=False,
     )
     return result.returncode
 
@@ -214,7 +210,6 @@ def _generic_init(
         if dst_file.exists() and not force:
             actions.append(("skip", dst_file))
             continue
-        rel_src = _relpath(src_file, manifest.path)
         if dry_run:
             actions.append(("copy", dst_file))
         else:
@@ -280,7 +275,6 @@ def _generic_init(
     # Print summary
     copies = [a for a in actions if a[0] == "copy"]
     skips = [a for a in actions if a[0] == "skip"]
-    mkdirs = [a for a in actions if a[0] == "mkdir"]
 
     label = "[dry-run] Would install" if dry_run else "Installed"
     print(f"{label} {len(copies)} files to {target}")
@@ -349,4 +343,4 @@ def _install_required_skills(
             "  (tip: run 'vibe update' to fetch skill submodules, "
             "then 'vibe add skill <name>' for any still-missing)"
         )
-    return 1 if missing else 0
+    return 1 if missing and not dry_run else 0

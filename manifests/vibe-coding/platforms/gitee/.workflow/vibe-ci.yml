@@ -1,0 +1,40 @@
+version: '1.0'
+name: vibe-ci
+displayName: Vibe CI
+triggers:
+  trigger: auto
+  push:
+    branches:
+      include:
+        - '.*'
+  pr:
+    branches:
+      include:
+        - '.*'
+stages:
+  - stage:
+    name: validate
+    displayName: Version and project checks
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@python
+        name: version_check
+        displayName: Check VERSION and CHANGELOG
+        pythonVersion: '3.9'
+        commands:
+          - |
+            set -eu
+            BASE=""
+            if [ -n "${GITEE_SOURCE_BRANCH:-}" ]; then
+              git fetch origin "$GITEE_BRANCH"
+              BASE="$(git merge-base HEAD FETCH_HEAD)"
+            else
+              BASE="$(git rev-parse HEAD^ 2>/dev/null || true)"
+            fi
+            if [ -n "$BASE" ]; then
+              python3 scripts/version_guard.py check --base-ref "$BASE"
+            else
+              python3 scripts/version_guard.py check
+            fi
+            if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi

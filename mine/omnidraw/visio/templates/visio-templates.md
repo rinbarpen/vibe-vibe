@@ -1,7 +1,7 @@
 # Visio Templates
 
 ## Draw.io → Visio Bridge Template
-**→ [drawio](../../drawio/SKILL.md) → [visio](../SKILL.md)**
+**→ [mermaid](../../mermaid/SKILL.md) → [visio](../SKILL.md)**
 ```
 Step 1 (drawio): Draw [diagram type] for [purpose]. Standard shapes, orthogonal connectors. Export .drawio.
 Step 2: Open .drawio in draw.io desktop → File → Export as → VSDX.

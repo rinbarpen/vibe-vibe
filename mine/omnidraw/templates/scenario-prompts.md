@@ -7,7 +7,7 @@ Ready-to-use dispatch prompts organized by scenario. Each template includes the 
 ## Patent Figures (专利附图)
 
 ### Structure Diagram (结构示意图)
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw a patent structure diagram (结构示意图) for [device/system]:
 Modules: [A], [B], [C], [D]. Orthogonal connectors, 15px Chinese labels.
@@ -16,7 +16,7 @@ Export PNG 300dpi.
 ```
 
 ### Method Flowchart (方法流程图)
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw a patent method flowchart (方法流程图):
 [step1] → [step2] → {decision} → [branchA] / [branchB].
@@ -26,7 +26,7 @@ Caption: 图N [title]方法流程图.
 ```
 
 ### Circuit Diagram (电路/连接图)
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw a patent connection diagram:
 [component1] connected to [component2] via [connection].
@@ -38,7 +38,7 @@ Show ports/interfaces. B&W, 15px labels, orthogonal lines.
 ## Academic Paper — English
 
 ### Architecture Diagram (IEEE)
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw IEEE-compliant architecture diagram for [system]:
 [N] main components, clear boundaries, grayscale.
@@ -47,7 +47,7 @@ Caption: Fig. N. [Title].
 ```
 
 ### Pipeline / Training Flow
-**→ [mermaid](../mermaid/SKILL.md) or [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md) or [mermaid](../mermaid/SKILL.md)**
 ```
 Create a pipeline diagram showing [process]:
 Stages: [s1] → [s2] → [s3] → [s4] with data dimensions.
@@ -76,7 +76,7 @@ Journal-ready for [Nature/Science/Cell/...].
 ## Academic Paper — Chinese (中文期刊)
 
 ### 系统架构图
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 绘制用于[期刊名]的系统架构图：
 [N]个模块：[A], [B], [C], [D]。宋体 10-12pt。
@@ -98,7 +98,7 @@ Journal-ready for [Nature/Science/Cell/...].
 ## Technical Architecture
 
 ### Microservices
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw microservices architecture for [system]:
 API Gateway → [Service A], [Service B], [Service C].
@@ -108,7 +108,7 @@ Professional style, blue/green/gray palette.
 ```
 
 ### AWS Cloud
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Draw AWS architecture: Route53 → CloudFront → ALB → ECS (2 AZs).
 RDS Multi-AZ + read replica. ElastiCache. S3. CloudWatch.
@@ -135,7 +135,7 @@ Space for title overlay, cinematic lighting, 8k, abstract-tech style.
 ```
 
 ### Architecture Slide
-**→ [drawio](../drawio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md)**
 ```
 Presentation-ready architecture: [system], max 8 components.
 High-contrast for projector. 18pt+ bold labels.
@@ -211,7 +211,7 @@ erDiagram
 
 ## Visio Delivery
 
-**→ [drawio](../drawio/SKILL.md) then [visio](../visio/SKILL.md)**
+**→ [mermaid](../mermaid/SKILL.md) then [visio](../visio/SKILL.md)**
 ```
 Step 1 (drawio): Draw [diagram type] for [purpose]. Standard shapes, orthogonal connectors. Export .drawio.
 Step 2 (visio): Open .drawio in draw.io desktop → Export as VSDX.

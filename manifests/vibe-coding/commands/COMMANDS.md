@@ -34,7 +34,7 @@ Complete command index for the unified development manifest. All commands are av
 | Command | File | Description |
 |---------|------|-------------|
 | `/cloud-deploy <target> <platform>` | `cloud-deploy/COMMAND.md` | Deploy to cloud platform (vercel/cloudflare/tencent/alibaba/huawei) |
-| `/release` | `release/COMMAND.md` | Execute enterprise release workflow: version bump, CHANGELOG update, GPG-signed tag, GitHub Release |
+| `/release` | `release/COMMAND.md` | Execute enterprise release workflow: VERSION/CHANGELOG validation, GPG-signed tag, provider Release |
 | `/frontend-check <mode>` | `frontend-check/COMMAND.md` | Frontend quality check: a11y, performance (CWV), bundle size, visual regression |
 | `/desktop-build <framework> <platform>` | `desktop-build/COMMAND.md` | Build, package, sign desktop app (Electron/Tauri/Flutter × mac/win/linux) |
 

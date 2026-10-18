@@ -22,8 +22,8 @@ This sub-skill delegates to the `canvas-design` skill from `skills/anthropics/sk
 
 | Need | Alternative |
 |------|-------------|
-| Architecture diagram | [drawio](../drawio/SKILL.md) |
+| Architecture diagram | [mermaid](../mermaid/SKILL.md) |
 | Quick illustration | [gpt-image-2](../gpt-image-2/SKILL.md) |
 | Photo-realistic | [nano-banana](../nano-banana/SKILL.md) |
-| Infographic | [drawio](../drawio/SKILL.md) |
+| Infographic | [mermaid](../mermaid/SKILL.md) |
 | Data chart poster | [matplotlib](../matplotlib/SKILL.md) |

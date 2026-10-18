@@ -1,0 +1,2516 @@
+diff --git a/manifests/vibe-coding/.github/workflows/ci.yml b/manifests/vibe-coding/.github/workflows/ci.yml
+index d22289e..283033a 100644
+--- a/manifests/vibe-coding/.github/workflows/ci.yml
++++ b/manifests/vibe-coding/.github/workflows/ci.yml
+@@ -2,100 +2,38 @@ name: CI
+ 
+ on:
+   push:
+-    branches:
+-      - main
+-      - "release/v*"
+-      - "hotfix/v*"
++    branches: [main, 'release/v*', 'hotfix/v*']
+   pull_request:
+-    branches:
+-      - main
+-      - "release/v*"
++    branches: [main, 'release/v*']
++  workflow_call:
+   workflow_dispatch:
+ 
+-concurrency:
+-  group: ${{ github.workflow }}-${{ github.ref }}
+-  cancel-in-progress: true
+-
+-env:
+-  PYTHON_VERSION: "3.12"
++permissions:
++  contents: read
+ 
+ jobs:
+-  lint:
++  validate:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+         with:
+-          python-version: ${{ env.PYTHON_VERSION }}
+-      - name: Install dependencies
+-        run: |
+-          python -m pip install --upgrade pip
+-          pip install ruff mypy
+-      - name: Lint check
+-        run: ruff check --output-format=github .
+-      - name: Format check
+-        run: ruff format --check .
+-      - name: Type check
+-        run: mypy . --ignore-missing-imports || true
+-
+-  test:
+-    runs-on: ${{ matrix.os }}
+-    strategy:
+-      fail-fast: false
+-      matrix:
+-        os: [ubuntu-latest, macos-latest]
+-        python-version: ["3.11", "3.12"]
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Set up Python ${{ matrix.python-version }}
+-        uses: actions/setup-python@v5
++          fetch-depth: 0
++      - uses: actions/setup-python@v5
+         with:
+-          python-version: ${{ matrix.python-version }}
+-      - name: Install dependencies
+-        run: |
+-          python -m pip install --upgrade pip
+-          pip install pytest pytest-cov
+-          pip install -e . || true
+-      - name: Run tests
+-        run: pytest --cov=. --cov-report=xml --cov-report=term-missing
+-      - name: Upload coverage
+-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_VERSION
+-        uses: codecov/codecov-action@v4
+-        with:
+-          file: ./coverage.xml
+-          fail_ci_if_error: false
+-
+-  build:
+-    runs-on: ubuntu-latest
+-    needs: [lint, test]
+-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+-        with:
+-          python-version: ${{ env.PYTHON_VERSION }}
+-      - name: Build
+-        run: |
+-          pip install build
+-          python -m build
+-
+-  summary:
+-    needs: [lint, test, build]
+-    if: always()
+-    runs-on: ubuntu-latest
+-    steps:
+-      - name: Check lint status
+-        run: |
+-          echo "lint=${{ needs.lint.result }}" >> $GITHUB_OUTPUT
+-          echo "test=${{ needs.test.result }}" >> $GITHUB_OUTPUT
+-          echo "build=${{ needs.build.result }}" >> $GITHUB_OUTPUT
+-      - name: Summary
++          python-version: '3.12'
++      - name: Version, changelog and project checks
++        env:
++          EVENT_NAME: ${{ github.event_name }}
++          PR_BASE: ${{ github.event.pull_request.base.sha }}
++          PUSH_BEFORE: ${{ github.event.before }}
+         run: |
+-          echo "## CI Summary" >> $GITHUB_STEP_SUMMARY
+-          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+-          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+-          echo "| Lint | ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+-          echo "| Test | ${{ needs.test.result }} |" >> $GITHUB_STEP_SUMMARY
+-          echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
++          set -euo pipefail
++          BASE=""
++          if [ "$EVENT_NAME" = pull_request ]; then BASE="$PR_BASE"; fi
++          if [ "$EVENT_NAME" = push ]; then BASE="$PUSH_BEFORE"; fi
++          if [ -n "$BASE" ] && [ "${BASE//0/}" != "" ] && git rev-parse --verify "$BASE^{commit}" >/dev/null 2>&1; then
++            python3 scripts/version_guard.py check --base-ref "$BASE"
++          else
++            python3 scripts/version_guard.py check
++          fi
++          if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
+diff --git a/manifests/vibe-coding/.github/workflows/codeql-analysis.yml b/manifests/vibe-coding/.github/workflows/codeql-analysis.yml
+index 6602e54..209c63a 100644
+--- a/manifests/vibe-coding/.github/workflows/codeql-analysis.yml
++++ b/manifests/vibe-coding/.github/workflows/codeql-analysis.yml
+@@ -6,11 +6,33 @@ on:
+   pull_request:
+     branches: [main]
+   schedule:
+-    - cron: "4 3 * * 1"
++    - cron: '4 3 * * 1'
+   workflow_dispatch:
+ 
+ jobs:
++  detect:
++    runs-on: ubuntu-latest
++    outputs:
++      languages: ${{ steps.languages.outputs.languages }}
++    steps:
++      - uses: actions/checkout@v4
++      - id: languages
++        shell: bash
++        run: |
++          python3 - <<'PY' >> "$GITHUB_OUTPUT"
++          import json
++          from pathlib import Path
++          suffixes = {p.suffix for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts}
++          languages = []
++          if suffixes & {'.js', '.jsx', '.ts', '.tsx'}: languages.append('javascript-typescript')
++          if '.py' in suffixes: languages.append('python')
++          if '.go' in suffixes: languages.append('go')
++          if suffixes & {'.java', '.kt'}: languages.append('java-kotlin')
++          print('languages=' + json.dumps(languages, separators=(',', ':')))
++          PY
+   analyze:
++    needs: detect
++    if: needs.detect.outputs.languages != '[]'
+     runs-on: ubuntu-latest
+     permissions:
+       security-events: write
+@@ -19,17 +41,11 @@ jobs:
+     strategy:
+       fail-fast: false
+       matrix:
+-        language: ["javascript", "python"]
++        language: ${{ fromJSON(needs.detect.outputs.languages) }}
+     steps:
+       - uses: actions/checkout@v4
+-      - name: Initialize CodeQL
+-        uses: github/codeql-action/init@v3
++      - uses: github/codeql-action/init@v3
+         with:
+           languages: ${{ matrix.language }}
+-          queries: +security-extended,security-and-quality
+-      - name: Autobuild
+-        uses: github/codeql-action/autobuild@v3
+-      - name: Perform CodeQL Analysis
+-        uses: github/codeql-action/analyze@v3
+-        with:
+-          category: "/language:${{matrix.language}}"
++      - uses: github/codeql-action/autobuild@v3
++      - uses: github/codeql-action/analyze@v3
+diff --git a/manifests/vibe-coding/.github/workflows/dependency-review.yml b/manifests/vibe-coding/.github/workflows/dependency-review.yml
+index 05cb3a6..72ec407 100644
+--- a/manifests/vibe-coding/.github/workflows/dependency-review.yml
++++ b/manifests/vibe-coding/.github/workflows/dependency-review.yml
+@@ -6,7 +6,6 @@ on:
+ 
+ permissions:
+   contents: read
+-  pull-requests: write
+ 
+ jobs:
+   dependency-review:
+@@ -17,5 +16,3 @@ jobs:
+         uses: actions/dependency-review-action@v4
+         with:
+           fail-on-severity: critical
+-          allow-licenses: MIT, Apache-2.0, BSD-3-Clause, BSD-2-Clause
+-          comment-summary-in-pr: true
+diff --git a/manifests/vibe-coding/.github/workflows/deploy-pages.yml b/manifests/vibe-coding/.github/workflows/deploy-pages.yml
+index f10f0a9..f86fced 100644
+--- a/manifests/vibe-coding/.github/workflows/deploy-pages.yml
++++ b/manifests/vibe-coding/.github/workflows/deploy-pages.yml
+@@ -1,11 +1,6 @@
+ name: Deploy Pages
+ 
+ on:
+-  push:
+-    branches:
+-      - main
+-    paths:
+-      - "docs/**"
+   workflow_dispatch:
+ 
+ permissions:
+@@ -13,42 +8,19 @@ permissions:
+   pages: write
+   id-token: write
+ 
+-concurrency:
+-  group: "pages"
+-  cancel-in-progress: true
+-
+ jobs:
+-  build:
+-    runs-on: ubuntu-latest
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Setup Pages
+-        uses: actions/configure-pages@v5
+-      - name: Upload artifact
+-        uses: actions/upload-pages-artifact@v3
+-        with:
+-          path: "./docs"
+-
+   deploy:
+     runs-on: ubuntu-latest
+-    needs: build
+     environment:
+       name: github-pages
+       url: ${{ steps.deployment.outputs.page_url }}
+     steps:
+-      - name: Deploy to GitHub Pages
+-        id: deployment
++      - uses: actions/checkout@v4
++      - name: Require project docs
++        run: test -d docs && find docs -type f -print -quit | grep -q .
++      - uses: actions/configure-pages@v5
++      - uses: actions/upload-pages-artifact@v3
++        with:
++          path: docs/
++      - id: deployment
+         uses: actions/deploy-pages@v4
+-
+-  summary:
+-    needs: deploy
+-    if: always()
+-    runs-on: ubuntu-latest
+-    steps:
+-      - name: Pages summary
+-        run: |
+-          echo "## Pages Deployment" >> $GITHUB_STEP_SUMMARY
+-          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+-          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+-          echo "| Build | ${{ needs.build.result }} |" >> $GITHUB_STEP_SUMMARY
+-          echo "| Deploy | ${{ needs.deploy.result }} |" >> $GITHUB_STEP_SUMMARY
+diff --git a/manifests/vibe-coding/.github/workflows/hotfix.yml b/manifests/vibe-coding/.github/workflows/hotfix.yml
+index 28453cc..b17c25e 100644
+--- a/manifests/vibe-coding/.github/workflows/hotfix.yml
++++ b/manifests/vibe-coding/.github/workflows/hotfix.yml
+@@ -2,87 +2,26 @@ name: Hotfix
+ 
+ on:
+   push:
+-    branches:
+-      - "hotfix/v*"
++    branches: ['hotfix/v*']
++
++permissions:
++  contents: read
+ 
+ jobs:
+-  urgent-ci:
++  verify:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+-      - name: Extract version
+-        id: version
+-        run: |
+-          BRANCH=${GITHUB_REF#refs/heads/}
+-          VERSION=${BRANCH#hotfix/}
+-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+-        with:
+-          python-version: "3.12"
+-      - name: Install dependencies
+-        run: |
+-          python -m pip install --upgrade pip
+-          pip install ruff pytest
+-      - name: Quick lint
+-        run: ruff check --output-format=github .
+-      - name: Run critical tests
+-        run: pytest --timeout=60 -x -q
+-
+-  build-and-deploy:
+-    needs: urgent-ci
+-    runs-on: ubuntu-latest
+-    environment: production
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Build
+-        run: |
+-          pip install build
+-          python -m build
+-      - name: Deploy hotfix
+-        run: |
+-          echo "Deploying hotfix ${{ needs.urgent-ci.outputs.version }} to production"
+-          # Add your actual deploy steps here
+-
+-  tag:
+-    needs: build-and-deploy
+-    runs-on: ubuntu-latest
+-    permissions:
+-      contents: write
+-    steps:
+-      - uses: actions/checkout@v4
++      - uses: actions/setup-python@v5
+         with:
+-          fetch-depth: 0
+-      - name: Create hotfix tag
+-        run: |
+-          BRANCH=${GITHUB_REF#refs/heads/}
+-          VERSION=${BRANCH#hotfix/}
+-          # Find existing hotfix count
+-          COUNT=$(git tag -l "${VERSION}-hotfix.*" | wc -l)
+-          HOTFIX_TAG="${VERSION}-hotfix.$((COUNT + 1))"
+-          git config user.name "github-actions"
+-          git config user.email "actions@github.com"
+-          git tag -a "$HOTFIX_TAG" -m "Hotfix $HOTFIX_TAG"
+-          git push origin "$HOTFIX_TAG"
+-          echo "tag=$HOTFIX_TAG" >> $GITHUB_OUTPUT
+-
+-  changelog:
+-    needs: tag
+-    runs-on: ubuntu-latest
+-    permissions:
+-      contents: write
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Update CHANGELOG
++          python-version: '3.12'
++      - name: Check hotfix before tagging
+         run: |
+-          VERSION="${{ github.ref_name }}"
+-          DATE=$(date +%Y-%m-%d)
+-          # Insert hotfix entry after Unreleased
+-          sed -i "/^## \[Unreleased\]/a\\\n## [${VERSION#v}] - $DATE\n\n### Fixed\n- Hotfix ${VERSION}\n" CHANGELOG.md
+-          git config user.name "github-actions"
+-          git config user.email "actions@github.com"
+-          git add CHANGELOG.md
+-          git commit -m "chore: update CHANGELOG for hotfix $VERSION"
+-          git push
++          set -euo pipefail
++          TAG="${GITHUB_REF_NAME#hotfix/}"
++          python3 scripts/version_guard.py check --tag "$TAG"
++          if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
++          if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
++          echo "Hotfix validated. Create and push signed tag $TAG from the merged commit." >> "$GITHUB_STEP_SUMMARY"
+diff --git a/manifests/vibe-coding/.github/workflows/issue-triage.yml b/manifests/vibe-coding/.github/workflows/issue-triage.yml
+index eecb61e..0b9f1b4 100644
+--- a/manifests/vibe-coding/.github/workflows/issue-triage.yml
++++ b/manifests/vibe-coding/.github/workflows/issue-triage.yml
+@@ -4,6 +4,9 @@ on:
+   issues:
+     types: [opened, reopened]
+ 
++permissions:
++  issues: write
++
+ jobs:
+   triage:
+     runs-on: ubuntu-latest
+@@ -28,7 +31,7 @@ jobs:
+             }
+ 
+             if (labels.length > 0) {
+-              github.rest.issues.addLabels({
++              await github.rest.issues.addLabels({
+                 issue_number: context.issue.number,
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+@@ -45,7 +48,7 @@ jobs:
+           script: |
+             const body = context.payload.issue.body || '';
+             if (body.includes('critical')) {
+-              github.rest.issues.addLabels({
++              await github.rest.issues.addLabels({
+                 issue_number: context.issue.number,
+                 owner: context.repo.owner,
+                 repo: context.repo.repo,
+diff --git a/manifests/vibe-coding/.github/workflows/merge-queue.yml b/manifests/vibe-coding/.github/workflows/merge-queue.yml
+index 9349d96..0442c9f 100644
+--- a/manifests/vibe-coding/.github/workflows/merge-queue.yml
++++ b/manifests/vibe-coding/.github/workflows/merge-queue.yml
+@@ -3,31 +3,9 @@ name: Merge Queue
+ on:
+   merge_group:
+ 
+-concurrency:
+-  group: ${{ github.workflow }}-${{ github.ref }}
+-  cancel-in-progress: true
+-
+-env:
+-  PYTHON_VERSION: "3.12"
++permissions:
++  contents: read
+ 
+ jobs:
+-  ci-pass:
+-    runs-on: ubuntu-latest
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+-        with:
+-          python-version: ${{ env.PYTHON_VERSION }}
+-      - name: Install dependencies
+-        run: |
+-          python -m pip install --upgrade pip
+-          pip install ruff pytest pytest-cov
+-      - name: Lint check
+-        run: ruff check --output-format=github .
+-      - name: Run tests
+-        run: pytest --cov=. --cov-report=term-missing
+-      - name: Build check
+-        run: |
+-          pip install build
+-          python -m build
++  ci:
++    uses: ./.github/workflows/ci.yml
+diff --git a/manifests/vibe-coding/.github/workflows/pr-auto-assign.yml b/manifests/vibe-coding/.github/workflows/pr-auto-assign.yml
+index b9a7c04..7d2121d 100644
+--- a/manifests/vibe-coding/.github/workflows/pr-auto-assign.yml
++++ b/manifests/vibe-coding/.github/workflows/pr-auto-assign.yml
+@@ -1,36 +1,22 @@
+ name: PR Auto Assign
+ 
+ on:
+-  pull_request:
++  pull_request_target:
+     types: [opened, ready_for_review]
+ 
++permissions:
++  pull-requests: write
++
+ jobs:
+   assign-author:
+     runs-on: ubuntu-latest
+     steps:
+-      - name: Assign author
+-        uses: actions/github-script@v7
++      - uses: actions/github-script@v7
+         with:
+           script: |
+-            github.rest.issues.addAssignees({
++            await github.rest.issues.addAssignees({
+               issue_number: context.issue.number,
+               owner: context.repo.owner,
+               repo: context.repo.repo,
+               assignees: [context.payload.pull_request.user.login]
+-            })
+-
+-  request-reviewers:
+-    runs-on: ubuntu-latest
+-    steps:
+-      - name: Request review from CODEOWNERS
+-        uses: actions/github-script@v7
+-        with:
+-          script: |
+-            const { data: owners } = await github.rest.repos.getCodeowners({
+-              owner: context.repo.owner,
+-              repo: context.repo.repo
+             });
+-            if (owners && owners.codeowners) {
+-              // CODEOWNERS-based review request is handled automatically by GitHub
+-              console.log("CODEOWNERS found, GitHub will auto-request reviews");
+-            }
+diff --git a/manifests/vibe-coding/.github/workflows/pr-conventions.yml b/manifests/vibe-coding/.github/workflows/pr-conventions.yml
+index 3195969..fe0d66d 100644
+--- a/manifests/vibe-coding/.github/workflows/pr-conventions.yml
++++ b/manifests/vibe-coding/.github/workflows/pr-conventions.yml
+@@ -4,6 +4,11 @@ on:
+   pull_request:
+     types: [opened, edited, synchronize, labeled, unlabeled]
+ 
++permissions:
++  contents: read
++  issues: write
++  pull-requests: write
++
+ jobs:
+   title-check:
+     runs-on: ubuntu-latest
+@@ -12,16 +17,13 @@ jobs:
+         env:
+           TITLE: ${{ github.event.pull_request.title }}
+         run: |
+-          if echo "$TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?: .{1,}$'; then
+-            echo "✓ PR title follows conventional commit format"
+-          else
+-            echo "✗ PR title must follow format: <type>(<scope>): <description>"
+-            echo "  Types: feat, fix, docs, style, refactor, perf, test, chore, ci"
+-            echo "  Example: feat(api): add user login endpoint"
++          if ! printf '%s\n' "$TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?: .+'; then
++            echo 'PR title must follow: <type>(<scope>): <description>' >&2
+             exit 1
+           fi
+ 
+   size-label:
++    if: github.event.pull_request.head.repo.fork == false
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+@@ -29,64 +31,38 @@ jobs:
+           fetch-depth: 0
+       - name: Calculate PR size
+         id: size
+-        run: |
+-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+-          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+-          CHANGES=$(git diff --diff-filter=AM "$BASE_SHA"..."$HEAD_SHA" | wc -l | tr -d ' ')
+-          if [ "$CHANGES" -le 10 ]; then
+-            SIZE="xs"
+-          elif [ "$CHANGES" -le 50 ]; then
+-            SIZE="s"
+-          elif [ "$CHANGES" -le 200 ]; then
+-            SIZE="m"
+-          elif [ "$CHANGES" -le 800 ]; then
+-            SIZE="l"
+-          else
+-            SIZE="xl"
+-          fi
+-          echo "changes=$CHANGES" >> $GITHUB_OUTPUT
+-          echo "size=$SIZE" >> $GITHUB_OUTPUT
+-          echo "This PR: $CHANGES lines changed → size/$SIZE"
+-      - name: Remove old size labels
+-        run: |
+-          for label in "size/xs" "size/s" "size/m" "size/l" "size/xl"; do
+-            if echo "${{ github.event.pull_request.labels.*.name }}" | grep -q "$label"; then
+-              gh pr edit ${{ github.event.pull_request.number }} --remove-label "$label" 2>/dev/null || true
+-            fi
+-          done
+         env:
+-          GH_TOKEN: ${{ github.token }}
+-      - name: Add size label
+-        uses: actions/github-script@v7
+-        with:
+-          script: |
+-            github.rest.issues.addLabels({
+-              issue_number: context.issue.number,
+-              owner: context.repo.owner,
+-              repo: context.repo.repo,
+-              labels: ['size/${{ steps.size.outputs.size }}']
+-            })
+-      - name: Warn on XL PR
+-        if: steps.size.outputs.size == 'xl'
++          BASE_SHA: ${{ github.event.pull_request.base.sha }}
++          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
++        run: |
++          CHANGES=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '{added += $1; removed += $2} END {print added + removed + 0}')
++          if [ "$CHANGES" -le 10 ]; then SIZE=xs
++          elif [ "$CHANGES" -le 50 ]; then SIZE=s
++          elif [ "$CHANGES" -le 200 ]; then SIZE=m
++          elif [ "$CHANGES" -le 800 ]; then SIZE=l
++          else SIZE=xl; fi
++          echo "size=$SIZE" >> "$GITHUB_OUTPUT"
++      - name: Replace size label
+         uses: actions/github-script@v7
++        env:
++          SIZE: ${{ steps.size.outputs.size }}
+         with:
+           script: |
+-            github.rest.issues.createComment({
+-              issue_number: context.issue.number,
+-              owner: context.repo.owner,
+-              repo: context.repo.repo,
+-              body: '⚠️ This PR changes **${{ steps.size.outputs.changes }}** lines (XL). Consider splitting it into smaller PRs for faster review.'
+-            })
+-
+-  body-check:
+-    runs-on: ubuntu-latest
+-    steps:
+-      - name: Check PR body content
+-        env:
+-          BODY: ${{ github.event.pull_request.body }}
+-        run: |
+-          if [ -z "$BODY" ] || [ "$BODY" = "null" ]; then
+-            echo "✗ PR description is empty. Please fill in the PR template."
+-            exit 1
+-          fi
+-          echo "✓ PR description is provided"
++            const names = ['size/xs', 'size/s', 'size/m', 'size/l', 'size/xl'];
++            const { data: current } = await github.rest.issues.listLabelsOnIssue({
++              owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number
++            });
++            for (const label of current) {
++              if (names.includes(label.name) && label.name !== `size/${process.env.SIZE}`) {
++                await github.rest.issues.removeLabel({
++                  owner: context.repo.owner, repo: context.repo.repo,
++                  issue_number: context.issue.number, name: label.name
++                });
++              }
++            }
++            if (!current.some(label => label.name === `size/${process.env.SIZE}`)) {
++              await github.rest.issues.addLabels({
++                owner: context.repo.owner, repo: context.repo.repo,
++                issue_number: context.issue.number, labels: [`size/${process.env.SIZE}`]
++              });
++            }
+diff --git a/manifests/vibe-coding/.github/workflows/release-branch.yml b/manifests/vibe-coding/.github/workflows/release-branch.yml
+index 573b3e3..a38ff4c 100644
+--- a/manifests/vibe-coding/.github/workflows/release-branch.yml
++++ b/manifests/vibe-coding/.github/workflows/release-branch.yml
+@@ -2,48 +2,26 @@ name: Release Branch
+ 
+ on:
+   push:
+-    branches:
+-      - "release/v*"
++    branches: ['release/v*']
++
++permissions:
++  contents: read
+ 
+ jobs:
+-  version-bump:
++  verify:
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+-      - name: Extract version from branch
+-        id: version
+-        run: |
+-          BRANCH=${GITHUB_REF#refs/heads/}
+-          VERSION=${BRANCH#release/}
+-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+-          echo "Release branch: $BRANCH → version $VERSION"
+-      - name: Check CHANGELOG
+-        run: |
+-          VERSION="${{ steps.version.outputs.version }}"
+-          if grep -q "^## \[${VERSION#v}\]" CHANGELOG.md 2>/dev/null; then
+-            echo "✓ CHANGELOG entry exists for $VERSION"
+-          else
+-            echo "! CHANGELOG entry missing for $VERSION — will create"
+-          fi
+-
+-  rc-deploy:
+-    needs: version-bump
+-    runs-on: ubuntu-latest
+-    environment: staging
+-    steps:
+-      - uses: actions/checkout@v4
+-      - name: Build for RC
+-        run: |
+-          pip install build
+-          python -m build
+-      - name: Deploy to staging
+-        run: |
+-          echo "Deploying release candidate ${{ steps.version.outputs.version }} to staging"
+-          # Add your actual deploy steps here
+-      - name: RC summary
++      - uses: actions/setup-python@v5
++        with:
++          python-version: '3.12'
++      - name: Check release branch, version, and changelog
+         run: |
+-          echo "## Release Candidate" >> $GITHUB_STEP_SUMMARY
+-          echo "Version: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+-          echo "Environment: staging" >> $GITHUB_STEP_SUMMARY
++          set -euo pipefail
++          TAG="${GITHUB_REF_NAME#release/}"
++          python3 scripts/version_guard.py check --tag "$TAG"
++          if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
++          if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
++          echo "Release branch $GITHUB_REF_NAME is ready for signed tag $TAG" >> "$GITHUB_STEP_SUMMARY"
+diff --git a/manifests/vibe-coding/.github/workflows/release.yml b/manifests/vibe-coding/.github/workflows/release.yml
+index 9a6bc9d..40632b0 100644
+--- a/manifests/vibe-coding/.github/workflows/release.yml
++++ b/manifests/vibe-coding/.github/workflows/release.yml
+@@ -2,8 +2,10 @@ name: Release
+ 
+ on:
+   push:
+-    tags:
+-      - "v[0-9]+.[0-9]+.[0-9]+"
++    tags: ['v*']
++
++permissions:
++  contents: read
+ 
+ jobs:
+   verify:
+@@ -12,42 +14,10 @@ jobs:
+       - uses: actions/checkout@v4
+         with:
+           fetch-depth: 0
+-      - name: Extract version from tag
+-        id: tag
+-        run: |
+-          TAG=${GITHUB_REF#refs/tags/}
+-          echo "version=$TAG" >> $GITHUB_OUTPUT
+-          echo "Release tag: $TAG"
+-      - name: Check CHANGELOG entry
+-        run: |
+-          VERSION="${{ steps.tag.outputs.version }}"
+-          if grep -q "^## \[${VERSION#v}\]" CHANGELOG.md 2>/dev/null; then
+-            echo "✓ CHANGELOG.md has entry for $VERSION"
+-          else
+-            echo "✗ CHANGELOG.md is missing entry for $VERSION"
+-            exit 1
+-          fi
+-      - name: Version consistency check
+-        run: |
+-          VERSION="${{ steps.tag.outputs.version }}"
+-          # Check pyproject.toml if exists
+-          if [ -f pyproject.toml ]; then
+-            PKG_VER=$(grep -E '^version\s*=' pyproject.toml | sed 's/.*"\(.*\)".*/\1/')
+-            if [ "v$PKG_VER" != "$VERSION" ]; then
+-              echo "✗ pyproject.toml version (v$PKG_VER) does not match tag ($VERSION)"
+-              exit 1
+-            fi
+-            echo "✓ pyproject.toml version matches tag"
+-          fi
+-          # Check package.json if exists
+-          if [ -f package.json ]; then
+-            PKG_VER=$(node -p "require('./package.json').version")
+-            if [ "v$PKG_VER" != "$VERSION" ]; then
+-              echo "✗ package.json version (v$PKG_VER) does not match tag ($VERSION)"
+-              exit 1
+-            fi
+-            echo "✓ package.json version matches tag"
+-          fi
++      - uses: actions/setup-python@v5
++        with:
++          python-version: '3.12'
++      - run: python3 scripts/version_guard.py check --tag "$GITHUB_REF_NAME"
+ 
+   ci:
+     needs: verify
+@@ -56,20 +26,24 @@ jobs:
+   build:
+     needs: ci
+     runs-on: ubuntu-latest
++    outputs:
++      has_dist: ${{ steps.dist.outputs.has_dist }}
+     steps:
+       - uses: actions/checkout@v4
+-      - name: Set up Python
+-        uses: actions/setup-python@v5
+-        with:
+-          python-version: "3.12"
+-      - name: Build distribution
++      - name: Optional project build
++        run: |
++          if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
++      - id: dist
+         run: |
+-          pip install build
+-          python -m build
+-      - name: Upload build artifacts
+-        uses: actions/upload-artifact@v4
++          if [ -d dist ] && find dist -type f -print -quit | grep -q .; then
++            echo 'has_dist=true' >> "$GITHUB_OUTPUT"
++          else
++            echo 'has_dist=false' >> "$GITHUB_OUTPUT"
++          fi
++      - uses: actions/upload-artifact@v4
++        if: steps.dist.outputs.has_dist == 'true'
+         with:
+-          name: dist
++          name: release-dist
+           path: dist/
+ 
+   github-release:
+@@ -79,18 +53,18 @@ jobs:
+       contents: write
+     steps:
+       - uses: actions/checkout@v4
+-      - name: Extract changelog section
+-        run: |
+-          VERSION="${GITHUB_REF_NAME#v}"
+-          sed -n "/^## \[${VERSION}\]/,/^## \[/p" CHANGELOG.md | head -n -1 > release_notes.md
+-          if [ ! -s release_notes.md ]; then
+-            echo "Release $GITHUB_REF_NAME" > release_notes.md
+-          fi
+-      - name: Create GitHub Release
+-        uses: softprops/action-gh-release@v2
++      - uses: actions/setup-python@v5
++        with:
++          python-version: '3.12'
++      - run: python3 scripts/version_guard.py notes --tag "$GITHUB_REF_NAME" --output release_notes.md
++      - uses: actions/download-artifact@v4
++        if: needs.build.outputs.has_dist == 'true'
++        with:
++          name: release-dist
++          path: dist/
++      - uses: softprops/action-gh-release@v2
+         with:
+           body_path: release_notes.md
+-          files: |
+-            dist/*.tar.gz
+-            dist/*.whl
+-          generate_release_notes: false
++          files: dist/*
++          fail_on_unmatched_files: false
++          prerelease: ${{ contains(github.ref_name, '-') }}
+diff --git a/manifests/vibe-coding/MANIFEST.md b/manifests/vibe-coding/MANIFEST.md
+index 085ff49..f123005 100644
+--- a/manifests/vibe-coding/MANIFEST.md
++++ b/manifests/vibe-coding/MANIFEST.md
+@@ -166,6 +166,12 @@ When the project spans multiple languages:
+ 4. **Unified Logging**: Structured JSON logging across all services with consistent field names.
+ 5. **Language Isolation**: Each language has its own build, test, and lint config. Integration tests verify contract adherence.
+ 
++## Version Records and Code Hosting
++
++- `VERSION` is the canonical SemVer source. Every version-number change must add a meaningful, categorized `CHANGELOG.md` entry in the same change and align existing package metadata.
++- Run `python3 scripts/version_guard.py check --base-ref <base>` for a version bump and `check --tag vX.Y.Z` before release. Use `notes --tag vX.Y.Z --output release_notes.md` for exact notes.
++- `--provider=git|github|gitlab|gitee` selects local Git only or one hosted CI/release pipeline. GitHub is the default; do not install unrelated host pipelines. Optional `scripts/ci.sh` and `scripts/build.sh` are POSIX hooks; deployment is explicit, never implied by a release.
++
+ ## GitHub Enterprise Automation
+ 
+ ### Subagent Dispatching for GitHub Ops
+@@ -178,9 +184,9 @@ When the project spans multiple languages:
+ 
+ ### Release Management Rules
+ 1. Only release managers can create and push tags.
+-2. All releases must have a CHANGELOG.md entry.
++2. Every version bump and release requires a substantive CHANGELOG.md entry added with the bump.
+ 3. Hotfix must go through the hotfix branch process.
+-4. Version numbers must be consistent: git tag = package version = CHANGELOG entry.
++4. Version numbers must be consistent: git tag = VERSION = known package versions = CHANGELOG entry.
+ 5. All release tags must be GPG signed.
+ 
+ ## Cloud Deployment Automation
+@@ -261,7 +267,7 @@ Unified Development Manifest — full lifecycle engineering from idea to product
+   scripts/          # Build, CI, and utility scripts
+   infra/            # Infrastructure as Code (Docker, Terraform, etc.)
+   cloud/            # Cloud platform deployment configs
+-  .github/          # GitHub governance and CI/CD workflows
++  .github/          # GitHub-provider governance and CI/CD workflows
+     ├── CODEOWNERS
+     ├── workflows/  # 12 CI/CD workflows
+     ├── ISSUE_TEMPLATE/
+@@ -334,7 +340,7 @@ See `references/decision-trees/language-selection.md` for the full decision tree
+ 
+ ### Release & Tag
+ - Versioning: SemVer 2.0 (MAJOR.MINOR.PATCH)
+-- CHANGELOG.md maintained in Keep-a-Changelog format
++- CHANGELOG.md maintained in Keep-a-Changelog format; a VERSION bump and new section belong to the same change
+ - All release tags must be GPG signed: `git tag -s v1.2.3 -m "v1.2.3"`
+ - Release flow: tag push → `release.yml` auto-triggers
+ 
+@@ -365,9 +371,9 @@ See `references/cloud-platforms/` for per-platform deployment guides and CI/CD i
+ |----------|---------|
+ | `DATABASE_URL` | Database connection string |
+ | `LOG_LEVEL` | Logging level (debug/info/warn/error) |
+-| `GITHUB_TOKEN` | GitHub API (needs `contents: write` + `pull-requests: write`) |
+-| `CODECOV_TOKEN` | Coverage report upload |
+-| `DOCKER_USERNAME` / `DOCKER_PASSWORD` | Container registry publishing |
++| `GITHUB_TOKEN` | Built-in GitHub token; each job declares its required permission |
++| `CI_JOB_TOKEN` | Built-in GitLab Releases API token |
++| `GITEE_OWNER` / `GITEE_REPO` / `GITEE_TOKEN` | Gitee Go Release target and secret |
+ | Cloud credentials | Platform-specific (see `references/cloud-platforms/`) |
+ 
+ Secrets managed via environment variables or platform secret stores. Never hardcoded.
+@@ -376,9 +382,9 @@ Secrets managed via environment variables or platform secret stores. Never hardc
+ 
+ | File | Purpose |
+ |------|---------|
+-| `.github/workflows/ci.yml` | Build, lint, matrix test, coverage |
+-| `.github/workflows/release.yml` | Standard release pipeline |
+-| `.github/workflows/hotfix.yml` | Emergency fix pipeline |
++| `.github/workflows/ci.yml` | VERSION/Changelog validation and optional project CI hook |
++| `.github/workflows/release.yml` | Tag validation, optional build, and GitHub Release |
++| `.github/workflows/hotfix.yml` | Pre-tag hotfix validation; no automatic deployment |
+ | `.github/workflows/pr-conventions.yml` | PR title/size enforcement |
+ | `.github/workflows/codeql-analysis.yml` | Security code scanning |
+ | `.github/dependabot.yml` | Dependency auto-updates |
+diff --git a/manifests/vibe-coding/README.md b/manifests/vibe-coding/README.md
+index 69714f7..057597f 100644
+--- a/manifests/vibe-coding/README.md
++++ b/manifests/vibe-coding/README.md
+@@ -10,7 +10,7 @@ Full lifecycle engineering manifest covering 0-to-1 project building → develop
+ - **15 Commands**: plan, scaffold, implement, quality-gate, deploy-check, lang-select, cloud-deploy, release, agent-eval, frontend-check, desktop-build, update-docker, update-docs, update-examples, update-scripts.
+ - **5 Cloud Platform References**: Vercel, Cloudflare, Tencent Cloud, Alibaba Cloud, Huawei Cloud.
+ - **5 Language Specs + Decision Trees**: Go, Rust, Python, TypeScript/JavaScript, Java.
+-- **GitHub Enterprise Governance**: 12 CI/CD workflows, issue/PR templates, CODEOWNERS, SECURITY.md, dependabot config.
++- **Code hosting and CI/CD**: Git-only, GitHub (12 workflows and governance), GitLab CI, or Gitee Go; shared VERSION/Changelog checks and tag releases.
+ - **Enterprise References**: Branching strategy, release process, PR conventions, tag conventions.
+ - **8 Skills installed on init**: Four manifest-bundled skills, `canvas-design`, and the three `wxa-skills-*` skills from the managed `ai-mode-skills` submodule.
+ - **Templates**: CHANGELOG, README, release checklist, roadmap.
+@@ -24,7 +24,12 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
+   --scenario=fullstack-web \
+   --cloud=vercel \
+   --org mycompany \
+-  --repo my-app
++  --repo my-app \
++  --provider=github
++
++# Or via the vibe CLI; use `vibe add manifest` for an existing project.
++vibe init vibe-coding ./my-app --provider=gitlab
++vibe add manifest vibe-coding ./my-app --provider=gitee --dry-run
+ ```
+ 
+ ### Available Init Flags
+@@ -40,6 +45,7 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
+ --org <org>                     GitHub organization
+ --repo <repo>                   GitHub repository
+ --email <email>                 Security contact email
++--provider=<name>             git / github / gitlab / gitee (default: github)
+ --git / --no-git                Git initialization (default: auto)
+ -f, --force                     Overwrite existing files
+ -n, --dry-run                   Preview without writing
+@@ -99,11 +105,15 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
+ 
+ See `references/desktop-frameworks.md` for full comparison and decision guide.
+ 
++## Version records and CI/CD
++
++Initialization creates root `VERSION` and `CHANGELOG.md` (unless already present). Every version bump must add a meaningful section to Changelog in the same change. Run `python3 scripts/version_guard.py check --base-ref origin/main` before merging; tag releases run `check --tag vX.Y.Z` and publish only that section. Optional POSIX hooks are `scripts/ci.sh` and `scripts/build.sh`; `dist/` files are attached when present. Set `--provider=git` for local-only workflow, or select GitHub, GitLab, or Gitee. For GitLab enable runners; for Gitee enable Gitee Go and configure `GITEE_OWNER`, `GITEE_REPO`, and secret `GITEE_TOKEN`. See `references/release-process.md`.
++
+ ## Dependencies
+ 
+ - **Bash**: Init and maintenance scripts.
+ - **Git**: Version control.
+-- **GitHub CLI** (`gh`): Repository operations, CI monitoring, releases.
++- **GitHub CLI** (`gh`): Optional for GitHub repository operations and CI monitoring.
+ - **Language toolchains**: Go, Rust, Python (uv), Node (pnpm), Java (maven/gradle) as needed.
+ - **Cloud CLIs**: Platform-specific CLIs for cloud deployments.
+ 
+diff --git a/manifests/vibe-coding/commands/COMMANDS.md b/manifests/vibe-coding/commands/COMMANDS.md
+index aabd3e7..fac0eb7 100644
+--- a/manifests/vibe-coding/commands/COMMANDS.md
++++ b/manifests/vibe-coding/commands/COMMANDS.md
+@@ -34,7 +34,7 @@ Complete command index for the unified development manifest. All commands are av
+ | Command | File | Description |
+ |---------|------|-------------|
+ | `/cloud-deploy <target> <platform>` | `cloud-deploy/COMMAND.md` | Deploy to cloud platform (vercel/cloudflare/tencent/alibaba/huawei) |
+-| `/release` | `release/COMMAND.md` | Execute enterprise release workflow: version bump, CHANGELOG update, GPG-signed tag, GitHub Release |
++| `/release` | `release/COMMAND.md` | Execute enterprise release workflow: VERSION/CHANGELOG validation, GPG-signed tag, provider Release |
+ | `/frontend-check <mode>` | `frontend-check/COMMAND.md` | Frontend quality check: a11y, performance (CWV), bundle size, visual regression |
+ | `/desktop-build <framework> <platform>` | `desktop-build/COMMAND.md` | Build, package, sign desktop app (Electron/Tauri/Flutter × mac/win/linux) |
+ 
+diff --git a/manifests/vibe-coding/commands/release/COMMAND.md b/manifests/vibe-coding/commands/release/COMMAND.md
+index d7371c7..5a15db5 100644
+--- a/manifests/vibe-coding/commands/release/COMMAND.md
++++ b/manifests/vibe-coding/commands/release/COMMAND.md
+@@ -1,80 +1,17 @@
+ # /release
+ 
+-Execute the enterprise release workflow.
++Release a project initialized with the vibe-coding manifest. The selected provider is the one used during initialization (`git`, `github`, `gitlab`, or `gitee`).
+ 
+ ## Usage
+ 
+-```
+-/release <version> [options]
+-```
++`/release <major|minor|patch|X.Y.Z[-prerelease]> [--dry-run]`
+ 
+-### Version Format
++1. Read `VERSION`; calculate the requested SemVer. Never treat a Git tag or a package manifest as the sole source of truth.
++2. Update `VERSION`, every existing package version field, and `CHANGELOG.md` **in the same change**. Add `## [X.Y.Z] - YYYY-MM-DD` with at least one meaningful bullet under `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`. Keep `Unreleased` for future changes. Do not insert generic placeholder notes.
++3. Run `python3 scripts/version_guard.py check --base-ref <base-commit>` and project checks (`sh scripts/ci.sh` if present). For `--dry-run`, report proposed edits and checks without writing or tagging.
++4. Merge the reviewed change, then run `python3 scripts/version_guard.py check --tag vX.Y.Z` on the release commit. Sign an annotated tag (`git tag -s vX.Y.Z -m "Release vX.Y.Z"`) and push it to the selected remote. Never move an existing release tag.
++5. On GitHub, GitLab, and Gitee the selected tag pipeline creates a Release from the exact Changelog section. Git-only mode: run `python3 scripts/version_guard.py notes --tag vX.Y.Z --output release_notes.md` and publish notes manually if desired. Build/test hooks are `scripts/build.sh` and `scripts/ci.sh` (POSIX shell); no deployment is implied.
+ 
+-SemVer 2.0: `MAJOR.MINOR.PATCH`
++For hotfixes, validate the branch's VERSION and Changelog before creating its signed tag. The hotfix workflow does not create tags or deploy automatically.
+ 
+-```
+-/release major        # Bump major version (breaking changes)
+-/release minor        # Bump minor version (new features)
+-/release patch        # Bump patch version (bug fixes)
+-/release 1.2.3        # Specific version
+-```
+-
+-### Options
+-
+-| Option | Description |
+-|--------|-------------|
+-| `--pre=<label>` | Pre-release label (alpha, beta, rc) |
+-| `--notes=<file>` | Release notes file |
+-| `--dry-run` | Preview release without executing |
+-
+-## Workflow
+-
+-1. **Verify Pre-Release Checklist**
+-   - [ ] All quality gates passed
+-   - [ ] CHANGELOG.md updated with new version entry
+-   - [ ] README.md reflects current state
+-
+-2. **Create Release Branch** (if not already on one)
+-   ```bash
+-   git checkout -b release/v1.2.3
+-   ```
+-
+-3. **Bump Version**
+-   - Update version in package files (package.json, pyproject.toml, Cargo.toml, go.mod, etc.)
+-   - Commit: `chore: bump version to 1.2.3`
+-
+-4. **Create GPG-Signed Tag**
+-   ```bash
+-   git tag -s v1.2.3 -m "Release v1.2.3"
+-   ```
+-
+-5. **Push Tag**
+-   ```bash
+-   git push origin v1.2.3
+-   ```
+-
+-6. **Verify Release**
+-   - `release.yml` workflow triggers automatically
+-   - Monitor: `gh run watch`
+-   - Verify release appears: `gh release view v1.2.3`
+-
+-## Merge Strategy
+-
+-| Branch | Merge Method | Target |
+-|--------|-------------|--------|
+-| Feature → main | Squash merge | Clean history |
+-| Release → main | Merge commit | Preserve release record |
+-| Hotfix → main | Merge commit | Preserve fix record |
+-
+-## Post-Release
+-
+-- [ ] Verify deployment health
+-- [ ] Update project board
+-- [ ] Notify stakeholders
+-- [ ] Close related milestone/issues
+-
+-## References
+-
+-- `references/release-process.md` — detailed release process
+-- `references/tag-convention.md` — tag naming and GPG signing
+-- `references/branching-strategy.md` — branch strategy decision guide
++See `.cursor/references/release-process.md` for provider setup, CI credentials, and verification.
+diff --git a/manifests/vibe-coding/references/release-process.md b/manifests/vibe-coding/references/release-process.md
+index bee81bf..5c67295 100644
+--- a/manifests/vibe-coding/references/release-process.md
++++ b/manifests/vibe-coding/references/release-process.md
+@@ -1,110 +1,46 @@
+-# Release Process Guide
++# Version and Release Process
+ 
+-## Versioning
++## Single source of truth
+ 
+-遵循 Semantic Versioning 2.0：
++`VERSION` contains one SemVer value without a `v` prefix. Existing `package.json`, `pyproject.toml`, `Cargo.toml`, and direct `pom.xml` project/package versions must match it. Initializing an existing project adopts its one unambiguous package version; conflicting values stop initialization before files are copied. New projects start at `0.1.0` and `CHANGELOG.md` with `Unreleased`. This is not an automatic first release.
+ 
+-| 版本段 | 含义 | 示例 |
+-|--------|------|------|
+-| MAJOR | 不兼容的 API 变更 | 1.0.0 → 2.0.0 |
+-| MINOR | 向后兼容的新功能 | 1.0.0 → 1.1.0 |
+-| PATCH | 向后兼容的 bug 修复 | 1.0.0 → 1.0.1 |
+-| -rc.N | 发布候选（Release Candidate） | 1.0.0-rc.1 |
+-| -hotfix.N | 紧急修复 | 1.0.0-hotfix.1 |
++Every version bump is one reviewed change containing the new `VERSION`, aligned package versions, and a new `CHANGELOG.md` section such as:
+ 
+-## Release 类型
++```markdown
++## [1.2.3] - 2026-10-01
+ 
+-| 类型 | 触发方式 | 工作流 | 执行步骤 |
+-|------|----------|--------|----------|
+-| **Standard** | `git tag v1.2.3` → `git push origin v1.2.3` | `release.yml` | verify → CI → build → GitHub Release → publish |
+-| **Pre-release** | `git tag v1.2.3-rc.1` → `git push` | `release.yml` (prerelease) | 同上，标记为 prerelease |
+-| **Release branch** | push `release/v*` 分支 | `release-branch.yml` | version bump → RC deploy |
+-| **Hotfix** | push `hotfix/v*` 分支 | `hotfix.yml` | urgent CI → deploy → tag → backport |
+-
+-## Standard Release 流程
+-
+-```mermaid
+-graph LR
+-    A[release manager 创建 tag] --> B[tag push 触发 release.yml]
+-    B --> C[verify: 版本一致性检查]
+-    C --> D[CI: 完整测试]
+-    D --> E[Build 分发包]
+-    E --> F[Create GitHub Release]
+-    F --> G[Publish to 包管理器]
++### Fixed
++- Correct the failed export path for empty reports.
+ ```
+ 
+-### 分步说明
+-
+-1. **准备**：确认 CHANGELOG.md 已更新，所有 CI 通过
+-2. **打 tag**：
+-   ```bash
+-   git checkout main
+-   git pull origin main
+-   git tag -s v1.2.3 -m "v1.2.3"
+-   git push origin v1.2.3
+-   ```
+-3. **等待 CI**：`release.yml` 自动运行
+-4. **验证发布**：确认 GitHub Release 已创建、包已发布
+-
+-## Hotfix 流程
+-
+-```mermaid
+-graph LR
+-    A[生产环境发现 bug] --> B[从最近 release tag 创建 hotfix 分支]
+-    B --> C[在 hotfix 分支修复]
+-    C --> D[push hotfix 触发 workflow]
+-    D --> E[urgent CI]
+-    E --> F[部署到生产]
+-    F --> G[自动打 hotfix tag]
+-    G --> H[backport PR 到 main + develop]
+-```
+-
+-### Hotfix 命名
+-
+-```
+-hotfix/v1.2.3
+-```
++A section needs a real categorized bullet. Placeholder text, missing/duplicate headings, and a section prepared in an earlier commit fail the version-bump check. Release tags use `v` plus the exact VERSION, including `-rc.1` or `-hotfix.1` when applicable. `Unreleased` is not a release note.
+ 
+-从需要修复的最近 release tag（如 `v1.2.2`）创建：
++## Local and CI checks
+ 
+ ```bash
+-git checkout -b hotfix/v1.2.3 v1.2.2
+-# 修复代码
+-git commit -m "fix: ..."
+-git push origin hotfix/v1.2.3
++python3 scripts/version_guard.py check --base-ref origin/main
++python3 scripts/version_guard.py check --tag "v$(cat VERSION)"
++python3 scripts/version_guard.py notes --tag "v$(cat VERSION)" --output release_notes.md
+ ```
+ 
+-push 后自动触发 `hotfix.yml`，部署完成后自动创建 `v1.2.3-hotfix.1` tag。
+-
+-## 版本一致性检查
+-
+-发布时必须确保以下三处版本号一致：
++`--base-ref` compares the current change against a Git commit. Run it in the PR pipeline and after pushing to the protected branch. CI always validates version syntax and known package metadata; the tag pipeline additionally validates the exact Changelog section and creates release notes. If present, POSIX `scripts/ci.sh` runs in validation and `scripts/build.sh` runs before publication. Put distributable files in `dist/`; an empty `dist/` yields a notes-only Release. Neither hook performs deployment by default.
+ 
+-```
+-git tag v1.2.3
+-     ↓ 必须一致
+-pyproject.toml: version = "1.2.3"
+-     ↓ 必须一致
+-CHANGELOG.md: ## [1.2.3] - 2025-06-15
+-```
++## Provider activation
+ 
+-`release.yml` 中的 `verify` job 自动执行此检查。
++| Provider | Pipeline | Release credentials and setup |
++|---|---|---|
++| Git | Local commands only | Configure any Git remote yourself; no hosted Release is created. |
++| GitHub | 12 bundled Actions workflows | Enable Actions and branch/tag protection. `GITHUB_TOKEN` is scoped by each workflow; the tag workflow creates the Release. |
++| GitLab | `.gitlab-ci.yml` | Enable runners and protect tags. The tag job uses `CI_JOB_TOKEN` with Releases API permissions; the triggering user needs release access. |
++| Gitee | `.workflow/vibe-ci.yml` and `vibe-release.yml` | First enable Gitee Go in the repository UI and connect the supplied YAML pipelines. Set `GITEE_OWNER`, `GITEE_REPO`, and a secret `GITEE_TOKEN` with Release permission. |
+ 
+-## Release Branch 流程（Git Flow）
+-
+-当需要发布一个版本时：
+-
+-```bash
+-git checkout develop
+-git checkout -b release/v1.2.0
+-git push origin release/v1.2.0
+-```
++GitHub, GitLab, and Gitee run validation for PRs and branch pushes, and publish a Release on version-tag push. The Gitee tag pipeline verifies the tag points to the checked-out commit before calling the Release API. Keep protected branches and tags; especially on Gitee, use PR review for multi-commit pushes so each version bump is compared with the target branch. Credentials live in the host's secret store, not committed files. No pipeline creates a remote repository, tag, or production deployment.
+ 
+-push 后 `release-branch.yml` 自动执行：
+-1. Version bump（确保版本号正确）
+-2. RC deploy（部署到 staging 验证）
+-3. 最终验证后，手动合并到 `main` 并打 tag
++## Publishing and rollback
+ 
+-## 发布前 Checklist
++1. Merge the version-and-Changelog change after CI passes.
++2. On the release commit, run the tag check and create a GPG-signed tag: `git tag -s "v$(cat VERSION)" -m "Release v$(cat VERSION)"`.
++3. Push the tag and confirm the selected provider's release job and Release notes. Git-only projects produce notes locally.
++4. If publication fails, correct the pipeline or credentials and rerun it. Do not move or delete a published tag. Revert a faulty code release in a new commit and publish a new patch/hotfix version.
+ 
+-参见 `templates/RELEASE_CHECKLIST.md.example`。
++Provider references: [GitHub reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows), [GitLab Releases API](https://docs.gitlab.com/api/releases/), [Gitee Go triggers](https://help.gitee.com/gitee-go/pipeline/trigger), [Gitee Go activation](https://help.gitee.com/gitee-go/get-started-in-3-steps).
+diff --git a/manifests/vibe-coding/references/tag-convention.md b/manifests/vibe-coding/references/tag-convention.md
+index 9f07d4a..90af19a 100644
+--- a/manifests/vibe-coding/references/tag-convention.md
++++ b/manifests/vibe-coding/references/tag-convention.md
+@@ -14,7 +14,7 @@
+ - 严格遵循 SemVer 格式
+ - RC 序号从 1 开始递增（`-rc.1`, `-rc.2`, ...）
+ - Hotfix 序号从 1 开始递增（`-hotfix.1`, `-hotfix.2`, ...）
+-- 不允许非标准后缀（如 `-beta`, `-alpha`）
++- 其他 SemVer 预发布后缀（如 `-beta.1`）也可使用，但 `VERSION`、Changelog 与 tag 必须完全一致
+ 
+ ## GPG 签名
+ 
+@@ -98,21 +98,14 @@ Tag push 作为 release 触发器（而非按钮 workflow_dispatch）的原因
+ on:
+   push:
+     tags:
+-      - "v[0-9]+.[0-9]+.[0-9]+"
+-      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
++      - "v*"
+ ```
+ 
+ `release.yml` **不创建 tag** — tag 由 release manager 手动创建，workflow 只响应。
+ 
+-### hotfix.yml 自动创建 tag
++### Hotfix tag
+ 
+-```yaml
+-# 在 hotfix workflow 中自动创建
+-git tag -a "$HOTFIX_TAG" -m "Hotfix $HOTFIX_TAG"
+-git push origin "$HOTFIX_TAG"
+-```
+-
+-Hotfix tag 由 workflow 自动创建，因为 hotfix 场景需要尽快完成，减少人工步骤。
++`hotfix.yml` 先校验 `VERSION`、Changelog 和项目检查，不创建 tag 或自动部署。合并后由发布负责人运行 `python3 scripts/version_guard.py check --tag "v$(cat VERSION)"`，再创建 GPG 签名 tag 并推送。
+ 
+ ## 常用命令
+ 
+diff --git a/manifests/vibe-coding/rules/vibe-coding-core.mdc b/manifests/vibe-coding/rules/vibe-coding-core.mdc
+index 3d6e00c..1ea624e 100644
+--- a/manifests/vibe-coding/rules/vibe-coding-core.mdc
++++ b/manifests/vibe-coding/rules/vibe-coding-core.mdc
+@@ -57,7 +57,7 @@ When uncertain, consult `references/language-specs/` for the target language.
+ - Conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`, `perf:`, `ci:`
+ - Commits must clearly describe "Why" not just "What".
+ - PRs must include: summary of changes, test plan, evidence of quality gate passing.
+-- Use `gh` CLI for all GitHub interactions.
++- Use plain Git for commits, branches, and tags; use the selected host's CLI/API only for host-specific operations (`gh` on GitHub).
+ - Post-commit: run `vibe-post-commit.sh` to sync docs and state.
+ 
+ ## 7. Delivery Quality
+@@ -65,7 +65,7 @@ When uncertain, consult `references/language-specs/` for the target language.
+ - Git commit 必须清晰描述 "Why" 而非仅仅是 "What"。
+ - **自动化同步 (Post-Commit)**: 每次 commit 后，必须确保 README.md 和 CLAUDE.md 已同步更新。
+ - **自动化测试**: 按变更风险和项目约定选择针对性测试；不要为简单改动强制启动专用测试技能。
+-- **GitHub 集成**: 优先使用 `gh` CLI 进行 PR 创建、CI 状态监控和自动化流程触发。
++- **代码托管集成**: 使用初始化时选定的 GitHub、GitLab 或 Gitee 流水线；GitHub 操作优先使用 `gh` CLI。
+ - 创建 PR 时，必须包含详细的测试计划。
+ 
+ ## 8. Proportionate Subagent Use
+diff --git a/manifests/vibe-coding/rules/vibe-coding-enterprise.mdc b/manifests/vibe-coding/rules/vibe-coding-enterprise.mdc
+index f0535c5..276879e 100644
+--- a/manifests/vibe-coding/rules/vibe-coding-enterprise.mdc
++++ b/manifests/vibe-coding/rules/vibe-coding-enterprise.mdc
+@@ -1,6 +1,6 @@
+ ---
+ description: Enterprise Governance — branch protection, CODEOWNERS, release management, security compliance
+-globs: ["**/.github/**", "**/CHANGELOG.md", "**/SECURITY.md"]
++globs: ["**/.github/**", "**/.gitlab-ci.yml", "**/.workflow/**", "**/VERSION", "**/CHANGELOG.md", "**/SECURITY.md"]
+ alwaysApply: true
+ ---
+ 
+@@ -8,16 +8,15 @@ alwaysApply: true
+ 
+ ## 1. Repository Governance
+ 
+-- CODEOWNERS assigns ownership per directory/path for automated review assignments.
+-- CODE_OF_CONDUCT.md and SECURITY.md are required in every repository.
+-- Branch protection on `main`: requires 2+ reviews, all status checks passing, up-to-date branch.
++- On GitHub, CODEOWNERS assigns ownership; CODE_OF_CONDUCT.md and SECURITY.md are supplied by the GitHub template.
++- Protect the primary branch and release tags on the selected host; use reviews and required CI checks where supported.
+ 
+ ## 2. Release Management
+ 
+ 1. Only release managers can create and push tags.
+-2. All releases must have a corresponding CHANGELOG.md entry.
++2. Every VERSION bump requires a corresponding substantive CHANGELOG.md entry added in the same change; all releases use that entry.
+ 3. Hotfixes must go through the hotfix branch process — never modify a release tag directly.
+-4. Version numbers must be consistent: git tag = package version = CHANGELOG entry.
++4. Version numbers must be consistent: git tag = VERSION = known package versions = CHANGELOG entry.
+ 5. All release tags must be GPG signed.
+ 
+ ## 3. Release Workflow
+@@ -50,28 +49,31 @@ feature branch → PR → squash merge to main
+ | Documentation | 04-documentation.yml | docs |
+ | Epic | 05-epic.yml | epic |
+ 
+-## 6. CI/CD Workflows (12 workflows)
++## 6. GitHub CI/CD Workflows (12 workflows, GitHub provider only)
+ 
+ | Workflow | Trigger | Purpose |
+ |----------|---------|---------|
+-| `ci.yml` | Push to any branch | Build, lint, matrix test, coverage |
++| `ci.yml` | PR/push/reusable | Version check and optional project CI hook |
+ | `pr-conventions.yml` | PR opened/edited | Title format, size check |
+-| `pr-auto-assign.yml` | PR opened | Auto-assign reviewer from CODEOWNERS |
++| `pr-auto-assign.yml` | PR opened | Assign PR author; GitHub handles CODEOWNERS |
+ | `merge-queue.yml` | Merge queue | Validate before merge |
+ | `codeql-analysis.yml` | PR + schedule | Security code scanning |
+ | `dependency-review.yml` | PR | License + CVE checks |
+-| `release.yml` | Tag push | Build, test, publish artifacts |
++| `release.yml` | Tag push | Validate, optional build, create GitHub Release |
+ | `release-branch.yml` | Branch `release/*` | Release branch CI |
+-| `hotfix.yml` | Branch `hotfix/*` | Hotfix CI + deploy |
+-| `deploy-pages.yml` | Push to main | GitHub Pages deployment |
++| `hotfix.yml` | Branch `hotfix/*` | Validate hotfix before manual signed tag |
++| `deploy-pages.yml` | Manual dispatch | Explicit GitHub Pages deployment |
+ | `issue-triage.yml` | Issue opened/edited | Auto-label, assign |
+ | `stale.yml` | Schedule | Mark/close stale issues and PRs |
+ 
+-## 7. Environment Variables (Required for CI)
++## 7. Host-specific CI Credentials
+ 
+ | Variable | Permission | Purpose |
+ |----------|-----------|---------|
+-| `GITHUB_TOKEN` | `contents: write`, `pull-requests: write` | PR/Release operations |
+-| `CODECOV_TOKEN` | N/A | Coverage reporting |
+-| `DOCKER_USERNAME` / `DOCKER_PASSWORD` | N/A | Docker Hub publishing |
+-| `NPM_TOKEN` / `PYPI_TOKEN` | N/A | Package registry publishing |
++| `GITHUB_TOKEN` | Scoped by each GitHub job | PR metadata and GitHub Release operations |
++| `CI_JOB_TOKEN` | GitLab Releases API | GitLab tag Release job |
++| `GITEE_OWNER` / `GITEE_REPO` / `GITEE_TOKEN` | Gitee project / secret | Gitee Go Release job |
++
++## 8. Other code hosts
++
++GitLab uses `.gitlab-ci.yml` and Gitee uses `.workflow/` pipelines. `git` provider has local release checks only. All hosted pipelines use `scripts/version_guard.py` and never deploy production automatically.
+diff --git a/manifests/vibe-coding/scripts/vibe-init.sh b/manifests/vibe-coding/scripts/vibe-init.sh
+index 072fc84..b27d3f8 100755
+--- a/manifests/vibe-coding/scripts/vibe-init.sh
++++ b/manifests/vibe-coding/scripts/vibe-init.sh
+@@ -20,6 +20,7 @@ RELATIVE_MANIFEST_DIR=$(realpath --relative-to="$(pwd)" "$MANIFEST_DIR" 2>/dev/n
+ # ── Defaults ──
+ SCENARIOS=""
+ CLOUD_PROVIDER=""
++CODE_PROVIDER="github"
+ DEFAULT_OWNER="default-owner"
+ ORG_NAME=""
+ REPO_NAME=""
+@@ -55,6 +56,7 @@ GitHub Enterprise:
+   --email <email>                  Security contact email (default: security@example.com)
+ 
+ Git:
++  --provider=<name>               git / github / gitlab / gitee (default: github)
+   --git                            Force git repository initialization
+   --no-git                         Skip git initialization
+ 
+@@ -79,6 +81,8 @@ while [[ $# -gt 0 ]]; do
+     --scenario) SCENARIOS="$2" ; shift 2 ;;
+     --cloud=*) CLOUD_PROVIDER="${1#*=}" ; shift ;;
+     --cloud) CLOUD_PROVIDER="$2" ; shift 2 ;;
++    --provider=*) CODE_PROVIDER="${1#*=}" ; shift ;;
++    --provider) CODE_PROVIDER="$2" ; shift 2 ;;
+     -o|--owner) DEFAULT_OWNER="$2" ; shift 2 ;;
+     --org) ORG_NAME="$2" ; shift 2 ;;
+     --repo) REPO_NAME="$2" ; shift 2 ;;
+@@ -98,14 +102,21 @@ while [[ $# -gt 0 ]]; do
+ done
+ 
+ TARGET="${TARGET:-$(pwd)}"
+-mkdir -p "$TARGET"
+-TARGET="$(cd "$TARGET" && pwd)"
++case "$CODE_PROVIDER" in
++  git|github|gitlab|gitee) ;;
++  *) echo "Unsupported code provider: $CODE_PROVIDER" >&2; exit 2 ;;
++esac
++TARGET="$(python3 -c 'import os, sys; print(os.path.abspath(sys.argv[1]))' "$TARGET")"
+ PROJECT_ROOT="$TARGET"
++VERSION_ARGS=()
++$DRY_RUN && VERSION_ARGS+=(--dry-run)
++python3 "$MANIFEST_DIR/scripts/init_version.py" "$TARGET" "${VERSION_ARGS[@]}"
+ 
+ echo "=== Vibe Coding Unified Manifest Init ==="
+ echo "  Source:    $MANIFEST_DIR"
+ echo "  Target:    $TARGET"
+ echo "  Scenarios: ${SCENARIOS:-default}"
++echo "  Provider:  $CODE_PROVIDER"
+ [[ -n "$CLOUD_PROVIDER" ]] && echo "  Cloud:     $CLOUD_PROVIDER"
+ $DRY_RUN && echo "  Mode:      DRY RUN (no files written)"
+ echo ""
+@@ -115,8 +126,6 @@ echo ""
+ copy_file() {
+   local src="$1" dst="$2"
+   local label="${dst#$TARGET/}"
+-  mkdir -p "$(dirname "$dst")"
+-
+   if [[ -f "$dst" && "$FORCE" != true ]]; then
+     echo "  SKIP  $label (exists)"
+     return
+@@ -127,6 +136,7 @@ copy_file() {
+     return
+   fi
+ 
++  mkdir -p "$(dirname "$dst")"
+   cp "$src" "$dst"
+   echo "  COPY  $label"
+ }
+@@ -134,7 +144,6 @@ copy_file() {
+ link_file() {
+   local src="$1" dst="$2"
+   local label="${dst#$TARGET/}"
+-  mkdir -p "$(dirname "$dst")"
+ 
+   if { [[ -e "$dst" ]] || [[ -L "$dst" ]]; } && [[ "$FORCE" != true ]]; then
+     echo "  SKIP  $label (exists)"
+@@ -146,6 +155,7 @@ link_file() {
+     return
+   fi
+ 
++  mkdir -p "$(dirname "$dst")"
+   ln -sfn "$src" "$dst"
+   echo "  LINK  $label -> $src"
+ }
+@@ -153,7 +163,6 @@ link_file() {
+ copy_with_subst() {
+   local src="$1" dst="$2"
+   local label="${dst#$TARGET/}"
+-  mkdir -p "$(dirname "$dst")"
+ 
+   if [[ -f "$dst" && "$FORCE" != true ]]; then
+     echo "  SKIP  $label (exists)"
+@@ -165,6 +174,7 @@ copy_with_subst() {
+     return
+   fi
+ 
++  mkdir -p "$(dirname "$dst")"
+   sed \
+     -e "s|\${DEFAULT_OWNER}|$DEFAULT_OWNER|g" \
+     -e "s|\${ORG_NAME}|${ORG_NAME:-org}|g" \
+@@ -208,6 +218,7 @@ copy_file "$MANIFEST_DIR/CONTRIBUTING.md" "$TARGET/CONTRIBUTING.md"
+ copy_file "$MANIFEST_DIR/.cursorrules"   "$TARGET/.cursorrules"
+ copy_file "$MANIFEST_DIR/.editorconfig"  "$TARGET/.editorconfig"
+ copy_file "$MANIFEST_DIR/.gitignore"     "$TARGET/.gitignore"
++copy_file "$MANIFEST_DIR/scripts/version_guard.py" "$TARGET/scripts/version_guard.py"
+ 
+ # ── Zone 3: Install Rules ──
+ echo ""
+@@ -269,9 +280,9 @@ if [[ -n "$SCENARIOS" ]]; then
+   done
+ fi
+ 
+-# ── Zone 5: GitHub Enterprise (.github/) ──
++# ── Zone 5: Selected code-host platform ──
+ echo ""
+-echo "── Zone 5: GitHub Enterprise Governance ──"
++echo "── Zone 5: $CODE_PROVIDER Governance and CI/CD ──"
+ 
+ install_github_file() {
+   local src="$1" dst="$2" needs_subst="${3:-false}"
+@@ -300,7 +311,7 @@ install_github_file() {
+   echo "  COPY  $label"
+ }
+ 
+-if [[ -d "$MANIFEST_DIR/.github" ]]; then
++if [[ "$CODE_PROVIDER" == "github" && -d "$MANIFEST_DIR/.github" ]]; then
+   install_github_file "$MANIFEST_DIR/.github/CODEOWNERS"             "$TARGET/.github/CODEOWNERS" true
+   install_github_file "$MANIFEST_DIR/.github/SECURITY.md"            "$TARGET/.github/SECURITY.md" true
+   install_github_file "$MANIFEST_DIR/.github/CODE_OF_CONDUCT.md"     "$TARGET/.github/CODE_OF_CONDUCT.md" true
+@@ -319,6 +330,15 @@ if [[ -d "$MANIFEST_DIR/.github" ]]; then
+     install_github_file "$wf" "$TARGET/.github/workflows/$(basename "$wf")" false
+   done
+ fi
++if [[ "$CODE_PROVIDER" == "gitlab" ]]; then
++  copy_file "$MANIFEST_DIR/platforms/gitlab/.gitlab-ci.yml" "$TARGET/.gitlab-ci.yml"
++fi
++if [[ "$CODE_PROVIDER" == "gitee" ]]; then
++  for wf in "$MANIFEST_DIR/platforms/gitee/.workflow"/*.yml; do
++    [[ -f "$wf" ]] || continue
++    copy_file "$wf" "$TARGET/.workflow/$(basename "$wf")"
++  done
++fi
+ 
+ # ── Zone 6: References ──
+ echo ""
+@@ -378,7 +398,12 @@ if [[ -d "$MANIFEST_DIR/commands" ]]; then
+     cmd_dest="$TARGET/.cursor/commands/$cmd_name"
+     if ! $DRY_RUN; then
+       mkdir -p "$cmd_dest"
+-      cp "$cmd_dir"* "$cmd_dest/" 2>/dev/null || true
++      for cmd_file in "$cmd_dir"*; do
++        [[ -f "$cmd_file" ]] || continue
++        if [[ ! -e "$cmd_dest/$(basename "$cmd_file")" || "$FORCE" == true ]]; then
++          cp "$cmd_file" "$cmd_dest/"
++        fi
++      done
+     fi
+     echo "  COPY  commands/$cmd_name"
+   done
+@@ -406,12 +431,12 @@ for runtime_agents in ".claude/agents" ".codex/agents"; do
+     SOURCE_DIR="$MANIFEST_DIR/$runtime_agents"
+     if [ -d "$SOURCE_DIR" ]; then
+         echo "  Installing $runtime_agents..."
+-        mkdir -p "$runtime_agents"
++        $DRY_RUN || mkdir -p "$TARGET/$runtime_agents"
+         for agent_file in "$SOURCE_DIR"/*; do
+             [ -f "$agent_file" ] || continue
+             agent_name=$(basename "$agent_file")
+-            if [ ! -f "$runtime_agents/$agent_name" ]; then
+-                $DRY_RUN || cp "$agent_file" "$runtime_agents/$agent_name"
++            if [ ! -f "$TARGET/$runtime_agents/$agent_name" ] || "$FORCE"; then
++                $DRY_RUN || cp "$agent_file" "$TARGET/$runtime_agents/$agent_name"
+             fi
+         done
+     fi
+@@ -437,16 +462,13 @@ else
+   echo "Scenarios activated: default (all core rules)"
+ fi
+ [[ -n "$CLOUD_PROVIDER" ]] && echo "Cloud platform: $CLOUD_PROVIDER"
+-[[ -n "$ORG_NAME" ]] && echo "GitHub org: $ORG_NAME"
++echo "Code provider: $CODE_PROVIDER"
++[[ "$CODE_PROVIDER" == github && -n "$ORG_NAME" ]] && echo "GitHub org: $ORG_NAME"
+ echo ""
+ echo "Next steps:"
+ echo "  1. Review CLAUDE.md and customize for your project"
+-echo "  2. Update .github/CODEOWNERS with your actual teams"
+-echo "  3. Update .github/SECURITY.md with your security contact"
+-echo "  4. Configure branch protection rules in GitHub Web UI"
+-echo "  5. Run /lang-select to choose languages (if not yet decided)"
+-echo "  6. Run /plan to create your first implementation plan"
+-echo "  7. Commit and push:"
++echo "  2. Maintain VERSION and CHANGELOG.md together for every version bump"
++echo "  3. Run python3 scripts/version_guard.py check before publishing"
++echo "  4. Configure CI secrets and branch protection on your selected platform"
++echo "  5. Commit and push:"
+ echo "       git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'"
+-echo "       git remote add origin https://github.com/${ORG_NAME:-org}/${REPO_NAME:-repo}.git"
+-echo "       git push -u origin main"
+diff --git a/manifests/vibe-coding/skills/vibe-coding/SKILL.md b/manifests/vibe-coding/skills/vibe-coding/SKILL.md
+index 8532fcf..318829e 100644
+--- a/manifests/vibe-coding/skills/vibe-coding/SKILL.md
++++ b/manifests/vibe-coding/skills/vibe-coding/SKILL.md
+@@ -12,6 +12,6 @@ triggers:
+     description: Workflow selection or coordinated development task; simple coding changes stay lightweight
+   - pattern: "deploy to (vercel|cloudflare|tencent|alibaba|huawei)"
+     description: Cloud platform deployment request
+-  - pattern: "(create|setup|configure) (PR|release|CI|workflow|GitHub)"
++  - pattern: "(create|setup|configure) (PR|release|CI|workflow|GitHub|GitLab|Gitee)"
+     description: GitHub/enterprise operations request
+ ---
+diff --git a/manifests/vibe-coding/templates/CHANGELOG.md.example b/manifests/vibe-coding/templates/CHANGELOG.md.example
+index bbf7750..3e42497 100644
+--- a/manifests/vibe-coding/templates/CHANGELOG.md.example
++++ b/manifests/vibe-coding/templates/CHANGELOG.md.example
+@@ -1,55 +1,19 @@
+ # Changelog
+ 
+-All notable changes to this project will be documented in this file.
+-
+-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
++All notable changes to this project are documented here.
++The format follows Keep a Changelog and versions follow SemVer.
+ 
+ ## [Unreleased]
+ 
+ ### Added
+-- 新功能描述 (#issue)
+-
+-### Changed
+-- 功能变更描述 (#issue)
+-
+-### Deprecated
+-- 即将废弃的功能
+-
+-### Removed
+-- 已移除的功能
++- Describe user-visible changes here before the next version bump.
+ 
+-### Fixed
+-- Bug 修复描述 (#issue)
+-
+-### Security
+-- 安全修复描述
++<!-- For each VERSION change, add a new dated section in the same change.
++     Replace the example below with a real, categorized bullet; placeholder
++     text is rejected by scripts/version_guard.py. Compare links are optional
++     and should point to the selected Git hosting platform. -->
+ 
+-## [1.2.0] - 2025-06-15
+-
+-### Added
+-- 用户登录功能 (#42)
+-- API 文档站点 (#43)
++## [1.2.3] - YYYY-MM-DD
+ 
+ ### Fixed
+-- 修复空指针异常 (#38)
+-
+-## [1.1.0] - 2025-05-01
+-
+-### Added
+-- 项目管理面板
+-
+-### Changed
+-- 升级依赖版本
+-
+-## [1.0.0] - 2025-04-01
+-
+-### Added
+-- 初始版本发布
+-- 核心 API
+-- 用户认证
+-
+-[unreleased]: https://github.com/org/repo/compare/v1.2.0...HEAD
+-[1.2.0]: https://github.com/org/repo/compare/v1.1.0...v1.2.0
+-[1.1.0]: https://github.com/org/repo/compare/v1.0.0...v1.1.0
+-[1.0.0]: https://github.com/org/repo/releases/tag/v1.0.0
++- TODO: replace with the actual fix and its user impact.
+diff --git a/manifests/vibe-coding/templates/RELEASE_CHECKLIST.md.example b/manifests/vibe-coding/templates/RELEASE_CHECKLIST.md.example
+index 3dd8e24..f6fdf6d 100644
+--- a/manifests/vibe-coding/templates/RELEASE_CHECKLIST.md.example
++++ b/manifests/vibe-coding/templates/RELEASE_CHECKLIST.md.example
+@@ -12,15 +12,13 @@
+ 
+ ### 代码质量
+ 
+-- [ ] CHANGELOG.md 已更新（包含本次发布的所有变更）
+-- [ ] 版本号在所有文件中一致（`pyproject.toml` / `package.json` / `__init__.py` 等）
+-- [ ] 所有 CI 通过（lint → test → build → coverage）
+-- [ ] 测试覆盖率 >= 80%
++- [ ] VERSION 与对应的实质性 CHANGELOG.md 条目在同一变更中更新
++- [ ] 已有的 `pyproject.toml` / `package.json` / `Cargo.toml` / `pom.xml` 版本与 VERSION 一致
++- [ ] 平台 CI 和项目自定义检查（如有）通过
+ 
+ ### 安全
+ 
+-- [ ] CodeQL 扫描无 critical 告警
+-- [ ] Dependabot 依赖无已知漏洞
++- [ ] 所选平台启用的安全检查无未处理的严重告警
+ - [ ] API 兼容性已确认（无意外 breaking change）
+ 
+ ### 文档
+@@ -32,13 +30,12 @@
+ ### 发布准备
+ 
+ - [ ] tag 已创建并 GPG 签名
+-- [ ] tag 版本号与代码一致
++- [ ] `python3 scripts/version_guard.py check --tag vX.Y.Z` 通过
+ - [ ] 相关 issue/PR 已关闭
+ - [ ] 发布说明已准备好
+ 
+ ## 发布后
+ 
+-- [ ] GitHub Release 已创建
+-- [ ] 包已成功发布到 registry
+-- [ ] 部署已验证
++- [ ] 所选平台的 Release 已创建（Git-only 项目则保存本地说明）
++- [ ] 若配置了构建/制品发布，产物和链接已验证
+ - [ ] 相关团队已通知
+diff --git a/tools/vibe_tool/src/vibe_tool/cli.py b/tools/vibe_tool/src/vibe_tool/cli.py
+index 9a5b5b1..f6589e8 100644
+--- a/tools/vibe_tool/src/vibe_tool/cli.py
++++ b/tools/vibe_tool/src/vibe_tool/cli.py
+@@ -46,6 +46,7 @@ def _build_parser() -> argparse.ArgumentParser:
+     init_p.add_argument("manifest", help="Manifest name")
+     init_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
+     init_p.add_argument("--scenario", default="", help="Comma-separated scenario names")
++    init_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")
+     init_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
+     init_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
+     init_p.add_argument("-o", "--owner", default="", help="Default owner (github-enterprise)")
+@@ -64,6 +65,7 @@ def _build_parser() -> argparse.ArgumentParser:
+     am_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
+     am_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
+     am_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
++    am_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")
+     am_p.add_argument("-o", "--owner", default="", help="Default owner (github-enterprise)")
+     am_p.add_argument("--org", default="", help="GitHub organization (github-enterprise)")
+     am_p.add_argument("--repo", default="", help="GitHub repository (github-enterprise)")
+@@ -192,7 +194,7 @@ def _cmd_add_manifest(args) -> int:
+ 
+ 
+ def _cmd_add_skill(args) -> int:
+-    from .skill import add_skill, add_all_skills
++    from .skill import add_all_skills, add_skill
+ 
+     _, _, skills_root = _get_repo_paths(args)
+     target = Path(args.target).resolve()
+@@ -300,7 +302,7 @@ def _cmd_update(args) -> int:
+         print("No managed submodules to update.")
+         return 0
+ 
+-    result = subprocess.run(command, cwd=str(root))
++    result = subprocess.run(command, cwd=str(root), check=False)
+     return result.returncode
+ 
+ 
+@@ -432,7 +434,7 @@ def _cmd_stats_reset(args) -> int:
+ def _collect_kwargs(args, source_attr: str = "manifest") -> list:
+     """Collect extra keyword arguments for init scripts from parsed args."""
+     kwargs: dict[str, str] = {}
+-    for key in ("scenario", "owner", "org", "repo", "email"):
++    for key in ("scenario", "provider", "owner", "org", "repo", "email"):
+         val = getattr(args, key, None)
+         if val:
+             kwargs[key] = val
+diff --git a/tools/vibe_tool/src/vibe_tool/manifest.py b/tools/vibe_tool/src/vibe_tool/manifest.py
+index 7827b6c..916ef85 100644
+--- a/tools/vibe_tool/src/vibe_tool/manifest.py
++++ b/tools/vibe_tool/src/vibe_tool/manifest.py
+@@ -17,6 +17,7 @@ from .types import ManifestInfo
+ _SCRIPT_FLAG_MAP: dict[str, dict[str, str]] = {
+     "vibe-coding": {
+         "scenario": "--scenario={value}",
++        "provider": "--provider={value}",
+         "owner": "-o {value}",
+         "org": "--org {value}",
+         "repo": "--repo {value}",
+@@ -153,11 +154,10 @@ def _run_init_script(
+         if key in flag_map:
+             script_args.append(flag_map[key].format(value=value))
+ 
+-    # force/dry_run for manifests where they aren't in flag_map
+-    if force and "force" not in flag_map:
+-        script_args.append("-f")
+-    if dry_run and "dry_run" not in flag_map:
+-        script_args.append("-n")
++    if force:
++        script_args.append(flag_map.get("force", "-f"))
++    if dry_run:
++        script_args.append(flag_map.get("dry_run", "-n"))
+ 
+     # Build environment (VIBE_MANIFEST needed by vibe-coding init)
+     env = dict(subprocess.os.environ)
+@@ -165,16 +165,12 @@ def _run_init_script(
+ 
+     cmd = [str(script_path)] + script_args
+ 
+-    if dry_run:
+-        print(f"[dry-run] Would run: {' '.join(cmd)}")
+-        print(f"[dry-run]   in: {target}")
+-        return 0
+-
+-    print(f"Running: {' '.join(cmd)}")
++    print(f"{'[dry-run] ' if dry_run else ''}Running: {' '.join(cmd)}")
+     result = subprocess.run(
+         cmd,
+-        cwd=str(target),
++        cwd=str(target if target.is_dir() else Path.cwd()),
+         env=env,
++        check=False,
+     )
+     return result.returncode
+ 
+@@ -214,7 +210,6 @@ def _generic_init(
+         if dst_file.exists() and not force:
+             actions.append(("skip", dst_file))
+             continue
+-        rel_src = _relpath(src_file, manifest.path)
+         if dry_run:
+             actions.append(("copy", dst_file))
+         else:
+@@ -280,7 +275,6 @@ def _generic_init(
+     # Print summary
+     copies = [a for a in actions if a[0] == "copy"]
+     skips = [a for a in actions if a[0] == "skip"]
+-    mkdirs = [a for a in actions if a[0] == "mkdir"]
+ 
+     label = "[dry-run] Would install" if dry_run else "Installed"
+     print(f"{label} {len(copies)} files to {target}")
+@@ -349,4 +343,4 @@ def _install_required_skills(
+             "  (tip: run 'vibe update' to fetch skill submodules, "
+             "then 'vibe add skill <name>' for any still-missing)"
+         )
+-    return 1 if missing else 0
++    return 1 if missing and not dry_run else 0
+diff --git a/manifests/vibe-coding/scripts/init_version.py b/manifests/vibe-coding/scripts/init_version.py
+new file mode 100755
+index 0000000..3104cf6
+--- /dev/null
++++ b/manifests/vibe-coding/scripts/init_version.py
+@@ -0,0 +1,64 @@
++#!/usr/bin/env python3
++"""Initialize host-independent release files without overwriting project data."""
++
++from __future__ import annotations
++
++import argparse
++import sys
++from pathlib import Path
++
++from version_guard import GuardError, changelog_sections, metadata_versions, version
++
++INITIAL_CHANGELOG = """# Changelog
++
++All notable changes to this project are documented here.
++
++## [Unreleased]
++
++"""
++
++
++def initialize(root: Path, dry_run: bool = False) -> str:
++    candidates = metadata_versions(root)
++    unique = set(candidates.values())
++    if len(unique) > 1:
++        raise GuardError(f"conflicting package versions: {candidates}")
++    if (root / "VERSION").exists():
++        chosen = version(root)
++    else:
++        chosen = next(iter(unique), "0.1.0")
++        # Validate the derived value before touching the target.
++        from version_guard import SEMVER
++
++        if not SEMVER.fullmatch(chosen):
++            raise GuardError(f"invalid package version: {chosen!r}")
++    if unique and chosen not in unique:
++        raise GuardError(f"VERSION {chosen!r} conflicts with package versions: {candidates}")
++    if (root / "CHANGELOG.md").exists():
++        changelog_sections(root)
++    if not dry_run:
++        root.mkdir(parents=True, exist_ok=True)
++        if not (root / "VERSION").exists():
++            (root / "VERSION").write_text(chosen + "\n", encoding="utf-8")
++        if not (root / "CHANGELOG.md").exists():
++            (root / "CHANGELOG.md").write_text(INITIAL_CHANGELOG, encoding="utf-8")
++    return chosen
++
++
++def main() -> int:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("target", type=Path)
++    parser.add_argument("--dry-run", action="store_true")
++    args = parser.parse_args()
++    try:
++        chosen = initialize(args.target.resolve(), args.dry_run)
++    except GuardError as exc:
++        print(f"init-version: {exc}", file=sys.stderr)
++        return 1
++    prefix = "WILL USE" if args.dry_run else "USE"
++    print(f"  {prefix} VERSION {chosen}; preserve existing VERSION/CHANGELOG.md")
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/manifests/vibe-coding/scripts/version_guard.py b/manifests/vibe-coding/scripts/version_guard.py
+new file mode 100755
+index 0000000..c65d326
+--- /dev/null
++++ b/manifests/vibe-coding/scripts/version_guard.py
+@@ -0,0 +1,265 @@
++#!/usr/bin/env python3
++"""Host-independent VERSION, changelog, tag, and release-note checks."""
++
++from __future__ import annotations
++
++import argparse
++import json
++import os
++import re
++import subprocess
++import sys
++import urllib.error
++import urllib.parse
++import urllib.request
++import uuid
++import xml.etree.ElementTree as ET
++from pathlib import Path
++
++SEMVER = re.compile(
++    r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)"
++    r"(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?"
++    r"(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$"
++)
++HEADING = re.compile(r"^## \[([^\]]+)\](?:\s+-\s+\d{4}-\d{2}-\d{2})?\s*$")
++SECTION = re.compile(r"^### (Added|Changed|Deprecated|Removed|Fixed|Security)\s*$")
++PLACEHOLDER = re.compile(r"^(?:TODO|TBD|\.\.\.|待填写|示例|新功能描述|功能变更描述|Bug 修复描述|安全修复描述)(?:\b|\s|$)", re.IGNORECASE)
++
++
++class GuardError(Exception):
++    """A release precondition failed."""
++
++
++def version(root: Path) -> str:
++    path = root / "VERSION"
++    if not path.is_file():
++        raise GuardError("VERSION is missing")
++    value = path.read_text(encoding="utf-8").strip()
++    if not SEMVER.fullmatch(value):
++        raise GuardError(f"VERSION must contain one SemVer value without v: {value!r}")
++    for part in (SEMVER.fullmatch(value).group(4) or "").split("."):
++        if part.isdigit() and len(part) > 1 and part.startswith("0"):
++            raise GuardError("numeric prerelease identifiers cannot have leading zeroes")
++    return value
++
++
++def metadata_versions(root: Path) -> dict[str, str]:
++    found: dict[str, str] = {}
++    package = root / "package.json"
++    if package.is_file():
++        try:
++            value = json.loads(package.read_text(encoding="utf-8")).get("version")
++        except (ValueError, OSError) as exc:
++            raise GuardError(f"package.json is invalid: {exc}") from exc
++        if isinstance(value, str):
++            found["package.json"] = value
++    for name, sections in (
++        ("pyproject.toml", ("project", "tool.poetry")),
++        ("Cargo.toml", ("package", "workspace.package")),
++    ):
++        path = root / name
++        if not path.is_file():
++            continue
++        active: str | None = None
++        for line in path.read_text(encoding="utf-8").splitlines():
++            stripped = line.strip()
++            if stripped.startswith("["):
++                section = stripped.strip("[]")
++                active = section if section in sections else None
++            elif active:
++                match = re.match(r'^version\s*=\s*["\']([^"\']+)["\']', stripped)
++                if match:
++                    found[f"{name}[{active}]"] = match.group(1)
++                    active = None
++    pom = root / "pom.xml"
++    if pom.is_file():
++        try:
++            xml_root = ET.parse(pom).getroot()
++        except ET.ParseError as exc:
++            raise GuardError(f"pom.xml is invalid: {exc}") from exc
++        namespace = xml_root.tag.partition("}")[0] + "}" if "}" in xml_root.tag else ""
++        element = xml_root.find(f"{namespace}version")
++        if element is not None and element.text and not element.text.strip().startswith("${"):
++            found["pom.xml"] = element.text.strip()
++    return found
++
++
++def changelog_sections(root: Path) -> dict[str, list[str]]:
++    path = root / "CHANGELOG.md"
++    if not path.is_file():
++        raise GuardError("CHANGELOG.md is missing")
++    sections: dict[str, list[str]] = {}
++    current: str | None = None
++    for line in path.read_text(encoding="utf-8").splitlines():
++        if line.startswith("## "):
++            match = HEADING.fullmatch(line)
++            if not match:
++                current = None
++                continue
++            current = match.group(1)
++            if current in sections:
++                raise GuardError(f"duplicate CHANGELOG heading: {current}")
++            sections[current] = [line]
++        elif current is not None:
++            sections[current].append(line)
++    return sections
++
++
++def release_section(root: Path, value: str) -> str:
++    lines = changelog_sections(root).get(value)
++    if not lines:
++        raise GuardError(f"CHANGELOG.md lacks [{value}] section")
++    category = False
++    meaningful = False
++    for line in lines[1:]:
++        if line.startswith("### "):
++            category = bool(SECTION.fullmatch(line))
++        elif category and re.match(r"^\s*[-*] \S", line):
++            item = re.sub(r"^\s*[-*] ", "", line).strip()
++            if item and not PLACEHOLDER.match(item):
++                meaningful = True
++    if not meaningful:
++        raise GuardError(f"CHANGELOG.md [{value}] needs a substantive categorized bullet")
++    return "\n".join(lines).strip() + "\n"
++
++
++def git_show(root: Path, ref: str, path: str) -> str | None:
++    result = subprocess.run(
++        ["git", "show", f"{ref}:{path}"], cwd=root, text=True, capture_output=True, check=False
++    )
++    return result.stdout if result.returncode == 0 else None
++
++
++def check(root: Path, base_ref: str | None, tag: str | None) -> str:
++    value = version(root)
++    for name, actual in metadata_versions(root).items():
++        if actual != value:
++            raise GuardError(f"{name} version {actual!r} differs from VERSION {value!r}")
++    changelog_sections(root)
++    if base_ref:
++        valid_ref = subprocess.run(
++            ["git", "rev-parse", "--verify", f"{base_ref}^{{commit}}"],
++            cwd=root, capture_output=True, check=False,
++        )
++        if valid_ref.returncode:
++            raise GuardError(f"Git base ref does not exist: {base_ref}")
++        old = git_show(root, base_ref, "VERSION")
++        if old is not None and old.strip() != value:
++            old_changelog = git_show(root, base_ref, "CHANGELOG.md") or ""
++            if (root / "CHANGELOG.md").read_text(encoding="utf-8") == old_changelog:
++                raise GuardError("VERSION changed without a CHANGELOG.md change")
++            if re.search(rf"^## \[{re.escape(value)}\](?:\s|$)", old_changelog, re.MULTILINE):
++                raise GuardError(f"[{value}] CHANGELOG section must be added with this version bump")
++            release_section(root, value)
++    if tag:
++        if tag != f"v{value}":
++            raise GuardError(f"tag {tag!r} differs from v{value}")
++        release_section(root, value)
++    return value
++
++
++def publish_gitee(root: Path, tag: str, owner: str, repo: str, api_base: str) -> None:
++    value = check(root, None, tag)
++    token = os.environ.get("GITEE_TOKEN", "")
++    if not token:
++        raise GuardError("GITEE_TOKEN is missing")
++    body = release_section(root, value)
++    url = f"{api_base.rstrip('/')}/repos/{urllib.parse.quote(owner, safe='')}/{urllib.parse.quote(repo, safe='')}/releases"
++    data = urllib.parse.urlencode({"access_token": token, "tag_name": tag, "name": tag, "body": body}).encode()
++    request = urllib.request.Request(url, data=data, method="POST")
++    try:
++        with urllib.request.urlopen(request, timeout=30) as response:
++            result = json.loads(response.read().decode("utf-8"))
++            if not isinstance(result, dict) or not result.get("id"):
++                raise GuardError("Gitee release API returned no release id")
++    except urllib.error.HTTPError as exc:
++        raise GuardError(f"Gitee release API returned HTTP {exc.code}") from exc
++    for artifact in sorted((root / "dist").glob("*")) if (root / "dist").is_dir() else []:
++        if not artifact.is_file():
++            continue
++        boundary = uuid.uuid4().hex
++        body_bytes = (
++            f"--{boundary}\r\nContent-Disposition: form-data; name=\"access_token\"\r\n\r\n{token}\r\n"
++            f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{artifact.name}\"\r\n"
++            f"Content-Type: application/octet-stream\r\n\r\n"
++        ).encode() + artifact.read_bytes() + f"\r\n--{boundary}--\r\n".encode()
++        upload = urllib.request.Request(
++            f"{url}/{result['id']}/attach_files", data=body_bytes, method="POST",
++            headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
++        )
++        try:
++            with urllib.request.urlopen(upload, timeout=60) as response:
++                response.read()
++        except urllib.error.HTTPError as exc:
++            raise GuardError(f"Gitee asset upload returned HTTP {exc.code}") from exc
++    print(f"Created Gitee release {tag}")
++
++
++def publish_gitlab(root: Path, tag: str, project_id: str, api_base: str, project_url: str) -> None:
++    value = check(root, None, tag)
++    token = os.environ.get("CI_JOB_TOKEN", "")
++    if not token:
++        raise GuardError("CI_JOB_TOKEN is missing")
++    payload: dict[str, object] = {"tag_name": tag, "name": tag, "description": release_section(root, value)}
++    if project_url and (root / "dist").is_dir() and any((root / "dist").iterdir()):
++        payload["assets"] = {"links": [{
++            "name": "Build artifacts",
++            "url": f"{project_url.rstrip('/')}/-/jobs/artifacts/{tag}/download?job=build",
++            "link_type": "package",
++        }]}
++    url = f"{api_base.rstrip('/')}/projects/{urllib.parse.quote(project_id, safe='')}/releases"
++    request = urllib.request.Request(
++        url, data=json.dumps(payload).encode(), method="POST",
++        headers={"Content-Type": "application/json", "JOB-TOKEN": token},
++    )
++    try:
++        with urllib.request.urlopen(request, timeout=30) as response:
++            if response.status not in (200, 201):
++                raise GuardError(f"GitLab release API returned HTTP {response.status}")
++    except urllib.error.HTTPError as exc:
++        raise GuardError(f"GitLab release API returned HTTP {exc.code}") from exc
++    print(f"Created GitLab release {tag}")
++
++
++def main(argv: list[str] | None = None) -> int:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--root", type=Path, default=Path.cwd())
++    sub = parser.add_subparsers(dest="command", required=True)
++    check_p = sub.add_parser("check")
++    check_p.add_argument("--base-ref")
++    check_p.add_argument("--tag")
++    notes_p = sub.add_parser("notes")
++    notes_p.add_argument("--tag", required=True)
++    notes_p.add_argument("--output", type=Path, required=True)
++    gitee_p = sub.add_parser("publish-gitee")
++    gitee_p.add_argument("--tag", required=True)
++    gitee_p.add_argument("--owner", required=True)
++    gitee_p.add_argument("--repo", required=True)
++    gitee_p.add_argument("--api-base", default="https://gitee.com/api/v5")
++    gitlab_p = sub.add_parser("publish-gitlab")
++    gitlab_p.add_argument("--tag", required=True)
++    gitlab_p.add_argument("--project-id", required=True)
++    gitlab_p.add_argument("--api-base", required=True)
++    gitlab_p.add_argument("--project-url", default="")
++    args = parser.parse_args(argv)
++    root = args.root.resolve()
++    try:
++        if args.command == "check":
++            value = check(root, args.base_ref, args.tag)
++            print(f"Version and changelog OK: {value}")
++        elif args.command == "notes":
++            value = check(root, None, args.tag)
++            args.output.write_text(release_section(root, value), encoding="utf-8")
++            print(f"Wrote {args.output}")
++        elif args.command == "publish-gitee":
++            publish_gitee(root, args.tag, args.owner, args.repo, args.api_base)
++        else:
++            publish_gitlab(root, args.tag, args.project_id, args.api_base, args.project_url)
++    except GuardError as exc:
++        print(f"version-guard: {exc}", file=sys.stderr)
++        return 1
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/manifests/vibe-coding/platforms/gitlab/.gitlab-ci.yml b/manifests/vibe-coding/platforms/gitlab/.gitlab-ci.yml
+new file mode 100644
+index 0000000..8288458
+--- /dev/null
++++ b/manifests/vibe-coding/platforms/gitlab/.gitlab-ci.yml
+@@ -0,0 +1,56 @@
++image: python:3.12
++
++stages: [validate, build, release]
++
++variables:
++  GIT_DEPTH: '0'
++
++before_script:
++  - command -v git >/dev/null || (apt-get update -qq && apt-get install -y -qq git)
++
++validate:
++  stage: validate
++  rules:
++    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
++    - if: '$CI_COMMIT_BRANCH'
++    - if: '$CI_COMMIT_TAG'
++  script:
++    - |
++      set -eu
++      if [ -n "${CI_COMMIT_TAG:-}" ]; then
++        python3 scripts/version_guard.py check --tag "$CI_COMMIT_TAG"
++      else
++        BASE="${CI_MERGE_REQUEST_DIFF_BASE_SHA:-${CI_COMMIT_BEFORE_SHA:-}}"
++        if [ -n "$BASE" ] && [ "$(printf %s "$BASE" | tr -d 0)" != "" ] && git rev-parse --verify "$BASE^{commit}" >/dev/null 2>&1; then
++          python3 scripts/version_guard.py check --base-ref "$BASE"
++        else
++          python3 scripts/version_guard.py check
++        fi
++      fi
++      if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
++
++build:
++  stage: build
++  needs: [validate]
++  rules:
++    - if: '$CI_COMMIT_TAG'
++  script:
++    - if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
++    - mkdir -p dist
++  artifacts:
++    when: on_success
++    paths: [dist/]
++
++release:
++  stage: release
++  needs:
++    - job: validate
++    - job: build
++      artifacts: true
++  rules:
++    - if: '$CI_COMMIT_TAG'
++  script:
++    - >-
++      python3 scripts/version_guard.py publish-gitlab
++      --tag "$CI_COMMIT_TAG" --project-id "$CI_PROJECT_ID"
++      --api-base "$CI_API_V4_URL" --project-url "$CI_PROJECT_URL"
+diff --git a/manifests/vibe-coding/platforms/gitee/.workflow/vibe-ci.yml b/manifests/vibe-coding/platforms/gitee/.workflow/vibe-ci.yml
+new file mode 100644
+index 0000000..92cdd8a
+--- /dev/null
++++ b/manifests/vibe-coding/platforms/gitee/.workflow/vibe-ci.yml
+@@ -0,0 +1,40 @@
++version: '1.0'
++name: vibe-ci
++displayName: Vibe CI
++triggers:
++  trigger: auto
++  push:
++    branches:
++      include:
++        - '.*'
++  pr:
++    branches:
++      include:
++        - '.*'
++stages:
++  - stage:
++    name: validate
++    displayName: Version and project checks
++    strategy: naturally
++    trigger: auto
++    steps:
++      - step: build@python
++        name: version_check
++        displayName: Check VERSION and CHANGELOG
++        pythonVersion: '3.9'
++        commands:
++          - |
++            set -eu
++            BASE=""
++            if [ -n "${GITEE_SOURCE_BRANCH:-}" ]; then
++              git fetch origin "$GITEE_BRANCH"
++              BASE="$(git merge-base HEAD FETCH_HEAD)"
++            else
++              BASE="$(git rev-parse HEAD^ 2>/dev/null || true)"
++            fi
++            if [ -n "$BASE" ]; then
++              python3 scripts/version_guard.py check --base-ref "$BASE"
++            else
++              python3 scripts/version_guard.py check
++            fi
++            if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
+diff --git a/manifests/vibe-coding/platforms/gitee/.workflow/vibe-release.yml b/manifests/vibe-coding/platforms/gitee/.workflow/vibe-release.yml
+new file mode 100644
+index 0000000..62f1887
+--- /dev/null
++++ b/manifests/vibe-coding/platforms/gitee/.workflow/vibe-release.yml
+@@ -0,0 +1,33 @@
++version: '1.0'
++name: vibe-release
++displayName: Vibe Release
++triggers:
++  trigger: auto
++  push:
++    tags:
++      prefix:
++        - v
++stages:
++  - stage:
++    name: release
++    displayName: Validate and publish release
++    strategy: naturally
++    trigger: auto
++    steps:
++      - step: build@python
++        name: publish_release
++        displayName: Publish Gitee Release
++        pythonVersion: '3.9'
++        commands:
++          - |
++            set -eu
++            TAG="v$(cat VERSION)"
++            git fetch --tags origin
++            test "$(git rev-parse "$TAG^{commit}")" = "$(git rev-parse HEAD)"
++            python3 scripts/version_guard.py check --tag "$TAG"
++            if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
++            if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
++            : "${GITEE_OWNER:?configure GITEE_OWNER pipeline variable}"
++            : "${GITEE_REPO:?configure GITEE_REPO pipeline variable}"
++            : "${GITEE_TOKEN:?configure GITEE_TOKEN secret}"
++            python3 scripts/version_guard.py publish-gitee --tag "$TAG" --owner "$GITEE_OWNER" --repo "$GITEE_REPO"
+diff --git a/tools/vibe_tool/tests/test_vibe_manifest_release.py b/tools/vibe_tool/tests/test_vibe_manifest_release.py
+new file mode 100644
+index 0000000..0c96660
+--- /dev/null
++++ b/tools/vibe_tool/tests/test_vibe_manifest_release.py
+@@ -0,0 +1,241 @@
++"""Contract checks for the host-independent vibe-coding release scaffold."""
++
++from __future__ import annotations
++
++import importlib.util
++import io
++import json
++import os
++import subprocess
++import sys
++import urllib.error
++import urllib.parse
++from pathlib import Path
++
++import pytest
++
++ROOT = Path(__file__).resolve().parents[3]
++MANIFEST = ROOT / "manifests" / "vibe-coding"
++INIT = MANIFEST / "scripts" / "vibe-init.sh"
++GUARD = MANIFEST / "scripts" / "version_guard.py"
++
++
++def run(*args: str | Path, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
++    return subprocess.run(
++        [str(a) for a in args], cwd=cwd, text=True, capture_output=True,
++        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1", "PYTHONPATH": str(ROOT / "tools" / "vibe_tool" / "src")}, check=False,
++    )
++
++
++def load_guard():
++    spec = importlib.util.spec_from_file_location("version_guard", GUARD)
++    assert spec and spec.loader
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++@pytest.mark.parametrize("provider", ["git", "github", "gitlab", "gitee"])
++def test_init_provider_and_preserve_existing(tmp_path: Path, provider: str) -> None:
++    target = tmp_path / provider
++    first = run("bash", INIT, target, f"--provider={provider}")
++    assert first.returncode == 0, first.stderr
++    assert (target / "VERSION").read_text().strip() == "0.1.0"
++    assert "## [Unreleased]" in (target / "CHANGELOG.md").read_text()
++    assert (target / "scripts" / "version_guard.py").is_file()
++    assert (target / ".git").is_dir()
++    assert (target / ".github").exists() == (provider == "github")
++    assert (target / ".gitlab-ci.yml").exists() == (provider == "gitlab")
++    assert (target / ".workflow" / "vibe-ci.yml").exists() == (provider == "gitee")
++    assert (target / ".workflow" / "vibe-release.yml").exists() == (provider == "gitee")
++    run("git", "remote", "add", "origin", "https://example.invalid/project.git", cwd=target)
++    (target / "VERSION").write_text("1.4.2\n")
++    (target / "CHANGELOG.md").write_text("# custom changelog\n")
++    if provider == "github":
++        (target / ".github" / "workflows" / "ci.yml").write_text("# custom CI\n")
++    again = run("bash", INIT, target, f"--provider={provider}")
++    assert again.returncode == 0, again.stderr
++    assert (target / "VERSION").read_text() == "1.4.2\n"
++    assert (target / "CHANGELOG.md").read_text() == "# custom changelog\n"
++    assert run("git", "remote", "get-url", "origin", cwd=target).stdout.strip() == "https://example.invalid/project.git"
++    if provider == "github":
++        assert (target / ".github" / "workflows" / "ci.yml").read_text() == "# custom CI\n"
++
++
++def test_dry_run_does_not_create_target(tmp_path: Path) -> None:
++    target = tmp_path / "absent"
++    result = run("bash", INIT, target, "--provider=gitee", "--dry-run")
++    assert result.returncode == 0, result.stderr
++    assert not target.exists()
++    assert "WILL  .workflow/vibe-ci.yml" in result.stdout
++
++
++def test_cli_init_and_add_provider_dry_run(tmp_path: Path) -> None:
++    new_target = tmp_path / "new"
++    initialized = run(sys.executable, "-m", "vibe_tool", "init", "vibe-coding", new_target,
++                      "--provider=gitee", "--dry-run", cwd=ROOT)
++    assert initialized.returncode == 0, initialized.stderr
++    assert not new_target.exists()
++    assert "WILL  .workflow/vibe-ci.yml" in initialized.stdout
++    existing = tmp_path / "existing"
++    existing.mkdir()
++    added = run(sys.executable, "-m", "vibe_tool", "add", "manifest", "vibe-coding", existing,
++                "--provider=gitlab", "--dry-run", cwd=ROOT)
++    assert added.returncode == 0, added.stderr
++    assert "WILL  .gitlab-ci.yml" in added.stdout
++    assert list(existing.iterdir()) == []
++
++
++def test_existing_package_version_and_conflict_preflight(tmp_path: Path) -> None:
++    target = tmp_path / "project"
++    target.mkdir()
++    (target / "package.json").write_text('{"version": "2.1.0"}')
++    good = run("bash", INIT, target, "--provider=git", "--no-git")
++    assert good.returncode == 0, good.stderr
++    assert (target / "VERSION").read_text() == "2.1.0\n"
++    other = tmp_path / "conflict"
++    other.mkdir()
++    (other / "package.json").write_text('{"version": "2.1.0"}')
++    (other / "pyproject.toml").write_text('[project]\nversion = "2.2.0"\n')
++    bad = run("bash", INIT, other, "--provider=git")
++    assert bad.returncode != 0
++    assert "conflicting package versions" in bad.stderr
++    assert not (other / "VERSION").exists()
++    assert not (other / "MANIFEST.md").exists()
++    java = tmp_path / "java"
++    java.mkdir()
++    (java / "pom.xml").write_text('<project xmlns="http://maven.apache.org/POM/4.0.0"><version>3.2.1</version></project>')
++    adopted = run("bash", INIT, java, "--provider=git", "--no-git")
++    assert adopted.returncode == 0, adopted.stderr
++    assert (java / "VERSION").read_text() == "3.2.1\n"
++
++
++def committed_repo(tmp_path: Path) -> Path:
++    root = tmp_path / "project"
++    root.mkdir()
++    (root / "VERSION").write_text("0.1.0\n")
++    (root / "CHANGELOG.md").write_text("# Changelog\n\n## [Unreleased]\n")
++    for command in (("git", "init", "-q"), ("git", "config", "user.email", "test@example.invalid"),
++                    ("git", "config", "user.name", "Test"), ("git", "add", "."),
++                    ("git", "commit", "-qm", "initial")):
++        result = run(*command, cwd=root)
++        assert result.returncode == 0, result.stderr
++    return root
++
++
++def test_version_bump_and_exact_notes(tmp_path: Path) -> None:
++    root = committed_repo(tmp_path)
++    assert run(sys.executable, GUARD, "--root", root, "check", "--base-ref", "HEAD").returncode == 0
++    (root / "VERSION").write_text("0.2.0-rc.1\n")
++    (root / "CHANGELOG.md").write_text(
++        "# Changelog\n\n## [Unreleased]\n\n## [0.2.0-rc.1] - 2026-10-01\n\n"
++        "### Added\n- Add provider selection.\n\n## [0.1.0] - 2026-09-01\n"
++        "\n### Fixed\n- Old fix.\n"
++    )
++    assert run(sys.executable, GUARD, "--root", root, "check", "--base-ref", "HEAD").returncode == 0
++    assert run(sys.executable, GUARD, "--root", root, "check", "--tag", "v0.2.0-rc.1").returncode == 0
++    notes = tmp_path / "notes.md"
++    result = run(sys.executable, GUARD, "--root", root, "notes", "--tag", "v0.2.0-rc.1", "--output", notes)
++    assert result.returncode == 0, result.stderr
++    assert "provider selection" in notes.read_text()
++    assert "Old fix" not in notes.read_text()
++    assert run(sys.executable, GUARD, "--root", root, "check", "--tag", "v0.2.0").returncode != 0
++    (root / "VERSION").write_text("0.2.0-hotfix.1\n")
++    (root / "CHANGELOG.md").write_text(
++        "# Changelog\n\n## [0.2.0-hotfix.1] - 2026-10-01\n\n### Fixed\n- Fix urgent crash.\n"
++    )
++    assert run(sys.executable, GUARD, "--root", root, "check", "--tag", "v0.2.0-hotfix.1").returncode == 0
++
++
++@pytest.mark.parametrize("changelog", [
++    "# Changelog\n## [Unreleased]\n",
++    "# Changelog\n## [0.2.0]\n### Fixed\n",
++    "# Changelog\n## [0.2.0]\n### Fixed\n- TODO\n",
++    "# Changelog\n## [0.2.0]\n### Fixed\n- Real fix.\n## [0.2.0]\n### Added\n- Again.\n",
++])
++def test_invalid_changelog_fails(tmp_path: Path, changelog: str) -> None:
++    root = committed_repo(tmp_path)
++    (root / "VERSION").write_text("0.2.0\n")
++    (root / "CHANGELOG.md").write_text(changelog)
++    assert run(sys.executable, GUARD, "--root", root, "check", "--base-ref", "HEAD").returncode == 1
++
++
++def test_package_mismatch_and_preexisting_section_fail(tmp_path: Path) -> None:
++    root = committed_repo(tmp_path)
++    (root / "package.json").write_text('{"version":"9.9.9"}')
++    assert run(sys.executable, GUARD, "--root", root, "check").returncode == 1
++    (root / "package.json").write_text('{"version":"0.1.0"}')
++    (root / "CHANGELOG.md").write_text("# Changelog\n## [0.2.0]\n### Added\n- Prepared.\n")
++    run("git", "add", ".", cwd=root)
++    run("git", "commit", "-qm", "prepared", cwd=root)
++    (root / "VERSION").write_text("0.2.0\n")
++    (root / "package.json").write_text('{"version":"0.2.0"}')
++    assert run(sys.executable, GUARD, "--root", root, "check", "--base-ref", "HEAD").returncode == 1
++
++
++class FakeResponse:
++    status = 201
++
++    def __init__(self, data: bytes = b'{"id":42}') -> None:
++        self.data = data
++
++    def __enter__(self):
++        return self
++
++    def __exit__(self, *_):
++        return False
++
++    def read(self):
++        return self.data
++
++
++def test_mocked_provider_release_requests(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
++    root = committed_repo(tmp_path)
++    (root / "CHANGELOG.md").write_text("# Changelog\n## [0.1.0]\n### Added\n- Initial release.\n")
++    module = load_guard()
++    sent = []
++
++    def fake_open(req, timeout):
++        sent.append(req)
++        return FakeResponse()
++
++    monkeypatch.setattr(module.urllib.request, "urlopen", fake_open)
++    monkeypatch.setenv("CI_JOB_TOKEN", "job-token")
++    module.publish_gitlab(root, "v0.1.0", "99", "https://gitlab.example/api/v4", "")
++    assert sent[-1].get_header("Job-token") == "job-token"
++    assert json.loads(sent[-1].data)["description"].startswith("## [0.1.0]")
++    monkeypatch.setenv("GITEE_TOKEN", "gitee-token")
++    (root / "dist").mkdir()
++    (root / "dist" / "sample.zip").write_bytes(b"artifact")
++    module.publish_gitee(root, "v0.1.0", "org", "repo", "https://gitee.example/api/v5")
++    assert len(sent) == 3  # GitLab release, Gitee release, Gitee asset
++    assert b"sample.zip" in sent[-1].data
++    assert "Initial release" in urllib.parse.parse_qs(sent[-2].data.decode())["body"][0]
++    (root / "dist" / "sample.zip").unlink()
++    sent.clear()
++    module.publish_gitee(root, "v0.1.0", "org", "repo", "https://gitee.example/api/v5")
++    assert len(sent) == 1  # no asset when dist is empty
++
++    def fail_open(req, timeout):
++        raise urllib.error.HTTPError(req.full_url, 403, "forbidden", {}, io.BytesIO())
++
++    monkeypatch.setattr(module.urllib.request, "urlopen", fail_open)
++    with pytest.raises(module.GuardError, match="HTTP 403"):
++        module.publish_gitee(root, "v0.1.0", "org", "repo", "https://gitee.example/api/v5")
++    with pytest.raises(module.GuardError, match="HTTP 403"):
++        module.publish_gitlab(root, "v0.1.0", "99", "https://gitlab.example/api/v4", "")
++
++
++def test_all_pipeline_yaml_parses() -> None:
++    yaml = pytest.importorskip("yaml")
++    github = sorted((MANIFEST / ".github" / "workflows").glob("*.yml"))
++    assert len(github) == 12
++    for path in [*github, *sorted((MANIFEST / "platforms").rglob("*.yml"))]:
++        data = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
++        assert isinstance(data, dict), path
++        if path in github:
++            assert "on" in data and "jobs" in data, path
++        elif "gitee" in path.parts:
++            assert "triggers" in data and "stages" in data, path
++        else:
++            assert "validate" in data and "release" in data, path

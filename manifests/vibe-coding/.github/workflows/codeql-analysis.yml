@@ -6,11 +6,33 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "4 3 * * 1"
+    - cron: '4 3 * * 1'
   workflow_dispatch:
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.languages.outputs.languages }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: languages
+        shell: bash
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          suffixes = {p.suffix for p in Path('.').rglob('*') if p.is_file() and '.git' not in p.parts}
+          languages = []
+          if suffixes & {'.js', '.jsx', '.ts', '.tsx'}: languages.append('javascript-typescript')
+          if '.py' in suffixes: languages.append('python')
+          if '.go' in suffixes: languages.append('go')
+          if suffixes & {'.java', '.kt'}: languages.append('java-kotlin')
+          print('languages=' + json.dumps(languages, separators=(',', ':')))
+          PY
   analyze:
+    needs: detect
+    if: needs.detect.outputs.languages != '[]'
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -19,17 +41,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["javascript", "python"]
+        language: ${{ fromJSON(needs.detect.outputs.languages) }}
     steps:
       - uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+      - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          queries: +security-extended,security-and-quality
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{matrix.language}}"
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3

@@ -17,33 +17,33 @@ Full decision table mapping user intent to tool sub-skill. Includes capability c
 
 | Intent | Primary | Fallback | Notes |
 |--------|---------|----------|-------|
-| Flowchart / process | [drawio](../drawio/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Draw.io for publishable; Mermaid for quick |
-| System architecture | [drawio](../drawio/SKILL.md) | [mermaid](../mermaid/SKILL.md) (C4) | Draw.io for precise icon placement |
-| Network topology | [drawio](../drawio/SKILL.md) | — | Only Draw.io has network shapes |
-| Cloud (AWS/GCP/Azure) | [drawio](../drawio/SKILL.md) | — | Only Draw.io has cloud icon sets |
-| Sequence diagram | [mermaid](../mermaid/SKILL.md) | [drawio](../drawio/SKILL.md) | Mermaid faster; Draw.io for complex |
+| Flowchart / process | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Mermaid for text-native diagrams |
+| System architecture | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) (C4) | Mermaid C4 for text-native architecture |
+| Network topology | [mermaid](../mermaid/SKILL.md) | — | Use Mermaid or PlantUML syntax |
+| Cloud (AWS/GCP/Azure) | [mermaid](../mermaid/SKILL.md) | — | Represent services with labeled nodes |
+| Sequence diagram | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) | PlantUML for alternate notation |
 | Class diagram | [plantuml](../plantuml/SKILL.md) | [mermaid](../mermaid/SKILL.md) | PlantUML best UML class support |
-| Use case diagram | [plantuml](../plantuml/SKILL.md) | [drawio](../drawio/SKILL.md) | Only PlantUML has native syntax |
-| Activity diagram | [plantuml](../plantuml/SKILL.md) | [drawio](../drawio/SKILL.md) | PlantUML activity syntax best |
-| Component diagram | [plantuml](../plantuml/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
-| Deployment diagram | [plantuml](../plantuml/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
+| Use case diagram | [plantuml](../plantuml/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Only PlantUML has native syntax |
+| Activity diagram | [plantuml](../plantuml/SKILL.md) | [mermaid](../mermaid/SKILL.md) | PlantUML activity syntax best |
+| Component diagram | [plantuml](../plantuml/SKILL.md) | [mermaid](../mermaid/SKILL.md) | — |
+| Deployment diagram | [plantuml](../plantuml/SKILL.md) | [mermaid](../mermaid/SKILL.md) | — |
 | Timing diagram | [plantuml](../plantuml/SKILL.md) | — | Only PlantUML has timing syntax |
 | State machine | [mermaid](../mermaid/SKILL.md) | [plantuml](../plantuml/SKILL.md) | stateDiagram-v2 is clean |
 | ER diagram / data model | [mermaid](../mermaid/SKILL.md) (ERD) | [plantuml](../plantuml/SKILL.md) | Mermaid for quick; PlantUML for detailed |
-| DB schema (production) | [drawio](../drawio/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Draw.io for production documentation |
-| Gantt chart | [mermaid](../mermaid/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
-| Timeline | [mermaid](../mermaid/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
+| DB schema (production) | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Mermaid for text-native schema |
+| Gantt chart | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) | — |
+| Timeline | [mermaid](../mermaid/SKILL.md) | [mermaid](../mermaid/SKILL.md) | — |
 | Pie / donut | [mermaid](../mermaid/SKILL.md) | [matplotlib](../matplotlib/SKILL.md) | Mermaid for markdown; matplotlib for pub |
 | Bar chart | [matplotlib](../matplotlib/SKILL.md) | [mermaid](../mermaid/SKILL.md) | matplotlib for precise control |
 | Line / scatter / heatmap | [matplotlib](../matplotlib/SKILL.md) | — | matplotlib is the only option |
 | Error bars / stats | [matplotlib](../matplotlib/SKILL.md) | — | matplotlib only |
 | Git branch graph | [mermaid](../mermaid/SKILL.md) (git) | — | Mermaid only |
-| Mind map | [mermaid](../mermaid/SKILL.md) (mindmap) | [drawio](../drawio/SKILL.md) | — |
-| BPMN | [visio](../visio/SKILL.md) | [drawio](../drawio/SKILL.md) | Visio has best BPMN stencils |
-| Org chart | [drawio](../drawio/SKILL.md) | [visio](../visio/SKILL.md) | Draw.io faster; Visio for data-linked |
-| Wireframe / UI mockup | [excalidraw](../excalidraw/SKILL.md) | [drawio](../drawio/SKILL.md) | Excalidraw hand-drawn fits wireframes |
-| Whiteboard / sketch | [excalidraw](../excalidraw/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
-| Infographic | [drawio](../drawio/SKILL.md) | [canvas-design](../canvas-design/SKILL.md) | — |
+| Mind map | [mermaid](../mermaid/SKILL.md) (mindmap) | [mermaid](../mermaid/SKILL.md) | — |
+| BPMN | [visio](../visio/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Visio-specific production workflow is not routed here |
+| Org chart | [mermaid](../mermaid/SKILL.md) | [visio](../visio/SKILL.md) | Use Mermaid/PlantUML for structured relationships |
+| Wireframe / UI mockup | [canvas-design](../canvas-design/SKILL.md) | [mermaid](../mermaid/SKILL.md) | Canvas Design for visual mockups |
+| Whiteboard / sketch | [canvas-design](../canvas-design/SKILL.md) | [mermaid](../mermaid/SKILL.md) | — |
+| Infographic | [mermaid](../mermaid/SKILL.md) | [canvas-design](../canvas-design/SKILL.md) | — |
 | Technical documentation (embedded) | [mermaid](../mermaid/SKILL.md) | — | Renders natively in GitHub |
 
 ### Images (Raster / Generative)
@@ -57,9 +57,9 @@ Full decision table mapping user intent to tool sub-skill. Includes capability c
 | Poster / design artifact | [canvas-design](../canvas-design/SKILL.md) | [gpt-image-2](../gpt-image-2/SKILL.md) | canvas-design for design-focused |
 | Product mockup | [nano-banana](../nano-banana/SKILL.md) (v2) | [gpt-image-2](../gpt-image-2/SKILL.md) | — |
 | Abstract / texture / bg | [nano-banana](../nano-banana/SKILL.md) (v2) | [gpt-image-2](../gpt-image-2/SKILL.md) | — |
-| Scientific schematic | [scientific-schematics](../scientific-schematics/SKILL.md) | [drawio](../drawio/SKILL.md) | Publication standards |
-| Mechanism diagram | [scientific-schematics](../scientific-schematics/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
-| Experimental setup | [scientific-schematics](../scientific-schematics/SKILL.md) | [drawio](../drawio/SKILL.md) | — |
+| Scientific schematic | Happy Figure + figure2pptx | [scientific-schematics](../scientific-schematics/SKILL.md) | Classify figure first; produce prompt and editable reconstruction |
+| Mechanism diagram | Happy Figure + figure2pptx | [scientific-schematics](../scientific-schematics/SKILL.md) | — |
+| Experimental setup | Happy Figure + figure2pptx | [scientific-schematics](../scientific-schematics/SKILL.md) | — |
 | Research illustration / graphical abstract | [ccf-visual-composer](../../../skills/CCFA-Skills/ccf-visual-composer/SKILL.md) | [scientific-schematics](../scientific-schematics/SKILL.md) | Content-fit visual contract, render QA, editable SVG/PDF/PPTX |
 | Multi-panel scientific comparison | [ccf-visual-composer](../../../skills/CCFA-Skills/ccf-visual-composer/SKILL.md) | [matplotlib](../matplotlib/SKILL.md) | Use supplied data; no invented values |
 | Journal cover / scientific cover art | [ccf-visual-composer](../../../skills/CCFA-Skills/ccf-visual-composer/SKILL.md) | [nano-banana](../nano-banana/SKILL.md) | Editorial illustration, not a data claim |
@@ -69,33 +69,33 @@ Full decision table mapping user intent to tool sub-skill. Includes capability c
 ## Scenario-Based Dispatch
 
 ### Patent Figures (专利附图)
-- Structure/relationship → [drawio](../drawio/SKILL.md) (A–H format, 15px, B&W)
-- Flowchart → [drawio](../drawio/SKILL.md)
-- Circuit/connection → [drawio](../drawio/SKILL.md)
+- Structure/relationship → [mermaid](../mermaid/SKILL.md) (A–H format, 15px, B&W)
+- Flowchart → [mermaid](../mermaid/SKILL.md)
+- Circuit/connection → [mermaid](../mermaid/SKILL.md)
 - Data chart → [matplotlib](../matplotlib/SKILL.md)
 
 ### Academic Paper — English (IEEE/ACM/Elsevier/Springer)
-- Architecture/pipeline → [drawio](../drawio/SKILL.md) (grayscale, EPS/PDF, LaTeX)
+- Architecture/pipeline → [mermaid](../mermaid/SKILL.md) (grayscale, EPS/PDF, LaTeX)
 - Sequence → [mermaid](../mermaid/SKILL.md)
 - Data/results → [matplotlib](../matplotlib/SKILL.md) (300 DPI, serif)
 - Mechanism → [scientific-schematics](../scientific-schematics/SKILL.md)
 - Method architecture/workflow/graphical abstract/visual table → [ccf-visual-composer](../../../skills/CCFA-Skills/ccf-visual-composer/SKILL.md) (editable SVG/vector PDF/PPTX)
 
 ### Academic Paper — Chinese (中文期刊)
-- Architecture → [drawio](../drawio/SKILL.md) (宋体, 双语图注)
-- Flowchart → [drawio](../drawio/SKILL.md) or [mermaid](../mermaid/SKILL.md)
+- Architecture → [mermaid](../mermaid/SKILL.md) (宋体, 双语图注)
+- Flowchart → [mermaid](../mermaid/SKILL.md) or [mermaid](../mermaid/SKILL.md)
 - Data → [matplotlib](../matplotlib/SKILL.md) (中文标签, SimHei)
 - Scientific illustration / graphical abstract → [ccf-visual-composer](../../../skills/CCFA-Skills/ccf-visual-composer/SKILL.md)
 
 ### Technical Documentation
-- Architecture → [drawio](../drawio/SKILL.md)
+- Architecture → [mermaid](../mermaid/SKILL.md)
 - Sequence/API flows → [mermaid](../mermaid/SKILL.md) (GitHub native rendering)
 - ERD → [mermaid](../mermaid/SKILL.md)
 - Git graphs → [mermaid](../mermaid/SKILL.md)
 
 ### Presentation / Pitch Deck
 - Hero images → [nano-banana](../nano-banana/SKILL.md) (v2, 16:9)
-- Architecture slides → [drawio](../drawio/SKILL.md)
+- Architecture slides → [mermaid](../mermaid/SKILL.md)
 - Data charts → [matplotlib](../matplotlib/SKILL.md)
 - Concept illustrations → [gpt-image-2](../gpt-image-2/SKILL.md)
 
@@ -106,7 +106,7 @@ Full decision table mapping user intent to tool sub-skill. Includes capability c
 
 ### Enterprise / Client Deliverable
 - VSDX required → [visio](../visio/SKILL.md) (Draw.io→VSDX bridge)
-- Cloud architecture → [drawio](../drawio/SKILL.md)
+- Cloud architecture → [mermaid](../mermaid/SKILL.md)
 - BPMN → [visio](../visio/SKILL.md)
 
 ### Creative / Design

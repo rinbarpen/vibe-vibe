@@ -4,6 +4,11 @@ on:
   pull_request:
     types: [opened, edited, synchronize, labeled, unlabeled]
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 jobs:
   title-check:
     runs-on: ubuntu-latest
@@ -12,16 +17,13 @@ jobs:
         env:
           TITLE: ${{ github.event.pull_request.title }}
         run: |
-          if echo "$TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?: .{1,}$'; then
-            echo "✓ PR title follows conventional commit format"
-          else
-            echo "✗ PR title must follow format: <type>(<scope>): <description>"
-            echo "  Types: feat, fix, docs, style, refactor, perf, test, chore, ci"
-            echo "  Example: feat(api): add user login endpoint"
+          if ! printf '%s\n' "$TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|ci)(\(.+\))?: .+'; then
+            echo 'PR title must follow: <type>(<scope>): <description>' >&2
             exit 1
           fi
 
   size-label:
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,64 +31,38 @@ jobs:
           fetch-depth: 0
       - name: Calculate PR size
         id: size
-        run: |
-          BASE_SHA="${{ github.event.pull_request.base.sha }}"
-          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
-          CHANGES=$(git diff --diff-filter=AM "$BASE_SHA"..."$HEAD_SHA" | wc -l | tr -d ' ')
-          if [ "$CHANGES" -le 10 ]; then
-            SIZE="xs"
-          elif [ "$CHANGES" -le 50 ]; then
-            SIZE="s"
-          elif [ "$CHANGES" -le 200 ]; then
-            SIZE="m"
-          elif [ "$CHANGES" -le 800 ]; then
-            SIZE="l"
-          else
-            SIZE="xl"
-          fi
-          echo "changes=$CHANGES" >> $GITHUB_OUTPUT
-          echo "size=$SIZE" >> $GITHUB_OUTPUT
-          echo "This PR: $CHANGES lines changed → size/$SIZE"
-      - name: Remove old size labels
-        run: |
-          for label in "size/xs" "size/s" "size/m" "size/l" "size/xl"; do
-            if echo "${{ github.event.pull_request.labels.*.name }}" | grep -q "$label"; then
-              gh pr edit ${{ github.event.pull_request.number }} --remove-label "$label" 2>/dev/null || true
-            fi
-          done
         env:
-          GH_TOKEN: ${{ github.token }}
-      - name: Add size label
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          CHANGES=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '{added += $1; removed += $2} END {print added + removed + 0}')
+          if [ "$CHANGES" -le 10 ]; then SIZE=xs
+          elif [ "$CHANGES" -le 50 ]; then SIZE=s
+          elif [ "$CHANGES" -le 200 ]; then SIZE=m
+          elif [ "$CHANGES" -le 800 ]; then SIZE=l
+          else SIZE=xl; fi
+          echo "size=$SIZE" >> "$GITHUB_OUTPUT"
+      - name: Replace size label
         uses: actions/github-script@v7
+        env:
+          SIZE: ${{ steps.size.outputs.size }}
         with:
           script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['size/${{ steps.size.outputs.size }}']
-            })
-      - name: Warn on XL PR
-        if: steps.size.outputs.size == 'xl'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '⚠️ This PR changes **${{ steps.size.outputs.changes }}** lines (XL). Consider splitting it into smaller PRs for faster review.'
-            })
-
-  body-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check PR body content
-        env:
-          BODY: ${{ github.event.pull_request.body }}
-        run: |
-          if [ -z "$BODY" ] || [ "$BODY" = "null" ]; then
-            echo "✗ PR description is empty. Please fill in the PR template."
-            exit 1
-          fi
-          echo "✓ PR description is provided"
+            const names = ['size/xs', 'size/s', 'size/m', 'size/l', 'size/xl'];
+            const { data: current } = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number
+            });
+            for (const label of current) {
+              if (names.includes(label.name) && label.name !== `size/${process.env.SIZE}`) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: context.issue.number, name: label.name
+                });
+              }
+            }
+            if (!current.some(label => label.name === `size/${process.env.SIZE}`)) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, labels: [`size/${process.env.SIZE}`]
+              });
+            }

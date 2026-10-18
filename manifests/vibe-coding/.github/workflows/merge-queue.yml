@@ -3,31 +3,9 @@ name: Merge Queue
 on:
   merge_group:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  PYTHON_VERSION: "3.12"
+permissions:
+  contents: read
 
 jobs:
-  ci-pass:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install ruff pytest pytest-cov
-      - name: Lint check
-        run: ruff check --output-format=github .
-      - name: Run tests
-        run: pytest --cov=. --cov-report=term-missing
-      - name: Build check
-        run: |
-          pip install build
-          python -m build
+  ci:
+    uses: ./.github/workflows/ci.yml

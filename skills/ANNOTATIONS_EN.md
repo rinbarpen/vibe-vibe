@@ -1441,6 +1441,13 @@
 - **Description**: Deep generative models for single-cell omics. Use when you need probabilistic batch correction (scVI), transfer learning, differential expression with uncertainty, or multi-modal integration (TOTALVI, MultiVI). Best for advanced modeling, batch effects, multimodal data. For standard analysis pipelines use scanpy.
 - **Usage**: Deep generative models for single-cell omics. Use when you need probabilistic batch correction (scVI), transfer learning, differential expression with uncertainty, or multi-modal integration (TOTALVI, MultiVI). Best for advanced modeling, batch effects, multimodal data. For standard analysis pipelines use scanpy.
 
+### scrapling-official (Scrapling-Skill)
+- **Path**: `skills/scrapling/agent-skill/Scrapling-Skill`
+- **Source**: https://github.com/D4Vinci/Scrapling
+- **Description**: Official Scrapling skill with instructions, examples, and reference documentation for web scraping, data extraction, adaptive parsing, JavaScript rendering, and the spider framework.
+- **Usage**: Write Python scrapers or crawlers, choose HTTP or browser-based fetching, and handle changes in page structure.
+- **Install**: `vibe add skill Scrapling-Skill` (upstream metadata name: `scrapling-official`; vibe uses the directory name `Scrapling-Skill`).
+
 ### seaborn
 - **Path**: `skills/claude-scientific-skills/scientific-skills/seaborn`
 - **Description**: Statistical visualization with pandas integration. Use for quick exploration of distributions, relationships, and categorical comparisons with attractive defaults. Best for box plots, violin plots, pair plots, heatmaps. Built on matplotlib. For interactive plots use plotly; for publication styling use scientific-visualization.
@@ -1847,6 +1854,165 @@
 - **Path**: `skills/ai-investment-advisor`
 - **Description**: 基于 Claude Code 的私人投资分析系统，支持多模型协同决策。
 - **Usage**: See description
+
+### Matt Pocock Published Skills (Chinese Edition)
+
+[vinvcn/mattpocock-skills-zh-CN](https://github.com/vinvcn/mattpocock-skills-zh-CN)
+
+#### ask-matt
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/ask-matt`
+- **Description**: Choose the right skill or engineering flow for the current situation.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### code-review
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/code-review`
+- **Description**: Review a diff against a fixed point on separate Standards and Spec axes.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### codebase-design
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/codebase-design`
+- **Description**: Design deep modules with small interfaces, clean seams, and interface-level tests.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### diagnosing-bugs
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/diagnosing-bugs`
+- **Description**: Diagnose bugs with a feedback loop, minimal reproduction, hypotheses, and regression tests.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### domain-modeling
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/domain-modeling`
+- **Description**: Refine domain models and terminology; maintain GLOSSARY.md and architecture decisions.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### grill-with-docs
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/grill-with-docs`
+- **Description**: Clarify requirements through an interview while refining domain terminology and decision records.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### implement
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/implement`
+- **Description**: Implement a spec or tickets with TDD at agreed seams and a final two-axis review.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### implement-spec
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/implement-spec`
+- **Description**: Implement an entire spec on an integration branch using the ticket dependency graph.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### improve-codebase-architecture
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/improve-codebase-architecture`
+- **Description**: Survey module-deepening opportunities, produce an HTML report, and discuss candidates.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### pr
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/pr`
+- **Description**: Write PR descriptions with a visual summary, verification evidence, and merge-risk assessment.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### prototype
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/prototype`
+- **Description**: Build a throwaway prototype to test state, logic, or different UI directions.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### research
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/research`
+- **Description**: Research primary sources and save cited findings as Markdown.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### retro
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/retro`
+- **Description**: Suggest prioritized improvements to the coding agent environment and tooling.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### setup-matt-pocock-skills
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/setup-matt-pocock-skills`
+- **Description**: Configure the issue tracker, triage labels, and domain documentation before first use.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### tdd
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/tdd`
+- **Description**: Build one vertical slice at a time with red-green-refactor test-driven development.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### to-spec
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/to-spec`
+- **Description**: Synthesize an existing conversation into a spec and publish it to the issue tracker.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### to-tickets
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/to-tickets`
+- **Description**: Split a plan or spec into tracer-bullet tickets with explicit blocking dependencies.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### triage
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/triage`
+- **Description**: Advance issues through a triage-role state machine.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### wayfinder
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/wayfinder`
+- **Description**: Map large work into shared decision tickets and progressively resolve the route forward.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### wizard
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/engineering/wizard`
+- **Description**: Generate an interactive Bash wizard for human provisioning, configuration, or migration steps.
+- **Usage**: `engineering`; Installed by default with the `vibe-coding` manifest.
+
+#### grill-me
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/grill-me`
+- **Description**: Interview the user about a plan or design until its decision branches are resolved.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### grilling
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/grilling`
+- **Description**: Provide reusable interviewing discipline for requirements, plans, and decisions.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### handoff
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/handoff`
+- **Description**: Compress the current conversation into a handoff document another agent can continue from.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### teach
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/teach`
+- **Description**: Use a directory as a persistent teaching workspace across sessions.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### to-questionnaire
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/to-questionnaire`
+- **Description**: Turn decisions requiring a particular person into a Markdown questionnaire.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### wait-what
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/wait-what`
+- **Description**: Supply missing context and restate an unclear message using project terminology.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### writing-for-agents
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/productivity/writing-for-agents`
+- **Description**: Write skills, agent instructions, and linked documents for agent navigation and comprehension.
+- **Usage**: `productivity`; Installed by default with the `vibe-coding` manifest.
+
+#### git-guardrails-claude-code
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/misc/git-guardrails-claude-code`
+- **Description**: Install Claude Code hooks that block dangerous Git commands before execution.
+- **Usage**: `misc`; Installed by default with the `vibe-coding` manifest.
+
+#### migrate-to-shoehorn
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/misc/migrate-to-shoehorn`
+- **Description**: Migrate test type assertions to @total-typescript/shoehorn.
+- **Usage**: `misc`; Installed by default with the `vibe-coding` manifest.
+
+#### scaffold-exercises
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/misc/scaffold-exercises`
+- **Description**: Create exercise directories with sections, problems, solutions, and explainers.
+- **Usage**: `misc`; Installed by default with the `vibe-coding` manifest.
+
+#### setup-pre-commit
+- **Path**: `skills/mattpocock-skills-zh-CN/skills/misc/setup-pre-commit`
+- **Description**: Set up Husky hooks with formatting, type checks, and tests.
+- **Usage**: `misc`; Installed by default with the `vibe-coding` manifest.
 
 ## MCP Servers
 

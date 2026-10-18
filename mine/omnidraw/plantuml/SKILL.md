@@ -16,7 +16,7 @@ Text-to-diagram for UML and beyond. Best-in-class UML coverage — class, use ca
 - Timing diagrams
 - When Mermaid's UML support is insufficient
 
-**Not for**: flowcharts (use [mermaid](../mermaid/SKILL.md)), precise layouts (use [drawio](../drawio/SKILL.md)).
+**Not for**: flowcharts (use [mermaid](../mermaid/SKILL.md)), precise layouts (use [mermaid](../mermaid/SKILL.md)).
 
 ## Rendering Options
 

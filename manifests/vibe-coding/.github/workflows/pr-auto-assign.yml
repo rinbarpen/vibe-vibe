@@ -1,36 +1,22 @@
 name: PR Auto Assign
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, ready_for_review]
+
+permissions:
+  pull-requests: write
 
 jobs:
   assign-author:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign author
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.addAssignees({
+            await github.rest.issues.addAssignees({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               assignees: [context.payload.pull_request.user.login]
-            })
-
-  request-reviewers:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Request review from CODEOWNERS
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: owners } = await github.rest.repos.getCodeowners({
-              owner: context.repo.owner,
-              repo: context.repo.repo
             });
-            if (owners && owners.codeowners) {
-              // CODEOWNERS-based review request is handled automatically by GitHub
-              console.log("CODEOWNERS found, GitHub will auto-request reviews");
-            }

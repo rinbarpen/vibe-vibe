@@ -1,110 +1,46 @@
-# Release Process Guide
+# Version and Release Process
 
-## Versioning
+## Single source of truth
 
-遵循 Semantic Versioning 2.0：
+`VERSION` contains one SemVer value without a `v` prefix. Existing `package.json`, `pyproject.toml`, `Cargo.toml`, and direct `pom.xml` project/package versions must match it. Initializing an existing project adopts its one unambiguous package version; conflicting values stop initialization before files are copied. New projects start at `0.1.0` and `CHANGELOG.md` with `Unreleased`. This is not an automatic first release.
 
-| 版本段 | 含义 | 示例 |
-|--------|------|------|
-| MAJOR | 不兼容的 API 变更 | 1.0.0 → 2.0.0 |
-| MINOR | 向后兼容的新功能 | 1.0.0 → 1.1.0 |
-| PATCH | 向后兼容的 bug 修复 | 1.0.0 → 1.0.1 |
-| -rc.N | 发布候选（Release Candidate） | 1.0.0-rc.1 |
-| -hotfix.N | 紧急修复 | 1.0.0-hotfix.1 |
+Every version bump is one reviewed change containing the new `VERSION`, aligned package versions, and a new `CHANGELOG.md` section such as:
 
-## Release 类型
+```markdown
+## [1.2.3] - 2026-10-01
 
-| 类型 | 触发方式 | 工作流 | 执行步骤 |
-|------|----------|--------|----------|
-| **Standard** | `git tag v1.2.3` → `git push origin v1.2.3` | `release.yml` | verify → CI → build → GitHub Release → publish |
-| **Pre-release** | `git tag v1.2.3-rc.1` → `git push` | `release.yml` (prerelease) | 同上，标记为 prerelease |
-| **Release branch** | push `release/v*` 分支 | `release-branch.yml` | version bump → RC deploy |
-| **Hotfix** | push `hotfix/v*` 分支 | `hotfix.yml` | urgent CI → deploy → tag → backport |
-
-## Standard Release 流程
-
-```mermaid
-graph LR
-    A[release manager 创建 tag] --> B[tag push 触发 release.yml]
-    B --> C[verify: 版本一致性检查]
-    C --> D[CI: 完整测试]
-    D --> E[Build 分发包]
-    E --> F[Create GitHub Release]
-    F --> G[Publish to 包管理器]
+### Fixed
+- Correct the failed export path for empty reports.
 ```
 
-### 分步说明
+A section needs a real categorized bullet. Placeholder text, missing/duplicate headings, and a section prepared in an earlier commit fail the version-bump check. Release tags use `v` plus the exact VERSION, including `-rc.1` or `-hotfix.1` when applicable. `Unreleased` is not a release note.
 
-1. **准备**：确认 CHANGELOG.md 已更新，所有 CI 通过
-2. **打 tag**：
-   ```bash
-   git checkout main
-   git pull origin main
-   git tag -s v1.2.3 -m "v1.2.3"
-   git push origin v1.2.3
-   ```
-3. **等待 CI**：`release.yml` 自动运行
-4. **验证发布**：确认 GitHub Release 已创建、包已发布
-
-## Hotfix 流程
-
-```mermaid
-graph LR
-    A[生产环境发现 bug] --> B[从最近 release tag 创建 hotfix 分支]
-    B --> C[在 hotfix 分支修复]
-    C --> D[push hotfix 触发 workflow]
-    D --> E[urgent CI]
-    E --> F[部署到生产]
-    F --> G[自动打 hotfix tag]
-    G --> H[backport PR 到 main + develop]
-```
-
-### Hotfix 命名
-
-```
-hotfix/v1.2.3
-```
-
-从需要修复的最近 release tag（如 `v1.2.2`）创建：
+## Local and CI checks
 
 ```bash
-git checkout -b hotfix/v1.2.3 v1.2.2
-# 修复代码
-git commit -m "fix: ..."
-git push origin hotfix/v1.2.3
+python3 scripts/version_guard.py check --base-ref origin/main
+python3 scripts/version_guard.py check --tag "v$(cat VERSION)"
+python3 scripts/version_guard.py notes --tag "v$(cat VERSION)" --output release_notes.md
 ```
 
-push 后自动触发 `hotfix.yml`，部署完成后自动创建 `v1.2.3-hotfix.1` tag。
+`--base-ref` compares the current change against a Git commit. Run it in the PR pipeline and after pushing to the protected branch. CI always validates version syntax and known package metadata; the tag pipeline additionally validates the exact Changelog section and creates release notes. If present, POSIX `scripts/ci.sh` runs in validation and `scripts/build.sh` runs before publication. Put distributable files in `dist/`; an empty `dist/` yields a notes-only Release. Neither hook performs deployment by default.
 
-## 版本一致性检查
+## Provider activation
 
-发布时必须确保以下三处版本号一致：
+| Provider | Pipeline | Release credentials and setup |
+|---|---|---|
+| Git | Local commands only | Configure any Git remote yourself; no hosted Release is created. |
+| GitHub | 12 bundled Actions workflows | Enable Actions and branch/tag protection. `GITHUB_TOKEN` is scoped by each workflow; the tag workflow creates the Release. |
+| GitLab | `.gitlab-ci.yml` | Enable runners and protect tags. The tag job uses `CI_JOB_TOKEN` with Releases API permissions; the triggering user needs release access. |
+| Gitee | `.workflow/vibe-ci.yml` and `vibe-release.yml` | First enable Gitee Go in the repository UI and connect the supplied YAML pipelines. Set `GITEE_OWNER`, `GITEE_REPO`, and a secret `GITEE_TOKEN` with Release permission. |
 
-```
-git tag v1.2.3
-     ↓ 必须一致
-pyproject.toml: version = "1.2.3"
-     ↓ 必须一致
-CHANGELOG.md: ## [1.2.3] - 2025-06-15
-```
+GitHub, GitLab, and Gitee run validation for PRs and branch pushes, and publish a Release on version-tag push. The Gitee tag pipeline verifies the tag points to the checked-out commit before calling the Release API. Keep protected branches and tags; especially on Gitee, use PR review for multi-commit pushes so each version bump is compared with the target branch. Credentials live in the host's secret store, not committed files. No pipeline creates a remote repository, tag, or production deployment.
 
-`release.yml` 中的 `verify` job 自动执行此检查。
+## Publishing and rollback
 
-## Release Branch 流程（Git Flow）
+1. Merge the version-and-Changelog change after CI passes.
+2. On the release commit, run the tag check and create a GPG-signed tag: `git tag -s "v$(cat VERSION)" -m "Release v$(cat VERSION)"`.
+3. Push the tag and confirm the selected provider's release job and Release notes. Git-only projects produce notes locally.
+4. If publication fails, correct the pipeline or credentials and rerun it. Do not move or delete a published tag. Revert a faulty code release in a new commit and publish a new patch/hotfix version.
 
-当需要发布一个版本时：
-
-```bash
-git checkout develop
-git checkout -b release/v1.2.0
-git push origin release/v1.2.0
-```
-
-push 后 `release-branch.yml` 自动执行：
-1. Version bump（确保版本号正确）
-2. RC deploy（部署到 staging 验证）
-3. 最终验证后，手动合并到 `main` 并打 tag
-
-## 发布前 Checklist
-
-参见 `templates/RELEASE_CHECKLIST.md.example`。
+Provider references: [GitHub reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows), [GitLab Releases API](https://docs.gitlab.com/api/releases/), [Gitee Go triggers](https://help.gitee.com/gitee-go/pipeline/trigger), [Gitee Go activation](https://help.gitee.com/gitee-go/get-started-in-3-steps).

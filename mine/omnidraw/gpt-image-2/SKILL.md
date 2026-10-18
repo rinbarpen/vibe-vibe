@@ -49,7 +49,7 @@ export OPENAI_API_KEY="sk-..."
 - Storyboarding and mood boards
 - When detailed prompt following matters (DALL-E 3 excels)
 
-**Not for**: precise diagrams (use [drawio](../drawio/SKILL.md)), text-heavy output, specific fonts. For faster/cheaper: [nano-banana](../nano-banana/SKILL.md).
+**Not for**: precise diagrams (use [mermaid](../mermaid/SKILL.md)), text-heavy output, specific fonts. For faster/cheaper: [nano-banana](../nano-banana/SKILL.md).
 
 ## Cost
 

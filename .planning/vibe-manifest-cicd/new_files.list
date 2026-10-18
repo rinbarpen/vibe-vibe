@@ -1,0 +1,6 @@
+manifests/vibe-coding/scripts/init_version.py
+manifests/vibe-coding/scripts/version_guard.py
+manifests/vibe-coding/platforms/gitlab/.gitlab-ci.yml
+manifests/vibe-coding/platforms/gitee/.workflow/vibe-ci.yml
+manifests/vibe-coding/platforms/gitee/.workflow/vibe-release.yml
+tools/vibe_tool/tests/test_vibe_manifest_release.py

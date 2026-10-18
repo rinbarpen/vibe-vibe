@@ -12,6 +12,6 @@ triggers:
     description: Workflow selection or coordinated development task; simple coding changes stay lightweight
   - pattern: "deploy to (vercel|cloudflare|tencent|alibaba|huawei)"
     description: Cloud platform deployment request
-  - pattern: "(create|setup|configure) (PR|release|CI|workflow|GitHub)"
+  - pattern: "(create|setup|configure) (PR|release|CI|workflow|GitHub|GitLab|Gitee)"
     description: GitHub/enterprise operations request
 ---

@@ -16,12 +16,12 @@ Canvas Design is part of the Anthropic skills collection (`skills/anthropics/ski
 
 | Need | Use |
 |------|-----|
-| Architecture diagram | [drawio](../../drawio/SKILL.md) |
+| Architecture diagram | [mermaid](../../mermaid/SKILL.md) |
 | UML / class | [plantuml](../../plantuml/SKILL.md) |
 | Data visualization | [matplotlib](../../matplotlib/SKILL.md) |
 | Photo-realistic image | [nano-banana](../../nano-banana/SKILL.md) |
 | Illustration | [gpt-image-2](../../gpt-image-2/SKILL.md) |
-| Quick sketch | [excalidraw](../../excalidraw/SKILL.md) |
+| Quick sketch | [canvas-design](../../canvas-design/SKILL.md) |
 | Scientific figure | [scientific-schematics](../../scientific-schematics/SKILL.md) |
 
 ## Typography Considerations

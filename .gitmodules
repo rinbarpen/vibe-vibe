@@ -140,3 +140,11 @@
 [submodule "skills/ai-mode-skills"]
 	path = skills/ai-mode-skills
 	url = https://github.com/wechat-miniprogram/ai-mode-skills.git
+[submodule "skills/scrapling"]
+	path = skills/scrapling
+	url = https://github.com/D4Vinci/Scrapling.git
+	branch = main
+[submodule "skills/mattpocock-skills-zh-CN"]
+	path = skills/mattpocock-skills-zh-CN
+	url = https://github.com/vinvcn/mattpocock-skills-zh-CN.git
+	branch = main

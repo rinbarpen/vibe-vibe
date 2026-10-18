@@ -2,48 +2,26 @@ name: Release Branch
 
 on:
   push:
-    branches:
-      - "release/v*"
+    branches: ['release/v*']
+
+permissions:
+  contents: read
 
 jobs:
-  version-bump:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Extract version from branch
-        id: version
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check release branch, version, and changelog
         run: |
-          BRANCH=${GITHUB_REF#refs/heads/}
-          VERSION=${BRANCH#release/}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Release branch: $BRANCH → version $VERSION"
-      - name: Check CHANGELOG
-        run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          if grep -q "^## \[${VERSION#v}\]" CHANGELOG.md 2>/dev/null; then
-            echo "✓ CHANGELOG entry exists for $VERSION"
-          else
-            echo "! CHANGELOG entry missing for $VERSION — will create"
-          fi
-
-  rc-deploy:
-    needs: version-bump
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build for RC
-        run: |
-          pip install build
-          python -m build
-      - name: Deploy to staging
-        run: |
-          echo "Deploying release candidate ${{ steps.version.outputs.version }} to staging"
-          # Add your actual deploy steps here
-      - name: RC summary
-        run: |
-          echo "## Release Candidate" >> $GITHUB_STEP_SUMMARY
-          echo "Version: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Environment: staging" >> $GITHUB_STEP_SUMMARY
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME#release/}"
+          python3 scripts/version_guard.py check --tag "$TAG"
+          if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
+          if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
+          echo "Release branch $GITHUB_REF_NAME is ready for signed tag $TAG" >> "$GITHUB_STEP_SUMMARY"

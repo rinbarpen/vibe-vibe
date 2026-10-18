@@ -1,55 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+All notable changes to this project are documented here.
+The format follows Keep a Changelog and versions follow SemVer.
 
 ## [Unreleased]
 
 ### Added
-- 新功能描述 (#issue)
+- Describe user-visible changes here before the next version bump.
 
-### Changed
-- 功能变更描述 (#issue)
+<!-- For each VERSION change, add a new dated section in the same change.
+     Replace the example below with a real, categorized bullet; placeholder
+     text is rejected by scripts/version_guard.py. Compare links are optional
+     and should point to the selected Git hosting platform. -->
 
-### Deprecated
-- 即将废弃的功能
-
-### Removed
-- 已移除的功能
+## [1.2.3] - YYYY-MM-DD
 
 ### Fixed
-- Bug 修复描述 (#issue)
-
-### Security
-- 安全修复描述
-
-## [1.2.0] - 2025-06-15
-
-### Added
-- 用户登录功能 (#42)
-- API 文档站点 (#43)
-
-### Fixed
-- 修复空指针异常 (#38)
-
-## [1.1.0] - 2025-05-01
-
-### Added
-- 项目管理面板
-
-### Changed
-- 升级依赖版本
-
-## [1.0.0] - 2025-04-01
-
-### Added
-- 初始版本发布
-- 核心 API
-- 用户认证
-
-[unreleased]: https://github.com/org/repo/compare/v1.2.0...HEAD
-[1.2.0]: https://github.com/org/repo/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/org/repo/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/org/repo/releases/tag/v1.0.0
+- TODO: replace with the actual fix and its user impact.

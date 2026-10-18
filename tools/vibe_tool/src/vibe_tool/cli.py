@@ -46,6 +46,7 @@ def _build_parser() -> argparse.ArgumentParser:
     init_p.add_argument("manifest", help="Manifest name")
     init_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
     init_p.add_argument("--scenario", default="", help="Comma-separated scenario names")
+    init_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")
     init_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
     init_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
     init_p.add_argument("-o", "--owner", default="", help="Default owner (github-enterprise)")
@@ -64,6 +65,7 @@ def _build_parser() -> argparse.ArgumentParser:
     am_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
     am_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
     am_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
+    am_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")
     am_p.add_argument("-o", "--owner", default="", help="Default owner (github-enterprise)")
     am_p.add_argument("--org", default="", help="GitHub organization (github-enterprise)")
     am_p.add_argument("--repo", default="", help="GitHub repository (github-enterprise)")
@@ -192,7 +194,7 @@ def _cmd_add_manifest(args) -> int:
 
 
 def _cmd_add_skill(args) -> int:
-    from .skill import add_skill, add_all_skills
+    from .skill import add_all_skills, add_skill
 
     _, _, skills_root = _get_repo_paths(args)
     target = Path(args.target).resolve()
@@ -300,7 +302,7 @@ def _cmd_update(args) -> int:
         print("No managed submodules to update.")
         return 0
 
-    result = subprocess.run(command, cwd=str(root))
+    result = subprocess.run(command, cwd=str(root), check=False)
     return result.returncode
 
 
@@ -432,7 +434,7 @@ def _cmd_stats_reset(args) -> int:
 def _collect_kwargs(args, source_attr: str = "manifest") -> list:
     """Collect extra keyword arguments for init scripts from parsed args."""
     kwargs: dict[str, str] = {}
-    for key in ("scenario", "owner", "org", "repo", "email"):
+    for key in ("scenario", "provider", "owner", "org", "repo", "email"):
         val = getattr(args, key, None)
         if val:
             kwargs[key] = val

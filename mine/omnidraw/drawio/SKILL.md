@@ -1,9 +1,12 @@
 ---
 name: drawio
-description: Draw.io diagram generation via MCP server and drawio-skills submodule. Flowcharts, architecture diagrams, network topologies, cloud infrastructure (AWS/GCP/Azure), sequence diagrams, patent figures, and academic paper figures.
+description: Archived legacy reference. drawio is no longer supported or routed by Omnidraw.
 ---
 
 # Draw.io
+
+> Archived: this legacy reference is retained for history only and is not a supported Omnidraw route.
+
 
 AI-powered diagram generation with real-time browser preview. Use for flowcharts, architecture, network, cloud, patent figures, and academic diagrams.
 

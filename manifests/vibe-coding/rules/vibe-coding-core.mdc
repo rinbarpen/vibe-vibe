@@ -57,7 +57,7 @@ When uncertain, consult `references/language-specs/` for the target language.
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`, `perf:`, `ci:`
 - Commits must clearly describe "Why" not just "What".
 - PRs must include: summary of changes, test plan, evidence of quality gate passing.
-- Use `gh` CLI for all GitHub interactions.
+- Use plain Git for commits, branches, and tags; use the selected host's CLI/API only for host-specific operations (`gh` on GitHub).
 - Post-commit: run `vibe-post-commit.sh` to sync docs and state.
 
 ## 7. Delivery Quality
@@ -65,7 +65,7 @@ When uncertain, consult `references/language-specs/` for the target language.
 - Git commit 必须清晰描述 "Why" 而非仅仅是 "What"。
 - **自动化同步 (Post-Commit)**: 每次 commit 后，必须确保 README.md 和 CLAUDE.md 已同步更新。
 - **自动化测试**: 按变更风险和项目约定选择针对性测试；不要为简单改动强制启动专用测试技能。
-- **GitHub 集成**: 优先使用 `gh` CLI 进行 PR 创建、CI 状态监控和自动化流程触发。
+- **代码托管集成**: 使用初始化时选定的 GitHub、GitLab 或 Gitee 流水线；GitHub 操作优先使用 `gh` CLI。
 - 创建 PR 时，必须包含详细的测试计划。
 
 ## 8. Proportionate Subagent Use

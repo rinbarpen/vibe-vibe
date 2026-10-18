@@ -19,7 +19,7 @@ Publication-quality scientific diagrams via the `claude-scientific-skills` MCP s
 - Journal-specific formatted schematics
 - When publication conventions matter (Nature, Science, Cell, etc.)
 
-**Not for**: data charts (use [matplotlib](../matplotlib/SKILL.md)), architecture diagrams (use [drawio](../drawio/SKILL.md)).
+**Not for**: data charts (use [matplotlib](../matplotlib/SKILL.md)), architecture diagrams (use [mermaid](../mermaid/SKILL.md)).
 
 ## Quick Start
 
@@ -54,6 +54,6 @@ Research proposal figure:
 
 ## Related
 
-- [drawio](../drawio/SKILL.md) — Fallback for general diagrams
+- [mermaid](../mermaid/SKILL.md) — Fallback for general diagrams
 - [matplotlib](../matplotlib/SKILL.md) — Data charts for papers
 - [chinese-patent/drawio](../../chinese-patent/drawio/SKILL.md) — Patent-specific diagram conventions

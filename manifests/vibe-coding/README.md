@@ -10,9 +10,9 @@ Full lifecycle engineering manifest covering 0-to-1 project building → develop
 - **15 Commands**: plan, scaffold, implement, quality-gate, deploy-check, lang-select, cloud-deploy, release, agent-eval, frontend-check, desktop-build, update-docker, update-docs, update-examples, update-scripts.
 - **5 Cloud Platform References**: Vercel, Cloudflare, Tencent Cloud, Alibaba Cloud, Huawei Cloud.
 - **5 Language Specs + Decision Trees**: Go, Rust, Python, TypeScript/JavaScript, Java.
-- **GitHub Enterprise Governance**: 12 CI/CD workflows, issue/PR templates, CODEOWNERS, SECURITY.md, dependabot config.
+- **Code hosting and CI/CD**: Git-only, GitHub (12 workflows and governance), GitLab CI, or Gitee Go; shared VERSION/Changelog checks and tag releases.
 - **Enterprise References**: Branching strategy, release process, PR conventions, tag conventions.
-- **8 Skills installed on init**: Four manifest-bundled skills, `canvas-design`, and the three `wxa-skills-*` skills from the managed `ai-mode-skills` submodule.
+- **39 Skills installed by the vibe CLI**: Four manifest-bundled skills, Anthropic's `canvas-design` (installed as `anthropics-skills-canvas-design` to disambiguate sources), three `wxa-skills-*` skills, and all 31 published Matt Pocock Chinese skills.
 - **Templates**: CHANGELOG, README, release checklist, roadmap.
 
 ## Quick Start
@@ -24,8 +24,32 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
   --scenario=fullstack-web \
   --cloud=vercel \
   --org mycompany \
-  --repo my-app
+  --repo my-app \
+  --provider=github
+
+# Or via the vibe CLI; use `vibe add manifest` for an existing project.
+vibe init vibe-coding ./my-app --provider=gitlab
+vibe add manifest vibe-coding ./my-app --provider=gitee --dry-run
 ```
+
+### Required Skills and First-Time Setup
+
+`vibe init vibe-coding` and `vibe add manifest vibe-coding` install the dependencies
+in `skills.txt` into the target project's `.agents/skills/`. Running
+`scripts/vibe-init.sh` directly installs the scaffold only, not these dependencies;
+use the vibe CLI to install the complete manifest.
+
+The [Matt Pocock Chinese skill bundle](https://github.com/vinvcn/mattpocock-skills-zh-CN)
+is tracked as the managed `skills/mattpocock-skills-zh-CN` submodule on `main` and
+participates in `vibe update`. The manifest includes the published `engineering`,
+`productivity`, and `misc` buckets only. Translation maintenance (`.skills`), beta
+(`in-progress`), and retired/out-of-scope skills are not default dependencies.
+New upstream skills must be explicitly added to `skills.txt` when updating the bundle.
+
+After installation, run `/setup-matt-pocock-skills` in your coding agent once per
+project, before using the engineering skills. It guides you through issue tracker,
+triage labels, and domain documentation configuration. Initialization copies the
+skills only; it does not run setup or choose those settings for you.
 
 ### Available Init Flags
 
@@ -40,6 +64,7 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
 --org <org>                     GitHub organization
 --repo <repo>                   GitHub repository
 --email <email>                 Security contact email
+--provider=<name>             git / github / gitlab / gitee (default: github)
 --git / --no-git                Git initialization (default: auto)
 -f, --force                     Overwrite existing files
 -n, --dry-run                   Preview without writing
@@ -99,11 +124,15 @@ bash manifests/vibe-coding/scripts/vibe-init.sh \
 
 See `references/desktop-frameworks.md` for full comparison and decision guide.
 
+## Version records and CI/CD
+
+Initialization creates root `VERSION` and `CHANGELOG.md` (unless already present). Every version bump must add a meaningful section to Changelog in the same change. Run `python3 scripts/version_guard.py check --base-ref origin/main` before merging; tag releases run `check --tag vX.Y.Z` and publish only that section. Optional POSIX hooks are `scripts/ci.sh` and `scripts/build.sh`; `dist/` files are attached when present. Set `--provider=git` for local-only workflow, or select GitHub, GitLab, or Gitee. For GitLab enable runners; for Gitee enable Gitee Go and configure `GITEE_OWNER`, `GITEE_REPO`, and secret `GITEE_TOKEN`. See `references/release-process.md`.
+
 ## Dependencies
 
 - **Bash**: Init and maintenance scripts.
 - **Git**: Version control.
-- **GitHub CLI** (`gh`): Repository operations, CI monitoring, releases.
+- **GitHub CLI** (`gh`): Optional for GitHub repository operations and CI monitoring.
 - **Language toolchains**: Go, Rust, Python (uv), Node (pnpm), Java (maven/gradle) as needed.
 - **Cloud CLIs**: Platform-specific CLIs for cloud deployments.
 

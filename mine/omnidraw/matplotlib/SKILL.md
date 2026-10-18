@@ -15,7 +15,9 @@ Programmatic data visualization in Python. Publication-quality charts with preci
 - Custom chart types not available in Mermaid
 - When you need pixel-level control
 
-**Not for**: quick inline charts (use [mermaid](../mermaid/SKILL.md) pie), architecture diagrams (use [drawio](../drawio/SKILL.md)).
+**Not for**: quick inline charts (use [mermaid](../mermaid/SKILL.md) pie), architecture diagrams (use [mermaid](../mermaid/SKILL.md)).
+
+For a supplied scientific panel image that needs reproducible code reconstruction, consult [NaturePanelForge](https://github.com/littlepeachs/NaturePanelForge) and its `codex-panel-reproduce` workflow. For a new chart, retain the user's actual data as the source of values; use the reference panel only for chart type, visual encoding, layout, and styling.
 
 ## Quick Start
 
@@ -97,6 +99,6 @@ Multi-panel:
 |------|------|
 | Precise data from code | matplotlib |
 | Quick chart in markdown | [mermaid](../mermaid/SKILL.md) |
-| Stylized custom diagram | [drawio](../drawio/SKILL.md) |
+| Stylized custom diagram | [mermaid](../mermaid/SKILL.md) |
 | IEEE publication figure | matplotlib (data), drawio (architecture) |
 | Chinese journal | matplotlib + SimHei font |

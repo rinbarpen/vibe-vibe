@@ -1,9 +1,12 @@
 ---
 name: excalidraw
-description: Hand-drawn style diagrams via Excalidraw. Whiteboard sketches, wireframes, quick mockups with rough.js aesthetic. Zero deps — JSON URL scheme or npm library.
+description: Archived legacy reference. excalidraw is no longer supported or routed by Omnidraw.
 ---
 
 # Excalidraw
+
+> Archived: this legacy reference is retained for history only and is not a supported Omnidraw route.
+
 
 Hand-drawn / sketch style diagrams with rough.js aesthetic. Perfect for whiteboard-style architecture discussions, wireframes, and quick mockups.
 

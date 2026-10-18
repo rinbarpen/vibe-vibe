@@ -20,6 +20,7 @@ RELATIVE_MANIFEST_DIR=$(realpath --relative-to="$(pwd)" "$MANIFEST_DIR" 2>/dev/n
 # ── Defaults ──
 SCENARIOS=""
 CLOUD_PROVIDER=""
+CODE_PROVIDER="github"
 DEFAULT_OWNER="default-owner"
 ORG_NAME=""
 REPO_NAME=""
@@ -55,6 +56,7 @@ GitHub Enterprise:
   --email <email>                  Security contact email (default: security@example.com)
 
 Git:
+  --provider=<name>               git / github / gitlab / gitee (default: github)
   --git                            Force git repository initialization
   --no-git                         Skip git initialization
 
@@ -79,6 +81,8 @@ while [[ $# -gt 0 ]]; do
     --scenario) SCENARIOS="$2" ; shift 2 ;;
     --cloud=*) CLOUD_PROVIDER="${1#*=}" ; shift ;;
     --cloud) CLOUD_PROVIDER="$2" ; shift 2 ;;
+    --provider=*) CODE_PROVIDER="${1#*=}" ; shift ;;
+    --provider) CODE_PROVIDER="$2" ; shift 2 ;;
     -o|--owner) DEFAULT_OWNER="$2" ; shift 2 ;;
     --org) ORG_NAME="$2" ; shift 2 ;;
     --repo) REPO_NAME="$2" ; shift 2 ;;
@@ -98,14 +102,21 @@ while [[ $# -gt 0 ]]; do
 done
 
 TARGET="${TARGET:-$(pwd)}"
-mkdir -p "$TARGET"
-TARGET="$(cd "$TARGET" && pwd)"
+case "$CODE_PROVIDER" in
+  git|github|gitlab|gitee) ;;
+  *) echo "Unsupported code provider: $CODE_PROVIDER" >&2; exit 2 ;;
+esac
+TARGET="$(python3 -c 'import os, sys; print(os.path.abspath(sys.argv[1]))' "$TARGET")"
 PROJECT_ROOT="$TARGET"
+VERSION_ARGS=()
+$DRY_RUN && VERSION_ARGS+=(--dry-run)
+python3 "$MANIFEST_DIR/scripts/init_version.py" "$TARGET" "${VERSION_ARGS[@]}"
 
 echo "=== Vibe Coding Unified Manifest Init ==="
 echo "  Source:    $MANIFEST_DIR"
 echo "  Target:    $TARGET"
 echo "  Scenarios: ${SCENARIOS:-default}"
+echo "  Provider:  $CODE_PROVIDER"
 [[ -n "$CLOUD_PROVIDER" ]] && echo "  Cloud:     $CLOUD_PROVIDER"
 $DRY_RUN && echo "  Mode:      DRY RUN (no files written)"
 echo ""
@@ -115,8 +126,6 @@ echo ""
 copy_file() {
   local src="$1" dst="$2"
   local label="${dst#$TARGET/}"
-  mkdir -p "$(dirname "$dst")"
-
   if [[ -f "$dst" && "$FORCE" != true ]]; then
     echo "  SKIP  $label (exists)"
     return
@@ -127,6 +136,7 @@ copy_file() {
     return
   fi
 
+  mkdir -p "$(dirname "$dst")"
   cp "$src" "$dst"
   echo "  COPY  $label"
 }
@@ -134,7 +144,6 @@ copy_file() {
 link_file() {
   local src="$1" dst="$2"
   local label="${dst#$TARGET/}"
-  mkdir -p "$(dirname "$dst")"
 
   if { [[ -e "$dst" ]] || [[ -L "$dst" ]]; } && [[ "$FORCE" != true ]]; then
     echo "  SKIP  $label (exists)"
@@ -146,6 +155,7 @@ link_file() {
     return
   fi
 
+  mkdir -p "$(dirname "$dst")"
   ln -sfn "$src" "$dst"
   echo "  LINK  $label -> $src"
 }
@@ -153,7 +163,6 @@ link_file() {
 copy_with_subst() {
   local src="$1" dst="$2"
   local label="${dst#$TARGET/}"
-  mkdir -p "$(dirname "$dst")"
 
   if [[ -f "$dst" && "$FORCE" != true ]]; then
     echo "  SKIP  $label (exists)"
@@ -165,6 +174,7 @@ copy_with_subst() {
     return
   fi
 
+  mkdir -p "$(dirname "$dst")"
   sed \
     -e "s|\${DEFAULT_OWNER}|$DEFAULT_OWNER|g" \
     -e "s|\${ORG_NAME}|${ORG_NAME:-org}|g" \
@@ -208,6 +218,7 @@ copy_file "$MANIFEST_DIR/CONTRIBUTING.md" "$TARGET/CONTRIBUTING.md"
 copy_file "$MANIFEST_DIR/.cursorrules"   "$TARGET/.cursorrules"
 copy_file "$MANIFEST_DIR/.editorconfig"  "$TARGET/.editorconfig"
 copy_file "$MANIFEST_DIR/.gitignore"     "$TARGET/.gitignore"
+copy_file "$MANIFEST_DIR/scripts/version_guard.py" "$TARGET/scripts/version_guard.py"
 
 # ── Zone 3: Install Rules ──
 echo ""
@@ -269,9 +280,9 @@ if [[ -n "$SCENARIOS" ]]; then
   done
 fi
 
-# ── Zone 5: GitHub Enterprise (.github/) ──
+# ── Zone 5: Selected code-host platform ──
 echo ""
-echo "── Zone 5: GitHub Enterprise Governance ──"
+echo "── Zone 5: $CODE_PROVIDER Governance and CI/CD ──"
 
 install_github_file() {
   local src="$1" dst="$2" needs_subst="${3:-false}"
@@ -300,7 +311,7 @@ install_github_file() {
   echo "  COPY  $label"
 }
 
-if [[ -d "$MANIFEST_DIR/.github" ]]; then
+if [[ "$CODE_PROVIDER" == "github" && -d "$MANIFEST_DIR/.github" ]]; then
   install_github_file "$MANIFEST_DIR/.github/CODEOWNERS"             "$TARGET/.github/CODEOWNERS" true
   install_github_file "$MANIFEST_DIR/.github/SECURITY.md"            "$TARGET/.github/SECURITY.md" true
   install_github_file "$MANIFEST_DIR/.github/CODE_OF_CONDUCT.md"     "$TARGET/.github/CODE_OF_CONDUCT.md" true
@@ -317,6 +328,15 @@ if [[ -d "$MANIFEST_DIR/.github" ]]; then
   for wf in "$MANIFEST_DIR/.github/workflows"/*.yml; do
     [[ -f "$wf" ]] || continue
     install_github_file "$wf" "$TARGET/.github/workflows/$(basename "$wf")" false
+  done
+fi
+if [[ "$CODE_PROVIDER" == "gitlab" ]]; then
+  copy_file "$MANIFEST_DIR/platforms/gitlab/.gitlab-ci.yml" "$TARGET/.gitlab-ci.yml"
+fi
+if [[ "$CODE_PROVIDER" == "gitee" ]]; then
+  for wf in "$MANIFEST_DIR/platforms/gitee/.workflow"/*.yml; do
+    [[ -f "$wf" ]] || continue
+    copy_file "$wf" "$TARGET/.workflow/$(basename "$wf")"
   done
 fi
 
@@ -378,7 +398,12 @@ if [[ -d "$MANIFEST_DIR/commands" ]]; then
     cmd_dest="$TARGET/.cursor/commands/$cmd_name"
     if ! $DRY_RUN; then
       mkdir -p "$cmd_dest"
-      cp "$cmd_dir"* "$cmd_dest/" 2>/dev/null || true
+      for cmd_file in "$cmd_dir"*; do
+        [[ -f "$cmd_file" ]] || continue
+        if [[ ! -e "$cmd_dest/$(basename "$cmd_file")" || "$FORCE" == true ]]; then
+          cp "$cmd_file" "$cmd_dest/"
+        fi
+      done
     fi
     echo "  COPY  commands/$cmd_name"
   done
@@ -406,12 +431,12 @@ for runtime_agents in ".claude/agents" ".codex/agents"; do
     SOURCE_DIR="$MANIFEST_DIR/$runtime_agents"
     if [ -d "$SOURCE_DIR" ]; then
         echo "  Installing $runtime_agents..."
-        mkdir -p "$runtime_agents"
+        $DRY_RUN || mkdir -p "$TARGET/$runtime_agents"
         for agent_file in "$SOURCE_DIR"/*; do
             [ -f "$agent_file" ] || continue
             agent_name=$(basename "$agent_file")
-            if [ ! -f "$runtime_agents/$agent_name" ]; then
-                $DRY_RUN || cp "$agent_file" "$runtime_agents/$agent_name"
+            if [ ! -f "$TARGET/$runtime_agents/$agent_name" ] || "$FORCE"; then
+                $DRY_RUN || cp "$agent_file" "$TARGET/$runtime_agents/$agent_name"
             fi
         done
     fi
@@ -437,16 +462,13 @@ else
   echo "Scenarios activated: default (all core rules)"
 fi
 [[ -n "$CLOUD_PROVIDER" ]] && echo "Cloud platform: $CLOUD_PROVIDER"
-[[ -n "$ORG_NAME" ]] && echo "GitHub org: $ORG_NAME"
+echo "Code provider: $CODE_PROVIDER"
+[[ "$CODE_PROVIDER" == github && -n "$ORG_NAME" ]] && echo "GitHub org: $ORG_NAME"
 echo ""
 echo "Next steps:"
 echo "  1. Review CLAUDE.md and customize for your project"
-echo "  2. Update .github/CODEOWNERS with your actual teams"
-echo "  3. Update .github/SECURITY.md with your security contact"
-echo "  4. Configure branch protection rules in GitHub Web UI"
-echo "  5. Run /lang-select to choose languages (if not yet decided)"
-echo "  6. Run /plan to create your first implementation plan"
-echo "  7. Commit and push:"
+echo "  2. Maintain VERSION and CHANGELOG.md together for every version bump"
+echo "  3. Run python3 scripts/version_guard.py check before publishing"
+echo "  4. Configure CI secrets and branch protection on your selected platform"
+echo "  5. Commit and push:"
 echo "       git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'"
-echo "       git remote add origin https://github.com/${ORG_NAME:-org}/${REPO_NAME:-repo}.git"
-echo "       git push -u origin main"

@@ -16,7 +16,7 @@ Microsoft Visio format support via Draw.io bridge workflow. Since Visio has no p
 - Data-linked shapes, org charts from Excel
 - Integration with Microsoft Office ecosystem
 
-**If VSDX is not required**: prefer [drawio](../drawio/SKILL.md) or [mermaid](../mermaid/SKILL.md).
+**If VSDX is not required**: prefer [mermaid](../mermaid/SKILL.md) or [mermaid](../mermaid/SKILL.md).
 
 ## Draw.io → VSDX Workflow
 

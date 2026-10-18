@@ -12,15 +12,13 @@
 
 ### 代码质量
 
-- [ ] CHANGELOG.md 已更新（包含本次发布的所有变更）
-- [ ] 版本号在所有文件中一致（`pyproject.toml` / `package.json` / `__init__.py` 等）
-- [ ] 所有 CI 通过（lint → test → build → coverage）
-- [ ] 测试覆盖率 >= 80%
+- [ ] VERSION 与对应的实质性 CHANGELOG.md 条目在同一变更中更新
+- [ ] 已有的 `pyproject.toml` / `package.json` / `Cargo.toml` / `pom.xml` 版本与 VERSION 一致
+- [ ] 平台 CI 和项目自定义检查（如有）通过
 
 ### 安全
 
-- [ ] CodeQL 扫描无 critical 告警
-- [ ] Dependabot 依赖无已知漏洞
+- [ ] 所选平台启用的安全检查无未处理的严重告警
 - [ ] API 兼容性已确认（无意外 breaking change）
 
 ### 文档
@@ -32,13 +30,12 @@
 ### 发布准备
 
 - [ ] tag 已创建并 GPG 签名
-- [ ] tag 版本号与代码一致
+- [ ] `python3 scripts/version_guard.py check --tag vX.Y.Z` 通过
 - [ ] 相关 issue/PR 已关闭
 - [ ] 发布说明已准备好
 
 ## 发布后
 
-- [ ] GitHub Release 已创建
-- [ ] 包已成功发布到 registry
-- [ ] 部署已验证
+- [ ] 所选平台的 Release 已创建（Git-only 项目则保存本地说明）
+- [ ] 若配置了构建/制品发布，产物和链接已验证
 - [ ] 相关团队已通知

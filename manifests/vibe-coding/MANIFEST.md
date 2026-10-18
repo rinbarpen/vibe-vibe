@@ -166,6 +166,12 @@ When the project spans multiple languages:
 4. **Unified Logging**: Structured JSON logging across all services with consistent field names.
 5. **Language Isolation**: Each language has its own build, test, and lint config. Integration tests verify contract adherence.
 
+## Version Records and Code Hosting
+
+- `VERSION` is the canonical SemVer source. Every version-number change must add a meaningful, categorized `CHANGELOG.md` entry in the same change and align existing package metadata.
+- Run `python3 scripts/version_guard.py check --base-ref <base>` for a version bump and `check --tag vX.Y.Z` before release. Use `notes --tag vX.Y.Z --output release_notes.md` for exact notes.
+- `--provider=git|github|gitlab|gitee` selects local Git only or one hosted CI/release pipeline. GitHub is the default; do not install unrelated host pipelines. Optional `scripts/ci.sh` and `scripts/build.sh` are POSIX hooks; deployment is explicit, never implied by a release.
+
 ## GitHub Enterprise Automation
 
 ### Subagent Dispatching for GitHub Ops
@@ -178,9 +184,9 @@ When the project spans multiple languages:
 
 ### Release Management Rules
 1. Only release managers can create and push tags.
-2. All releases must have a CHANGELOG.md entry.
+2. Every version bump and release requires a substantive CHANGELOG.md entry added with the bump.
 3. Hotfix must go through the hotfix branch process.
-4. Version numbers must be consistent: git tag = package version = CHANGELOG entry.
+4. Version numbers must be consistent: git tag = VERSION = known package versions = CHANGELOG entry.
 5. All release tags must be GPG signed.
 
 ## Cloud Deployment Automation
@@ -261,7 +267,7 @@ Unified Development Manifest — full lifecycle engineering from idea to product
   scripts/          # Build, CI, and utility scripts
   infra/            # Infrastructure as Code (Docker, Terraform, etc.)
   cloud/            # Cloud platform deployment configs
-  .github/          # GitHub governance and CI/CD workflows
+  .github/          # GitHub-provider governance and CI/CD workflows
     ├── CODEOWNERS
     ├── workflows/  # 12 CI/CD workflows
     ├── ISSUE_TEMPLATE/
@@ -334,7 +340,7 @@ See `references/decision-trees/language-selection.md` for the full decision tree
 
 ### Release & Tag
 - Versioning: SemVer 2.0 (MAJOR.MINOR.PATCH)
-- CHANGELOG.md maintained in Keep-a-Changelog format
+- CHANGELOG.md maintained in Keep-a-Changelog format; a VERSION bump and new section belong to the same change
 - All release tags must be GPG signed: `git tag -s v1.2.3 -m "v1.2.3"`
 - Release flow: tag push → `release.yml` auto-triggers
 
@@ -365,9 +371,9 @@ See `references/cloud-platforms/` for per-platform deployment guides and CI/CD i
 |----------|---------|
 | `DATABASE_URL` | Database connection string |
 | `LOG_LEVEL` | Logging level (debug/info/warn/error) |
-| `GITHUB_TOKEN` | GitHub API (needs `contents: write` + `pull-requests: write`) |
-| `CODECOV_TOKEN` | Coverage report upload |
-| `DOCKER_USERNAME` / `DOCKER_PASSWORD` | Container registry publishing |
+| `GITHUB_TOKEN` | Built-in GitHub token; each job declares its required permission |
+| `CI_JOB_TOKEN` | Built-in GitLab Releases API token |
+| `GITEE_OWNER` / `GITEE_REPO` / `GITEE_TOKEN` | Gitee Go Release target and secret |
 | Cloud credentials | Platform-specific (see `references/cloud-platforms/`) |
 
 Secrets managed via environment variables or platform secret stores. Never hardcoded.
@@ -376,9 +382,9 @@ Secrets managed via environment variables or platform secret stores. Never hardc
 
 | File | Purpose |
 |------|---------|
-| `.github/workflows/ci.yml` | Build, lint, matrix test, coverage |
-| `.github/workflows/release.yml` | Standard release pipeline |
-| `.github/workflows/hotfix.yml` | Emergency fix pipeline |
+| `.github/workflows/ci.yml` | VERSION/Changelog validation and optional project CI hook |
+| `.github/workflows/release.yml` | Tag validation, optional build, and GitHub Release |
+| `.github/workflows/hotfix.yml` | Pre-tag hotfix validation; no automatic deployment |
 | `.github/workflows/pr-conventions.yml` | PR title/size enforcement |
 | `.github/workflows/codeql-analysis.yml` | Security code scanning |
 | `.github/dependabot.yml` | Dependency auto-updates |

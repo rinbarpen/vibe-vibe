@@ -5,10 +5,48 @@ language-advisor
 lifecycle-orchestrator
 vibe-coding
 
-# Frontend scenario design skill.
-canvas-design
+# Frontend scenario design skill (Anthropic upstream; disambiguated discovery name).
+anthropics-skills-canvas-design
 
 # WeChat Mini Program AI mode workflow skills (provided by skills/ai-mode-skills).
 wxa-skills-generate
 wxa-skills-validate
 wxa-skills-eval
+
+# Matt Pocock Chinese engineering skills (skills/mattpocock-skills-zh-CN).
+# Published buckets only; exclude translation maintenance, beta, and retired skills.
+ask-matt
+code-review
+codebase-design
+diagnosing-bugs
+domain-modeling
+grill-with-docs
+implement
+implement-spec
+improve-codebase-architecture
+pr
+prototype
+research
+retro
+setup-matt-pocock-skills
+tdd
+to-spec
+to-tickets
+triage
+wayfinder
+wizard
+
+# Matt Pocock Chinese productivity skills.
+grill-me
+grilling
+handoff
+teach
+to-questionnaire
+wait-what
+writing-for-agents
+
+# Matt Pocock Chinese miscellaneous skills.
+git-guardrails-claude-code
+migrate-to-shoehorn
+scaffold-exercises
+setup-pre-commit

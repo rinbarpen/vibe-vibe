@@ -1441,6 +1441,13 @@
 - **简介**: Deep generative models for single-cell omics. Use when you need probabilistic batch correction (scVI), transfer learning, differential expression with uncertainty, or multi-modal integration (TOTALVI, MultiVI). Best for advanced modeling, batch effects, multimodal data. For standard analysis pipelines use scanpy.
 - **使用场景**: Deep generative models for single-cell omics. Use when you need probabilistic batch correction (scVI), transfer learning, differential expression with uncertainty, or multi-modal integration (TOTALVI, MultiVI). Best for advanced modeling, batch effects, multimodal data. For standard analysis pipelines use scanpy.
 
+### scrapling-official (Scrapling-Skill)
+- **路径**: `skills/scrapling/agent-skill/Scrapling-Skill`
+- **来源**: https://github.com/D4Vinci/Scrapling
+- **简介**: Scrapling 官方技能，提供网页抓取、数据提取、自适应解析、JavaScript 渲染和爬虫框架的使用说明、示例及参考文档。
+- **使用场景**: 编写 Python 网页抓取或爬虫代码，选择 HTTP 或浏览器抓取方式，以及处理网页结构变化。
+- **安装**: `vibe add skill Scrapling-Skill`（上游元数据名为 `scrapling-official`；vibe 使用目录名 `Scrapling-Skill`）。
+
 ### seaborn
 - **路径**: `skills/claude-scientific-skills/scientific-skills/seaborn`
 - **简介**: Statistical visualization with pandas integration. Use for quick exploration of distributions, relationships, and categorical comparisons with attractive defaults. Best for box plots, violin plots, pair plots, heatmaps. Built on matplotlib. For interactive plots use plotly; for publication styling use scientific-visualization.
@@ -1847,6 +1854,165 @@
 - **路径**: `skills/ai-investment-advisor`
 - **简介**: 基于 Claude Code 的私人投资分析系统，支持多模型协同决策。
 - **使用场景**: 见简介
+
+### Matt Pocock 中文正式技能
+
+[vinvcn/mattpocock-skills-zh-CN](https://github.com/vinvcn/mattpocock-skills-zh-CN)
+
+#### ask-matt
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/ask-matt`
+- **简介**: 根据当前情境选择合适的技能或工程工作流。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### code-review
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/code-review`
+- **简介**: 围绕固定比较点，分别审查编码规范和规格符合性。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### codebase-design
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/codebase-design`
+- **简介**: 设计深模块、小接口和清晰边界，并通过接口测试。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### diagnosing-bugs
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/diagnosing-bugs`
+- **简介**: 通过反馈回路、最小化复现、假设和回归测试定位并修复问题。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### domain-modeling
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/domain-modeling`
+- **简介**: 打磨领域模型与术语，维护 GLOSSARY.md 和架构决策记录。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### grill-with-docs
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/grill-with-docs`
+- **简介**: 通过追问澄清需求，同时完善领域术语和架构决策文档。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### implement
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/implement`
+- **简介**: 依据规格或工单实现工作，结合 TDD 和提交前双轴审查。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### implement-spec
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/implement-spec`
+- **简介**: 在集成分支上按工单依赖图实现整份规格并完成审查。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### improve-codebase-architecture
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/improve-codebase-architecture`
+- **简介**: 识别模块深化机会，生成 HTML 报告并讨论候选方案。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### pr
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/pr`
+- **简介**: 编写包含变更概览、验证证据和合并风险判断的 PR 描述。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### prototype
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/prototype`
+- **简介**: 构建一次性原型，验证状态、逻辑或不同 UI 方向。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### research
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/research`
+- **简介**: 基于可信一手来源调研问题，将带引用的发现保存为 Markdown。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### retro
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/retro`
+- **简介**: 回顾当前工作，按重要性提出编码代理环境和工具改进建议。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### setup-matt-pocock-skills
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/setup-matt-pocock-skills`
+- **简介**: 首次使用前配置 issue tracker、分诊标签和领域文档布局。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### tdd
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/tdd`
+- **简介**: 通过红灯、绿灯、重构循环，逐个纵向切片开发功能或修复问题。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### to-spec
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/to-spec`
+- **简介**: 将已讨论的对话整理为规格并发布到 issue tracker。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### to-tickets
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/to-tickets`
+- **简介**: 将计划或规格拆为纵向切片工单，记录工单之间的阻塞关系。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### triage
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/triage`
+- **简介**: 通过分诊角色状态机推进问题处理。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### wayfinder
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/wayfinder`
+- **简介**: 将大型工作拆为共享决策地图，逐步消除路线上的不确定性。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### wizard
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/engineering/wizard`
+- **简介**: 生成交互式 Bash 向导，协助完成需要人工操作的配置或迁移。
+- **使用场景**: `engineering`; 由 `vibe-coding` manifest 默认安装。
+
+#### grill-me
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/grill-me`
+- **简介**: 持续追问计划、设计或想法，直到关键决策分支得到解决。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### grilling
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/grilling`
+- **简介**: 为需求、计划和决策提供可复用的追问式访谈纪律。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### handoff
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/handoff`
+- **简介**: 将当前对话压缩为可由其他代理接续的交接文档。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### teach
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/teach`
+- **简介**: 以当前目录为持续教学工作区，跨会话教授技能或概念。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### to-questionnaire
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/to-questionnaire`
+- **简介**: 将需要特定人员回答的决策整理为 Markdown 问卷。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### wait-what
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/wait-what`
+- **简介**: 补充缺失上下文，使用项目术语清晰重述含糊的信息。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### writing-for-agents
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/productivity/writing-for-agents`
+- **简介**: 编写适合代理阅读和导航的技能、指引及关联文档。
+- **使用场景**: `productivity`; 由 `vibe-coding` manifest 默认安装。
+
+#### git-guardrails-claude-code
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/misc/git-guardrails-claude-code`
+- **简介**: 配置 Claude Code hooks，在危险 Git 命令执行前阻止操作。
+- **使用场景**: `misc`; 由 `vibe-coding` manifest 默认安装。
+
+#### migrate-to-shoehorn
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/misc/migrate-to-shoehorn`
+- **简介**: 将测试中的类型断言迁移至 @total-typescript/shoehorn。
+- **使用场景**: `misc`; 由 `vibe-coding` manifest 默认安装。
+
+#### scaffold-exercises
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/misc/scaffold-exercises`
+- **简介**: 创建包含章节、问题、答案和讲解的练习目录结构。
+- **使用场景**: `misc`; 由 `vibe-coding` manifest 默认安装。
+
+#### setup-pre-commit
+- **路径**: `skills/mattpocock-skills-zh-CN/skills/misc/setup-pre-commit`
+- **简介**: 配置 Husky 提交前检查，集成格式、类型检查和测试。
+- **使用场景**: `misc`; 由 `vibe-coding` manifest 默认安装。
 
 ## MCP 服务器 (MCP Servers)
 

@@ -14,7 +14,7 @@
 - 严格遵循 SemVer 格式
 - RC 序号从 1 开始递增（`-rc.1`, `-rc.2`, ...）
 - Hotfix 序号从 1 开始递增（`-hotfix.1`, `-hotfix.2`, ...）
-- 不允许非标准后缀（如 `-beta`, `-alpha`）
+- 其他 SemVer 预发布后缀（如 `-beta.1`）也可使用，但 `VERSION`、Changelog 与 tag 必须完全一致
 
 ## GPG 签名
 
@@ -98,21 +98,14 @@ Tag push 作为 release 触发器（而非按钮 workflow_dispatch）的原因�
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
-      - "v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+"
+      - "v*"
 ```
 
 `release.yml` **不创建 tag** — tag 由 release manager 手动创建，workflow 只响应。
 
-### hotfix.yml 自动创建 tag
+### Hotfix tag
 
-```yaml
-# 在 hotfix workflow 中自动创建
-git tag -a "$HOTFIX_TAG" -m "Hotfix $HOTFIX_TAG"
-git push origin "$HOTFIX_TAG"
-```
-
-Hotfix tag 由 workflow 自动创建，因为 hotfix 场景需要尽快完成，减少人工步骤。
+`hotfix.yml` 先校验 `VERSION`、Changelog 和项目检查，不创建 tag 或自动部署。合并后由发布负责人运行 `python3 scripts/version_guard.py check --tag "v$(cat VERSION)"`，再创建 GPG 签名 tag 并推送。
 
 ## 常用命令
 

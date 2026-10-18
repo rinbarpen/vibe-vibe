@@ -1,0 +1,33 @@
+version: '1.0'
+name: vibe-release
+displayName: Vibe Release
+triggers:
+  trigger: auto
+  push:
+    tags:
+      prefix:
+        - v
+stages:
+  - stage:
+    name: release
+    displayName: Validate and publish release
+    strategy: naturally
+    trigger: auto
+    steps:
+      - step: build@python
+        name: publish_release
+        displayName: Publish Gitee Release
+        pythonVersion: '3.9'
+        commands:
+          - |
+            set -eu
+            TAG="v$(cat VERSION)"
+            git fetch --tags origin
+            test "$(git rev-parse "$TAG^{commit}")" = "$(git rev-parse HEAD)"
+            python3 scripts/version_guard.py check --tag "$TAG"
+            if [ -f scripts/ci.sh ]; then sh scripts/ci.sh; fi
+            if [ -f scripts/build.sh ]; then sh scripts/build.sh; fi
+            : "${GITEE_OWNER:?configure GITEE_OWNER pipeline variable}"
+            : "${GITEE_REPO:?configure GITEE_REPO pipeline variable}"
+            : "${GITEE_TOKEN:?configure GITEE_TOKEN secret}"
+            python3 scripts/version_guard.py publish-gitee --tag "$TAG" --owner "$GITEE_OWNER" --repo "$GITEE_REPO"
