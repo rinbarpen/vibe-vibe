@@ -7,12 +7,23 @@ description: Unified drawing and diagram command center with sub-skills for Draw
 
 Routes drawing requests to the right sub-skill based on **what you need** and **what scenario you're in**.
 
+![Omnidraw 工作流：按图意路由、保留图源、审阅并迭代](assets/workflow.svg)
+
+[可编辑 Mermaid 图源](assets/workflow.mmd)。流程图展示本技能的路由与审阅闭环。
+
+## 安装后的路由与办公配图
+
+- 先读本技能内所选子目录的 `SKILL.md`；例如 `mermaid/` 的语法与模板可独立使用。仅检查本次路线需要的工具，不要求初始化全部上游子模块。
+- 文中 `../../skills/...` 链接是**源码仓库内的可选上游参考**。安装到项目后，先按技能名发现当前可用的已安装 skill（如 `ccf-visual-composer`），再读取其真实路径；不沿用失效的仓库相对路径，不把缺少可选上游当成全部绘图路线不可用。
+- 办公配图统一从 Omnidraw 分流：流程/逻辑说明优先本地 Mermaid，精确布局选 Draw.io；插画/照片选可用图像工具；真实数据图选 matplotlib。文字、单位、来源、图意和视觉一致性均需审阅，问题回到制作路线修复。
+- 保留可编辑图源、预览、题注/替代文本和来源；文档角色负责嵌入原生办公文件。表格内容、合计与单位交给当前可用的 `omnisheet` 技能，避免把可编辑表格当成配图截图。
+
 ## Sub-Skills
 
 | Sub-Skill | Best For | Deps |
 |-----------|----------|------|
 | [drawio](drawio/SKILL.md) | Flowcharts, architecture, network, cloud, patent/academic | drawio MCP + drawio-skills submodule |
-| [mermaid](mermaid/SKILL.md) | Sequence, ERD, Gantt, git, mindmap, state, quick markdown | Pretty-mermaid-skills submodule |
+| [mermaid](mermaid/SKILL.md) | Sequence, ERD, Gantt, git, mindmap, state, quick markdown | 本地语法可直接使用；渲染器按环境选择，上游 Pretty-mermaid-skills 可选 |
 | [visio](visio/SKILL.md) | VSDX format, BPMN, enterprise deliverables | Draw.io bridge |
 | [gpt-image-2](gpt-image-2/SKILL.md) | Illustrations, concept art, logos, photos (OpenAI) | `OPENAI_API_KEY` |
 | [nano-banana](nano-banana/SKILL.md) | Photos, concept art, fast iteration (fal-ai v1/v2) | fal-ai MCP |

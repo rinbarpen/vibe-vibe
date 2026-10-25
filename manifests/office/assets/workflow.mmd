@@ -1,0 +1,46 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  securityLevel: strict
+  fontFamily: 'Noto Sans CJK SC, sans-serif'
+  themeVariables:
+    fontFamily: 'Noto Sans CJK SC, sans-serif'
+    fontSize: 17px
+    background: '#ffffff'
+    primaryColor: '#EAF3F5'
+    primaryTextColor: '#173B47'
+    primaryBorderColor: '#6794A0'
+    lineColor: '#64828C'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    htmlLabels: false
+    wrappingWidth: 240
+    curve: linear
+    nodeSpacing: 30
+    rankSpacing: 42
+    padding: 16
+    useMaxWidth: false
+---
+%% Omnidraw -> local mermaid sub-skill. Office manifest orchestration, not SVG processing.
+flowchart TD
+    A["创建 / 编辑需求<br/>office-planner 验收简报"] --> B["正文 / 文风（按需）<br/>office-writer"]
+    A --> C["配图制作（按需）<br/>office-visuals · Omnidraw"]
+    A --> D["表格规格（按需）<br/>Omnisheet"]
+    B --> E["原生办公文件制作<br/>office-docx · office-xlsx<br/>office-pptx · office-pdf"]
+    C --> E
+    D --> E
+    A -->|仅格式制作| E
+    E --> F["结构 · 内容 · 数值<br/>原生功能与约束校验"]
+    F --> G["全量页面 / 交付视图<br/>实际渲染与视觉审阅"]
+    G --> H{"独立 office-qa<br/>当前版本通过？"}
+    H -->|是| I["可编辑成品 + 证据<br/>正式交付"]
+    H -->|否：制作人修复并复验| E
+    classDef input fill:#EDF4F7,stroke:#6E97A6,color:#173B47;
+    classDef maker fill:#E8F3EE,stroke:#64957D,color:#173E2C;
+    classDef gate fill:#FBF3DE,stroke:#B29A59,color:#52421D;
+    classDef done fill:#DCEEE4,stroke:#4C8467,color:#143E29;
+    class A,B,C,D input;
+    class E maker;
+    class F,G,H gate;
+    class I done;

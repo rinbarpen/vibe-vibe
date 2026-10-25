@@ -13,7 +13,9 @@ def _is_excluded(path: Path) -> bool:
     name = path.name
     if name in EXCLUDE_DIRS:
         return True
-    if name.startswith(".") and name not in (".cursor", ".claude"):
+    # AI Vibe Writing stores referenced authoring prompts under .ai_context.
+    # Keep this narrowly scoped; other hidden metadata stays excluded.
+    if name.startswith(".") and name not in (".cursor", ".claude", ".ai_context"):
         return True
     return False
 

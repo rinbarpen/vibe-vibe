@@ -9,6 +9,10 @@ Full decision table mapping user intent to tool sub-skill. Includes capability c
 3. Dispatch to the **primary sub-skill**
 4. Use **fallback** if primary is unavailable or unsuitable
 
+办公文档的图统一先经过 Omnidraw；确定性流程说明优先本地 `mermaid`，精确图形布局再选 `drawio`，数据图以真实数据驱动 `matplotlib`。图源与预览一起交给格式制作人，图意/标签/数据复核不通过则回到制作路线迭代。表格语义与数值规格由已安装的 `omnisheet` 负责，而不是以图片代替原生表格。
+
+**安装后解析**：本文件的 `../<sub-skill>/SKILL.md` 指向随 Omnidraw 一起安装的本地子技能；`../../../skills/...` 仅为源码仓库内可选上游参考。项目安装环境按 skill 名发现实际安装位置。只为所选路线检查依赖，本地 Mermaid 流程无需初始化全部子模块。
+
 ---
 
 ## Routing Matrix: Intent → Sub-Skill

@@ -137,3 +137,6 @@
 [submodule "skills/nature-skills"]
 	path = skills/nature-skills
 	url = https://github.com/Yuan1z0825/nature-skills.git
+[submodule "skills/ai-vibe-writing"]
+	path = skills/ai-vibe-writing
+	url = https://github.com/donghuixin/AI-Vibe-Writing-Skills.git
