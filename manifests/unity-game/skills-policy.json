@@ -1,0 +1,7 @@
+{
+  "preserve_existing": true,
+  "validate_required_files": true,
+  "required_catalog_schemas": {
+    "unity-game-development/references/skill-map.json": 4
+  }
+}

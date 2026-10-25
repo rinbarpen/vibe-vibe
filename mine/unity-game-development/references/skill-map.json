@@ -1,0 +1,904 @@
+{
+  "schema_version": 4,
+  "root_skill": "unity-game-development",
+  "root_path": "SKILL.md",
+  "stages": [
+    {
+      "id": "discovery",
+      "label": "立项",
+      "skill": "unity-game-discovery",
+      "path": "unity-game-discovery/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-brief",
+          "label": "项目简报",
+          "path": "unity-game-discovery/unity-game-brief/SKILL.md",
+          "roles": [
+            "game-producer",
+            "game-designer"
+          ]
+        },
+        {
+          "name": "unity-game-market-research",
+          "label": "受众与竞品",
+          "path": "unity-game-discovery/unity-game-market-research/SKILL.md",
+          "roles": [
+            "market-researcher",
+            "publishing-manager"
+          ]
+        },
+        {
+          "name": "unity-game-scope-risk",
+          "label": "范围与风险",
+          "path": "unity-game-discovery/unity-game-scope-risk/SKILL.md",
+          "roles": [
+            "game-producer",
+            "unity-architect"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-discovery-execute",
+        "path": "unity-game-discovery/unity-game-discovery-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "market-researcher"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "discovery",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    },
+    {
+      "id": "design",
+      "label": "完整策划",
+      "skill": "unity-game-design",
+      "path": "unity-game-design/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-core-loop",
+          "label": "核心循环与规则",
+          "path": "unity-game-design/unity-game-core-loop/SKILL.md",
+          "roles": [
+            "game-designer",
+            "gameplay-programmer"
+          ]
+        },
+        {
+          "name": "unity-game-systems-balance",
+          "label": "系统与数值",
+          "path": "unity-game-design/unity-game-systems-balance/SKILL.md",
+          "roles": [
+            "systems-designer"
+          ]
+        },
+        {
+          "name": "unity-game-level-narrative",
+          "label": "关卡与叙事",
+          "path": "unity-game-design/unity-game-level-narrative/SKILL.md",
+          "roles": [
+            "level-designer",
+            "narrative-designer"
+          ]
+        },
+        {
+          "name": "unity-game-art-direction",
+          "label": "视听与资源方向",
+          "path": "unity-game-design/unity-game-art-direction/SKILL.md",
+          "roles": [
+            "art-director",
+            "technical-artist"
+          ]
+        },
+        {
+          "name": "unity-game-ui-ux",
+          "label": "交互与可访问性",
+          "path": "unity-game-design/unity-game-ui-ux/SKILL.md",
+          "roles": [
+            "ui-ux-designer"
+          ]
+        },
+        {
+          "name": "unity-game-technical-design",
+          "label": "Unity 技术设计",
+          "path": "unity-game-design/unity-game-technical-design/SKILL.md",
+          "roles": [
+            "unity-architect",
+            "tools-programmer",
+            "build-release-engineer"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-design-execute",
+        "path": "unity-game-design/unity-game-design-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "game-designer",
+          "unity-architect"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "design",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-code-review",
+          "unity-game-asset-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": "direction"
+    },
+    {
+      "id": "prototype",
+      "label": "可玩原型",
+      "skill": "unity-game-prototype",
+      "path": "unity-game-prototype/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-project-setup",
+          "label": "工程准备",
+          "path": "unity-game-prototype/unity-game-project-setup/SKILL.md",
+          "roles": [
+            "unity-architect",
+            "tools-programmer"
+          ]
+        },
+        {
+          "name": "unity-game-playable-prototype",
+          "label": "最小可玩闭环",
+          "path": "unity-game-prototype/unity-game-playable-prototype/SKILL.md",
+          "roles": [
+            "gameplay-programmer",
+            "ui-ux-designer"
+          ]
+        },
+        {
+          "name": "unity-game-prototype-playtest",
+          "label": "原型试玩",
+          "path": "unity-game-prototype/unity-game-prototype-playtest/SKILL.md",
+          "roles": [
+            "playtest-analyst",
+            "qa-engineer"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-prototype-execute",
+        "path": "unity-game-prototype/unity-game-prototype-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "gameplay-programmer",
+          "unity-architect"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "prototype",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-code-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    },
+    {
+      "id": "vertical-slice",
+      "label": "垂直切片",
+      "skill": "unity-game-vertical-slice",
+      "path": "unity-game-vertical-slice/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-slice-integration",
+          "label": "切片集成",
+          "path": "unity-game-vertical-slice/unity-game-slice-integration/SKILL.md",
+          "roles": [
+            "unity-architect",
+            "gameplay-programmer",
+            "technical-artist",
+            "audio-designer",
+            "animation-vfx-artist",
+            "ui-ux-designer",
+            "level-designer"
+          ]
+        },
+        {
+          "name": "unity-game-slice-review",
+          "label": "切片独立评审",
+          "path": "unity-game-vertical-slice/unity-game-slice-review/SKILL.md",
+          "roles": [
+            "game-reviewer",
+            "game-producer",
+            "performance-engineer"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-vertical-slice-execute",
+        "path": "unity-game-vertical-slice/unity-game-vertical-slice-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "unity-architect"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "vertical-slice",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-code-review",
+          "unity-game-asset-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": "vertical-slice"
+    },
+    {
+      "id": "production",
+      "label": "正式制作",
+      "skill": "unity-game-production",
+      "path": "unity-game-production/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-feature-delivery",
+          "label": "功能模块交付",
+          "path": "unity-game-production/unity-game-feature-delivery/SKILL.md",
+          "roles": [
+            "gameplay-programmer",
+            "tools-programmer"
+          ]
+        },
+        {
+          "name": "unity-game-asset-production",
+          "label": "基础资源生产",
+          "path": "unity-game-production/unity-game-asset-production/SKILL.md",
+          "roles": [
+            "technical-artist",
+            "art-director"
+          ]
+        },
+        {
+          "name": "unity-game-animation-vfx",
+          "label": "动画与特效",
+          "path": "unity-game-production/unity-game-animation-vfx/SKILL.md",
+          "roles": [
+            "animation-vfx-artist",
+            "technical-artist"
+          ]
+        },
+        {
+          "name": "unity-game-audio",
+          "label": "音频集成",
+          "path": "unity-game-production/unity-game-audio/SKILL.md",
+          "roles": [
+            "audio-designer"
+          ]
+        },
+        {
+          "name": "unity-game-modeling",
+          "label": "模型设计与外部DCC",
+          "path": "unity-game-production/unity-game-modeling/SKILL.md",
+          "roles": [
+            "model-artist",
+            "technical-artist",
+            "art-director"
+          ],
+          "software_routes": [
+            "mcp",
+            "external-skill",
+            "blender-cli",
+            "gui"
+          ],
+          "subskills": [
+            {
+              "name": "unity-game-model-design",
+              "label": "模型规格与设计",
+              "path": "unity-game-production/unity-game-modeling/unity-game-model-design/SKILL.md",
+              "roles": [
+                "model-artist",
+                "art-director"
+              ]
+            },
+            {
+              "name": "unity-game-model-build",
+              "label": "外部DCC实际建模",
+              "path": "unity-game-production/unity-game-modeling/unity-game-model-build/SKILL.md",
+              "roles": [
+                "model-artist"
+              ]
+            },
+            {
+              "name": "unity-game-model-surface",
+              "label": "UV与PBR表面",
+              "path": "unity-game-production/unity-game-modeling/unity-game-model-surface/SKILL.md",
+              "roles": [
+                "model-artist",
+                "technical-artist"
+              ]
+            },
+            {
+              "name": "unity-game-model-rig-export",
+              "label": "绑定导出与Unity集成",
+              "path": "unity-game-production/unity-game-modeling/unity-game-model-rig-export/SKILL.md",
+              "roles": [
+                "model-artist",
+                "technical-artist",
+                "animation-vfx-artist"
+              ]
+            },
+            {
+              "name": "unity-game-model-review",
+              "label": "模型独立审查",
+              "path": "unity-game-production/unity-game-modeling/unity-game-model-review/SKILL.md",
+              "roles": [
+                "game-reviewer"
+              ]
+            }
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-production-execute",
+        "path": "unity-game-production/unity-game-production-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "gameplay-programmer",
+          "technical-artist",
+          "model-artist"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "production",
+        "specialties": [
+          "unity-game-code-review",
+          "unity-game-asset-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    },
+    {
+      "id": "alpha",
+      "label": "Alpha 验证",
+      "skill": "unity-game-alpha",
+      "path": "unity-game-alpha/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-test-automation",
+          "label": "自动化测试",
+          "path": "unity-game-alpha/unity-game-test-automation/SKILL.md",
+          "roles": [
+            "qa-engineer",
+            "tools-programmer"
+          ]
+        },
+        {
+          "name": "unity-game-flow-regression",
+          "label": "流程与存档回归",
+          "path": "unity-game-alpha/unity-game-flow-regression/SKILL.md",
+          "roles": [
+            "qa-engineer",
+            "gameplay-programmer"
+          ]
+        },
+        {
+          "name": "unity-game-testing",
+          "label": "实际游戏测试",
+          "path": "unity-game-alpha/unity-game-testing/SKILL.md",
+          "roles": [
+            "qa-engineer"
+          ],
+          "software_routes": [
+            "project-harness",
+            "mcp",
+            "desktop-skill",
+            "browser-skill",
+            "device-tool"
+          ],
+          "subskills": [
+            {
+              "name": "unity-game-test-plan",
+              "label": "测试范围与用例",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-test-plan/SKILL.md",
+              "roles": [
+                "qa-engineer"
+              ]
+            },
+            {
+              "name": "unity-game-play-execution",
+              "label": "启动与实际游玩",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-play-execution/SKILL.md",
+              "roles": [
+                "qa-engineer"
+              ]
+            },
+            {
+              "name": "unity-game-exploratory-testing",
+              "label": "探索与异常输入",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-exploratory-testing/SKILL.md",
+              "roles": [
+                "qa-engineer",
+                "playtest-analyst"
+              ]
+            },
+            {
+              "name": "unity-game-visual-testing",
+              "label": "画面与交互检查",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-visual-testing/SKILL.md",
+              "roles": [
+                "qa-engineer",
+                "ui-ux-designer",
+                "art-director"
+              ]
+            },
+            {
+              "name": "unity-game-bug-reproduction",
+              "label": "缺陷复现与分级",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-bug-reproduction/SKILL.md",
+              "roles": [
+                "qa-engineer"
+              ]
+            },
+            {
+              "name": "unity-game-fix-verification",
+              "label": "修复验证与回归",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-fix-verification/SKILL.md",
+              "roles": [
+                "qa-engineer"
+              ]
+            },
+            {
+              "name": "unity-game-test-review",
+              "label": "独立测试审查",
+              "path": "unity-game-alpha/unity-game-testing/unity-game-test-review/SKILL.md",
+              "roles": [
+                "game-reviewer"
+              ]
+            }
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-alpha-execute",
+        "path": "unity-game-alpha/unity-game-alpha-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "qa-engineer"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "alpha",
+        "specialties": [
+          "unity-game-code-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    },
+    {
+      "id": "beta",
+      "label": "Beta 优化",
+      "skill": "unity-game-beta",
+      "path": "unity-game-beta/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-balance-playtest",
+          "label": "平衡与试玩分析",
+          "path": "unity-game-beta/unity-game-balance-playtest/SKILL.md",
+          "roles": [
+            "playtest-analyst",
+            "systems-designer",
+            "game-designer"
+          ]
+        },
+        {
+          "name": "unity-game-performance",
+          "label": "性能定位与优化",
+          "path": "unity-game-beta/unity-game-performance/SKILL.md",
+          "roles": [
+            "performance-engineer",
+            "technical-artist"
+          ]
+        },
+        {
+          "name": "unity-game-compatibility",
+          "label": "平台兼容验收",
+          "path": "unity-game-beta/unity-game-compatibility/SKILL.md",
+          "roles": [
+            "qa-engineer",
+            "ui-ux-designer"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-beta-execute",
+        "path": "unity-game-beta/unity-game-beta-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "performance-engineer",
+          "playtest-analyst"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "beta",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-asset-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    },
+    {
+      "id": "release-ready",
+      "label": "发布准备",
+      "skill": "unity-game-release",
+      "path": "unity-game-release/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-build-release",
+          "label": "可复现构建",
+          "path": "unity-game-release/unity-game-build-release/SKILL.md",
+          "roles": [
+            "build-release-engineer"
+          ]
+        },
+        {
+          "name": "unity-game-store-publishing",
+          "label": "商店材料与渠道",
+          "path": "unity-game-release/unity-game-store-publishing/SKILL.md",
+          "roles": [
+            "publishing-manager",
+            "art-director"
+          ]
+        },
+        {
+          "name": "unity-game-release-readiness",
+          "label": "发布就绪审查",
+          "path": "unity-game-release/unity-game-release-readiness/SKILL.md",
+          "roles": [
+            "game-reviewer",
+            "game-producer",
+            "build-release-engineer",
+            "publishing-manager"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-release-execute",
+        "path": "unity-game-release/unity-game-release-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "build-release-engineer",
+          "publishing-manager"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "release-ready",
+        "specialties": [
+          "unity-game-code-review",
+          "unity-game-asset-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": "release"
+    },
+    {
+      "id": "live",
+      "label": "发布运营",
+      "skill": "unity-game-liveops",
+      "path": "unity-game-liveops/SKILL.md",
+      "subskills": [
+        {
+          "name": "unity-game-feedback-triage",
+          "label": "反馈与故障分级",
+          "path": "unity-game-liveops/unity-game-feedback-triage/SKILL.md",
+          "roles": [
+            "publishing-manager",
+            "playtest-analyst",
+            "qa-engineer"
+          ]
+        },
+        {
+          "name": "unity-game-hotfix",
+          "label": "热修复与回退",
+          "path": "unity-game-liveops/unity-game-hotfix/SKILL.md",
+          "roles": [
+            "gameplay-programmer",
+            "tools-programmer",
+            "qa-engineer",
+            "build-release-engineer"
+          ]
+        },
+        {
+          "name": "unity-game-operations-review",
+          "label": "运营复盘与下一版",
+          "path": "unity-game-liveops/unity-game-operations-review/SKILL.md",
+          "roles": [
+            "game-producer",
+            "playtest-analyst",
+            "systems-designer",
+            "publishing-manager"
+          ]
+        }
+      ],
+      "execution": {
+        "skill": "unity-game-liveops-execute",
+        "path": "unity-game-liveops/unity-game-liveops-execute/SKILL.md",
+        "roles": [
+          "game-producer",
+          "publishing-manager"
+        ]
+      },
+      "review": {
+        "skill": "unity-game-review",
+        "path": "unity-game-review/SKILL.md",
+        "profile": "live",
+        "specialties": [
+          "unity-game-design-review",
+          "unity-game-code-review",
+          "unity-game-evidence-review"
+        ]
+      },
+      "approval": null
+    }
+  ],
+  "role_skills": {
+    "game-producer": [
+      "unity-game-development",
+      "unity-game-brief",
+      "unity-game-scope-risk",
+      "unity-game-slice-review",
+      "unity-game-release-readiness",
+      "unity-game-operations-review",
+      "unity-game-discovery-execute",
+      "unity-game-design-execute",
+      "unity-game-prototype-execute",
+      "unity-game-vertical-slice-execute",
+      "unity-game-production-execute",
+      "unity-game-alpha-execute",
+      "unity-game-beta-execute",
+      "unity-game-release-execute",
+      "unity-game-liveops-execute"
+    ],
+    "game-designer": [
+      "unity-game-brief",
+      "unity-game-core-loop",
+      "unity-game-balance-playtest",
+      "unity-game-design-execute"
+    ],
+    "market-researcher": [
+      "unity-game-market-research",
+      "unity-game-discovery-execute"
+    ],
+    "publishing-manager": [
+      "unity-game-market-research",
+      "unity-game-store-publishing",
+      "unity-game-release-readiness",
+      "unity-game-feedback-triage",
+      "unity-game-operations-review",
+      "unity-game-release-execute",
+      "unity-game-liveops-execute"
+    ],
+    "unity-architect": [
+      "unity-game-scope-risk",
+      "unity-game-technical-design",
+      "unity-game-project-setup",
+      "unity-game-slice-integration",
+      "unity-game-design-execute",
+      "unity-game-prototype-execute",
+      "unity-game-vertical-slice-execute"
+    ],
+    "gameplay-programmer": [
+      "unity-game-core-loop",
+      "unity-game-playable-prototype",
+      "unity-game-slice-integration",
+      "unity-game-feature-delivery",
+      "unity-game-flow-regression",
+      "unity-game-hotfix",
+      "unity-game-prototype-execute",
+      "unity-game-production-execute"
+    ],
+    "systems-designer": [
+      "unity-game-systems-balance",
+      "unity-game-balance-playtest",
+      "unity-game-operations-review"
+    ],
+    "level-designer": [
+      "unity-game-level-narrative",
+      "unity-game-slice-integration"
+    ],
+    "narrative-designer": [
+      "unity-game-level-narrative"
+    ],
+    "art-director": [
+      "unity-game-art-direction",
+      "unity-game-asset-production",
+      "unity-game-store-publishing",
+      "unity-game-modeling",
+      "unity-game-model-design",
+      "unity-game-visual-testing"
+    ],
+    "technical-artist": [
+      "unity-game-art-direction",
+      "unity-game-slice-integration",
+      "unity-game-asset-production",
+      "unity-game-animation-vfx",
+      "unity-game-performance",
+      "unity-game-production-execute",
+      "unity-game-modeling",
+      "unity-game-model-surface",
+      "unity-game-model-rig-export"
+    ],
+    "ui-ux-designer": [
+      "unity-game-ui-ux",
+      "unity-game-playable-prototype",
+      "unity-game-slice-integration",
+      "unity-game-compatibility",
+      "unity-game-visual-testing"
+    ],
+    "tools-programmer": [
+      "unity-game-technical-design",
+      "unity-game-project-setup",
+      "unity-game-feature-delivery",
+      "unity-game-test-automation",
+      "unity-game-hotfix"
+    ],
+    "build-release-engineer": [
+      "unity-game-technical-design",
+      "unity-game-build-release",
+      "unity-game-release-readiness",
+      "unity-game-hotfix",
+      "unity-game-release-execute"
+    ],
+    "playtest-analyst": [
+      "unity-game-prototype-playtest",
+      "unity-game-balance-playtest",
+      "unity-game-feedback-triage",
+      "unity-game-operations-review",
+      "unity-game-beta-execute",
+      "unity-game-exploratory-testing"
+    ],
+    "qa-engineer": [
+      "unity-game-prototype-playtest",
+      "unity-game-test-automation",
+      "unity-game-flow-regression",
+      "unity-game-compatibility",
+      "unity-game-feedback-triage",
+      "unity-game-hotfix",
+      "unity-game-alpha-execute",
+      "unity-game-testing",
+      "unity-game-test-plan",
+      "unity-game-play-execution",
+      "unity-game-exploratory-testing",
+      "unity-game-visual-testing",
+      "unity-game-bug-reproduction",
+      "unity-game-fix-verification"
+    ],
+    "audio-designer": [
+      "unity-game-slice-integration",
+      "unity-game-audio"
+    ],
+    "animation-vfx-artist": [
+      "unity-game-slice-integration",
+      "unity-game-animation-vfx",
+      "unity-game-model-rig-export"
+    ],
+    "game-reviewer": [
+      "unity-game-review",
+      "unity-game-design-review",
+      "unity-game-code-review",
+      "unity-game-asset-review",
+      "unity-game-evidence-review",
+      "unity-game-slice-review",
+      "unity-game-release-readiness",
+      "unity-game-model-review",
+      "unity-game-test-review"
+    ],
+    "performance-engineer": [
+      "unity-game-slice-review",
+      "unity-game-performance",
+      "unity-game-beta-execute"
+    ],
+    "model-artist": [
+      "unity-game-modeling",
+      "unity-game-model-design",
+      "unity-game-model-build",
+      "unity-game-model-surface",
+      "unity-game-model-rig-export",
+      "unity-game-production-execute"
+    ]
+  },
+  "review_skills": [
+    {
+      "name": "unity-game-review",
+      "label": "独立审查总入口",
+      "path": "unity-game-review/SKILL.md",
+      "roles": [
+        "game-reviewer"
+      ]
+    },
+    {
+      "name": "unity-game-design-review",
+      "label": "规则、设计与范围审查",
+      "path": "unity-game-review/unity-game-design-review/SKILL.md",
+      "roles": [
+        "game-reviewer"
+      ]
+    },
+    {
+      "name": "unity-game-code-review",
+      "label": "实现、接口与存档审查",
+      "path": "unity-game-review/unity-game-code-review/SKILL.md",
+      "roles": [
+        "game-reviewer"
+      ]
+    },
+    {
+      "name": "unity-game-asset-review",
+      "label": "资源、视听与许可审查",
+      "path": "unity-game-review/unity-game-asset-review/SKILL.md",
+      "roles": [
+        "game-reviewer"
+      ]
+    },
+    {
+      "name": "unity-game-evidence-review",
+      "label": "测试、构建与运行证据审查",
+      "path": "unity-game-review/unity-game-evidence-review/SKILL.md",
+      "roles": [
+        "game-reviewer"
+      ]
+    }
+  ],
+  "review_policy": {
+    "reviewer_role": "game-reviewer",
+    "independent_context": true,
+    "verdicts": [
+      "passed",
+      "changes_requested",
+      "blocked"
+    ],
+    "absence_status": "not_run",
+    "pass_binds_revision": true,
+    "rework_route": "original_execution_skill"
+  },
+  "testing_policy": {
+    "skill": "unity-game-testing",
+    "path": "unity-game-alpha/unity-game-testing/SKILL.md",
+    "applies_to": [
+      "prototype",
+      "vertical-slice",
+      "production",
+      "alpha",
+      "beta",
+      "release-ready",
+      "live"
+    ],
+    "execution_role": "qa-engineer",
+    "reviewer_role": "game-reviewer",
+    "review_skill": "unity-game-test-review",
+    "human_playtest_equivalence": false,
+    "normal_input_required": true
+  }
+}

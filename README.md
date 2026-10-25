@@ -128,6 +128,7 @@ vibe hook add ralph-loop demo
 - [Humanizer-zh](skills/Humanizer-zh)、[shuorenhua](skills/shuorenhua)：中文文本改写与表达优化
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill)：中文网文选材、构思、章纲、写作与完稿审查
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills)：Mermaid 图表生成与渲染
+- [Unity Game Development](mine/unity-game-development)：游戏全流程 67个技能：总入口、9阶段、29专项、6个模型链技能、8个游戏测试技能、9执行和reviewer的5个技能，可整包、阶段或单项安装。
 - [State Machine Reasoning](mine/state-machine-reasoning)：将决策、排障、研究和工作流分析建模为状态机，并生成 Mermaid 可视化图。
 - [X Research](skills/x-research-skill)：信息检索与社交平台调研
 
@@ -155,6 +156,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `office` | 办公文档自动化 |
 | `social-media` | 社交媒体内容创作与运营 |
 | `ui-testing` | Web、组件、移动端、视觉与无障碍测试 |
+| `unity-game` | Unity全流程，21个双端角色、执行/Reviewer技能与[workflow SVG](manifests/unity-game/references/workflow.svg) |
 
 查看每个模板的细节：
 

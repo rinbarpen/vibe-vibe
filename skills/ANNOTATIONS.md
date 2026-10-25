@@ -2,6 +2,11 @@
 
 ## 技能 (Skills)
 
+### unity-game-development
+- **路径**: `mine/unity-game-development`
+- **简介**: Unity 游戏全流程总入口，下分 9个阶段、29专项、6个模型链技能、8个游戏测试技能、9执行及reviewer的5个技能，共67个真实SKILL.md；覆盖策划、制作、质量、发布运营，可整包或单项安装。
+- **使用场景**: `vibe add skill unity-game-development` / `unity-game-design` / `unity-game-performance`
+
 ### AGENTS.md
 - **路径**: `skills/agent-skills`
 - **简介**: This file provides guidance to AI coding agents (Claude Code, Cursor, Copilot, etc.) when working with code in this repository.

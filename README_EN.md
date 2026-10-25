@@ -54,6 +54,7 @@ Automated workflows designed for programmers to enhance development efficiency.
 *   **[Humanizer-ZH-Academic](skills/humanizer-zh-academic)**: Reduce AIGC detection rate in Chinese academic writing.
 *   **[academic-humanizer](skills/academic-humanizer)**: Academic AIGC trace detection and de-AI-ification skill.
 *   **[shuorenhua](skills/shuorenhua)**: Chinese-first rewrite skill — removes AI tone, preserves facts.
+*   **[Unity Game Development](mine/unity-game-development)**: End-to-end game skills with 67 skills covering orchestration, nine stages, 29 specialties, a six-skill 3D/DCC modeling branch, eight game-testing skills, nine executors and five reviewer skills; install the bundle, a stage, or an individual capability.
 *   **[State Machine Reasoning](mine/state-machine-reasoning)**: Model decisions, debugging, research, and workflows as state machines and generate Mermaid visualizations.
 *   **[writing-agent](workflows/writing-agent)**: Full-stack Claude Code writing system from topic selection to publication.
 
@@ -73,6 +74,7 @@ This project provides a series of Vibe Coding configuration Manifests adapted to
 *   **[Novel Writing](manifests/novel-writing)**: Fiction writing and literary creation configuration.
 *   **[Social Media](manifests/social-media)**: Social media content creation and management configuration.
 *   **[UI Testing](manifests/ui-testing)**: Automated UI testing configuration supporting Playwright/Vitest/mobile/accessibility testing.
+*   **[Unity Game](manifests/unity-game)**: End-to-end Unity 2D/3D game production, from concept to release and live operations, with 21 native Claude Code/Codex subagents, 3D modeling/external-software and execution/reviewer skills, Editor CLI helpers and a [workflow SVG](manifests/unity-game/references/workflow.svg).
 
 ---
 

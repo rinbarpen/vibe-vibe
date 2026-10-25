@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "uvx",
+      "args": ["--from", "mcp-for-blender==2.2.4", "mcp-for-blender"],
+      "env": {"DISABLE_TELEMETRY": "true"}
+    },
+    "unityMCP": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/CoplayDev/unity-mcp@v10.3.0#subdirectory=Server",
+        "mcp-for-unity", "--transport", "stdio"
+      ],
+      "env": {"DISABLE_TELEMETRY": "1"}
+    }
+  }
+}

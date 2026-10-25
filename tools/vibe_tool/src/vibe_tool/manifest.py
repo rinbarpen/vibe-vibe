@@ -4,6 +4,7 @@ Delegates to existing init scripts when present, falls back to generic file-copy
 for manifests without scripts.
 """
 
+import json
 import shlex
 import shutil
 import subprocess
@@ -336,6 +337,92 @@ def _relpath(p: Path, base: Path) -> str:
         return str(p)
 
 
+def _policy_relative(value: object) -> Path:
+    if (not isinstance(value, str) or not value or Path(value).is_absolute()
+            or not Path(value).parts or ".." in Path(value).parts
+            or Path(value).as_posix() != value):
+        raise ValueError(f"policy path must be project-relative: {value!r}")
+    return Path(value)
+
+
+def _installed_skill_file(root: Path, relative: Path) -> Path:
+    current = root
+    if root.is_symlink() or root.parent.is_symlink():
+        raise ValueError(f"symlink in installed skill root: {root}")
+    for part in relative.parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError(f"symlink in installed skill path: {relative}")
+    return current
+
+
+def _validate_installed_skill_contracts(roots, manifest: ManifestInfo, target: Path,
+                                       policy: dict, skill_force: bool, dry_run: bool) -> int:
+    """Detect incompatible preserved bundles; never merge or overwrite custom files."""
+    from .discovery import resolve_skill
+    from .skill import _is_excluded
+
+    if not policy.get("validate_required_files", False) and not policy.get("required_catalog_schemas"):
+        return 0
+    skill_root = target / ".agents/skills"
+    problems: list[str] = []
+    pending = set()
+    for name in manifest.required_skills:
+        try:
+            info = resolve_skill(roots, name)
+        except ValueError:
+            continue  # The normal installation error already explains this.
+        dest = skill_root / info.name
+        # A fresh/replaced dry-run bundle will come from the current source;
+        # check preserved bundles now without requiring hypothetical files.
+        if dry_run and (not dest.exists() or skill_force):
+            pending.add(info.name)
+            continue
+        if not policy.get("validate_required_files", False):
+            continue
+        for source in sorted(info.source_path.rglob("*")):
+            if not source.is_file():
+                continue
+            source_relative = source.relative_to(info.source_path)
+            if any(_is_excluded(Path(part)) for part in source_relative.parts):
+                continue
+            relative = Path(info.name) / source_relative
+            try:
+                installed = _installed_skill_file(skill_root, relative)
+                if not installed.is_file():
+                    problems.append(f"missing required skill file: {relative}")
+                    continue
+                data = installed.read_bytes()
+                if not data and (source.stat().st_size or source.name == "SKILL.md"):
+                    problems.append(f"empty required skill file: {relative}")
+                if source.name == "SKILL.md" and data and not data.decode("utf-8").strip():
+                    problems.append(f"empty required skill file: {relative}")
+            except (OSError, UnicodeError, ValueError) as exc:
+                problems.append(f"invalid required skill file {relative}: {exc}")
+    for key, minimum in policy.get("required_catalog_schemas", {}).items():
+        relative = _policy_relative(key)
+        if relative.parts[0] in pending:
+            continue
+        try:
+            catalog = _installed_skill_file(skill_root, relative)
+            data = json.loads(catalog.read_text(encoding="utf-8"))
+            actual = data.get("schema_version") if isinstance(data, dict) else None
+            if type(actual) is not int or actual < minimum:
+                problems.append(f"incompatible catalog {key}: schema_version={actual!r}, required>={minimum}")
+        except (OSError, ValueError, UnicodeError) as exc:
+            problems.append(f"invalid required catalog {key}: {exc}")
+    if problems:
+        print("needs_migration: preserved skill bundles do not satisfy this manifest:", file=sys.stderr)
+        for problem in problems:
+            print(f"  {problem}", file=sys.stderr)
+        print("Existing skill files were preserved. Back up the affected .agents/skills bundle, "
+              "then manually merge the current source bundle (including its catalog and new subskills), "
+              "or reinstall that skill explicitly with 'vibe add skill <name> --force' after reviewing "
+              "your backup. Rerun the manifest command to verify compatibility.", file=sys.stderr)
+        return 1
+    return 0
+
+
 def _install_required_skills(
     manifests_dir: Path,
     manifest: ManifestInfo,
@@ -343,23 +430,69 @@ def _install_required_skills(
     force: bool,
     dry_run: bool,
 ) -> int:
-    """Install the skills a manifest declares as required (skills.txt)."""
+    """Install required skills, respecting an optional non-destructive policy.
+
+    A manifest may opt out of force-refreshing existing skills with
+    skills-policy.json: {"preserve_existing": true}. Optional
+    validate_required_files checks all copied bundle files (including support
+    references/scripts); required_catalog_schemas detects old preserved catalogs.
+    Both return needs_migration without replacing them. Other manifests
+    retain their existing --force behavior. Explicit skill --force is unaffected.
+    """
     if not manifest.required_skills:
         return 0
 
-    from .skill import add_skill
-
-    # Skills can be shared from skills/, first-party mine/, or bundled with
-    # the manifest itself (manifest-local skills/).
+    # Share canonical resolution across installation and policy validation,
+    # including manifest-local skills and case-insensitive/substring aliases.
+    from .discovery import resolve_skill
     repo_root = manifests_dir.parent
     roots = (repo_root / "skills", repo_root / "mine", manifest.path / "skills")
+    skill_force = force
+    policy: dict = {}
+    policy_path = manifest.path / "skills-policy.json"
+    if policy_path.is_file():
+        try:
+            policy = json.loads(policy_path.read_text(encoding="utf-8"))
+            if not isinstance(policy, dict) or type(policy.get("preserve_existing")) is not bool:
+                raise ValueError("preserve_existing must be a boolean")
+            if type(policy.get("validate_required_files", False)) is not bool:
+                raise ValueError("validate_required_files must be a boolean")
+            schemas = policy.get("required_catalog_schemas", {})
+            if not isinstance(schemas, dict):
+                raise ValueError("required_catalog_schemas must map paths to minimum schema integers")
+            required_names = {name: name for name in manifest.required_skills}
+            if schemas:
+                for name in manifest.required_skills:
+                    try:
+                        canonical = resolve_skill(roots, name).name
+                        required_names[name] = canonical
+                        required_names[canonical] = canonical
+                    except ValueError:
+                        pass  # The normal installer will report missing skills.
+            normalized_schemas = {}
+            for key, minimum in schemas.items():
+                relative = _policy_relative(key)
+                canonical = required_names.get(relative.parts[0])
+                if canonical is None:
+                    raise ValueError(f"catalog does not belong to a required skill: {key}")
+                if type(minimum) is not int or minimum < 1:
+                    raise ValueError(f"invalid catalog minimum schema: {key}")
+                normalized_schemas[(Path(canonical) / Path(*relative.parts[1:])).as_posix()] = minimum
+            policy["required_catalog_schemas"] = normalized_schemas
+        except (OSError, ValueError) as exc:
+            print(f"Error: invalid skill policy {policy_path}: {exc}", file=sys.stderr)
+            return 1
+        if policy["preserve_existing"]:
+            skill_force = False
+
+    from .skill import add_skill
 
     missing: list[str] = []
     installed = 0
     print(f"\nInstalling {len(manifest.required_skills)} required skills:")
     for name in manifest.required_skills:
         try:
-            rc = add_skill(roots, name, target, force=force, dry_run=dry_run)
+            rc = add_skill(roots, name, target, force=skill_force, dry_run=dry_run)
             if rc == 1:
                 missing.append(name)
             else:
@@ -373,4 +506,6 @@ def _install_required_skills(
             "  (tip: run 'vibe update' to fetch skill submodules, "
             "then 'vibe add skill <name>' for any still-missing)"
         )
-    return 1 if missing and not dry_run else 0
+    if missing and not dry_run:
+        return 1
+    return _validate_installed_skill_contracts(roots, manifest, target, policy, skill_force, dry_run)
