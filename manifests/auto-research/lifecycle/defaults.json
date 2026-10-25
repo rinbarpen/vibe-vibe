@@ -60,7 +60,7 @@
       "reasoning_effort": "high"
     },
     "executor": {
-      "requested_model": "gpt-6.1-sol",
+      "requested_model": "opus-5.5",
       "service_profile": null,
       "reasoning_effort": "high"
     },

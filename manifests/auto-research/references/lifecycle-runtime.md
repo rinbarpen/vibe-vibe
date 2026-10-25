@@ -20,9 +20,9 @@ python3 scripts/research_workflow.py --project-root . resume --cycle cycle-001
 
 ## 模型绑定
 
-默认职责：research=GPT-6 Pro，planner=GPT-6.1 Sol high，executor=GPT-6.1 Sol high，writer=Opus 5.5 high。Pro 是 service_profile，不是推理等级。bindings 初始为空，由实际执行宿主核验供应商能力后填写，每项包含 provider、model_id、service_profile、reasoning_effort、available、verified_at。不可在文件中存 API key。
+默认职责：research=GPT-6 Pro，planner=GPT-6.1 Sol high，executor=Opus 5.5 high，writer=Opus 5.5 high。Pro 是 service_profile，不是推理等级。bindings 初始为空，由实际执行宿主核验供应商能力后填写，每项包含 provider、model_id、service_profile、reasoning_effort、available、verified_at。不可在文件中存 API key。
 
-`opus-5.5` 是写作角色的请求模型标识，不预设供应商 API 模型 ID；实际 `model_id` 由执行宿主核验后填写。
+`opus-5.5` 是执行与写作角色的请求模型标识，不预设供应商 API 模型 ID；实际 `model_id` 由执行宿主核验后填写。
 
 `route` 返回实际绑定供宿主调度；工具本身不调用模型。`--actual-model` 必须由宿主实际会话元数据提供，而不是复制默认模型名。执行记录的真实性由调用宿主提供，CLI 只验证匹配关系。availability 是宿主验证记录，不是实时连通性证明。宿主调用失败时记录 blocked，summary 以 blocked_model_unavailable 开头，可在未绑定时留档。
 

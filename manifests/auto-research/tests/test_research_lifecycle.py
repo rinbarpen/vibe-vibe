@@ -40,7 +40,7 @@ def checkpoint(root,stage='startup',state='started',**kwargs):
 EXPECTED_MODEL_ROLES = {
     'research': {'requested_model': 'gpt-6', 'service_profile': 'pro', 'reasoning_effort': None},
     'planner': {'requested_model': 'gpt-6.1-sol', 'service_profile': None, 'reasoning_effort': 'high'},
-    'executor': {'requested_model': 'gpt-6.1-sol', 'service_profile': None, 'reasoning_effort': 'high'},
+    'executor': {'requested_model': 'opus-5.5', 'service_profile': None, 'reasoning_effort': 'high'},
     'writer': {'requested_model': 'opus-5.5', 'service_profile': None, 'reasoning_effort': 'high'},
 }
 

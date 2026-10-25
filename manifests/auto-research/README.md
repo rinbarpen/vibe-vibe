@@ -50,7 +50,7 @@
 
 从启动到录用使用三层科研阶段树，而非仅实验阶段。权威流程见 `references/research-lifecycle.md`，检查点/Git/模型规则见 `references/lifecycle-runtime.md`，实验设计与自动统计见 `references/experiment-execution.md`。这三份契约优先于简化流水线示意。
 
-项目首次启用：`python3 scripts/research_workflow.py init`。模型角色默认：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 GPT-6.1 Sol high、写作 Opus 5.5 high；显式核验实际宿主绑定。实验默认 seeds=[42]。baseline 必须联网检索；消融在执行前完成覆盖矩阵；预算审批后由已有 aris 后端自动执行。
+项目首次启用：`python3 scripts/research_workflow.py init`。模型角色默认：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 Opus 5.5 high、写作 Opus 5.5 high；显式核验实际宿主绑定。实验默认 seeds=[42]。baseline 必须联网检索；消融在执行前完成覆盖矩阵；预算审批后由已有 aris 后端自动执行。
 
 ### paper-review 子模块
 

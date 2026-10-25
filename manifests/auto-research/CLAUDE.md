@@ -163,7 +163,7 @@ aris/figure-spec + aris/paper-illustration：图规格 (JSON) → 确定性 SVG 
 
 每个大阶段的细化说明位于 `references/lifecycle-stage-details.md`；机器可读阶段契约位于 `lifecycle/defaults.json.phase_details`。
 
-项目首次启用：`python3 scripts/research_workflow.py init`。模型角色默认：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 GPT-6.1 Sol high、写作 Opus 5.5 high；显式核验实际宿主绑定。实验默认 seeds=[42]。baseline 必须联网检索；消融在执行前完成覆盖矩阵；预算审批后由已有 aris 后端自动执行。
+项目首次启用：`python3 scripts/research_workflow.py init`。模型角色默认：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 Opus 5.5 high、写作 Opus 5.5 high；显式核验实际宿主绑定。实验默认 seeds=[42]。baseline 必须联网检索；消融在执行前完成覆盖矩阵；预算审批后由已有 aris 后端自动执行。
 
 内部工具：research_workflow.py 的 init/status/route/checkpoint/resume；experiment_stats.py 的 design-review/expand/gate/summarize。不新增 vibe 公共命令。每个阶段事件 Git 留档，中间规划与日志持续保存；投稿回执、评审、返修、转投及录用记录纳入同一周期。初始化只安装资源，不启动云资源、模型或正式投稿。
 

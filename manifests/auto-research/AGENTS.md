@@ -11,7 +11,7 @@
 ### 模型职责（项目默认）
 - 科研问题与科学判断：GPT-6 Pro。
 - 规划：GPT-6.1 Sol high。
-- 执行与统计、归档：GPT-6.1 Sol high。
+- 执行与统计、归档：Opus 5.5 high。
 - 写作：Opus 5.5 high。
 宿主验证 binding 后调用；记录实际模型和 effort。Pro 不映射为 effort；不静默降级。审查使用独立上下文并标明实际身份。
 

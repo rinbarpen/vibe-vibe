@@ -81,4 +81,4 @@
 
 ## 跨阶段固定规则
 
-每个大/小/小小阶段都记录 `started`、终态和下一步，并按检查点提交 Git。模型按角色路由：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 GPT-6.1 Sol high、写作 Opus 5.5 high。模型不可用时记录 `blocked_model_unavailable`，不静默替换。阶段完成不代表科学结论为正；所有失败、负结果、暂停和 skipped 都留档。
+每个大/小/小小阶段都记录 `started`、终态和下一步，并按检查点提交 Git。模型按角色路由：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 Opus 5.5 high、写作 Opus 5.5 high。模型不可用时记录 `blocked_model_unavailable`，不静默替换。阶段完成不代表科学结论为正；所有失败、负结果、暂停和 skipped 都留档。
