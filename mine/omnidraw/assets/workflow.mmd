@@ -1,0 +1,44 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  securityLevel: strict
+  fontFamily: 'Noto Sans CJK SC, sans-serif'
+  themeVariables:
+    fontFamily: 'Noto Sans CJK SC, sans-serif'
+    fontSize: 17px
+    background: '#ffffff'
+    primaryColor: '#EAF3F5'
+    primaryTextColor: '#173B47'
+    primaryBorderColor: '#6794A0'
+    lineColor: '#64828C'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    htmlLabels: false
+    wrappingWidth: 240
+    curve: linear
+    nodeSpacing: 30
+    rankSpacing: 42
+    padding: 16
+    useMaxWidth: false
+---
+%% Omnidraw -> local mermaid sub-skill. Route by image meaning and real inputs.
+flowchart TD
+    A["图意 · 场景 · 受众<br/>输入素材与交付要求"] --> B{"按视觉语义<br/>选择制作路线"}
+    B -->|流程 / 关系 / 架构| C["结构图<br/>Mermaid / Draw.io"]
+    B -->|插画 / 照片 / 概念| D["图像生成或编辑<br/>当前可用图像工具"]
+    B -->|真实数据 / 统计| E["数据图<br/>matplotlib"]
+    C --> F["可编辑图源 + 预览<br/>来源 · 题注 · 替代文本"]
+    D --> F
+    E --> F
+    F --> G{"图意 / 标签 / 数值<br/>视觉审阅通过？"}
+    G -->|否：按问题迭代| B
+    G -->|是| H["配图 + 图源 + 预览<br/>独立交付或交文档角色整合"]
+    classDef input fill:#EDF4F7,stroke:#6E97A6,color:#173B47;
+    classDef maker fill:#E8F3EE,stroke:#64957D,color:#173E2C;
+    classDef gate fill:#FBF3DE,stroke:#B29A59,color:#52421D;
+    classDef done fill:#DCEEE4,stroke:#4C8467,color:#143E29;
+    class A input;
+    class C,D,E,F maker;
+    class B,G gate;
+    class H done;

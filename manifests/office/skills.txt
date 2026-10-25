@@ -1,0 +1,10 @@
+# Exact source IDs keep install names stable across submodule states.
+anthropics/skills/docx
+anthropics/skills/xlsx
+anthropics/skills/pptx
+anthropics/skills/pdf
+office-quality
+ai-vibe-writing
+omnidraw
+omnisheet
+omnippt

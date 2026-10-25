@@ -1,0 +1,44 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  securityLevel: strict
+  fontFamily: 'Noto Sans CJK SC, sans-serif'
+  themeVariables:
+    fontFamily: 'Noto Sans CJK SC, sans-serif'
+    fontSize: 17px
+    background: '#ffffff'
+    primaryColor: '#EAF3F5'
+    primaryTextColor: '#173B47'
+    primaryBorderColor: '#6794A0'
+    lineColor: '#64828C'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    htmlLabels: false
+    wrappingWidth: 250
+    curve: linear
+    nodeSpacing: 28
+    rankSpacing: 35
+    padding: 16
+    useMaxWidth: false
+---
+%% Omnippt planning illustration only; not a new SVG processing pipeline.
+flowchart TB
+    A["需求与按需研究<br/>受众 · 结果 · 来源<br/>复用 brief / 模板 / 编辑范围"] --> B["可移动大纲<br/>稳定页面 ID · 单页结论<br/>证据与逻辑顺序"]
+    B --> C["朴素策划稿<br/>内容位置 · 层级 · 对象<br/>先内容，后视觉"]
+    C --> D["内容驱动视觉<br/>按需卡片 · 设计 token<br/>图片走 Omnidraw / 表格走 Omnisheet"]
+    D --> E{"新增数据图 / 宏？<br/>分别 yes / no / pending<br/>复用已确认答复"}
+    E -->|yes| F["原生引擎装配<br/>可编辑文本 / 形状 / 表格 / 图表<br/>保留模板与备注 · 副本制作"]
+    E -->|no / pending| X["跳过对应新增/调用<br/>继续其它内容与排版<br/>保留已有对象"]
+    X --> F
+    F --> G["真实文件检查 + 全页审阅<br/>独立 QA · 绑定最终哈希"]
+    G -->|问题退回相应阶段修复| C
+    G --> H["原生文件 + 来源 / 预览 / 证据<br/>完整验收 passed<br/>待确认或缺证据 pending"]
+    classDef input fill:#EDF4F7,stroke:#6E97A6,color:#173B47;
+    classDef maker fill:#E8F3EE,stroke:#64957D,color:#173E2C;
+    classDef gate fill:#FBF3DE,stroke:#B29A59,color:#52421D;
+    classDef done fill:#DCEEE4,stroke:#4C8467,color:#143E29;
+    class A,B,C input;
+    class D,F,X maker;
+    class E,G gate;
+    class H done;

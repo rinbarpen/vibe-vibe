@@ -506,6 +506,8 @@ def _install_required_skills(
             "  (tip: run 'vibe update' to fetch skill submodules, "
             "then 'vibe add skill <name>' for any still-missing)"
         )
-    if missing and not dry_run:
+    # Office previews also act as dependency-readiness checks. Keep the
+    # permissive catalog preview used by other manifests unchanged.
+    if missing and (not dry_run or manifest.name == "office"):
         return 1
     return _validate_installed_skill_contracts(roots, manifest, target, policy, skill_force, dry_run)

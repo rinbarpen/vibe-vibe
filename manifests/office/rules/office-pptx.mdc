@@ -1,0 +1,30 @@
+---
+description: PowerPoint 设计、原生交付及图表与宏决策
+globs: "**/*.{pptx,pptm,potm,ppsm}"
+alwaysApply: false
+---
+
+# PowerPoint 制作与验收
+
+先加载 `.agents/skills/omnippt/SKILL.md`，按需 brief-research → story-outline → storyboard → visual-design → native-build → deck-review，再加载 `.agents/skills/anthropics-skills-pptx/SKILL.md`、`office/pptx/CLAUDE.md` 及共享质量/文件保护规则。仅改单页或格式时复用有效上下文，不强制完整六阶段或新研究；不默认 ppt-master。
+
+## 先内容关系，后视觉语言
+
+- 明确受众/结果、场景、来源和编辑范围；有稳定 slide ID 的可移动大纲先于朴素分镜，分镜先于视觉 tokens。每页结论由材料/数据支持，阶段变化同步后续构建与证据。
+- Bento/卡片按内容选择，不固定每页矩阵、不强制装饰或无意义研究。保留模板母版、主题、布局、备注和未修改页。
+- 图片/图源先经 Omnidraw，表格/数据模型/布局先经 Omnisheet；office-pptx 独占最终演示，最终原生表格/已确认图表不转图或另建未请求工作簿。
+
+## 图表与宏两个独立决定
+
+- 新增数据图表和宏使用各自 yes/no/pending，记录真实答复来源/本次范围；已明确时直接复用，未答主动询问并继续非图表/非宏工作。不以沉默或场景推荐当 yes。
+- 数据图表 yes 后记录指标/类型/位置/源范围；no/pending 不新增或重建，也不经图片/制图宏绕过。既有图表默认保留，按已确认编辑范围维护数据引用，不凭 no 删除；概念图/普通布局按 brief，不机械视为新增数据图表。
+- 宏明确制作/保留/修改/调用、用途、入口/参数、目标演示/页/对象范围、触发与输出。保留项目不是执行许可；输入读取/预览不自动执行未知宏，不改全局信任。
+- `.bas` / `.cls` 源与 `.pptm` / `.potm` / `.ppsm` 宏包及真实 PowerPoint 编译/执行分别留证；普通 `.pptx` 不承载 VBA。当前通用 verify/render 仅覆盖 `.pptx`，不证明宏保真/执行，不改后缀绕过。缺已选执行条件则对应项 pending；仅保留不强迫运行。
+
+## 原生编辑与验收
+
+- 默认使用原生文本、形状、表格、数据图表及适用 SmartArt；复杂图示可选原生组合、图片/SVG并留源，不以整页静态画面冒充可编辑正文。
+- SVG 嵌入不自动变原生文字/形状；Convert to Shape 是独立步骤，按真实应用版本逐对象和渲染核验后才声明对应编辑能力。
+- 按 Omnippt `native-build/SKILL.md` 选择真实引擎。重新打开最终文件，核对内容、数据/单位、对象、关系、母版/主题/备注和基线保留；不限定某个库，也不建立固定 SVG 流水线。
+- 设计合同检查只给其覆盖的结构证据。实际渲染并查看全部幻灯片，逐页查溢出、遮挡、对齐、留白、字体和图表；修复后重做相关门禁及最终全页预览。
+- 交接 brief/来源、稳定 ID 大纲、分镜、tokens/阶段版本、决定、源/最终哈希、真实构建/检查和全页证据给独立 office-qa。未完成或缺证据为 pending，不能以退出 0 或缩略图数量通过。

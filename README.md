@@ -130,6 +130,7 @@ vibe hook add ralph-loop demo
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills)：Mermaid 图表生成与渲染
 - [Unity Game Development](mine/unity-game-development)：游戏全流程 67个技能：总入口、9阶段、29专项、6个模型链技能、8个游戏测试技能、9执行和reviewer的5个技能，可整包、阶段或单项安装。
 - [State Machine Reasoning](mine/state-machine-reasoning)：将决策、排障、研究和工作流分析建模为状态机，并生成 Mermaid 可视化图。
+- [Omnippt](mine/omnippt)：按需加载需求调研、叙事大纲、逐页策划、视觉设计、原生制作和独立审查子技能，支持可编辑演示文稿交付。
 - [X Research](skills/x-research-skill)：信息检索与社交平台调研
 
 仓库内的 [mine/](mine) 存放第一方 Skill，[workflows/](workflows) 存放完整工作流项目；它们与外部子模块一样可作为能力来源。
@@ -153,7 +154,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `knowledge-learning` | 知识学习与管理 |
 | `market-analysis` | 行业研究、市场与竞品分析 |
 | `novel-writing` | 长篇小说与文学创作 |
-| `office` | 办公文档自动化 |
+| `office` | DOCX / XLSX / PPTX / PDF：正文写作、原生可编辑交付、全量视觉验收与独立 QA |
 | `social-media` | 社交媒体内容创作与运营 |
 | `ui-testing` | Web、组件、移动端、视觉与无障碍测试 |
 | `unity-game` | Unity全流程，21个双端角色、执行/Reviewer技能与[workflow SVG](manifests/unity-game/references/workflow.svg) |

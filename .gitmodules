@@ -148,3 +148,6 @@
 	path = skills/mattpocock-skills-zh-CN
 	url = https://github.com/vinvcn/mattpocock-skills-zh-CN.git
 	branch = main
+[submodule "skills/ai-vibe-writing"]
+	path = skills/ai-vibe-writing
+	url = https://github.com/donghuixin/AI-Vibe-Writing-Skills.git

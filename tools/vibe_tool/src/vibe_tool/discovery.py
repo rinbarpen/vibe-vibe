@@ -1,7 +1,7 @@
 """Dynamic discovery of manifests and skills."""
 
 from collections import defaultdict
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from .types import ManifestInfo, SkillInfo
 
@@ -124,9 +124,36 @@ def resolve_manifest(manifests_dir: Path, name: str) -> ManifestInfo:
 
 
 def resolve_skill(skills_root, name: str) -> SkillInfo:
-    """Look up a single skill by name. Raises ValueError with candidates."""
+    """Look up a skill by its legacy name or an exact relative ``id_path``.
+
+    Path queries deliberately do not use fuzzy matching. Their installation
+    name is stable even when another submodule adds a same-named skill later.
+    """
+    normalized = name.replace("\\", "/")
+    if (
+        not name
+        or Path(normalized).is_absolute()
+        or PureWindowsPath(name).drive
+        or any(part in ("", ".", "..") for part in normalized.split("/"))
+    ):
+        raise ValueError(f"Invalid skill identifier: {name!r}; use a relative skill name or id_path.")
+
     roots = _as_roots(skills_root)
     skills = discover_skills(*roots)
+
+    if "/" in normalized:
+        matches = [s for s in skills if s.id_path.replace("\\", "/") == normalized]
+        if len(matches) == 1:
+            return SkillInfo(
+                name=normalized.replace("/", "-"),
+                source_path=matches[0].source_path,
+                id_path=normalized,
+            )
+        if len(matches) > 1:
+            sources = ", ".join(str(s.source_path) for s in matches)
+            raise ValueError(f"Skill id_path '{name}' is ambiguous across roots: {sources}")
+        raise ValueError(f"Skill id_path '{name}' not found among {len(skills)} skills.")
+
     by_name = {s.name: s for s in skills}
     by_lower = {s.name.lower(): s for s in skills}
 
