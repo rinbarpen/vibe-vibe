@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "run_id": "game-test-001",
+  "game": {"revision": "pending-build-revision", "build": null},
+  "execution": {"kind": "planned", "channel": null, "tool": "", "environment": "", "tester": ""},
+  "cases": [
+    {"id": "FLOW-001", "required": true, "expected": "启动后通过正常输入完成首局、结算并重试", "status": "not_run", "reason": "尚未提供可玩构建和实际输入工具", "normal_input": false, "actual": "", "steps": [], "input_events": [], "evidence": []}
+  ]
+}

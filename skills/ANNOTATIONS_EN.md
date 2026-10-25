@@ -2,6 +2,11 @@
 
 ## Skills
 
+### unity-game-development
+- **Path**: `mine/unity-game-development`
+- **Description**: 67 skills: orchestration, nine stages, 29 specialties, six 3D/DCC modeling skills, eight game-testing skills, nine executors and five reviewer skills. Includes design, production, tests, release and live operations; install the bundle or an individual stage/task.
+- **Usage**: `vibe add skill unity-game-development` / `unity-game-design` / `unity-game-performance`
+
 ### AGENTS.md
 - **Path**: `skills/agent-skills`
 - **Description**: This file provides guidance to AI coding agents (Claude Code, Cursor, Copilot, etc.) when working with code in this repository.

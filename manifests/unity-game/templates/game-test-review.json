@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "review_status": "not_run",
+  "reviewer": "",
+  "independent_context": false,
+  "reviewed_revision": null,
+  "reviewed_session_sha256": null,
+  "verdict": null,
+  "approved_revision": null,
+  "findings": []
+}

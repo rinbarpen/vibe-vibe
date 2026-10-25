@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="3380" viewBox="0 0 1680 3380" role="img" aria-labelledby="workflow-title workflow-desc">
+<title id="workflow-title">Unity 游戏全流程：执行 Skill、独立 Reviewer 与用户确认门（流程规范）</title>
+<desc id="workflow-desc">九个阶段分别由专属执行 Skill 调度专项子技能，独立 game-reviewer 使用 unity-game-review 及阶段 profile 评审冻结产物。changes_requested 返回原执行者产生新版本；blocked 等待证据或依赖；passed 才可推进。策划、垂直切片和发布准备经过用户明确确认。运营反馈形成下一轮迭代。这是工作流规范，不表示任何阶段实际已执行或通过。</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#527c72"/></marker>
+<marker id="return" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#b77842"/></marker>
+<marker id="iteration" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#7773a5"/></marker>
+<style>
+text { font-family: "Noto Sans CJK SC", "Microsoft YaHei", "PingFang SC", sans-serif; fill: #233d43; }
+.mono { font-family: "DejaVu Sans Mono", "SFMono-Regular", Consolas, monospace; }
+.muted { fill: #62777b; } .flow { fill: none; stroke: #527c72; stroke-width: 2; marker-end: url(#arrow); }
+.return { fill: none; stroke: #b77842; stroke-width: 1.6; stroke-dasharray: 6 4; marker-end: url(#return); }
+.iterate { fill: none; stroke: #7773a5; stroke-width: 2; stroke-dasharray: 8 5; marker-end: url(#iteration); }
+</style>
+</defs>
+<rect width="1680" height="3380" fill="#f7faf8"/>
+<text x="56" y="53" font-size="14" class="muted" letter-spacing="2">UNITY / END-TO-END GAME DEVELOPMENT</text>
+<text x="56" y="103" font-size="34" class="" font-weight="700">每一阶段都有执行 Skill，也都有独立 Reviewer</text>
+<text x="56" y="138" font-size="17" class="muted">工作流规范 · 不代表实际执行状态 · 技能名与阶段来自 skill-map.json</text>
+<rect x="56" y="162" width="1568" height="66" rx="13" fill="#edf4f0" stroke="#dce8e0"/>
+<text x="78" y="188" font-size="16" class="" font-weight="700">主代理 / game-producer</text>
+<text x="350" y="188" font-size="15" class="mono">总入口：unity-game-development</text>
+<text x="78" y="211" font-size="15" class="muted">冻结输入与产物 revision → 明确路径所有权 → 并行专项 → 集成证据 → 独立评审；共享状态单写，Unity Editor 串行。</text>
+<text x="75" y="264" font-size="13" class="muted" letter-spacing="1">阶段 / STAGE</text>
+<text x="262" y="264" font-size="16" class="" font-weight="700">01  执行 Skill → 专项 Subskills</text>
+<text x="838" y="264" font-size="16" class="" font-weight="700">02  独立 Reviewer → 阶段审查</text>
+<text x="1373" y="264" font-size="16" class="" font-weight="700">03  准入 / 用户确认</text>
+<g id="stage-discovery">
+<rect x="66" y="293" width="1558" height="207" rx="16" fill="#ffffff" stroke="#e0e9e4"/>
+<text x="86" y="335" font-size="26" class="muted">01</text>
+<text x="86" y="369" font-size="19" class="" font-weight="700">立项</text>
+<text x="86" y="392" font-size="11" class="mono muted">discovery</text>
+<rect x="246" y="317" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="344" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="371" font-size="16" class="mono" font-weight="700">unity-game-discovery-execute</text>
+<text x="264" y="394" font-size="13" class="muted">项目简报 · 受众与竞品 · 范围与风险</text>
+<path d="M 766 380 H 819" class="flow"/>
+<text x="773" y="367" font-size="11" class="muted">提交</text>
+<rect x="825" y="317" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="344" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="371" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="395" font-size="13" class="mono muted">profile: discovery</text>
+<text x="844" y="416" font-size="12" class="muted">规则、设计与范围审查 · 测试、构建与运行证据审查</text>
+<path d="M 1306 380 H 1350" class="flow"/>
+<text x="1312" y="364" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="317" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="352" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="382" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="413" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 450 V 467 H 510 V 450" class="return"/>
+<text x="558" y="463" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="489" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 380 H 1612 V 505 H 500 V 541" class="flow"/>
+</g>
+<g id="stage-design">
+<rect x="66" y="517" width="1558" height="207" rx="16" fill="#f1f6f3" stroke="#e0e9e4"/>
+<text x="86" y="559" font-size="26" class="muted">02</text>
+<text x="86" y="593" font-size="19" class="" font-weight="700">完整策划</text>
+<text x="86" y="616" font-size="11" class="mono muted">design</text>
+<rect x="246" y="541" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="568" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="595" font-size="16" class="mono" font-weight="700">unity-game-design-execute</text>
+<text x="264" y="618" font-size="13" class="muted">核心循环与规则 · 系统与数值 · 关卡与叙事 · 视听与资源方向</text>
+<text x="264" y="637" font-size="13" class="muted">交互与可访问性 · Unity 技术设计</text>
+<path d="M 766 604 H 819" class="flow"/>
+<text x="773" y="591" font-size="11" class="muted">提交</text>
+<rect x="825" y="541" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="568" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="595" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="619" font-size="13" class="mono muted">profile: design</text>
+<text x="844" y="640" font-size="12" class="muted">规则、设计与范围审查 · 实现、接口与存档审查</text>
+<text x="844" y="657" font-size="12" class="muted">资源、视听与许可审查 · 测试、构建与运行证据审查</text>
+<path d="M 1306 604 H 1350" class="flow"/>
+<text x="1312" y="588" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="541" width="245" height="133" rx="13" fill="#fff7e8" stroke="#d8b675"/>
+<text x="1375" y="571" font-size="17" class="" font-weight="700">用户明确确认</text>
+<text x="1375" y="599" font-size="17" class="">方向确认</text>
+<text x="1375" y="623" font-size="14" class="mono muted">direction</text>
+<text x="1375" y="653" font-size="13" class="muted">等待确认；拒绝则回修</text>
+<path d="M 1478 674 V 691 H 1067" class="return"/>
+<path d="M 1067 674 V 691 H 510 V 674" class="return"/>
+<text x="1375" y="713" font-size="12" class="muted">仅确认后推进</text>
+<text x="558" y="687" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="713" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 604 H 1612 V 729 H 500 V 765" class="flow"/>
+</g>
+<g id="stage-prototype">
+<rect x="66" y="741" width="1558" height="207" rx="16" fill="#ffffff" stroke="#e0e9e4"/>
+<text x="86" y="783" font-size="26" class="muted">03</text>
+<text x="86" y="817" font-size="19" class="" font-weight="700">可玩原型</text>
+<text x="86" y="840" font-size="11" class="mono muted">prototype</text>
+<rect x="246" y="765" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="792" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="819" font-size="16" class="mono" font-weight="700">unity-game-prototype-execute</text>
+<text x="264" y="842" font-size="13" class="muted">工程准备 · 最小可玩闭环 · 原型试玩</text>
+<path d="M 766 828 H 819" class="flow"/>
+<text x="773" y="815" font-size="11" class="muted">提交</text>
+<rect x="825" y="765" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="792" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="819" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="843" font-size="13" class="mono muted">profile: prototype</text>
+<text x="844" y="864" font-size="12" class="muted">规则、设计与范围审查 · 实现、接口与存档审查</text>
+<text x="844" y="881" font-size="12" class="muted">测试、构建与运行证据审查</text>
+<path d="M 1306 828 H 1350" class="flow"/>
+<text x="1312" y="812" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="765" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="800" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="830" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="861" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 898 V 915 H 510 V 898" class="return"/>
+<text x="558" y="911" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="937" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 828 H 1612 V 953 H 500 V 989" class="flow"/>
+</g>
+<g id="stage-vertical-slice">
+<rect x="66" y="965" width="1558" height="207" rx="16" fill="#f1f6f3" stroke="#e0e9e4"/>
+<text x="86" y="1007" font-size="26" class="muted">04</text>
+<text x="86" y="1041" font-size="19" class="" font-weight="700">垂直切片</text>
+<text x="86" y="1064" font-size="11" class="mono muted">vertical-slice</text>
+<rect x="246" y="989" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="1016" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="1043" font-size="16" class="mono" font-weight="700">unity-game-vertical-slice-execute</text>
+<text x="264" y="1066" font-size="13" class="muted">切片集成 · 切片独立评审</text>
+<path d="M 766 1052 H 819" class="flow"/>
+<text x="773" y="1039" font-size="11" class="muted">提交</text>
+<rect x="825" y="989" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="1016" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="1043" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="1067" font-size="13" class="mono muted">profile: vertical-slice</text>
+<text x="844" y="1088" font-size="12" class="muted">规则、设计与范围审查 · 实现、接口与存档审查</text>
+<text x="844" y="1105" font-size="12" class="muted">资源、视听与许可审查 · 测试、构建与运行证据审查</text>
+<path d="M 1306 1052 H 1350" class="flow"/>
+<text x="1312" y="1036" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="989" width="245" height="133" rx="13" fill="#fff7e8" stroke="#d8b675"/>
+<text x="1375" y="1019" font-size="17" class="" font-weight="700">用户明确确认</text>
+<text x="1375" y="1047" font-size="17" class="">制作基线确认</text>
+<text x="1375" y="1071" font-size="14" class="mono muted">vertical-slice</text>
+<text x="1375" y="1101" font-size="13" class="muted">等待确认；拒绝则回修</text>
+<path d="M 1478 1122 V 1139 H 1067" class="return"/>
+<path d="M 1067 1122 V 1139 H 510 V 1122" class="return"/>
+<text x="1375" y="1161" font-size="12" class="muted">仅确认后推进</text>
+<text x="558" y="1135" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="1161" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 1052 H 1612 V 1177 H 500 V 1213" class="flow"/>
+</g>
+<g id="stage-production">
+<rect x="66" y="1189" width="1558" height="207" rx="16" fill="#ffffff" stroke="#e0e9e4"/>
+<text x="86" y="1231" font-size="26" class="muted">05</text>
+<text x="86" y="1265" font-size="19" class="" font-weight="700">正式制作</text>
+<text x="86" y="1288" font-size="11" class="mono muted">production</text>
+<rect x="246" y="1213" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="1240" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="1267" font-size="16" class="mono" font-weight="700">unity-game-production-execute</text>
+<text x="264" y="1290" font-size="13" class="muted">功能模块交付 · 基础资源生产 · 动画与特效 · 音频集成</text>
+<text x="264" y="1309" font-size="13" class="muted">模型设计与外部DCC</text>
+<path d="M 766 1276 H 819" class="flow"/>
+<text x="773" y="1263" font-size="11" class="muted">提交</text>
+<rect x="825" y="1213" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="1240" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="1267" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="1291" font-size="13" class="mono muted">profile: production</text>
+<text x="844" y="1312" font-size="12" class="muted">实现、接口与存档审查 · 资源、视听与许可审查</text>
+<text x="844" y="1329" font-size="12" class="muted">测试、构建与运行证据审查</text>
+<path d="M 1306 1276 H 1350" class="flow"/>
+<text x="1312" y="1260" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="1213" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="1248" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="1278" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="1309" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 1346 V 1363 H 510 V 1346" class="return"/>
+<text x="558" y="1359" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="1385" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 1276 H 1612 V 1401 H 500 V 1437" class="flow"/>
+</g>
+<g id="stage-alpha">
+<rect x="66" y="1413" width="1558" height="207" rx="16" fill="#f1f6f3" stroke="#e0e9e4"/>
+<text x="86" y="1455" font-size="26" class="muted">06</text>
+<text x="86" y="1489" font-size="19" class="" font-weight="700">Alpha 验证</text>
+<text x="86" y="1512" font-size="11" class="mono muted">alpha</text>
+<rect x="246" y="1437" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="1464" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="1491" font-size="16" class="mono" font-weight="700">unity-game-alpha-execute</text>
+<text x="264" y="1514" font-size="13" class="muted">自动化测试 · 流程与存档回归 · 实际游戏测试</text>
+<path d="M 766 1500 H 819" class="flow"/>
+<text x="773" y="1487" font-size="11" class="muted">提交</text>
+<rect x="825" y="1437" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="1464" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="1491" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="1515" font-size="13" class="mono muted">profile: alpha</text>
+<text x="844" y="1536" font-size="12" class="muted">实现、接口与存档审查 · 测试、构建与运行证据审查</text>
+<path d="M 1306 1500 H 1350" class="flow"/>
+<text x="1312" y="1484" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="1437" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="1472" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="1502" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="1533" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 1570 V 1587 H 510 V 1570" class="return"/>
+<text x="558" y="1583" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="1609" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 1500 H 1612 V 1625 H 500 V 1661" class="flow"/>
+</g>
+<g id="stage-beta">
+<rect x="66" y="1637" width="1558" height="207" rx="16" fill="#ffffff" stroke="#e0e9e4"/>
+<text x="86" y="1679" font-size="26" class="muted">07</text>
+<text x="86" y="1713" font-size="19" class="" font-weight="700">Beta 优化</text>
+<text x="86" y="1736" font-size="11" class="mono muted">beta</text>
+<rect x="246" y="1661" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="1688" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="1715" font-size="16" class="mono" font-weight="700">unity-game-beta-execute</text>
+<text x="264" y="1738" font-size="13" class="muted">平衡与试玩分析 · 性能定位与优化 · 平台兼容验收</text>
+<path d="M 766 1724 H 819" class="flow"/>
+<text x="773" y="1711" font-size="11" class="muted">提交</text>
+<rect x="825" y="1661" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="1688" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="1715" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="1739" font-size="13" class="mono muted">profile: beta</text>
+<text x="844" y="1760" font-size="12" class="muted">规则、设计与范围审查 · 资源、视听与许可审查</text>
+<text x="844" y="1777" font-size="12" class="muted">测试、构建与运行证据审查</text>
+<path d="M 1306 1724 H 1350" class="flow"/>
+<text x="1312" y="1708" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="1661" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="1696" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="1726" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="1757" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 1794 V 1811 H 510 V 1794" class="return"/>
+<text x="558" y="1807" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="1833" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 1724 H 1612 V 1849 H 500 V 1885" class="flow"/>
+</g>
+<g id="stage-release-ready">
+<rect x="66" y="1861" width="1558" height="207" rx="16" fill="#f1f6f3" stroke="#e0e9e4"/>
+<text x="86" y="1903" font-size="26" class="muted">08</text>
+<text x="86" y="1937" font-size="19" class="" font-weight="700">发布准备</text>
+<text x="86" y="1960" font-size="11" class="mono muted">release-ready</text>
+<rect x="246" y="1885" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="1912" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="1939" font-size="16" class="mono" font-weight="700">unity-game-release-execute</text>
+<text x="264" y="1962" font-size="13" class="muted">可复现构建 · 商店材料与渠道 · 发布就绪审查</text>
+<path d="M 766 1948 H 819" class="flow"/>
+<text x="773" y="1935" font-size="11" class="muted">提交</text>
+<rect x="825" y="1885" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="1912" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="1939" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="1963" font-size="13" class="mono muted">profile: release-ready</text>
+<text x="844" y="1984" font-size="12" class="muted">实现、接口与存档审查 · 资源、视听与许可审查</text>
+<text x="844" y="2001" font-size="12" class="muted">测试、构建与运行证据审查</text>
+<path d="M 1306 1948 H 1350" class="flow"/>
+<text x="1312" y="1932" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="1885" width="245" height="133" rx="13" fill="#fff7e8" stroke="#d8b675"/>
+<text x="1375" y="1915" font-size="17" class="" font-weight="700">用户明确确认</text>
+<text x="1375" y="1943" font-size="17" class="">发布确认</text>
+<text x="1375" y="1967" font-size="14" class="mono muted">release</text>
+<text x="1375" y="1997" font-size="13" class="muted">等待确认；拒绝则回修</text>
+<path d="M 1478 2018 V 2035 H 1067" class="return"/>
+<path d="M 1067 2018 V 2035 H 510 V 2018" class="return"/>
+<text x="1375" y="2057" font-size="12" class="muted">仅确认后推进</text>
+<text x="558" y="2031" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="2057" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+<path d="M 1601 1948 H 1612 V 2073 H 500 V 2109" class="flow"/>
+</g>
+<g id="stage-live">
+<rect x="66" y="2085" width="1558" height="207" rx="16" fill="#ffffff" stroke="#e0e9e4"/>
+<text x="86" y="2127" font-size="26" class="muted">09</text>
+<text x="86" y="2161" font-size="19" class="" font-weight="700">发布运营</text>
+<text x="86" y="2184" font-size="11" class="mono muted">live</text>
+<rect x="246" y="2109" width="520" height="133" rx="13" fill="#edf7f3" stroke="#a8c8ba"/>
+<text x="264" y="2136" font-size="14" class="muted">执行 / implementation owner</text>
+<text x="264" y="2163" font-size="16" class="mono" font-weight="700">unity-game-liveops-execute</text>
+<text x="264" y="2186" font-size="13" class="muted">反馈与故障分级 · 热修复与回退 · 运营复盘与下一版</text>
+<path d="M 766 2172 H 819" class="flow"/>
+<text x="773" y="2159" font-size="11" class="muted">提交</text>
+<rect x="825" y="2109" width="481" height="133" rx="13" fill="#eef2f9" stroke="#b3c2d7"/>
+<text x="844" y="2136" font-size="14" class="muted">game-reviewer · 独立上下文 / 只读产物</text>
+<text x="844" y="2163" font-size="16" class="mono" font-weight="700">unity-game-review</text>
+<text x="844" y="2187" font-size="13" class="mono muted">profile: live</text>
+<text x="844" y="2208" font-size="12" class="muted">规则、设计与范围审查 · 实现、接口与存档审查</text>
+<text x="844" y="2225" font-size="12" class="muted">测试、构建与运行证据审查</text>
+<path d="M 1306 2172 H 1350" class="flow"/>
+<text x="1312" y="2156" font-size="10" class="mono muted">passed</text>
+<rect x="1356" y="2109" width="245" height="133" rx="13" fill="#f3f7f4" stroke="#ccdcd2"/>
+<text x="1375" y="2144" font-size="17" class="" font-weight="700">阶段准入</text>
+<text x="1375" y="2174" font-size="15" class="">证据与版本一致</text>
+<text x="1375" y="2205" font-size="14" class="muted">复核依赖后推进</text>
+<path d="M 1067 2242 V 2259 H 510 V 2242" class="return"/>
+<text x="558" y="2255" font-size="12" class="" fill="#996333">changes_requested → 原责任执行者修复 / 新 revision → 重审</text>
+<text x="844" y="2281" font-size="12" class="muted">blocked → 等待依赖或证据，保持本阶段</text>
+</g>
+<path d="M 1478 2242 V 2323 H 35 V 1276 H 66" class="iterate"/>
+<text x="88" y="2349" font-size="16" class="" fill="#625e8d">运营反馈 → 新迭代任务 → 正式制作（或回到受影响的上游阶段）；已批准基线变化需重新确认对应门。</text>
+<g id="modeling-subpipeline">
+<rect x="66" y="2374" width="1558" height="340" rx="16" fill="#f0f4fa" stroke="#b3c2d7"/>
+<text x="88" y="2409" font-size="22" class="" font-weight="700">模型子流程 / 模型设计与外部DCC</text>
+<text x="880" y="2409" font-size="16" class="mono">unity-game-modeling</text>
+<text x="88" y="2440" font-size="16" class="">执行路由：MCP（发现真实工具） / 外部 Skill（实际可用） / Blender CLI / GUI（可用时）</text>
+<text x="88" y="2468" font-size="14" class="muted">路由需先检查可用性；本图不表示已经安装、连接或执行。无软件 / 无连接 → not_run，保留待验收状态。</text>
+<rect x="86" y="2493" width="287" height="95" rx="13" fill="#ffffff" stroke="#b3c2d7"/>
+<text x="100" y="2520" font-size="16" class="" font-weight="700">01  模型规格与设计</text>
+<text x="100" y="2546" font-size="12" class="mono">unity-game-model-design</text>
+<text x="100" y="2566" font-size="11" class="mono muted">model-artist · art-director</text>
+<path d="M 373 2540 H 390" class="flow"/>
+<rect x="393" y="2493" width="287" height="95" rx="13" fill="#ffffff" stroke="#b3c2d7"/>
+<text x="407" y="2520" font-size="16" class="" font-weight="700">02  外部DCC实际建模</text>
+<text x="407" y="2546" font-size="12" class="mono">unity-game-model-build</text>
+<text x="407" y="2566" font-size="11" class="mono muted">model-artist</text>
+<path d="M 680 2540 H 697" class="flow"/>
+<rect x="700" y="2493" width="287" height="95" rx="13" fill="#ffffff" stroke="#b3c2d7"/>
+<text x="714" y="2520" font-size="16" class="" font-weight="700">03  UV与PBR表面</text>
+<text x="714" y="2546" font-size="12" class="mono">unity-game-model-surface</text>
+<text x="714" y="2566" font-size="11" class="mono muted">model-artist · technical-artist</text>
+<path d="M 987 2540 H 1004" class="flow"/>
+<rect x="1007" y="2493" width="287" height="95" rx="13" fill="#ffffff" stroke="#b3c2d7"/>
+<text x="1021" y="2520" font-size="16" class="" font-weight="700">04  绑定导出与Unity集成</text>
+<text x="1021" y="2546" font-size="12" class="mono">unity-game-model-rig-export</text>
+<text x="1021" y="2566" font-size="11" class="mono muted">model-artist · technical-artist</text>
+<text x="1021" y="2581" font-size="11" class="mono muted">animation-vfx-artist</text>
+<path d="M 1294 2540 H 1311" class="flow"/>
+<rect x="1314" y="2493" width="287" height="95" rx="13" fill="#ffffff" stroke="#b3c2d7"/>
+<text x="1328" y="2520" font-size="16" class="" font-weight="700">05  模型独立审查</text>
+<text x="1328" y="2546" font-size="12" class="mono">unity-game-model-review</text>
+<text x="1328" y="2566" font-size="11" class="mono muted">game-reviewer</text>
+<text x="88" y="2625" font-size="15" class="">文件所有权：model-artist（可编辑源模型） → technical-artist（Unity 导入） → game-reviewer（独立审查）。</text>
+<text x="88" y="2654" font-size="14" class="muted">原始源文件保留；导出文件 + 哈希 + 软件执行证据 + Unity 验证 → 独立评审；changes_requested → 原 Skill / owner 新版本重审。</text>
+<text x="88" y="2682" font-size="14" class="muted">模型审查通过后回到正式制作集成，再走 production 阶段总审；模型文件存在不等同艺术质量或设备性能通过。</text>
+</g>
+<g id="testing-subpipeline">
+<rect x="66" y="2738" width="1558" height="460" rx="17" fill="#f4f0fa" stroke="#c9bddb"/>
+<text x="88" y="2774" font-size="22" class="" font-weight="700">游戏测试子流程 / 启动并操作真实游戏，再复现与回归</text>
+<text x="1100" y="2774" font-size="16" class="mono">unity-game-testing</text>
+<text x="88" y="2805" font-size="16" class="">跨原型 / 切片 / 制作 / Alpha / Beta / 候选包 / 热修复；QA 执行，独立 game-reviewer 审查。</text>
+<text x="88" y="2834" font-size="14" class="muted">路由：项目 harness · 已连接 MCP · 桌面 / 浏览器 skill · 设备工具；缺真实输入或构建 → not_run。</text>
+<rect x="86" y="2857" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="100" y="2884" font-size="16" class="" font-weight="700">01  测试范围与用例</text>
+<text x="100" y="2910" font-size="12" class="mono">unity-game-test-plan</text>
+<text x="100" y="2930" font-size="11" class="mono muted">qa-engineer</text>
+<path d="M 373 2904 H 390" class="flow"/>
+<rect x="393" y="2857" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="407" y="2884" font-size="16" class="" font-weight="700">02  启动与实际游玩</text>
+<text x="407" y="2910" font-size="12" class="mono">unity-game-play-execution</text>
+<text x="407" y="2930" font-size="11" class="mono muted">qa-engineer</text>
+<path d="M 680 2904 H 697" class="flow"/>
+<rect x="700" y="2857" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="714" y="2884" font-size="16" class="" font-weight="700">03  探索与异常输入</text>
+<text x="714" y="2910" font-size="12" class="mono">unity-game-exploratory-testing</text>
+<text x="714" y="2930" font-size="11" class="mono muted">qa-engineer · playtest-analyst</text>
+<path d="M 987 2904 H 1004" class="flow"/>
+<rect x="1007" y="2857" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="1021" y="2884" font-size="16" class="" font-weight="700">04  画面与交互检查</text>
+<text x="1021" y="2910" font-size="12" class="mono">unity-game-visual-testing</text>
+<text x="1021" y="2930" font-size="11" class="mono muted">qa-engineer · ui-ux-designer</text>
+<text x="1021" y="2945" font-size="11" class="mono muted">art-director</text>
+<path d="M 1294 2904 H 1311" class="flow"/>
+<rect x="1314" y="2857" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="1328" y="2884" font-size="16" class="" font-weight="700">05  缺陷复现与分级</text>
+<text x="1328" y="2910" font-size="12" class="mono">unity-game-bug-reproduction</text>
+<text x="1328" y="2930" font-size="11" class="mono muted">qa-engineer</text>
+<path d="M 1457 2952 V 2963 H 75 V 3024 H 83" class="flow"/>
+<rect x="86" y="2977" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="100" y="3004" font-size="16" class="" font-weight="700">06  修复验证与回归</text>
+<text x="100" y="3030" font-size="12" class="mono">unity-game-fix-verification</text>
+<text x="100" y="3050" font-size="11" class="mono muted">qa-engineer</text>
+<path d="M 373 3024 H 390" class="flow"/>
+<rect x="393" y="2977" width="287" height="95" rx="13" fill="#ffffff" stroke="#c9bddb"/>
+<text x="407" y="3004" font-size="16" class="" font-weight="700">07  独立测试审查</text>
+<text x="407" y="3030" font-size="12" class="mono">unity-game-test-review</text>
+<text x="407" y="3050" font-size="11" class="mono muted">game-reviewer</text>
+<text x="88" y="3109" font-size="15" class="">缺陷 → 原实现 owner / 原执行 skill 修复 → 新 revision 的原用例 + 相邻回归 → 独立测试审查。</text>
+<text x="88" y="3138" font-size="14" class="muted">记录普通输入、预期/实际、截图/视频/日志、构建与证据哈希；输入或构建改变须复测、复审。</text>
+<text x="88" y="3166" font-size="14" class="muted">证据校验器不是游戏控制器；AI 游玩不等于真人体验，截图不代替音频/性能实测，用户确认门仍单独保留。</text>
+</g>
+<rect x="66" y="3222" width="1558" height="132" rx="13" fill="#edf2f0" stroke="#dbe4df"/>
+<path d="M 88 3250 H 126" class="flow"/>
+<text x="138" y="3256" font-size="14" class="">passed + 依赖满足：下一阶段</text>
+<path d="M 520 3250 H 558" class="return"/>
+<text x="570" y="3256" font-size="14" class="">changes_requested / 用户要求回修：原执行者新版本</text>
+<path d="M 1180 3250 H 1218" class="iterate"/>
+<text x="1230" y="3256" font-size="14" class="">运营反馈：下一轮迭代</text>
+<text x="88" y="3289" font-size="14" class="muted">评审结论：passed / changes_requested / blocked。缺少试玩、Editor、设备或构建证据不得等同 passed；审核通过也不等同发布完成。</text>
+<text x="88" y="3323" font-size="14" class="muted">Reviewer 缺席：review_status=not_run，不推进；已审/已批准 revision 变化须重审，涉及确认基线则重走用户确认门。</text>
+</svg>
