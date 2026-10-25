@@ -55,17 +55,17 @@
       "reasoning_effort": null
     },
     "planner": {
-      "requested_model": "gpt-6",
+      "requested_model": "gpt-6.1-sol",
       "service_profile": null,
-      "reasoning_effort": "medium"
+      "reasoning_effort": "high"
     },
     "executor": {
-      "requested_model": "gpt-5.6-luna",
+      "requested_model": "gpt-6.1-sol",
       "service_profile": null,
       "reasoning_effort": "high"
     },
     "writer": {
-      "requested_model": "gpt-5.5",
+      "requested_model": "opus-5.5",
       "service_profile": null,
       "reasoning_effort": "high"
     }

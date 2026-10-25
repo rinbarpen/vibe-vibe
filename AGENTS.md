@@ -33,6 +33,8 @@ Requires `uv` (install: `curl -LsSf https://astral.sh/uv/install.sh | sh`)
 | `vibe add skill <name>` | Install a specific skill |
 | `vibe add skill --all` | Install all skills |
 | `vibe update` | Batch-update managed skill repos; skips `agent-skills` and `ai-investment-advisor` |
+| `vibe update skill <name> [target]` | Sync one installed Skill from local sources with automatic backup |
+| `vibe update manifest <name> [target]` | Sync Manifest resources and installed required Skills with automatic backup |
 | `vibe config set-repo <path>` | Persist repo path to `~/.config/vibe-tool/config.json` |
 | `vibe config show` | Show current configuration |
 | `vibe stats show` | Display skill usage statistics (recorded by PostToolUse hook) |
@@ -89,7 +91,25 @@ vibe hook add ralph-loop
 vibe hook add --all /path/to/project
 ```
 
-## Updating skills
+## Updating installed project resources
+
+`vibe update skill <name> [target]` replaces the whole installed `.agents/skills/<name>` directory, including removing stale files. `vibe update manifest <name> [target]` updates only generated configuration/tool resources, preserving project data, README, VERSION, CHANGELOG, and output ledgers. Only `vibe-coding`'s `MANIFEST.md` is an updatable instruction source. Required Skills are updated only when already installed; unrelated Skills and missing dependencies are left untouched.
+
+These commands read local sources without fetching Git. They default to the current directory, accept `-n/--dry-run`, and require one name (no `--all`). Dry-run writes no project state or backups. Add/init retain their existing overwrite policy; direct update overwrites with a backup under `.vibe-tool/backups/<id>/`, including `changes.json`, originals, and standalone `restore.py`. Run the printed `python .../restore.py` command to restore. Application failure automatically rolls back the same transaction, including dependencies and installation records; no-op updates create no backup.
+
+Successful init/add record canonical names, repository-relative sources, and applicable generation options in `.vibe-tool/installations.json` (schema version 1). Update reuses recorded options; explicit `provider/scenario/owner/org/repo/email` override them. For legacy projects, at least one generated resource must already exist; otherwise use init/add. Supply all applicable options on the first manifest update; omitted fields are reported before writing, while explicit empty strings select defaults/no scenario. `vibe add manifest` also accepts `--scenario`.
+
+```bash
+vibe update skill taste-skill ../project --dry-run
+vibe update skill taste-skill ../project
+vibe update manifest ui-testing ../project --scenario=web-e2e
+# Legacy vibe-coding project: make every applicable choice explicit.
+vibe update manifest vibe-coding ../project --provider=git --scenario='' --owner='' --org='' --repo='' --email=''
+# Standalone rollback, using the path printed by update:
+python /path/to/project/.vibe-tool/backups/<id>/restore.py
+```
+
+## Updating skill source repositories
 
 Batch update commands intentionally skip `skills/agent-skills` and
 `skills/ai-investment-advisor`. They remain discoverable and installable. Update either

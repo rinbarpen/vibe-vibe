@@ -4,6 +4,7 @@ Delegates to existing init scripts when present, falls back to generic file-copy
 for manifests without scripts.
 """
 
+import shlex
 import shutil
 import subprocess
 import sys
@@ -11,6 +12,7 @@ from pathlib import Path
 
 from .discovery import resolve_manifest
 from .types import ManifestInfo
+from .installations import load_installations, record_manifest, source_ref
 
 # ── Flag mapping per manifest init script ──
 
@@ -80,6 +82,9 @@ def init_manifest(
 
     target = target.resolve()
     if not dry_run:
+        load_installations(target)
+        source_ref(manifests_dir.parent, manifest.path)
+    if not dry_run:
         target.mkdir(parents=True, exist_ok=True)
 
     rc = 0
@@ -89,7 +94,11 @@ def init_manifest(
         rc = _generic_init(manifest, target, force, dry_run)
 
     if rc == 0:
-        return _install_required_skills(manifests_dir, manifest, target, force, dry_run)
+        rc = _install_required_skills(manifests_dir, manifest, target, force, dry_run)
+        if rc == 0 and not dry_run:
+            record_manifest(
+                manifests_dir.parent, target, manifest.name, manifest.path, kwargs, force=force,
+            )
     return rc
 
 
@@ -112,6 +121,9 @@ def add_manifest(
     if not target.is_dir():
         print(f"Error: target directory does not exist: {target}", file=sys.stderr)
         return 1
+    if not dry_run:
+        load_installations(target)
+        source_ref(manifests_dir.parent, manifest.path)
 
     rc = 0
     if manifest.init_script_path is not None:
@@ -120,7 +132,11 @@ def add_manifest(
         rc = _generic_init(manifest, target, force, dry_run)
 
     if rc == 0:
-        return _install_required_skills(manifests_dir, manifest, target, force, dry_run)
+        rc = _install_required_skills(manifests_dir, manifest, target, force, dry_run)
+        if rc == 0 and not dry_run:
+            record_manifest(
+                manifests_dir.parent, target, manifest.name, manifest.path, kwargs, force=force,
+            )
     return rc
 
 
@@ -152,12 +168,18 @@ def _run_init_script(
             continue
 
         if key in flag_map:
-            script_args.append(flag_map[key].format(value=value))
+            # Split the flag template before substitution so a value containing
+            # spaces remains exactly one argv token.
+            script_args.extend(token.format(value=value) for token in shlex.split(flag_map[key]))
 
     if force:
         script_args.append(flag_map.get("force", "-f"))
     if dry_run:
         script_args.append(flag_map.get("dry_run", "-n"))
+
+    # The knowledge script stops parsing options at its first positional arg.
+    if manifest.name == "knowledge-learning":
+        script_args = script_args[1:] + script_args[:1]
 
     # Build environment (VIBE_MANIFEST needed by vibe-coding init)
     env = dict(subprocess.os.environ)
@@ -166,6 +188,13 @@ def _run_init_script(
     cmd = [str(script_path)] + script_args
 
     print(f"{'[dry-run] ' if dry_run else ''}Running: {' '.join(cmd)}")
+    # These historical scripts have no preview mode; forwarding -n either
+    # writes into the real project or treats it as a new project directory.
+    if dry_run and manifest.name in {
+        "knowledge-learning", "ui-testing", "fund-proposal", "auto-research-ars",
+    }:
+        print("[dry-run] Would generate manifest resources (script not executed)")
+        return 0
     result = subprocess.run(
         cmd,
         cwd=str(target if target.is_dir() else Path.cwd()),
@@ -237,7 +266,8 @@ def _generic_init(
             if not cmd_dir.is_dir():
                 continue
             dst_dir = target / ".cursor" / "commands" / cmd_dir.name
-            dst_dir.mkdir(parents=True, exist_ok=True)
+            if not dry_run:
+                dst_dir.mkdir(parents=True, exist_ok=True)
             for cmd_file in cmd_dir.iterdir():
                 if not cmd_file.is_file():
                     continue

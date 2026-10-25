@@ -27,7 +27,7 @@ def main() -> int:
 
     try:
         return args.func(args)
-    except ValueError as e:
+    except (ValueError, OSError, RuntimeError) as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
 
@@ -63,6 +63,7 @@ def _build_parser() -> argparse.ArgumentParser:
     am_p = add_subs.add_parser("manifest", help="Add a manifest to an existing project")
     am_p.add_argument("manifest_name", help="Manifest name")
     am_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
+    am_p.add_argument("--scenario", default="", help="Comma-separated scenario names")
     am_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
     am_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
     am_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")
@@ -89,8 +90,22 @@ def _build_parser() -> argparse.ArgumentParser:
     list_p.set_defaults(func=_cmd_list)
 
     # ── update ──
-    upd_p = subs.add_parser("update", help="Update managed skill submodules")
+    upd_p = subs.add_parser("update", help="Update managed submodules or installed project resources")
     upd_p.set_defaults(func=_cmd_update)
+    upd_subs = upd_p.add_subparsers(dest="update_target")
+    for kind in ("skill", "manifest"):
+        child = upd_subs.add_parser(kind, help=f"Update one installed {kind} from local sources, with backup")
+        child.add_argument("name", help=f"Installed {kind} name")
+        child.add_argument("target", nargs="?", default=".", help="Target project (default: current)")
+        child.add_argument("-n", "--dry-run", action="store_true", help="Preview without changing the project or backups")
+        if kind == "manifest":
+            child.add_argument("--provider", choices=("", "git", "github", "gitlab", "gitee"), default=None,
+                               help="Override recorded provider; required for applicable legacy projects")
+            child.add_argument("--scenario", default=None, help="Override recorded scenario (empty means no scenario)")
+            child.add_argument("-o", "--owner", default=None, help="Override recorded owner")
+            for option in ("org", "repo", "email"):
+                child.add_argument(f"--{option}", default=None, help=f"Override recorded {option}")
+        child.set_defaults(func=_cmd_update_project)
 
     # ── config ──
     cfg_p = subs.add_parser("config", help="Manage vibe-tool configuration")
@@ -274,6 +289,18 @@ def _list_skills(skills_root, json_out: bool) -> None:
         print(f"  {s.name:<{width}} ({s.id_path})")
     if len(skills) > 50:
         print(f"  ... and {len(skills) - 50} more")
+
+
+def _cmd_update_project(args) -> int:
+    from .project_update import update_manifest, update_skill
+
+    root = find_repo_root()
+    target = Path(args.target)
+    if args.update_target == "skill":
+        return update_skill(root, args.name, target, dry_run=args.dry_run)
+    options = {key: getattr(args, key) for key in ("provider", "scenario", "owner", "org", "repo", "email")
+               if getattr(args, key) is not None}
+    return update_manifest(root, args.name, target, dry_run=args.dry_run, **options)
 
 
 def _cmd_update(args) -> int:

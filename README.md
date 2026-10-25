@@ -79,7 +79,7 @@ my-project/
 
 ## `vibe` CLI
 
-`vibe` 会从当前目录向上查找仓库，也可以通过配置固定仓库路径。所有写入型命令都支持 `--dry-run` 预览；已有文件默认保留，确需覆盖时使用 `--force`。
+`vibe` 会从当前目录向上查找仓库，也可以通过配置固定仓库路径。项目安装与直接更新命令支持 `--dry-run` 预览；`init/add` 保留其现有覆盖策略，`update skill/manifest` 则覆盖选定资源并自动备份。
 
 | 命令 | 用途 |
 | --- | --- |
@@ -91,6 +91,8 @@ my-project/
 | `vibe add skill <name> [target]` | 向已有项目加入单个 Skill |
 | `vibe add skill --all [target] --yes` | 批量安装全部 Skills |
 | `vibe update` | 更新受管理的 Skill 子模块 |
+| `vibe update skill <name> [target]` | 从本地仓库同步项目中已安装的 Skill，自动备份 |
+| `vibe update manifest <name> [target]` | 从本地仓库同步 Manifest 配置及已安装的必需 Skills，自动备份 |
 | `vibe config set-repo <path>` | 设置仓库路径 |
 | `vibe config show` | 查看当前配置 |
 | `vibe mcp list` | 列出可用 MCP 服务 |
@@ -186,7 +188,45 @@ vibe mcp add drawio ../my-project
 
 ## 更新与维护
 
-通过 CLI 更新受管理的 Skill 子模块：
+### 同步项目中已安装的 Skill / Manifest
+
+直接更新使用当前本地仓库内容，**不隐式拉取远程**。`target` 默认为当前目录；每次指定一个名称，不支持 `--all`。
+
+```bash
+# 先预览，再同步整个已安装 Skill 目录（包括清理旧版本残留）
+vibe update skill taste-skill ../my-project --dry-run
+vibe update skill taste-skill ../my-project
+
+# 同步配置，默认复用安装时记录的生成参数
+vibe update manifest vibe-coding ../my-project
+
+# 需要时显式覆盖参数；add manifest 同样支持 --scenario
+vibe update manifest ui-testing ../my-project --scenario=web-e2e
+vibe add manifest ui-testing ../my-project --scenario=component
+```
+
+Skill 更新会替换整个已安装目录，自定义文件也包含在更新前的备份中。尚未安装时先运行 `vibe add skill <name> [target]`。
+
+Manifest 更新只覆盖模板生成的指令、规则、commands、agents、平台配置和工具资源；保留业务文件、研究成果、README、CONTRIBUTING、VERSION、CHANGELOG、运行记录及初始化大纲/笔记索引。仅 `vibe-coding` 的 `MANIFEST.md` 是更新资源，其他模板的同名产出账本保持原样。不删除新模板已移除的旧配置，也不整体替换项目资源目录。必需 Skills 中只同步已经安装的条目，缺失依赖仅提示，无关 Skills 不变。
+
+`init/add` 会在目标项目的 `.vibe-tool/installations.json` 记录来源及适用的生成参数。之后更新默认复用记录，显式选项优先。没有记录的旧项目，需已有至少一项模板资源，首次更新还需明确所有适用参数（命令会列出缺项）；全新项目先使用 `vibe init` 或 `vibe add manifest`。空字符串表示模板默认值或无场景，例如：
+
+```bash
+vibe update manifest vibe-coding ../legacy-project \
+  --provider=git --scenario='' --owner='' --org='' --repo='' --email=''
+```
+
+`--dry-run` 仅输出将新增、覆盖及跳过的路径，不写项目、安装记录或备份。实际变更前自动备份到 `.vibe-tool/backups/<唯一ID>/`，包含原始内容、校验值与变更清单；成功后打印恢复命令：
+
+```bash
+python /path/to/project/.vibe-tool/backups/<唯一ID>/restore.py
+```
+
+恢复脚本独立运行，无需安装 `vibe`。配置、依赖 Skill 与安装记录在同一事务中更新，应用失败自动恢复已触及内容；内容及记录均未变化时不创建备份。
+
+### 更新仓库中的 Skill 来源
+
+裸命令仍更新受管理的 Skill 子模块：
 
 ```bash
 vibe update
@@ -216,7 +256,7 @@ git submodule update --remote --merge -- skills/ai-investment-advisor
 python scripts/validate-agent-compat.py
 
 # 运行 vibe-tool 测试
-PYTHONPATH=tools/vibe_tool/src python -m unittest discover -s tools/vibe_tool/tests -v
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src python -m pytest tools/vibe_tool/tests -v
 ```
 
 新增 Manifest 至少需要包含 `CLAUDE.md`，这样才能被 `vibe list manifests` 发现。新增 Skill 则应在 Skill 目录中提供 `SKILL.md`。

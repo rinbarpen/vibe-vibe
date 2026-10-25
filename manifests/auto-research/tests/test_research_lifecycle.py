@@ -37,15 +37,20 @@ def checkpoint(root,stage='startup',state='started',**kwargs):
     return rw.checkpoint(root,SimpleNamespace(**values))
 
 
+EXPECTED_MODEL_ROLES = {
+    'research': {'requested_model': 'gpt-6', 'service_profile': 'pro', 'reasoning_effort': None},
+    'planner': {'requested_model': 'gpt-6.1-sol', 'service_profile': None, 'reasoning_effort': 'high'},
+    'executor': {'requested_model': 'gpt-6.1-sol', 'service_profile': None, 'reasoning_effort': 'high'},
+    'writer': {'requested_model': 'opus-5.5', 'service_profile': None, 'reasoning_effort': 'high'},
+}
+
+
 def test_defaults_three_levels_and_requested_models(project):
     cfg=rw.config(project)
     assert len([s for s in cfg['stages'] if s['level']==1])==11
     assert {s['level'] for s in cfg['stages']}=={1,2,3}
     assert cfg['seeds']==[42]
-    assert cfg['roles']['research']['service_profile']=='pro'
-    assert cfg['roles']['planner']['reasoning_effort']=='medium'
-    assert cfg['roles']['executor']['requested_model']=='gpt-5.6-luna'
-    assert cfg['roles']['writer']['requested_model']=='gpt-5.5'
+    assert cfg['roles']==EXPECTED_MODEL_ROLES
     assert cfg['writing_policy']['scene']=='research'
     assert cfg['writing_policy']['engine']=='latex'
     assert cfg['writing_policy']['languages']==['zh','en']
@@ -59,8 +64,51 @@ def test_defaults_three_levels_and_requested_models(project):
         assert detail['roles'] and detail['returns']
         assert all(isinstance(value, str) for value in detail['returns'].values())
     for role in cfg['roles']: assert rw.route(cfg,role)['binding']['model_id']=='fixture-'+role
-    cfg['bindings']['planner']['reasoning_effort']='high'
+    cfg['bindings']['planner']['reasoning_effort']='medium'
     with pytest.raises(rw.Invalid): rw.route(cfg,'planner')
+
+
+def test_new_project_model_defaults_and_empty_bindings(tmp_path):
+    rw.init(tmp_path)
+    cfg=rw.config(tmp_path)
+    assert cfg['roles']==EXPECTED_MODEL_ROLES
+    assert cfg['bindings']=={}
+    for role in cfg['roles']:
+        with pytest.raises(rw.Invalid,match='explicit verified binding required'):
+            rw.route(cfg,role)
+
+
+def test_reinitialization_preserves_existing_models_and_bindings(project):
+    cfg=rw.config(project)
+    cfg['roles']['planner'].update(requested_model='gpt-6',reasoning_effort='medium')
+    cfg['roles']['executor']['requested_model']='gpt-5.6-luna'
+    cfg['roles']['writer']['requested_model']='custom-writer'
+    for role,request in cfg['roles'].items():
+        cfg['bindings'][role].update(model_id='existing-'+role,
+                                    reasoning_effort=request['reasoning_effort'])
+    cfg['custom_setting']={'preserve':True}
+    settings=project/rw.RUNTIME/'settings.json'
+    rw.save(settings,cfg)
+    original=settings.read_bytes()
+    rw.init(project)
+    assert settings.read_bytes()==original
+    for role in cfg['roles']:
+        assert rw.route(rw.config(project),role)['binding']['model_id']=='existing-'+role
+
+
+@pytest.mark.parametrize('field,value',[
+    ('available',False),
+    ('verified_at',None),
+    ('provider',None),
+    ('model_id',None),
+    ('reasoning_effort','medium'),
+    ('service_profile','pro'),
+])
+def test_route_rejects_invalid_planner_binding(project,field,value):
+    cfg=rw.config(project)
+    cfg['bindings']['planner'][field]=value
+    with pytest.raises(rw.Invalid,match='blocked_model_unavailable'):
+        rw.route(cfg,'planner')
 
 
 def test_checkpoint_git_isolation_and_snapshots(project):
