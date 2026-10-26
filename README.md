@@ -264,6 +264,18 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src python -m pytest tools/
 
 新增 Manifest 至少需要包含 `CLAUDE.md`，这样才能被 `vibe list manifests` 发现。新增 Skill 则应在 Skill 目录中提供 `SKILL.md`。
 
+新建 Manifest 或修改其工作流时，还需同步交付 **workflow SVG、可编辑源、可复现生成命令和只读一致性检查**，并从 README/主指令链接。图上区分 AI 自主执行、AI 验证与人工决策，标注分支、返工及人工确认后的恢复路径。详见 [Manifest 工作流图交付规范](docs/manifest-workflow.md) 与 [真实 SVG 示例](docs/examples/manifest-workflow/workflow.svg)。现有 Unity 图源与渲染器继续复用；本约定不改变模板安装策略。
+
+```bash
+# 检查通用示例图是否与可编辑源一致
+python3 scripts/render-manifest-workflow.py \
+  --source docs/examples/manifest-workflow/workflow.json \
+  --output docs/examples/manifest-workflow/workflow.svg --check
+
+# 验证渲染、分支结构和只读漂移检查
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_manifest_workflow.py' -v
+```
+
 ## 许可证
 
 仓库自身采用 [MIT License](LICENSE)。`skills/` 与 `workflows/` 中的外部项目遵循各自仓库的许可证；分发或修改时请同时查看对应子模块的许可文件。

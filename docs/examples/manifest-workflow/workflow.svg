@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1572" height="2088" viewBox="0 0 1572 2088" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Manifest 生成与维护</title>
+  <desc id="workflow-description">Manifest 是人与 AI 的协作契约：默认由 AI 执行，新增决策由人确认。此图描述生成与维护规范，并非实时任务状态。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1572" height="2088" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Manifest 生成与维护</text>
+    <text x="28" y="70" font-size="14" fill="#475569">Manifest 是人与 AI 的协作契约：默认由 AI 执行，新增决策由人确认。此图描述生成与维护规范，并非实时任务状态。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="1894" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="1894" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="1894" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="author" data-to="diagram" d="M 220.0,1366 V 1409.0 H 220.0 V 1452" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="design" d="M 630.0,672 V 715.0 H 220.0 V 1052" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="human_review" d="M 630.0,672 V 715.0 H 1040.0 V 758" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="design" data-to="author" d="M 220.0,1166 V 1209.0 H 220.0 V 1252" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="diagram" data-to="verify" d="M 220.0,1566 V 1609.0 H 630.0 V 1652" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="human_review" data-to="design" d="M 1040.0,966 V 1009.0 H 220.0 V 1052" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="requirements" data-to="decision" d="M 220.0,472 V 515.0 H 630.0 V 558" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="requirements" d="M 630.0,272 V 315.0 H 220.0 V 358" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="delivery" d="M 630.0,1766 V 1809.0 H 630.0 V 1852" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="human_review" data-to="requirements" d="M 1220,862.0 H 1270 V 335 H 220.0 V 358" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="verify" data-to="author" d="M 810,1709.0 H 1296 V 1229 H 220.0 V 1252" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>接收需求 — 开始生成或维护 manifest，复用现有项目状态。</title>
+      <rect x="450" y="178" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">接收需求</text>
+      <text x="466" y="252" font-size="14" fill="#334155">开始生成或维护 manifest，复用现有项目状态。</text>
+    </g>
+    <g id="node-requirements" data-kind="ai" data-row="1">
+      <title>澄清目标与验收标准 — 整理目标、约束、自主执行边界与验收标准；技术未知优先调研验证。</title>
+      <rect x="40" y="358" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="382" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="408" font-size="18" font-weight="700">澄清目标与验收标准</text>
+      <text x="56" y="432" font-size="14" fill="#334155">整理目标、约束、自主执行边界与验收标准；技</text>
+      <text x="56" y="452" font-size="14" fill="#334155">术未知优先调研验证。</text>
+    </g>
+    <g id="node-decision" data-kind="check" data-row="2">
+      <title>是否需要新增决策？ — AI 对照既有约定判断：实现未知由 AI 处理，新增取舍提交人工决策门。</title>
+      <rect x="450" y="558" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="582" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="608" font-size="18" font-weight="700">是否需要新增决策？</text>
+      <text x="466" y="632" font-size="14" fill="#334155">AI 对照既有约定判断：实现未知由 AI 处理，新</text>
+      <text x="466" y="652" font-size="14" fill="#334155">增取舍提交人工决策门。</text>
+    </g>
+    <g id="node-human_review" data-kind="human" data-row="3">
+      <title>人工确认目标与取舍 — AI 提供现状、选项、推荐方案与影响；人选择，不接管整个执行过程。</title>
+      <rect x="860" y="758" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="782" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="808" font-size="18" font-weight="700">人工确认目标与取舍</text>
+      <text x="876" y="832" font-size="14" fill="#334155">AI 提供现状、选项、推荐方案与影响；人选择，</text>
+      <text x="876" y="852" font-size="14" fill="#334155">不接管整个执行过程。</text>
+      <text x="876" y="884" font-size="14" fill="#9a3412">介入条件：目标冲突、超出现有约定，或涉及预</text>
+      <text x="876" y="904" font-size="14" fill="#9a3412">设的高影响操作。</text>
+      <text x="876" y="924" font-size="14" fill="#9a3412">恢复执行：确认后从 AI 设计工作流继续；调整</text>
+      <text x="876" y="944" font-size="14" fill="#9a3412">目标则返回澄清目标与验收标准。</text>
+    </g>
+    <g id="node-design" data-kind="ai" data-row="4">
+      <title>AI 设计工作流 — 明确执行节点、条件分支、人工门、恢复位置、返工与交付标准。</title>
+      <rect x="40" y="1052" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1076" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1102" font-size="18" font-weight="700">AI 设计工作流</text>
+      <text x="56" y="1126" font-size="14" fill="#334155">明确执行节点、条件分支、人工门、恢复位置、</text>
+      <text x="56" y="1146" font-size="14" fill="#334155">返工与交付标准。</text>
+    </g>
+    <g id="node-author" data-kind="ai" data-row="5">
+      <title>编写指令与技能依赖 — 生成对应指令、技能清单及 workflow.json；保持文字与流程含义一致。</title>
+      <rect x="40" y="1252" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1276" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1302" font-size="18" font-weight="700">编写指令与技能依赖</text>
+      <text x="56" y="1326" font-size="14" fill="#334155">生成对应指令、技能清单及 workflow.json；保</text>
+      <text x="56" y="1346" font-size="14" fill="#334155">持文字与流程含义一致。</text>
+    </g>
+    <g id="node-diagram" data-kind="ai" data-row="6">
+      <title>生成工作流 SVG — 从 workflow.json 确定性渲染 workflow.svg，包含分支、人工介入与恢复路径。</title>
+      <rect x="40" y="1452" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1476" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1502" font-size="18" font-weight="700">生成工作流 SVG</text>
+      <text x="56" y="1526" font-size="14" fill="#334155">从 workflow.json 确定性渲染 workflow.svg，</text>
+      <text x="56" y="1546" font-size="14" fill="#334155">包含分支、人工介入与恢复路径。</text>
+    </g>
+    <g id="node-verify" data-kind="check" data-row="7">
+      <title>AI 校验内容与图示 — 检查 schema、路径可达、指令一致性与 SVG 漂移；失败回写源文件后重新生成。</title>
+      <rect x="450" y="1652" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1676" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1702" font-size="18" font-weight="700">AI 校验内容与图示</text>
+      <text x="466" y="1726" font-size="14" fill="#334155">检查 schema、路径可达、指令一致性与 SVG 漂</text>
+      <text x="466" y="1746" font-size="14" fill="#334155">移；失败回写源文件后重新生成。</text>
+    </g>
+    <g id="node-delivery" data-kind="terminal" data-row="8">
+      <title>交付可维护的 Manifest — 交付指令、技能依赖、流程源文件与 SVG；后续修改沿同一流程迭代。</title>
+      <rect x="450" y="1852" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="1876" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="1902" font-size="18" font-weight="700">交付可维护的 Manifest</text>
+      <text x="466" y="1926" font-size="14" fill="#334155">交付指令、技能依赖、流程源文件与 SVG；后续</text>
+      <text x="466" y="1946" font-size="14" fill="#334155">修改沿同一流程迭代。</text>
+    </g>
+    <text x="232.0" y="1400.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">指令与源数据就绪</text>
+    <text x="425.0" y="706.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">否：沿既有约定执行</text>
+    <text x="835.0" y="706.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">是：需要人作取舍</text>
+    <text x="232.0" y="1200.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">工作流已明确</text>
+    <text x="425.0" y="1600.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">执行自动校验</text>
+    <text x="630.0" y="1000.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">确认：按选择继续</text>
+    <text x="425.0" y="506.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">检查约定边界</text>
+    <text x="425.0" y="306.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">整理上下文</text>
+    <text x="642.0" y="1800.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过：满足验收标准</text>
+    <text x="1280" y="598.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整：返回需求澄清</text>
+    <text x="1306" y="1469.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">失败：回写并重新生成</text>
+    <text x="28" y="2062" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

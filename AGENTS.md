@@ -139,6 +139,25 @@ Optional: `AGENTS.md`, `agents/` (Claude Code + Codex agent definitions),
 `skills.txt` (required skill names, one per line — installed automatically by
 `vibe add manifest` / `vibe init`; resolved from both `skills/` and `mine/`).
 
+## Manifest workflow deliverables
+
+A manifest is a human–AI collaboration contract, not only a scaffold. When creating
+one or changing its workflow, deliver a corresponding workflow SVG, editable source,
+a reproducible rendering command, a read-only drift check, and links from its README
+or main instructions. Follow [Manifest workflow authoring](docs/manifest-workflow.md).
+
+Distinguish AI execution, AI validation/review, and human decisions. AI resolves
+implementation uncertainty through investigation and tests within agreed boundaries;
+human intervention is for new decisions, changed goals/constraints, or predefined
+high-impact gates. Label branches, rework/waiting paths, applicable rollback, and
+where AI resumes after a human decision. Diagrams describe rules, not actual status.
+
+Reuse existing canonical sources/renderers (such as Unity's skill catalog); do not
+create duplicate sources or migrate unrelated legacy manifests. If an installer or
+skill conversion promises these assets, distribute source and renderer as well as
+SVG and verify links/regeneration in the installed layout. General asset copying is
+not implied by this authoring requirement.
+
 ## Key conventions
 
 - `AGENTS.md` and `CLAUDE.md` exist per-manifest and per-sub-project — do not conflate root-level with nested ones.

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "title": "Manifest 生成与维护",
+  "description": "Manifest 是人与 AI 的协作契约：默认由 AI 执行，新增决策由人确认。此图描述生成与维护规范，并非实时任务状态。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "接收需求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "开始生成或维护 manifest，复用现有项目状态。"
+    },
+    {
+      "id": "requirements",
+      "label": "澄清目标与验收标准",
+      "kind": "ai",
+      "row": 1,
+      "detail": "整理目标、约束、自主执行边界与验收标准；技术未知优先调研验证。"
+    },
+    {
+      "id": "decision",
+      "label": "是否需要新增决策？",
+      "kind": "check",
+      "row": 2,
+      "detail": "AI 对照既有约定判断：实现未知由 AI 处理，新增取舍提交人工决策门。"
+    },
+    {
+      "id": "human_review",
+      "label": "人工确认目标与取舍",
+      "kind": "human",
+      "row": 3,
+      "detail": "AI 提供现状、选项、推荐方案与影响；人选择，不接管整个执行过程。",
+      "trigger": "目标冲突、超出现有约定，或涉及预设的高影响操作。",
+      "resume": "确认后从 AI 设计工作流继续；调整目标则返回澄清目标与验收标准。"
+    },
+    {
+      "id": "design",
+      "label": "AI 设计工作流",
+      "kind": "ai",
+      "row": 4,
+      "detail": "明确执行节点、条件分支、人工门、恢复位置、返工与交付标准。"
+    },
+    {
+      "id": "author",
+      "label": "编写指令与技能依赖",
+      "kind": "ai",
+      "row": 5,
+      "detail": "生成对应指令、技能清单及 workflow.json；保持文字与流程含义一致。"
+    },
+    {
+      "id": "diagram",
+      "label": "生成工作流 SVG",
+      "kind": "ai",
+      "row": 6,
+      "detail": "从 workflow.json 确定性渲染 workflow.svg，包含分支、人工介入与恢复路径。"
+    },
+    {
+      "id": "verify",
+      "label": "AI 校验内容与图示",
+      "kind": "check",
+      "row": 7,
+      "detail": "检查 schema、路径可达、指令一致性与 SVG 漂移；失败回写源文件后重新生成。"
+    },
+    {
+      "id": "delivery",
+      "label": "交付可维护的 Manifest",
+      "kind": "terminal",
+      "row": 8,
+      "detail": "交付指令、技能依赖、流程源文件与 SVG；后续修改沿同一流程迭代。"
+    }
+  ],
+  "edges": [
+    {"from": "start", "to": "requirements", "label": "整理上下文", "kind": "normal"},
+    {"from": "requirements", "to": "decision", "label": "检查约定边界", "kind": "normal"},
+    {"from": "decision", "to": "human_review", "label": "是：需要人作取舍", "kind": "normal"},
+    {"from": "decision", "to": "design", "label": "否：沿既有约定执行", "kind": "normal"},
+    {"from": "human_review", "to": "design", "label": "确认：按选择继续", "kind": "normal"},
+    {"from": "human_review", "to": "requirements", "label": "调整：返回需求澄清", "kind": "rework"},
+    {"from": "design", "to": "author", "label": "工作流已明确", "kind": "normal"},
+    {"from": "author", "to": "diagram", "label": "指令与源数据就绪", "kind": "normal"},
+    {"from": "diagram", "to": "verify", "label": "执行自动校验", "kind": "normal"},
+    {"from": "verify", "to": "author", "label": "失败：回写并重新生成", "kind": "rework"},
+    {"from": "verify", "to": "delivery", "label": "通过：满足验收标准", "kind": "normal"}
+  ]
+}

@@ -92,6 +92,27 @@ For convenience, we provide detailed annotation indices for skills and MCP serve
     *   *"Use UI-UX skills to generate a design system for my finance app..."*
     *   *"Use Word skills to generate a quarterly report based on this outline..."*
 
+## Manifest Authoring
+
+A manifest is a human–AI collaboration contract. When creating a manifest or changing
+its workflow, also deliver a corresponding **workflow SVG, editable source,
+reproducible rendering command, and read-only drift check**, linked from its README or
+main instructions. Distinguish autonomous AI execution, AI validation/review, and
+human decisions; show branches, rework and the AI continuation after confirmation.
+
+See the [authoring requirements](docs/manifest-workflow.md) and the
+[rendered example](docs/examples/manifest-workflow/workflow.svg). Reuse existing
+canonical sources and renderers, including Unity's workflow; these requirements do
+not change installation behavior or bulk-migrate existing manifests.
+
+```bash
+python3 scripts/render-manifest-workflow.py \
+  --source docs/examples/manifest-workflow/workflow.json \
+  --output docs/examples/manifest-workflow/workflow.svg --check
+
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_manifest_workflow.py' -v
+```
+
 ## 📜 License
 
 The skill libraries integrated in this project follow their respective original authors' open-source licenses:
