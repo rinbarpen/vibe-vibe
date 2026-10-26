@@ -4,6 +4,7 @@ Delegates to existing init scripts when present, falls back to generic file-copy
 for manifests without scripts.
 """
 
+import shlex
 import shutil
 import subprocess
 import sys
@@ -51,7 +52,9 @@ _SCRIPT_FLAG_MAP: dict[str, dict[str, str]] = {
     },
     "ui-testing": {
         "scenario": "--scenario={value}",
-        "force": "-f",
+        # This script overwrites installed rules already and treats unknown
+        # options as a target path, so it must not receive a force flag.
+        "force": "",
         "dry_run": "-n",
     },
     "fund-proposal": {
@@ -144,20 +147,18 @@ def _run_init_script(
     for key, value in kwargs.items():
         if not value:
             continue
-        if key in ("force", "dry_run"):
-            bool_val = key == "force" and force or key == "dry_run" and dry_run
-            if bool_val and key in flag_map:
-                script_args.append(flag_map[key])
-            continue
-
         if key in flag_map:
-            script_args.append(flag_map[key].format(value=value))
+            # Split the template before formatting: option names are separate
+            # arguments, but values containing spaces must stay a single arg.
+            script_args.extend(
+                part.format(value=value) for part in shlex.split(flag_map[key])
+            )
 
-    # force/dry_run for manifests where they aren't in flag_map
-    if force and "force" not in flag_map:
-        script_args.append("-f")
-    if dry_run and "dry_run" not in flag_map:
-        script_args.append("-n")
+    # These are explicit parameters, not entries in kwargs.
+    if force:
+        script_args.extend(shlex.split(flag_map.get("force", "-f")))
+    if dry_run:
+        script_args.extend(shlex.split(flag_map.get("dry_run", "-n")))
 
     # Build environment (VIBE_MANIFEST needed by vibe-coding init)
     env = dict(subprocess.os.environ)
@@ -166,11 +167,11 @@ def _run_init_script(
     cmd = [str(script_path)] + script_args
 
     if dry_run:
-        print(f"[dry-run] Would run: {' '.join(cmd)}")
+        print(f"[dry-run] Would run: {shlex.join(cmd)}")
         print(f"[dry-run]   in: {target}")
         return 0
 
-    print(f"Running: {' '.join(cmd)}")
+    print(f"Running: {shlex.join(cmd)}")
     result = subprocess.run(
         cmd,
         cwd=str(target),

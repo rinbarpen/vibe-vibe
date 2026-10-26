@@ -2,11 +2,16 @@
 
 ## Source-Grounding
 - STRICT_SOURCE_MODE is enabled by default
-- All outputs must include [Source: ...] citations
+- Material facts and verified locations include [Source: ...] citations
+- Mark user goals/background as user-provided and route design as planning advice
 - Mark unverified claims with [unverified]
 
 ## Learning Workflow
-- Import materials with /import
+- Uploads and /import first build a lightweight material map, not whole-book notes
+- Show the chapter map, then ask only for missing goals, background and studied chapters
+- Use /learn [topic] --plan [--material <path>] for a source-grounded chapter route
+- Save MATERIAL_INDEX.md and LEARNING_PATH.md in projects/<教材或主题>/
+- No default daily calendar; distinguish verified prerequisites from suggested order
 - Learn with /learn or /study
 - Review with /review and /flashcard
 - Track progress with /track

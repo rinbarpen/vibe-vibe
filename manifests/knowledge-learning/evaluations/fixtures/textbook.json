@@ -1,0 +1,10 @@
+{
+  "title": "Foundations of Data - Learning Fixture",
+  "pages": [
+    ["Foundations of Data", "Learning Fixture", "A small synthetic textbook for chapter-route evaluation."],
+    ["Contents", "1. Variables and Types .......... 1", "2. Means ....................... 2", "3. Checking Results ............ 3", "The numbers above are printed page numbers."],
+    ["Chapter 1: Variables and Types", "Printed page: 1", "Variables represent recorded observations.", "Distinguish numerical variables from categorical variables.", "Exercise 1.1: Classify age and favourite colour by variable type."],
+    ["Chapter 2: Means", "Printed page: 2", "Prerequisite: Understand the variable types in Chapter 1.", "Use an arithmetic mean for numerical observations.", "Exercise 2.1: Find the mean of 2, 4 and 6."],
+    ["Chapter 3: Checking Results", "Printed page: 3", "Check the variable type before interpreting a result.", "Check whether the result is plausible for the observations.", "Checklist: state the type, describe the calculation, check the result.", "This chapter has no numbered exercises."]
+  ]
+}

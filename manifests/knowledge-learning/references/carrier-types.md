@@ -1,11 +1,15 @@
 # 知识载体类型参考 (Carrier Types)
 
+## 两阶段处理
+
+上传/导入和教材规划默认只读元数据、目录/标题层级、概览及必要样本，输出 `MATERIAL_INDEX.md`；详细提取只针对开始学习的单元。下表的提取策略是详细学习策略，不是导入时的全量任务。扫描/OCR 不完整时保留部分索引和待补项，路线规则见 `references/learning-path-design.md`。
+
 ## 支持的载体类型与提取策略
 
 | 类型 | 常见格式 | 识别方式 | 提取策略 | 引用格式 |
 |------|----------|----------|----------|----------|
 | Slides (幻灯片) | .ppt, .pptx, .key | file extension | 逐页提取 + speaker notes | `[Source: 文件名, P#]` |
-| PDF (文档) | .pdf | file extension | 分章拆解 + 核心概念 | `[Source: 文件名, p页码]` |
+| PDF (文档) | .pdf | file extension | 选定章/节拆解 + 核心概念 | `[Source: 文件名, PDF页序 #, 印刷页码 #]`（仅列核验项） |
 | Video (视频) | .mp4, .mov, .avi, .webm | file extension | 转录 + 时间分段 | `[Source: 文件名, HH:MM:SS]` |
 | Web (网页) | URL, .html | URL pattern / extension | 正文提取 + 结构分析 | `[Source: URL, 标题]` |
 | Audio (音频) | .mp3, .wav, .m4a, .ogg | file extension | 转录 + 分段 | `[Source: 文件名, HH:MM:SS]` |
@@ -26,6 +30,8 @@ materials/
   exercises/  # .pdf .docx
   epub/       # .epub
 ```
+
+课程名与章节关联保存在 `projects/<教材或主题>/MATERIAL_INDEX.md`，不改用按课程分层的原件目录。PDF 页序和印刷页码分开；未知页码用已确认章节标题，目录所列位置注明正文待核。
 
 ## 提取注意事项
 

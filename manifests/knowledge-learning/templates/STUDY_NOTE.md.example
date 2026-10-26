@@ -6,7 +6,7 @@ type: concept
 confidence: high
 created: 2026-07-05
 modified: 2026-07-05
-related: [[相关概念A]], [[相关概念B]]
+related: ["[[相关概念A]]", "[[相关概念B]]"]
 ---
 
 # 概念名称
