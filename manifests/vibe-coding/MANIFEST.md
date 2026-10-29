@@ -8,6 +8,33 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the 
 
 You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the appropriate engineering workflow. Use subagents only when parallel work is genuinely independent; simple/local requests stay with the main agent.
 
+## Code Navigation: CLI-first CodeGraph
+
+Check for `.codegraph/` at the repository root before locating or understanding code. In an indexed repository with the CLI available, run `codegraph explore "<question, symbol, or file>"` before `rg`, `find`, or direct code reads. CLI is the default; an already available CodeGraph MCP tool is an optional equivalent, not a prerequisite.
+
+If `.codegraph/` is absent, skip CodeGraph and continue with ordinary search without asking the user to index. If the CLI is missing, a query fails, or results are insufficient, report the limitation and continue with focused `rg` and file reads. Do not automatically install CodeGraph, initialize or rebuild indexes, or change global agent configuration; indexing is the user's decision.
+
+Use the smallest query needed for the current task (from the project root):
+
+```bash
+codegraph explore "<question, symbol, or file>"  # Locate behavior and call paths
+codegraph node "SymbolName"                    # Read a symbol and its relationships
+codegraph node --file src/module.py             # Read a specific file with line numbers
+codegraph impact "SymbolName"                  # Investigate a change's affected callers
+codegraph affected src/module.py               # Find candidate tests for changed files
+```
+
+Cross-check the relevant current source and diff, then run actual tests appropriate to the change. Graph results are discovery evidence, not proof of complete dependency coverage or test success; an empty `affected` result does not justify skipping tests. This is a navigation aid, not a new lifecycle stage or quality gate.
+
+[CodeGraph query workflow](references/codegraph-workflow.svg) · [Editable source](references/codegraph-workflow.json) · [Standalone renderer](scripts/render_codegraph_workflow.py). The diagram describes rules, not execution status. It includes ordinary-search fallback and the optional, user-initiated indexing decision; code tasks do not wait for indexing by default. Queries change no project source, so this navigation workflow needs no source rollback; subsequent code edits retain the project's existing rollback policy.
+
+From this manifest directory or an initialized project root, regenerate or check the diagram using Python's standard library only:
+
+```bash
+python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg --check
+```
+
 ## All 15 Scenarios
 
 | Scenario | Focus | Agent Strategy |

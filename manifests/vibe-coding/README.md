@@ -51,6 +51,33 @@ project, before using the engineering skills. It guides you through issue tracke
 triage labels, and domain documentation configuration. Initialization copies the
 skills only; it does not run setup or choose those settings for you.
 
+### Optional CodeGraph Navigation
+
+[CodeGraph](https://github.com/colbymchenry/codegraph) gives coding agents indexed symbol source and call relationships. The manifest uses its CLI first when the project root already contains `.codegraph/`: start with `codegraph explore "<question, symbol, or file>"` before broad search or code reads. `node`, `impact`, and `affected` help with targeted reading, change-impact analysis, and candidate test discovery; see the [canonical instructions](MANIFEST.md#code-navigation-cli-first-codegraph) for examples.
+
+CodeGraph is optional, not a new required Skill or quality gate. With no index, use ordinary search immediately; do not pause the task to request indexing. A missing CLI, failed query, or insufficient result falls back to focused `rg` and file reads with a brief limitation note. Verify source and run actual tests regardless of graph coverage. An already configured MCP tool may supplement the CLI; initialization does not install CodeGraph, wire up MCP, or modify global agent settings.
+
+Indexing is the user's decision. If you choose to enable it, follow the [official installation instructions](https://github.com/colbymchenry/codegraph#get-started), then run this yourself in the intended project:
+
+```bash
+codegraph init
+```
+
+Neither `vibe init/add/update` nor the agent's normal code-navigation flow runs that command or rebuilds an index automatically. Existing CodeGraph indexes and configuration are left untouched by manifest installation and updates. CLI examples were checked against v1.6.2; the manifest does not pin or upgrade the installed tool.
+
+![CodeGraph query workflow](references/codegraph-workflow.svg)
+
+[Editable JSON](references/codegraph-workflow.json) · [Standalone renderer](scripts/render_codegraph_workflow.py). This diagram documents navigation rules, not task progress; the optional setup branch is entered only on an explicit user request. Source inspection and actual tests remain AI validation responsibilities. See [MANIFEST.md](MANIFEST.md#code-navigation-cli-first-codegraph) for the boundaries and fallback behavior.
+
+From this manifest directory or an initialized project root, use Python's standard library to regenerate or run the read-only drift check:
+
+```bash
+python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg --check
+```
+
+The installer distributes exactly these three workflow assets at the same relative paths; updates include them in the existing backup/restore transaction while preserving the project's README and data.
+
 ### Available Init Flags
 
 ```

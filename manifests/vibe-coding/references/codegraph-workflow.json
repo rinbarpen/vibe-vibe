@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "title": "CodeGraph · CLI 优先的代码导航",
+  "description": "本图描述规则，不代表执行状态。已有索引时优先查询，未建索引时直接普通检索。是否启用索引由用户决定；导航不修改项目源码，后续代码变更沿用原有回退规则。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "理解或定位代码",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "输入：代码问题或边界明确的变更。保留原有任务规模与开发流程。"
+    },
+    {
+      "id": "available",
+      "label": "检查索引与 CLI",
+      "kind": "check",
+      "row": 1,
+      "detail": "检查项目根目录 .codegraph/ 与 codegraph CLI。缺索引默认跳过，不询问、不阻塞。"
+    },
+    {
+      "id": "explore",
+      "label": "优先查询 CodeGraph CLI",
+      "kind": "ai",
+      "row": 2,
+      "detail": "先执行 codegraph explore，再补充 rg、find 或源码读取。按需使用 node、impact、affected；已有 MCP 仅作补充。"
+    },
+    {
+      "id": "opt_in",
+      "label": "用户决定是否启用索引",
+      "kind": "human",
+      "row": 2,
+      "detail": "仅在用户主动要求启用时等待决定；不推定同意，不自动初始化。",
+      "trigger": "An explicit setup request：用户主动要求启用索引。",
+      "resume": "用户启用后重新检查；用户跳过则继续普通检索。"
+    },
+    {
+      "id": "results",
+      "label": "检查查询结果",
+      "kind": "check",
+      "row": 4,
+      "detail": "查询是否成功、上下文是否充分？空结果不代表没有实现或测试。"
+    },
+    {
+      "id": "fallback",
+      "label": "继续针对性普通检索",
+      "kind": "ai",
+      "row": 5,
+      "detail": "使用 rg 和文件读取。CLI 缺失、查询失败或结果不足时简述局限；不自动安装、重建索引或修改全局配置。"
+    },
+    {
+      "id": "verify",
+      "label": "核对当前源码与差异",
+      "kind": "check",
+      "row": 6,
+      "detail": "核实实现、调用关系和行为边界。图谱仅作发现线索；有证据缺口时继续调查。"
+    },
+    {
+      "id": "tests",
+      "label": "验证证据与相关测试",
+      "kind": "check",
+      "row": 7,
+      "detail": "代码变更运行相应实际测试；代码问答核对源码。保留既有质量门禁，不新增验收阶段。"
+    },
+    {
+      "id": "done",
+      "label": "带验证证据返回原任务",
+      "kind": "terminal",
+      "row": 8,
+      "detail": "输出路径、符号、关系、验证结果与剩余局限，继续既有开发流程。"
+    },
+    {
+      "id": "unavailable",
+      "label": "无索引或缺少 CLI",
+      "kind": "check",
+      "row": 3,
+      "detail": "仅确认普通检索分支，不安装工具、不创建索引、不等待用户设置。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "available",
+      "label": "需要代码上下文",
+      "kind": "normal"
+    },
+    {
+      "from": "available",
+      "to": "explore",
+      "label": "索引与 CLI 均可用",
+      "kind": "normal"
+    },
+    {
+      "from": "available",
+      "to": "unavailable",
+      "label": "缺索引或 CLI",
+      "kind": "normal"
+    },
+    {
+      "from": "available",
+      "to": "opt_in",
+      "label": "仅用户主动要求设置",
+      "kind": "normal"
+    },
+    {
+      "from": "opt_in",
+      "to": "available",
+      "label": "用户启用后重查",
+      "kind": "rework"
+    },
+    {
+      "from": "opt_in",
+      "to": "fallback",
+      "label": "用户跳过",
+      "kind": "normal"
+    },
+    {
+      "from": "explore",
+      "to": "results",
+      "label": "检查返回结果",
+      "kind": "normal"
+    },
+    {
+      "from": "results",
+      "to": "fallback",
+      "label": "失败或结果不足",
+      "kind": "normal"
+    },
+    {
+      "from": "results",
+      "to": "verify",
+      "label": "上下文充分",
+      "kind": "normal"
+    },
+    {
+      "from": "fallback",
+      "to": "verify",
+      "label": "找到相关上下文",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "tests",
+      "label": "校验行为与证据",
+      "kind": "normal"
+    },
+    {
+      "from": "tests",
+      "to": "verify",
+      "label": "证据不足或测试失败：调查返工",
+      "kind": "rework"
+    },
+    {
+      "from": "tests",
+      "to": "done",
+      "label": "相应验证通过",
+      "kind": "normal"
+    },
+    {
+      "from": "unavailable",
+      "to": "fallback",
+      "label": "直接继续普通检索",
+      "kind": "normal"
+    }
+  ]
+}

@@ -205,7 +205,11 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
     if name == "ui-testing" and relative == Path("CLAUDE.ui-testing.md"):
         return True
     if name == "vibe-coding":
-        if relative.as_posix() in {"MANIFEST.md", ".editorconfig", ".gitignore", "scripts/version_guard.py"}:
+        if relative.as_posix() in {
+            "MANIFEST.md", ".editorconfig", ".gitignore", "scripts/version_guard.py",
+            "references/codegraph-workflow.json", "references/codegraph-workflow.svg",
+            "scripts/render_codegraph_workflow.py",
+        }:
             return True
         provider = options.get("provider") or "github"
         return (

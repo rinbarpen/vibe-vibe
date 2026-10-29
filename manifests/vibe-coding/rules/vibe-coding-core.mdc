@@ -6,6 +6,12 @@ alwaysApply: true
 
 # Vibe Coding Core Rules
 
+## Code Navigation: CLI-first CodeGraph
+
+Check for `.codegraph/` at the repository root before locating or understanding code. In an indexed repository with the CLI available, run `codegraph explore "<question, symbol, or file>"` before `rg`, `find`, or direct code reads. CLI is the default; an already available CodeGraph MCP tool is an optional equivalent, not a prerequisite.
+
+If `.codegraph/` is absent, skip CodeGraph and continue with ordinary search without asking the user to index. If the CLI is missing, a query fails, or results are insufficient, report the limitation and continue with focused `rg` and file reads. Do not automatically install CodeGraph, initialize or rebuild indexes, or change global agent configuration; indexing is the user's decision.
+
 ## 1. Intent-Driven Development
 
 - Every non-trivial change starts with intent: what problem are you solving?
