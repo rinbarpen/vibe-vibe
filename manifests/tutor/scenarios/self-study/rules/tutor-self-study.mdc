@@ -1,0 +1,13 @@
+---
+description: 自主学习默认偏好，当前对话请求优先，不锁定教学方式
+globs: ["materials/**/*", "notes/**/*", "projects/**/*"]
+alwaysApply: false
+---
+
+# 自主学习
+
+兴趣驱动，可自由选择概念深度或换题；不强制费曼重述、提问和固定章节顺序。
+
+遵循 `references/tutor-interaction.md`：有无教材均可，具体任务直接处理，不强制先规划；明确 `/learn --plan` 交付后停止。用户要提示、完整讲解或直接答案时按其意图处理，不固定分钟检查或默认生成卡片。
+
+教材事实按 `references/source-grounding.md` 核验，通用讲解/自拟题不伪造出处。读取 `LEARNING_RECORD.md` 待答任务和实际证据；有增量本轮保存图文 MD 和记录，保留原文/手改，普通轮次低打扰。无卡片也可复习，默认逐题测验不提前泄露答案，`--paper` 题面/答案分离。

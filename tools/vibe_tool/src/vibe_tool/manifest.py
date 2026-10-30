@@ -45,7 +45,7 @@ _SCRIPT_FLAG_MAP: dict[str, dict[str, str]] = {
         "force": "-f",
         "dry_run": "-n",
     },
-    "knowledge-learning": {
+    "tutor": {
         "scenario": "--scenario {value}",
         "force": "--force",
         "dry_run": "-n",

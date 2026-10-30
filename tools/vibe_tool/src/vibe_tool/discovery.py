@@ -99,6 +99,12 @@ def discover_skills(*roots: Path) -> list[SkillInfo]:
 
 def resolve_manifest(manifests_dir: Path, name: str) -> ManifestInfo:
     """Look up a single manifest by name. Raises ValueError with candidates."""
+    if name.lower() == "knowledge-learning":
+        raise ValueError(
+            "Manifest 'knowledge-learning' has been renamed to 'tutor'.\n"
+            "Use: vibe init tutor [target]\n"
+            "Upgrade an existing project: vibe add manifest tutor <target> --force"
+        )
     manifests = discover_manifests(manifests_dir)
     by_name = {m.name: m for m in manifests}
 

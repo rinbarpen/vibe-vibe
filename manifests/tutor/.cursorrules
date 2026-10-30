@@ -1,0 +1,16 @@
+# Tutor Cursor Rules
+
+- Follow references/tutor-interaction.md: current user intent outranks scenario defaults; no mode-selection gate.
+- Answer specific questions directly, with or without materials. Ask only what changes the current task.
+- Bare upload: lightweight map plus one direction question. Upload with a question: locate relevant content and tutor directly.
+- Explicit /learn --plan: MATERIAL_INDEX.md only with materials, LEARNING_PATH.md for chapter/topic route, then stop; no default calendar.
+- Read LEARNING_RECORD.md first; save visible current task, pending question, actual response/feedback and paused tasks; resume before advancing.
+- Preserve user notes verbatim separately from assistant summaries; append real events, never infer mastery or time.
+- Honor hints, direct answers and full explanations; no fixed-minute tests. /exam defaults to one question at a time; --paper separates questions/answers.
+- /review works without flashcards. /track is read-only even without cards; pure export never creates a learning event.
+- Follow references/source-grounding.md: verified material facts use [Source: ...]; general explanations and assistant examples do not invent textbook citations. Reserve [unverified] for genuine uncertainty.
+- Follow references/illustrated-notes.md: automatically save incremental editable Markdown in notes/summaries/, real SVG/PNG and sources in notes/assets/, relative links with alt/captions.
+- Read before updating; preserve hand edits and original notes. Import/planning never generates whole-book notes.
+- Save actual learning increments before this reply ends, but show paths only on first creation, milestones, explicit record requests or export. Report write failures immediately.
+- Export selected notes using scripts/export-notes.py only when requested; preserve MD/assets/existing PDF, exclude personal logs by default.
+- Atomic notes may carry source, provenance, tags, domain and confidence; optional general-knowledge sources are not missing textbook citations.

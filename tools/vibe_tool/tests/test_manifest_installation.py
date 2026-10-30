@@ -22,8 +22,8 @@ from vibe_tool.types import ManifestInfo
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-MANIFEST = REPO_ROOT / "manifests" / "knowledge-learning"
-SCRIPT = MANIFEST / "scripts" / "vibe-init-knowledge.sh"
+MANIFEST = REPO_ROOT / "manifests" / "tutor"
+SCRIPT = MANIFEST / "scripts" / "vibe-init-tutor.sh"
 SCENARIOS = ("self-study", "exam-prep", "course-learning", "research-reading")
 
 
@@ -52,6 +52,7 @@ def _managed_files():
     """Use live resources so newly added commands/templates are covered too."""
     for filename in ("CLAUDE.md", "AGENTS.md", "README.md", ".cursorrules"):
         yield MANIFEST / filename, Path(filename)
+    yield MANIFEST / "scripts/export-notes.py", Path("scripts/export-notes.py")
     for source_dir, destination_dir in (
         ("rules", ".cursor/rules"),
         ("commands", ".cursor/commands"),
@@ -96,7 +97,7 @@ class ScriptDelegationTests(unittest.TestCase):
             "github-enterprise": [*identity, "-f"],
             "auto-research": identity[:-2] + ["-f"],
             "auto-research-ars": ["-f"],
-            "knowledge-learning": ["--scenario", values["scenario"], "--force"],
+            "tutor": ["--scenario", values["scenario"], "--force"],
             # The UI installer overwrites templates already and has no force flag.
             "ui-testing": [f"--scenario={values['scenario']}"],
             "fund-proposal": ["-f"],
@@ -119,7 +120,7 @@ class ScriptDelegationTests(unittest.TestCase):
                 self.assertFalse(kwargs.get("shell", False))
 
     def test_empty_values_and_disabled_force_are_omitted(self):
-        manifest = self._manifest("knowledge-learning")
+        manifest = self._manifest("tutor")
         target = Path("/fixtures/project")
         with patch("vibe_tool.manifest.subprocess.run") as run:
             run.return_value.returncode = 0
@@ -132,12 +133,12 @@ class ScriptDelegationTests(unittest.TestCase):
         with patch("vibe_tool.manifest.subprocess.run") as run:
             run.return_value.returncode = 17
             with contextlib.redirect_stdout(io.StringIO()):
-                rc = _run_init_script(self._manifest("knowledge-learning"), Path("/tmp"), False, False)
+                rc = _run_init_script(self._manifest("tutor"), Path("/tmp"), False, False)
         self.assertEqual(rc, 17)
 
     def test_dry_run_never_executes_any_manifest_script(self):
         for name in ("vibe-coding", "github-enterprise", "auto-research",
-                     "auto-research-ars", "knowledge-learning", "ui-testing",
+                     "auto-research-ars", "tutor", "ui-testing",
                      "fund-proposal", "unmapped-fixture"):
             with self.subTest(manifest=name):
                 output = io.StringIO()
@@ -149,16 +150,16 @@ class ScriptDelegationTests(unittest.TestCase):
                 run.assert_not_called()
                 self.assertIn("[dry-run]", output.getvalue())
                 command = output.getvalue().splitlines()[0].split("Would run: ", 1)[1]
-                scenario = (["--scenario", "self-study"] if name == "knowledge-learning" else
+                scenario = (["--scenario", "self-study"] if name == "tutor" else
                             ["--scenario=self-study"] if name in ("vibe-coding", "ui-testing") else [])
                 force = ([] if name == "ui-testing" else
-                         ["--force"] if name == "knowledge-learning" else ["-f"])
+                         ["--force"] if name == "tutor" else ["-f"])
                 self.assertEqual(shlex.split(command),
                                  [str(self._manifest(name).init_script_path), "/tmp/new project",
                                   *scenario, *force, "-n"])
 
 
-class KnowledgeLearningInstallationTests(unittest.TestCase):
+class TutorInstallationTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="learning manifest tests ")
         self.addCleanup(self.temporary.cleanup)
@@ -193,6 +194,7 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
         self.assertTrue((target / ".cursor/commands/learn/COMMAND.md").is_file())
         self.assertTrue((target / "skills/material-processor/SKILL.md").is_file())
         self.assertTrue((target / ".cursor/templates/LEARNING_PATH.md.example").is_file())
+        self.assertTrue((target / "scripts/export-notes.py").is_file())
         if scenario:
             self.assertEqual((target / ".cursor/scenario.md").read_bytes(),
                              (MANIFEST / "scenarios" / scenario / "CLAUDE.md").read_bytes())
@@ -204,17 +206,17 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
             with self.subTest(operation=operation):
                 target = self.root / f"{operation} project with spaces"
                 if operation == "init":
-                    self._cli("init", "knowledge-learning", target)
+                    self._cli("init", "tutor", target)
                 else:
                     target.mkdir()
-                    self._cli("add", "manifest", "knowledge-learning", target)
+                    self._cli("add", "manifest", "tutor", target)
                 self._assert_installed(target)
 
     def test_cli_init_installs_each_supported_scenario(self):
         for scenario in SCENARIOS:
             with self.subTest(scenario=scenario):
                 target = self.root / f"{scenario} project"
-                self._cli("init", "knowledge-learning", target, "--scenario", scenario)
+                self._cli("init", "tutor", target, "--scenario", scenario)
                 self._assert_installed(target, scenario)
 
     def test_shared_delegation_ui_force_keeps_the_requested_target(self):
@@ -229,24 +231,31 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
 
     def test_reinstall_preserves_edits_and_force_only_replaces_managed_files(self):
         target = self.root / "existing project"
-        self._cli("init", "knowledge-learning", target, "--scenario", "self-study")
+        self._cli("init", "tutor", target, "--scenario", "self-study")
         managed = [relative for _, relative in _managed_files()] + [Path(".cursor/scenario.md")]
         for relative in managed:
             (target / relative).write_text(f"local edit: {relative}\n", encoding="utf-8")
         personal = [Path("materials/pdf/my textbook.pdf"), Path("references/my notes.md"),
                     Path("skills/custom/SKILL.md"), Path(".cursor/commands/custom/COMMAND.md"),
                     Path(".cursor/templates/custom.md"), Path("projects/custom/LEARNING_PATH.md"),
-                    Path("notes/_index.md")]
+                    Path("projects/custom/LEARNING_RECORD.md"),
+                    Path("projects/custom/notes/chapter 1.md"),
+                    Path("projects/custom/notes/chapter 1.pdf"),
+                    Path("projects/custom/notes/assets/concept.svg"),
+                    Path("notes/summaries/custom/U01-chapter.md"),
+                    Path("notes/summaries/custom/U01-chapter.pdf"),
+                    Path("notes/assets/custom/concept.svg"),
+                    Path("scripts/my-helper.py"), Path("notes/_index.md")]
         for relative in personal:
             (target / relative).parent.mkdir(parents=True, exist_ok=True)
             (target / relative).write_text(f"keep personal data: {relative}\n", encoding="utf-8")
         expected = {relative: (target / relative).read_bytes() for relative in [*managed, *personal]}
 
-        self._cli("add", "manifest", "knowledge-learning", target)
+        self._cli("add", "manifest", "tutor", target)
         for relative, content in expected.items():
             self.assertEqual((target / relative).read_bytes(), content, str(relative))
 
-        self._cli("init", "knowledge-learning", target, "--scenario", "self-study", "--force")
+        self._cli("init", "tutor", target, "--scenario", "self-study", "--force")
         self._assert_installed(target, "self-study")
         for relative in personal:
             self.assertEqual((target / relative).read_bytes(), expected[relative], str(relative))
@@ -254,11 +263,11 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
     def test_cli_add_force_replaces_managed_files_without_deleting_user_files(self):
         target = self.root / "add force project"
         target.mkdir()
-        self._cli("add", "manifest", "knowledge-learning", target)
+        self._cli("add", "manifest", "tutor", target)
         (target / ".cursor/commands/learn/COMMAND.md").write_text("custom command\n", encoding="utf-8")
         personal = target / "materials/pdf/user.pdf"
         personal.write_bytes(b"user data")
-        self._cli("add", "manifest", "knowledge-learning", target, "--force")
+        self._cli("add", "manifest", "tutor", target, "--force")
         self._assert_installed(target)
         self.assertEqual(personal.read_bytes(), b"user data")
 
@@ -276,7 +285,7 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
                 else:
                     os.link(original, destination)
 
-                self._cli("add", "manifest", "knowledge-learning", target, "--force")
+                self._cli("add", "manifest", "tutor", target, "--force")
 
                 self._assert_installed(target)
                 self.assertFalse(destination.is_symlink())
@@ -303,7 +312,7 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
     def test_install_rejects_linked_parent_directories_before_external_writes(self):
         # Include both copied resources and folders created by initial scaffolding.
         for relative in ("references", ".cursor/commands", "skills/material-processor",
-                         "materials/pdf", "notes"):
+                         "materials/pdf", "notes", "scripts"):
             for force in (False, True):
                 with self.subTest(relative=relative, force=force):
                     case = self.root / f"parent link {relative.replace('/', '-')} {force}"
@@ -326,14 +335,14 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
 
     def test_cli_dry_run_does_not_create_target_or_mutate_existing_project(self):
         missing = self.root / "new dry run project"
-        self._cli("init", "knowledge-learning", missing, "--scenario", "exam-prep", "--dry-run")
+        self._cli("init", "tutor", missing, "--scenario", "exam-prep", "--dry-run")
         self.assertFalse(missing.exists())
         target = self.root / "existing dry run project"
-        self._cli("init", "knowledge-learning", target)
+        self._cli("init", "tutor", target)
         before = _snapshot(target)
-        self._cli("init", "knowledge-learning", target, "--force", "--dry-run")
+        self._cli("init", "tutor", target, "--force", "--dry-run")
         self.assertEqual(_snapshot(target), before)
-        self._cli("add", "manifest", "knowledge-learning", target, "--force", "--dry-run")
+        self._cli("add", "manifest", "tutor", target, "--force", "--dry-run")
         self.assertEqual(_snapshot(target), before)
 
     def test_script_accepts_options_before_and_after_target_and_equals_scenario(self):
@@ -381,7 +390,7 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
     def test_cli_invalid_scenario_does_not_install_files(self):
         target = self.root / "invalid CLI scenario"
         result = subprocess.run(
-            [sys.executable, "-m", "vibe_tool", "init", "knowledge-learning", str(target),
+            [sys.executable, "-m", "vibe_tool", "init", "tutor", str(target),
              "--scenario", "not-a-scenario"],
             cwd=REPO_ROOT, env=_environment(), capture_output=True, text=True, timeout=30,
         )
@@ -390,7 +399,7 @@ class KnowledgeLearningInstallationTests(unittest.TestCase):
 
     def test_plan_is_an_assistant_command_not_a_vibe_cli_flag(self):
         target = self.root / "not a CLI plan"
-        self._cli("init", "knowledge-learning", target, "--plan", expected=2)
+        self._cli("init", "tutor", target, "--plan", expected=2)
         self.assertFalse(target.exists())
 
 
