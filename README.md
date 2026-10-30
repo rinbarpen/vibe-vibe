@@ -70,16 +70,19 @@ vibe add skill taste-skill ../my-project
 ```text
 my-project/
 ├── CLAUDE.md / AGENTS.md       # 项目级 agent 指令
+├── .agents/skills/             # 已安装 Skills
 ├── .cursor/
-│   ├── commands/               # 可调用命令
-│   ├── rules/                  # 项目规则
-│   └── skills/                 # 已安装 Skills
-└── .claude/agents/             # Claude Code agent 定义（按 manifest 提供）
+│   ├── commands/              # 可调用命令
+│   └── rules/                 # 项目规则
+├── .claude/agents/             # Claude Code agent 定义（按 Manifest 提供）
+└── .codex/agents/              # Codex agent 定义（按 Manifest 提供）
 ```
 
 ## `vibe` CLI
 
-`vibe` 会从当前目录向上查找仓库，也可以通过配置固定仓库路径。项目安装与直接更新命令支持 `--dry-run` 预览；`init/add` 保留其现有覆盖策略，`update skill/manifest` 则覆盖选定资源并自动备份。
+仓库定位优先级为 `$VIBE_HOME` 环境变量 → 从当前目录向上查找同时包含 `manifests/` 和 `skills/` 的目录 → `~/.config/vibe-tool/config.json`。在仓库外使用时，可以先通过 `vibe config set-repo /path/to/vibe-coding` 固定仓库路径。
+
+项目安装与直接更新命令支持 `-n/--dry-run` 预览；`init/add` 使用 `-f/--force` 显式覆盖已有文件，`update skill/manifest` 则覆盖选定资源并自动备份。`target` 默认为当前目录；场景与 `--provider`、`--owner`、`--org`、`--repo`、`--email` 等生成参数按模板适用，详情见相应命令的 `--help`。
 
 | 命令 | 用途 |
 | --- | --- |
@@ -100,15 +103,16 @@ my-project/
 | `vibe mcp add --all [target]` | 安装全部 MCP 服务配置 |
 | `vibe hook list` | 列出可用 Hook 集合 |
 | `vibe hook add <name> [target]` | 向项目安装 Hook 集合 |
+| `vibe hook add --all [target]` | 安装全部 Hook 集合 |
 | `vibe stats show` | 查看 Skill 使用统计 |
 
-常用选项：
+常用选项（下列 `add/hook` 示例假设 `demo` 已存在；`--dry-run` 本身不会创建目标目录）：
 
 ```bash
 vibe init vibe-coding demo --dry-run
 vibe add manifest office demo --force
 vibe add skill --all demo --yes --dry-run
-vibe mcp add drawio demo
+vibe mcp list
 vibe hook add ralph-loop demo
 ```
 
@@ -116,7 +120,7 @@ vibe hook add ralph-loop demo
 
 ### Skills
 
-`skills/` 包含来自多个社区和维护者的 Git 子模块，CLI 会递归查找其中的 `SKILL.md`。同名 Skill 会使用带相对路径的标识自动消歧。
+`skills/` 包含来自多个社区和维护者的 Git 子模块，`mine/` 存放第一方 Skill。CLI 会递归扫描这两个目录中的 `SKILL.md`；同名 Skill 使用带相对路径的标识自动消歧，安装时以 `vibe list skills` 显示的名称为准。
 
 重点集合包括：
 
@@ -128,12 +132,12 @@ vibe hook add ralph-loop demo
 - [Humanizer-zh](skills/Humanizer-zh)、[shuorenhua](skills/shuorenhua)：中文文本改写与表达优化
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill)：中文网文选材、构思、章纲、写作与完稿审查
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills)：Mermaid 图表生成与渲染
-- [Unity Game Development](mine/unity-game-development)：游戏全流程 67个技能：总入口、9阶段、29专项、6个模型链技能、8个游戏测试技能、9执行和reviewer的5个技能，可整包、阶段或单项安装。
+- [Unity Game Development](mine/unity-game-development)：覆盖游戏制作全流程、3D/DCC 建模、游戏测试与执行/Reviewer 角色，可整包、阶段或单项安装。
 - [State Machine Reasoning](mine/state-machine-reasoning)：将决策、排障、研究和工作流分析建模为状态机，并生成 Mermaid 可视化图。
 - [Omnippt](mine/omnippt)：按需加载需求调研、叙事大纲、逐页策划、视觉设计、原生制作和独立审查子技能，支持可编辑演示文稿交付。
 - [X Research](skills/x-research-skill)：信息检索与社交平台调研
 
-仓库内的 [mine/](mine) 存放第一方 Skill，[workflows/](workflows) 存放完整工作流项目；它们与外部子模块一样可作为能力来源。
+仓库内的 [mine/](mine) 存放第一方 Skill，[workflows/](workflows) 存放完整工作流项目。后者按各自说明使用，不属于 `vibe list skills` 的默认扫描根目录。
 
 浏览索引：
 
@@ -143,6 +147,8 @@ vibe hook add ralph-loop demo
 ### Manifests
 
 Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则、命令、场景、agents 和初始化脚本。
+
+模板可通过 `skills.txt` 声明必需 Skills，`init/add manifest` 会自动安装这些依赖。缺少本地 Skill 来源时，命令会提示并返回非零状态；`--dry-run` 同样检查依赖。安装前先检查对应 Skill 来源与子模块初始化状态。
 
 | Manifest | 适用方向 |
 | --- | --- |
@@ -157,7 +163,9 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `office` | DOCX / XLSX / PPTX / PDF：正文写作、原生可编辑交付、全量视觉验收与独立 QA |
 | `social-media` | 社交媒体内容创作与运营 |
 | `ui-testing` | Web、组件、移动端、视觉与无障碍测试 |
-| `unity-game` | Unity全流程，21个双端角色、执行/Reviewer技能与[workflow SVG](manifests/unity-game/references/workflow.svg) |
+| `unity-game` | Unity 游戏制作全流程，Claude Code/Codex 角色、执行/Reviewer 技能与 [workflow SVG](manifests/unity-game/references/workflow.svg) |
+
+实际可用模板以 `vibe list manifests` 为准。`tutor` 是原 `knowledge-learning` 的新名称，新项目使用 `vibe init tutor [target]`。
 
 查看每个模板的细节：
 
@@ -167,27 +175,24 @@ find manifests -maxdepth 2 -name README.md -print
 
 ### MCP 服务
 
-根目录 [mcp.json](mcp.json) 提供可按需合并到目标项目的 MCP 配置，目前包含：
+CLI 从仓库根目录可选的 `mcp.json` 读取 `mcpServers` 配置，不假定已经预置服务。先运行 `vibe mcp list` 查看当前可用清单；缺少配置或没有服务时会显示 `No MCP servers found.`，此时需先准备源配置再安装。
 
-- `promptx-alpha`
-- `pdf-reader-mcp`
-- `chrome-devtools`
-- `drawio`
-- `claude-scientific-skills`
-- `windows-mcp`
-
-例如只安装 Draw.io：
+配置就绪后，把 `SERVER_NAME` 替换为清单中的实际名称：
 
 ```bash
-vibe mcp add drawio ../my-project
+vibe mcp list
+vibe mcp add SERVER_NAME ../my-project --dry-run
+vibe mcp add SERVER_NAME ../my-project
 ```
+
+安装会合并目标项目的 `mcp.json`，保留无关条目；同名服务默认跳过，只有显式指定 `--force` 才替换。
 
 ### Hooks、工作流与独立 CLI
 
 - [ralph-loop](hooks/ralph-loop)：RFC → DAG 拆解 → 分层验证 → 合并队列的 Hook 工作流
 - [writing-agent](workflows/writing-agent)：从选题、研究到审稿发布的写作系统
 - [cli/agent-browser](cli/agent-browser)、[cli/anything-cli](cli/anything-cli)、[cli/office-cli](cli/office-cli)：独立 CLI 项目
-- [paseo.json](paseo.json)：Paseo 工作区配置（如使用 Paseo）
+- `paseo.json`：按需创建的本地 Paseo 工作区配置，已被 Git 忽略，不是仓库必备文件
 
 ## 更新与维护
 
@@ -222,10 +227,10 @@ vibe update manifest vibe-coding ../legacy-project \
 `--dry-run` 仅输出将新增、覆盖及跳过的路径，不写项目、安装记录或备份。实际变更前自动备份到 `.vibe-tool/backups/<唯一ID>/`，包含原始内容、校验值与变更清单；成功后打印恢复命令：
 
 ```bash
-python /path/to/project/.vibe-tool/backups/<唯一ID>/restore.py
+python /path/to/project/.vibe-tool/backups/BACKUP_ID/restore.py
 ```
 
-恢复脚本独立运行，无需安装 `vibe`。配置、依赖 Skill 与安装记录在同一事务中更新，应用失败自动恢复已触及内容；内容及记录均未变化时不创建备份。
+将 `BACKUP_ID` 替换为本次备份目录名，或直接使用更新命令打印的恢复命令。恢复脚本独立运行，无需安装 `vibe`。配置、依赖 Skill 与安装记录在同一事务中更新，应用失败自动恢复已触及内容；内容及记录均未变化时不创建备份。
 
 ### 更新仓库中的 Skill 来源
 
