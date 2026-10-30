@@ -121,13 +121,47 @@ def test_source_reference_preserves_repo_symlink_alias(tmp_path):
 
 
 def test_normalization_keeps_only_applicable_options():
-    assert manifest_option_keys("knowledge-learning") == ("scenario",)
-    assert normalized_options("knowledge-learning", {"scenario": "exam-prep", "provider": "git", "force": True}) == {"scenario": "exam-prep"}
+    assert manifest_option_keys("tutor") == ("scenario",)
+    assert normalized_options("tutor", {"scenario": "exam-prep", "provider": "git", "force": True}) == {"scenario": "exam-prep"}
     assert normalized_options("vibe-coding", {})["provider"] == "github"
     assert normalized_options("vibe-coding", {"provider": ""})["provider"] == ""
     assert normalized_options("fund-proposal", {"scenario": "x"}) == {}
     with pytest.raises(ValueError):
         normalized_options("ui-testing", {"scenario": 42})
+
+
+def test_tutor_upgrade_preserves_legacy_record_readability_and_inferred_scenario(tmp_path):
+    root = repo(tmp_path)
+    source = root / "manifests/tutor"
+    actual = Path(__file__).resolve().parents[3] / "manifests/tutor"
+    source.symlink_to(actual, target_is_directory=True)
+    target = tmp_path / "legacy project with spaces"
+    rules = target / ".cursor/rules"
+    rules.mkdir(parents=True)
+    (rules / "knowledge-learning-core.mdc").write_text("# Legacy core\n")
+    (rules / "knowledge-learning-course-learning.mdc").write_text("# Legacy course\n")
+    legacy = {
+        "schema_version": 1,
+        "skills": {"demo": {"source": "skills/demo"}},
+        "manifests": {"knowledge-learning": {
+            "source": "manifests/knowledge-learning", "options": {"scenario": "course-learning"},
+        }},
+    }
+    write_installations(target, legacy)
+    assert load_installations(target) == legacy
+    assert add_manifest(root / "manifests", "tutor", target, force=True) == 0
+    records = load_installations(target)
+    assert records["manifests"] == {"tutor": {
+        "source": "manifests/tutor", "options": {"scenario": "course-learning"},
+    }}
+    assert records["skills"] == legacy["skills"]
+    ledger = target / "MANIFEST.md"
+    assert ledger.is_file()
+    ledger.write_text("# My output ledger\nPreserve actual learning artifacts.\n")
+    before = ledger.read_bytes(), ledger.stat().st_mtime_ns
+    assert add_manifest(root / "manifests", "tutor", target, force=True) == 0
+    assert (ledger.read_bytes(), ledger.stat().st_mtime_ns) == before
+    assert load_installations(target)["manifests"]["tutor"]["options"] == {"scenario": "course-learning"}
 
 
 def test_add_skill_records_canonical_name_and_skips_without_writing(tmp_path):
@@ -209,8 +243,8 @@ def test_manifest_script_failure_and_repeat_preserve_records(tmp_path, monkeypat
     assert load_installations(target)["manifests"]["vibe-coding"]["options"]["provider"] == "git"
 
 
-@pytest.mark.parametrize("name", ["vibe-coding", "knowledge-learning"])
-def test_script_arguments_are_real_tokens_and_knowledge_target_last(tmp_path, monkeypatch, name):
+@pytest.mark.parametrize("name", ["vibe-coding", "tutor"])
+def test_script_arguments_are_real_tokens_and_tutor_target_first(tmp_path, monkeypatch, name):
     root = repo(tmp_path)
     template = manifest(root, name)
     scripts = template / "scripts"
@@ -223,15 +257,15 @@ def test_script_arguments_are_real_tokens_and_knowledge_target_last(tmp_path, mo
     assert manifest_module._run_init_script(info, target, True, False, owner="Team With Spaces", scenario="exam-prep") == 0
     cmd = commands[0]
     assert str(target) in cmd
-    if name == "knowledge-learning":
-        assert cmd[-1] == str(target)
-        assert cmd[1:3] == ["--scenario", "exam-prep"]
+    if name == "tutor":
+        assert cmd[1] == str(target)
+        assert cmd[2:4] == ["--scenario", "exam-prep"]
     else:
         assert cmd[cmd.index("-o") + 1] == "Team With Spaces"
         assert "-o Team With Spaces" not in cmd
 
 
-@pytest.mark.parametrize("name", ["knowledge-learning", "ui-testing", "fund-proposal", "auto-research-ars"])
+@pytest.mark.parametrize("name", ["tutor", "ui-testing", "fund-proposal", "auto-research-ars"])
 def test_scripts_without_dry_run_support_are_not_executed(tmp_path, monkeypatch, name):
     root = repo(tmp_path)
     template = manifest(root, name)

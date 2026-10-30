@@ -63,7 +63,7 @@ def _build_parser() -> argparse.ArgumentParser:
     am_p = add_subs.add_parser("manifest", help="Add a manifest to an existing project")
     am_p.add_argument("manifest_name", help="Manifest name")
     am_p.add_argument("target", nargs="?", default=".", help="Target directory (default: current)")
-    am_p.add_argument("--scenario", default="", help="Comma-separated scenario names")
+    am_p.add_argument("--scenario", default="", help="Scenario selection (for manifests that support it)")
     am_p.add_argument("-f", "--force", action="store_true", help="Overwrite existing files")
     am_p.add_argument("-n", "--dry-run", action="store_true", help="Preview changes without writing")
     am_p.add_argument("--provider", choices=("git", "github", "gitlab", "gitee"), default="github", help="Code hosting provider (default: github)")

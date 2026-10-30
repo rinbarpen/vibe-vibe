@@ -16,6 +16,8 @@ _MANIFEST_OPTION_KEYS: dict[str, tuple[str, ...]] = {
     "vibe-coding": ("provider", "scenario", "owner", "org", "repo", "email"),
     "github-enterprise": ("owner", "org", "repo", "email"),
     "auto-research": ("owner", "org", "repo"),
+    "tutor": ("scenario",),
+    # Read pre-rename installation records so explicit Tutor upgrades can load them.
     "knowledge-learning": ("scenario",),
     "ui-testing": ("scenario",),
 }
@@ -166,6 +168,22 @@ def record_manifest(
     data = load_installations(target)
     if name in data["manifests"] and not force:
         return
+    if name == "tutor":
+        # The Tutor installer can inherit a legacy scenario when none was
+        # supplied on the CLI. Record the actual generated configuration so
+        # later `vibe update manifest tutor` does not silently reset it.
+        options = dict(options)
+        if not options.get("scenario"):
+            selected = [
+                path.name for path in (source / "scenarios").glob("*")
+                if path.is_dir()
+                and (target / f".cursor/rules/tutor-{path.name}.mdc").is_file()
+            ]
+            if len(selected) == 1:
+                options["scenario"] = selected[0]
+        # Historical metadata is readable, but the retired name is not an
+        # installed alias after a successful, explicit Tutor migration.
+        data["manifests"].pop("knowledge-learning", None)
     data["manifests"][name] = {
         "source": source_ref(root, source), "options": normalized_options(name, options),
     }

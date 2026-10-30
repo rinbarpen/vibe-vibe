@@ -98,17 +98,20 @@ def test_vibe_provider_args_and_real_target_references(tmp_path: Path, provider:
 
 
 @pytest.mark.parametrize("scenario", ["self-study", "exam-prep", "course-learning", "research-reading"])
-def test_knowledge_scenario_is_passed_before_target(tmp_path: Path, scenario: str) -> None:
+def test_tutor_scenarios_render_without_touching_project(tmp_path: Path, scenario: str) -> None:
     target = tmp_path / "target"
     target.mkdir()
     stage = tmp_path / "stage with spaces"
-    manifest = resolve_manifest(MANIFESTS, "knowledge-learning")
+    manifest = resolve_manifest(MANIFESTS, "tutor")
     paths = render_manifest(manifest, stage, target, {"scenario": scenario})
     assert Path(".cursor/scenario.md") in paths
     assert (stage / ".cursor/scenario.md").read_bytes() == (
         manifest.path / "scenarios" / scenario / "CLAUDE.md"
     ).read_bytes()
     assert Path("notes/_index.md") not in paths
+    for relative in ("skills/SKILL.md", "references/tutor-interaction.md",
+                     "agents/tutor-agents.md", "scripts/export-notes.py"):
+        assert Path(relative) in paths
     for source in (manifest.path / "scenarios" / scenario / "rules").glob("*.mdc"):
         assert Path(".cursor/rules", source.name) in paths
 

@@ -1,0 +1,105 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R 12 0 R] /Count 5 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 147 >>
+stream
+BT /F1 12 Tf 50 750 Td 20 TL
+(Foundations of Data) Tj
+T* (Learning Fixture) Tj
+T* (A small synthetic textbook for chapter-route evaluation.) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 228 >>
+stream
+BT /F1 12 Tf 50 750 Td 20 TL
+(Contents) Tj
+T* (1. Variables and Types .......... 1) Tj
+T* (2. Means ....................... 2) Tj
+T* (3. Checking Results ............ 3) Tj
+T* (The numbers above are printed page numbers.) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 285 >>
+stream
+BT /F1 12 Tf 50 750 Td 20 TL
+(Chapter 1: Variables and Types) Tj
+T* (Printed page: 1) Tj
+T* (Variables represent recorded observations.) Tj
+T* (Distinguish numerical variables from categorical variables.) Tj
+T* (Exercise 1.1: Classify age and favourite colour by variable type.) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 11 0 R >>
+endobj
+11 0 obj
+<< /Length 254 >>
+stream
+BT /F1 12 Tf 50 750 Td 20 TL
+(Chapter 2: Means) Tj
+T* (Printed page: 2) Tj
+T* (Prerequisite: Understand the variable types in Chapter 1.) Tj
+T* (Use an arithmetic mean for numerical observations.) Tj
+T* (Exercise 2.1: Find the mean of 2, 4 and 6.) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 13 0 R >>
+endobj
+13 0 obj
+<< /Length 346 >>
+stream
+BT /F1 12 Tf 50 750 Td 20 TL
+(Chapter 3: Checking Results) Tj
+T* (Printed page: 3) Tj
+T* (Check the variable type before interpreting a result.) Tj
+T* (Check whether the result is plausible for the observations.) Tj
+T* (Checklist: state the type, describe the calculation, check the result.) Tj
+T* (This chapter has no numbered exercises.) Tj
+ET
+endstream
+endobj
+xref
+0 14
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000141 00000 n 
+0000000211 00000 n 
+0000000337 00000 n 
+0000000534 00000 n 
+0000000660 00000 n 
+0000000938 00000 n 
+0000001064 00000 n 
+0000001399 00000 n 
+0000001527 00000 n 
+0000001832 00000 n 
+0000001960 00000 n 
+trailer
+<< /Size 14 /Root 1 0 R >>
+startxref
+2357
+%%EOF

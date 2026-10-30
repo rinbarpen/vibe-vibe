@@ -270,7 +270,7 @@ def install_real_manifest(root: Path, name: str) -> None:
 
 
 @pytest.mark.parametrize("name,scenario,scenario_file", [
-    ("knowledge-learning", "course-learning", ".cursor/scenario.md"),
+    ("tutor", "course-learning", ".cursor/scenario.md"),
     ("ui-testing", "component", "CLAUDE.ui-testing.md"),
 ])
 def test_scenario_add_records_update_reuses_and_explicit_override_works(repo, target, name, scenario, scenario_file):
@@ -283,11 +283,15 @@ def test_scenario_add_records_update_reuses_and_explicit_override_works(repo, ta
     ok(cli(repo, "update", "manifest", name, target))
     assert (target / scenario_file).read_text() != "# Local override\n"
     assert (target / "notes/_index.md").read_text() == "# User knowledge index\n"
-    replacement = "self-study" if name == "knowledge-learning" else "web-e2e"
+    replacement = "self-study" if name == "tutor" else "web-e2e"
     ok(cli(repo, "update", "manifest", name, target, f"--scenario={replacement}"))
     assert records(target)["manifests"][name]["options"]["scenario"] == replacement
     repeated = cli(repo, "add", "manifest", name, target, f"--scenario={scenario}")
-    ok(repeated)
+    if name == "tutor":
+        assert repeated.returncode != 0
+        assert "--force" in repeated.stdout + repeated.stderr
+    else:
+        ok(repeated)
     assert records(target)["manifests"][name]["options"]["scenario"] == replacement
 
 
@@ -583,7 +587,7 @@ def test_manifest_update_migrates_legacy_target_with_one_existing_resource(repo,
 
 @pytest.mark.parametrize("name,scenario", [
     ("ui-testing", "unknown-scenario"),
-    ("knowledge-learning", "../course-learning"),
+    ("tutor", "../course-learning"),
     ("vibe-coding", "fullstack-web,unknown-scenario"),
 ])
 def test_invalid_scenario_fails_preflight_without_project_changes(repo, target, name, scenario):

@@ -103,10 +103,7 @@ def _render_script(
             flags.extend(token.format(value=value) for token in shlex.split(pattern))
     if manifest.name == "vibe-coding":
         flags.append("--no-git")
-    if manifest.name == "knowledge-learning":
-        args = [*flags, str(stage)]  # this parser stops at the first positional
-    else:
-        args = [str(stage), *flags]
+    args = [str(stage), *flags]
     env = {**os.environ, "VIBE_MANIFEST": str(manifest.path.resolve()),
            "PYTHONDONTWRITEBYTECODE": "1"}
     result = subprocess.run(
@@ -200,8 +197,12 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
         return False
     if relative.as_posix() in _COMMON_FILES or any(_under(relative, root) for root in _COMMON_TREES):
         return True
-    if name == "knowledge-learning" and relative == Path(".cursor/scenario.md"):
-        return True
+    if name == "tutor":
+        return (
+            relative == Path(".cursor/scenario.md")
+            or relative == Path("scripts/export-notes.py")
+            or any(_under(relative, Path(root)) for root in ("skills", "references", "agents"))
+        )
     if name == "ui-testing" and relative == Path("CLAUDE.ui-testing.md"):
         return True
     if name == "vibe-coding":

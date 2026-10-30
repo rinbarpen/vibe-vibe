@@ -1,0 +1,51 @@
+---
+description: 自动保存图文章节 Markdown、原子笔记、可见图资源与按需 PDF；保留用户原文和手改
+globs: ["notes/**/*", "projects/**/*", "materials/**/*"]
+alwaysApply: false
+---
+
+# 笔记组织规则 (Note Organization)
+
+## 1. 自动保存与作者边界
+
+- 具体章节学习或讲解产生真实知识增量时，在**本轮回复结束前**自动创建或更新 `notes/summaries/<教材或主题>/<单元ID>-<章节名>.md`；不等待用户另说“做笔记”。参考 `.cursor/templates/CHAPTER_NOTE.md.example` 和 `references/illustrated-notes.md`，必要原子概念仍入 `notes/atoms/`。
+- 教材上传、`/import` 和 `/learn --plan` 先做轻量地图/路线，不默认全书笔记；纯查看和纯导出不生成空笔记或学习事件。
+- 先读已有文件，保留稳定单元/图 ID、用户原文和手改，只合并助手整理范围；无可靠边界时保留旧文、追加本轮增量，不整篇覆盖。用户明确提供的原文另存 `LEARNING_RECORD.md`，规则见 `references/learning-records.md`；助手笔记不等于用户掌握。
+
+## 2. 图文表达与资源
+
+- 短定义和少量事实一般用文字（约 150 个中文字内或不超过 3 要点）；简短对比用表格。流程、分支、层级、多概念依赖和长且抽象的关系优先图解；长线性叙述拆小节，不机械文字转图，不以装饰图凑数量。
+- 实际图像存 `notes/assets/<主题>/<稳定图ID>.svg` 或 `.png`，保留 Mermaid/drawio 等可编辑源；标准 SVG 本身可作图源。Markdown 使用便携的相对图链，不依赖 CDN。只有 Mermaid 代码不算可见图交付，缺渲染时明确“待渲染”。
+- 每图有标题、alt、图注、真实来源或助手示意/推断标签及简短文字结论；实际检查渲染、文字可读性、边关系和图链。图解不改变教材含义，未知关系标 `[inference]`。
+- Markdown 默认自动保存；自然语言导出请求或 `/learn`、`/study` 的 `--export pdf` 才调用 `python scripts/export-notes.py INPUT.md --output OUTPUT.pdf`。只导出选定学习笔记，不自动夹带个人原文日志；保留 MD/图源。已有 PDF 默认保留，明确同意覆盖后才加 `--force`，需要中文字体可加 `--font FONT_PATH`。验证 PDF 中文、图像与版面后反馈真实路径。完整流程见 `references/illustrated-notes.md`。
+
+## 3. 笔记结构与标签
+
+知识笔记使用 material/general/mixed provenance；教材内容保留真实 source 字段，通用笔记可 source: []，教材定位与助手示意分别标明；用户个人记录及规划文件使用其独立模板，不硬套知识笔记格式。
+
+```yaml
+---
+title: 概念或章节名称
+source: [材料名, 已核验位置]
+tags: [domain/pdf, topic/统计, status/seedling]
+domain: pdf
+type: chapter
+confidence: high
+created: YYYY-MM-DD
+modified: YYYY-MM-DD
+related: ["[[相关概念]]"]
+---
+```
+
+- `#domain/<type>`：slides / pdf / video / web / audio / exercise / image；按实际材料标注。
+- `#topic/<name>`：主题或课程；`#status/<status>`：seedling / growing / evergreen，仅表示笔记成熟度，不是用户掌握度。
+- `#type/<type>`：chapter / concept / fact / question / exercise。
+
+## 4. 目录与连接
+
+- `notes/summaries/<教材或主题>/`：每单元一份章节主笔记及其按需导出 PDF；不为重复会话新建同章副本。
+- `notes/atoms/<主题>/`：按需生成的独立概念笔记。
+- `notes/assets/<主题>/`：章节图像和可编辑图源；主笔记用相对链接。
+- 相关概念使用 `[[wiki-link]]`，跨材料关系有证据才双向连接；无连接笔记可标 `[orphan]`，不编造关系消除孤岛。
+
+无教材的具体主题讲解同样自动写 Markdown，使用稳定主题单元 ID，不造章号。普通教学不重复列保存路径，首次建档/阶段总结/明确记录/导出时提示，失败立即说明。

@@ -48,14 +48,15 @@ _SCRIPT_FLAG_MAP: dict[str, dict[str, str]] = {
         "force": "-f",
         "dry_run": "-n",
     },
-    "knowledge-learning": {
+    "tutor": {
         "scenario": "--scenario {value}",
         "force": "--force",
         "dry_run": "-n",
     },
     "ui-testing": {
         "scenario": "--scenario={value}",
-        "force": "-f",
+        # The historical UI parser treats unknown force flags as a target.
+        "force": "",
         "dry_run": "-n",
     },
     "fund-proposal": {
@@ -162,25 +163,18 @@ def _run_init_script(
     for key, value in kwargs.items():
         if not value:
             continue
-        if key in ("force", "dry_run"):
-            bool_val = key == "force" and force or key == "dry_run" and dry_run
-            if bool_val and key in flag_map:
-                script_args.append(flag_map[key])
-            continue
-
         if key in flag_map:
-            # Split the flag template before substitution so a value containing
-            # spaces remains exactly one argv token.
-            script_args.extend(token.format(value=value) for token in shlex.split(flag_map[key]))
+            # Split the template before formatting: option names are separate
+            # arguments, but values containing spaces must stay a single arg.
+            script_args.extend(
+                part.format(value=value) for part in shlex.split(flag_map[key])
+            )
 
+    # These are explicit parameters, not entries in kwargs.
     if force:
-        script_args.append(flag_map.get("force", "-f"))
+        script_args.extend(shlex.split(flag_map.get("force", "-f")))
     if dry_run:
-        script_args.append(flag_map.get("dry_run", "-n"))
-
-    # The knowledge script stops parsing options at its first positional arg.
-    if manifest.name == "knowledge-learning":
-        script_args = script_args[1:] + script_args[:1]
+        script_args.extend(shlex.split(flag_map.get("dry_run", "-n")))
 
     # Build environment (VIBE_MANIFEST needed by vibe-coding init)
     env = dict(subprocess.os.environ)
@@ -188,14 +182,16 @@ def _run_init_script(
 
     cmd = [str(script_path)] + script_args
 
-    print(f"{'[dry-run] ' if dry_run else ''}Running: {' '.join(cmd)}")
-    # These historical scripts have no preview mode; forwarding -n either
-    # writes into the real project or treats it as a new project directory.
-    if dry_run and manifest.name in {
-        "knowledge-learning", "ui-testing", "fund-proposal", "auto-research-ars",
-    }:
-        print("[dry-run] Would generate manifest resources (script not executed)")
+    # Only these known initializers implement a genuinely read-only preview.
+    # Preserve their asset/provider output; never execute Tutor or an unknown
+    # initializer just because a synthetic -n argument can be constructed.
+    native_preview = manifest.name in {"vibe-coding", "auto-research", "office", "unity-game"}
+    if dry_run and not native_preview:
+        print(f"[dry-run] Would run: {shlex.join(cmd)}")
+        print(f"[dry-run]   in: {target}")
         return 0
+
+    print(f"{'[dry-run] ' if dry_run else ''}Running: {shlex.join(cmd)}")
     result = subprocess.run(
         cmd,
         cwd=str(target if target.is_dir() else Path.cwd()),

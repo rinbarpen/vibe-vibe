@@ -151,7 +151,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `auto-research-ars` | 基于 ARS 的多阶段科研流水线 |
 | `fund-proposal` | 基金申请与项目建议书 |
 | `git-manager` | Git 仓库与镜像管理 |
-| `knowledge-learning` | 知识学习与管理 |
+| `tutor` | 对话式学习导师：教材/主题辅导、自动图文笔记与学习记录 |
 | `market-analysis` | 行业研究、市场与竞品分析 |
 | `novel-writing` | 长篇小说与文学创作 |
 | `office` | DOCX / XLSX / PPTX / PDF：正文写作、原生可编辑交付、全量视觉验收与独立 QA |

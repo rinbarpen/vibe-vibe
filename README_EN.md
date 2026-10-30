@@ -69,7 +69,7 @@ This project provides a series of Vibe Coding configuration Manifests adapted to
 *   **[Auto Research (ARS)](manifests/auto-research-ars)**: Enhanced automated research system with multi-agent collaboration and deep literature mining.
 *   **[Fund Proposal](manifests/fund-proposal)**: Grant/proposal writing configuration integrating research, review, and visualization skills.
 *   **[Git Manager](manifests/git-manager)**: Git repository management and automation configuration.
-*   **[Knowledge Learning](manifests/knowledge-learning)**: Knowledge learning and management system configuration.
+*   **[Tutor](manifests/tutor)**: Adaptive tutoring with or without textbooks, illustrated notes, learning records, and optional PDF export.
 *   **[Market Analysis](manifests/market-analysis)**: Market analysis and competitive research configuration.
 *   **[Novel Writing](manifests/novel-writing)**: Fiction writing and literary creation configuration.
 *   **[Social Media](manifests/social-media)**: Social media content creation and management configuration.
