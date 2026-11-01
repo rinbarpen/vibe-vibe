@@ -135,6 +135,7 @@ Selected collections include:
 - [Unity Game Development](mine/unity-game-development): end-to-end game production, 3D/DCC modeling, game testing, and executor/Reviewer roles; install a bundle, stage, or individual capability
 - [State Machine Reasoning](mine/state-machine-reasoning): model decisions, debugging, research, and workflow analysis as state machines with Mermaid visualizations
 - [Omnippt](mine/omnippt): on-demand sub-skills for requirements research, narrative outlines, slide planning, visual design, native production, and independent review of editable presentations
+- [Geo Sleuth](skills/geo-sleuth): photo geolocation and capture-time inference, clue analysis, and evidence verification; install with `vibe add skill geo-sleuth <target>`
 - [X Research](skills/x-research-skill): information retrieval and social-platform research
 
 First-party Skills live in [mine/](mine); complete workflow projects live in [workflows/](workflows). Follow each workflow's own instructions: `workflows/` is not a default scan root for `vibe list skills`.

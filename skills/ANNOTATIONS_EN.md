@@ -534,6 +534,11 @@
 - **Description**: Access NCBI GEO for gene expression/genomics data. Search/download microarray and RNA-seq datasets (GSE, GSM, GPL), retrieve SOFT/Matrix files, for transcriptomics and expression analysis.
 - **Usage**: See description
 
+### geo-sleuth
+- **Path**: `skills/geo-sleuth/skills/geo-sleuth`
+- **Description**: Photo geolocation and capture-time inference using metadata, OCR, maps, and image matching for clue analysis and evidence verification, with error bounds and confidence levels.
+- **Usage**: Locate a photo, infer its capture time, or analyze geographic clues; install with `vibe add skill geo-sleuth <target>`.
+
 ### geopandas
 - **Path**: `skills/claude-scientific-skills/scientific-skills/geopandas`
 - **Description**: Python library for working with geospatial vector data including shapefiles, GeoJSON, and GeoPackage files. Use when working with geographic data for spatial analysis, geometric operations, coordinate transformations, spatial joins, overlay operations, choropleth mapping, or any task involving reading/writing/analyzing vector geographic data. Supports PostGIS databases, interactive maps, and integration with matplotlib/folium/cartopy. Use for tasks like buffer analysis, spatial joins between datasets, dissolving boundaries, clipping data, calculating areas/distances, reprojecting coordinate systems, creating maps, or converting between spatial file formats.

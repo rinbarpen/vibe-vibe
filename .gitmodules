@@ -151,3 +151,7 @@
 [submodule "skills/ai-vibe-writing"]
 	path = skills/ai-vibe-writing
 	url = https://github.com/donghuixin/AI-Vibe-Writing-Skills.git
+[submodule "skills/geo-sleuth"]
+	path = skills/geo-sleuth
+	url = https://github.com/Oldcircle/geo-sleuth.git
+	branch = main

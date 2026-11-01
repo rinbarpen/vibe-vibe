@@ -135,6 +135,7 @@ vibe hook add ralph-loop demo
 - [Unity Game Development](mine/unity-game-development)：覆盖游戏制作全流程、3D/DCC 建模、游戏测试与执行/Reviewer 角色，可整包、阶段或单项安装。
 - [State Machine Reasoning](mine/state-machine-reasoning)：将决策、排障、研究和工作流分析建模为状态机，并生成 Mermaid 可视化图。
 - [Omnippt](mine/omnippt)：按需加载需求调研、叙事大纲、逐页策划、视觉设计、原生制作和独立审查子技能，支持可编辑演示文稿交付。
+- [Geo Sleuth](skills/geo-sleuth)：照片拍摄地点与时间推断、线索分析和证据校验；安装：`vibe add skill geo-sleuth <target>`
 - [X Research](skills/x-research-skill)：信息检索与社交平台调研
 
 仓库内的 [mine/](mine) 存放第一方 Skill，[workflows/](workflows) 存放完整工作流项目。后者按各自说明使用，不属于 `vibe list skills` 的默认扫描根目录。

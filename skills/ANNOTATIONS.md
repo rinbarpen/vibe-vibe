@@ -534,6 +534,11 @@
 - **简介**: Access NCBI GEO for gene expression/genomics data. Search/download microarray and RNA-seq datasets (GSE, GSM, GPL), retrieve SOFT/Matrix files, for transcriptomics and expression analysis.
 - **使用场景**: 见简介
 
+### geo-sleuth
+- **路径**: `skills/geo-sleuth/skills/geo-sleuth`
+- **简介**: 照片拍摄地点与时间推断技能，结合元数据、OCR、地图及影像匹配开展线索分析和证据校验，输出带误差范围及置信度的定位结论。
+- **使用场景**: 照片定位、拍摄时间推断、地理线索分析；使用 `vibe add skill geo-sleuth <target>` 安装。
+
 ### geopandas
 - **路径**: `skills/claude-scientific-skills/scientific-skills/geopandas`
 - **简介**: Python library for working with geospatial vector data including shapefiles, GeoJSON, and GeoPackage files. Use when working with geographic data for spatial analysis, geometric operations, coordinate transformations, spatial joins, overlay operations, choropleth mapping, or any task involving reading/writing/analyzing vector geographic data. Supports PostGIS databases, interactive maps, and integration with matplotlib/folium/cartopy. Use for tasks like buffer analysis, spatial joins between datasets, dissolving boundaries, clipping data, calculating areas/distances, reprojecting coordinate systems, creating maps, or converting between spatial file formats.
