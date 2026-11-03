@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manifest 创作"
+  short_description: "创建和维护 vibe 项目模板，交付协作契约、工作流图与安装验证"
+  default_prompt: "使用 $manifest-creator，为当前 vibe-coding 仓库创建一个符合项目规范的 manifest。"
