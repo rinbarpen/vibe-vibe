@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "mode": "design-only",
+  "max_parallel": 3,
+  "lease_seconds": 1800,
+  "gates": [],
+  "waivers": {},
+  "tasks": [
+    {
+      "id": "design-loop",
+      "custom_reason": "项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。",
+      "role": "game-design-designer",
+      "depends_on": [],
+      "writes": [
+        "Design/core-loop.md",
+        "Evidence/design-loop"
+      ],
+      "resources": [],
+      "inputs": [],
+      "outputs": [
+        "Design/core-loop.md"
+      ],
+      "effect": "design",
+      "gates": []
+    },
+    {
+      "id": "design-level",
+      "custom_reason": "项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。",
+      "role": "game-design-designer",
+      "depends_on": [],
+      "writes": [
+        "Design/level-outline.md",
+        "Evidence/design-level"
+      ],
+      "resources": [],
+      "inputs": [],
+      "outputs": [
+        "Design/level-outline.md"
+      ],
+      "effect": "design",
+      "gates": []
+    },
+    {
+      "id": "design-package",
+      "custom_reason": "项目设计样例：前两项完成并审查后，整合循环与关卡的设计一致性。",
+      "role": "game-design-designer",
+      "depends_on": [
+        "design-loop",
+        "design-level"
+      ],
+      "writes": [
+        "Design/design-package.md",
+        "Evidence/design-package"
+      ],
+      "resources": [],
+      "inputs": [
+        "Design/core-loop.md",
+        "Design/level-outline.md"
+      ],
+      "outputs": [
+        "Design/design-package.md"
+      ],
+      "effect": "design",
+      "gates": []
+    }
+  ]
+}

@@ -1,0 +1,560 @@
+F.F................................................................................. [ 17%]
+......................................FF.FFFFF................. [ 30%]
+...................s.......sss............s........................ss..... [ 45%]
+...................................... [ 53%]
+.................................................................................................. [ 73%]
+................................................................. [ 87%]
+...............................................................                                          [100%]
+=================================== FAILURES ===================================
+_________________ test_ccfa_skills_is_the_registered_upstream __________________
+
+    def test_ccfa_skills_is_the_registered_upstream() -> None:
+        assert GITMODULES.count('[submodule "skills/CCFA-Skills"]') == 1
+        assert "https://github.com/mikubaka88/CCFA-Skills" in GITMODULES
+>       assert (REPO_ROOT / "skills" / "CCFA-Skills" / "ccf-visual-composer" / "SKILL.md").is_file()
+E       AssertionError: assert False
+E        +  where False = is_file()
+E        +    where is_file = ((((PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest') / 'skills') / 'CCFA-Skills') / 'ccf-visual-composer') / 'SKILL.md').is_file
+
+tools/vibe_tool/tests/test_ccfa_skill_replacement.py:15: AssertionError
+__________________ test_happy_figure_skill_is_fully_replaced ___________________
+
+    def test_happy_figure_skill_is_fully_replaced() -> None:
+        assert not (REPO_ROOT / "mine" / "omnidraw" / "research-figure-generation").exists()
+        combined = (OMNIDRAW + "\n" + ROUTING).lower()
+>       assert "happy figure" not in combined
+E       AssertionError: assert 'happy figure' not in '---\nname: ... | ✓ | ✓ |\n'
+E         
+E         'happy figure' is contained here:
+E           gures use happy figure principles and figure2pptx for structured prompting and editable delivery.
+E         ?           ++++++++++++
+E           ---
+E           
+E           # omnidraw...
+E         
+E         ...Full output truncated (326 lines hidden), use '-vv' to show
+
+tools/vibe_tool/tests/test_ccfa_skill_replacement.py:26: AssertionError
+_______ test_formal_bundle_is_complete_and_excludes_maintenance_and_beta _______
+
+    def test_formal_bundle_is_complete_and_excludes_maintenance_and_beta() -> None:
+        for group, names in GROUPS.items():
+>           assert {p.parent.name for p in (SUBMODULE / "skills" / group).glob("*/SKILL.md")} == set(names)
+E           AssertionError: assert set() == {'ask-matt', ...th-docs', ...}
+E             
+E             Extra items in the right set:
+E             'improve-codebase-architecture'
+E             'setup-matt-pocock-skills'
+E             'code-review'
+E             'to-spec'
+E             'research'...
+E             
+E             ...Full output truncated (16 lines hidden), use '-vv' to show
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:51: AssertionError
+________ test_submodule_tracks_main_and_participates_in_managed_updates ________
+
+    def test_submodule_tracks_main_and_participates_in_managed_updates() -> None:
+        config = configparser.ConfigParser()
+        config.read(ROOT / ".gitmodules")
+        module = config['submodule "skills/mattpocock-skills-zh-CN"']
+        assert module["path"] == "skills/mattpocock-skills-zh-CN"
+        assert module["url"] == "https://github.com/vinvcn/mattpocock-skills-zh-CN.git"
+        assert module["branch"] == "main"
+        assert module["path"] in build_update_command(discover_submodule_paths(ROOT))
+        tracked = subprocess.check_output(
+            ["git", "ls-files", "--stage", module["path"]], cwd=ROOT, text=True,
+        ).split()
+        assert tracked[0] == "160000"
+>       assert tracked[1] == subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=SUBMODULE, text=True,
+        ).strip()
+E       AssertionError: assert '574e28dad038...daf68264f0988' == '77f56188e57c...b6aa494dad78d'
+E         
+E         - 77f56188e57cc2c3200f851d748b6aa494dad78d
+E         + 574e28dad038880cee788478ed8daf68264f0988
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:70: AssertionError
+____________ test_every_dependency_resolves_to_its_intended_source _____________
+
+catalog = [SkillInfo(name='ai-comic-workflow', source_path=PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/...Path('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/ai-visual-content'), id_path='ai-visual-content'), ...]
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7c26ee798c50>
+
+    def test_every_dependency_resolves_to_its_intended_source(catalog, monkeypatch) -> None:
+        monkeypatch.setattr(discovery, "discover_skills", lambda *roots: catalog)
+        for name in required_skills():
+>           skill = discovery.resolve_skill((ROOT / "skills", ROOT / "mine", MANIFEST / "skills"), name)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+skills_root = (PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest/skills'), PosixPath('/home/rczx/orca/workspaces/vibe-...g/game-manifest/mine'), PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest/manifests/vibe-coding/skills'))
+name = 'anthropics-skills-canvas-design'
+
+    def resolve_skill(skills_root, name: str) -> SkillInfo:
+        """Look up a skill by its legacy name or an exact relative ``id_path``.
+    
+        Path queries deliberately do not use fuzzy matching. Their installation
+        name is stable even when another submodule adds a same-named skill later.
+        """
+        normalized = name.replace("\\", "/")
+        if (
+            not name
+            or Path(normalized).is_absolute()
+            or PureWindowsPath(name).drive
+            or any(part in ("", ".", "..") for part in normalized.split("/"))
+        ):
+            raise ValueError(f"Invalid skill identifier: {name!r}; use a relative skill name or id_path.")
+    
+        roots = _as_roots(skills_root)
+        skills = discover_skills(*roots)
+    
+        if "/" in normalized:
+            matches = [s for s in skills if s.id_path.replace("\\", "/") == normalized]
+            if len(matches) == 1:
+                return SkillInfo(
+                    name=normalized.replace("/", "-"),
+                    source_path=matches[0].source_path,
+                    id_path=normalized,
+                )
+            if len(matches) > 1:
+                sources = ", ".join(str(s.source_path) for s in matches)
+                raise ValueError(f"Skill id_path '{name}' is ambiguous across roots: {sources}")
+            raise ValueError(f"Skill id_path '{name}' not found among {len(skills)} skills.")
+    
+        by_name = {s.name: s for s in skills}
+        by_lower = {s.name.lower(): s for s in skills}
+    
+        if name in by_name:
+            return by_name[name]
+        if name.lower() in by_lower:
+            return by_lower[name.lower()]
+    
+        # Substring match
+        lower = name.lower()
+        candidates = [s.name for s in skills if lower in s.name.lower()]
+        if len(candidates) == 1:
+            return by_name[candidates[0]]
+        if len(candidates) > 1:
+            raise ValueError(
+                f"Skill '{name}' is ambiguous. Candidates: {', '.join(candidates[:10])}"
+            )
+    
+>       raise ValueError(f"Skill '{name}' not found among {len(skills)} skills.")
+E       ValueError: Skill 'anthropics-skills-canvas-design' not found among 124 skills.
+
+tools/vibe_tool/src/vibe_tool/discovery.py:181: ValueError
+_________ test_cli_installs_all_resources_and_preserves_existing[init] _________
+
+cli_repo = PosixPath('/tmp/pytest-of-rczx/pytest-417/matt-cli-repo0')
+catalog = [SkillInfo(name='ai-comic-workflow', source_path=PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/...Path('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/ai-visual-content'), id_path='ai-visual-content'), ...]
+tmp_path = PosixPath('/tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource0')
+operation = 'init'
+
+    @pytest.mark.parametrize("operation", ["init", "add"])
+    def test_cli_installs_all_resources_and_preserves_existing(cli_repo, catalog, tmp_path, operation) -> None:
+        target = tmp_path / "project"
+        if operation == "init":
+            args = ("init", "vibe-coding", target, "--provider=git")
+        else:
+            target.mkdir()
+            (target / "user.txt").write_text("keep me\n")
+            args = ("add", "manifest", "vibe-coding", target, "--provider=git")
+        result = cli(cli_repo, *args)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError:   USE VERSION 0.1.0; preserve existing VERSION/CHANGELOG.md
+E         === Vibe Coding Unified Manifest Init ===
+E           Source:    /tmp/pytest-of-rczx/pytest-417/matt-cli-repo0/manifests/vibe-coding
+E           Target:    /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource0/project
+E           Scenarios: default
+E           Provider:  git
+E         
+E         ── Zone 1: Directory Structure ──
+E           CREATE  directories
+E         
+E         ── Zone 2: Core Files ──
+E           COPY  MANIFEST.md
+E           LINK  CLAUDE.md -> MANIFEST.md
+E           LINK  AGENTS.md -> MANIFEST.md
+E           COPY  README.md
+E           COPY  CONTRIBUTING.md
+E           COPY  .cursorrules
+E           COPY  .editorconfig
+E           COPY  .gitignore
+E           COPY  scripts/version_guard.py
+E           COPY  references/codegraph-workflow.json
+E           COPY  references/codegraph-workflow.svg
+E           COPY  scripts/render_codegraph_workflow.py
+E         
+E         ── Zone 3: Rules ──
+E           COPY  rules/claude-md-maintenance.mdc
+E           COPY  rules/vibe-coding-agent-dev.mdc
+E           COPY  rules/vibe-coding-backend.mdc
+E           COPY  rules/vibe-coding-cloud.mdc
+E           COPY  rules/vibe-coding-collaboration.mdc
+E           COPY  rules/vibe-coding-core.mdc
+E           COPY  rules/vibe-coding-deployment.mdc
+E           COPY  rules/vibe-coding-desktop.mdc
+E           COPY  rules/vibe-coding-enterprise.mdc
+E           COPY  rules/vibe-coding-frontend.mdc
+E           COPY  rules/vibe-coding-lifecycle.mdc
+E           COPY  rules/vibe-coding-optimization.mdc
+E           COPY  rules/vibe-coding-refactoring.mdc
+E           COPY  rules/vibe-coding-standards.mdc
+E           COPY  rules/vibe-coding-testing.mdc
+E           COPY  rules/vibe-coding-ui-design.mdc
+E         
+E         ── Zone 5: git Governance and CI/CD ──
+E         
+E         ── Zone 6: References ──
+E           COPY  .cursor/references/language-specs/go.md
+E           COPY  .cursor/references/language-specs/java.md
+E           COPY  .cursor/references/language-specs/python.md
+E           COPY  .cursor/references/language-specs/rust.md
+E           COPY  .cursor/references/language-specs/typescript.md
+E           COPY  .cursor/references/decision-trees/architecture-patterns.md
+E           COPY  .cursor/references/decision-trees/language-selection.md
+E           COPY  .cursor/references/branching-strategy.md
+E           COPY  .cursor/references/pages-guide.md
+E           COPY  .cursor/references/pr-conventions.md
+E           COPY  .cursor/references/readme-guide.md
+E           COPY  .cursor/references/release-process.md
+E           COPY  .cursor/references/tag-convention.md
+E           COPY  .cursor/references/lifecycle-guide.md
+E         
+E         ── Zone 8: Commands ──
+E           COPY  commands/agent-eval
+E           COPY  commands/cloud-deploy
+E           COPY  commands/deploy-check
+E           COPY  commands/desktop-build
+E           COPY  commands/frontend-check
+E           COPY  commands/implement
+E           COPY  commands/lang-select
+E           COPY  commands/plan
+E           COPY  commands/quality-gate
+E           COPY  commands/release
+E           COPY  commands/scaffold
+E           COPY  commands/update-docker
+E           COPY  commands/update-docs
+E           COPY  commands/update-examples
+E           COPY  commands/update-scripts
+E         
+E         ── Zone 9: Git Repository ──
+E         已初始化空的 Git 仓库于 /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource0/project/.git/
+E           INIT  git repository
+E         
+E         ── Zone 10: Agents ──
+E           Installing .claude/agents...
+E           Installing .codex/agents...
+E         
+E         ── Zone 11: Templates ──
+E           COPY  .cursor/templates/CHANGELOG.md.example
+E           COPY  .cursor/templates/README.md.example
+E           COPY  .cursor/templates/RELEASE_CHECKLIST.md.example
+E           COPY  .cursor/templates/ROADMAP.md.example
+E         
+E         === Initialization Complete ===
+E         
+E         Scenarios activated: default (all core rules)
+E         Code provider: git
+E         
+E         Next steps:
+E           1. Review CLAUDE.md and customize for your project
+E           2. Maintain VERSION and CHANGELOG.md together for every version bump
+E           3. Run python3 scripts/version_guard.py check before publishing
+E           4. Configure CI secrets and branch protection on your selected platform
+E           5. Commit and push:
+E                git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'
+E         Running: /tmp/pytest-of-rczx/pytest-417/matt-cli-repo0/manifests/vibe-coding/scripts/vibe-init.sh /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource0/project --provider=git
+E         
+E         Installing 39 required skills:
+E           COPY  domain-dispatcher
+E           COPY  language-advisor
+E           COPY  lifecycle-orchestrator
+E           COPY  vibe-coding
+E           WARN  anthropics-skills-canvas-design: not found
+E           WARN  wxa-skills-generate: not found
+E           WARN  wxa-skills-validate: not found
+E           WARN  wxa-skills-eval: not found
+E           WARN  ask-matt: not found
+E           WARN  code-review: not found
+E           WARN  codebase-design: not found
+E           WARN  diagnosing-bugs: not found
+E           WARN  domain-modeling: not found
+E           WARN  grill-with-docs: not found
+E           WARN  implement: not found
+E           WARN  implement-spec: not found
+E           WARN  improve-codebase-architecture: not found
+E           WARN  pr: not found
+E           WARN  prototype: not found
+E           WARN  research: not found
+E           WARN  retro: not found
+E           WARN  setup-matt-pocock-skills: not found
+E           WARN  tdd: not found
+E           WARN  to-spec: not found
+E           WARN  to-tickets: not found
+E           WARN  triage: not found
+E           WARN  wayfinder: not found
+E           WARN  wizard: not found
+E           WARN  grill-me: not found
+E           WARN  grilling: not found
+E           WARN  handoff: not found
+E           WARN  teach: not found
+E           WARN  to-questionnaire: not found
+E           WARN  wait-what: not found
+E           WARN  writing-for-agents: not found
+E           WARN  git-guardrails-claude-code: not found
+E           WARN  migrate-to-shoehorn: not found
+E           WARN  scaffold-exercises: not found
+E           WARN  setup-pre-commit: not found
+E           (tip: run 'vibe update' to fetch skill submodules, then 'vibe add skill <name>' for any still-missing)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/rczx/miniconda3/bin/python3', '-B', '-m', 'vibe_tool', 'init', 'vibe-coding', '/tmp/pyte...  (tip: run 'vibe update' to fetch skill submodules, then 'vibe add skill <name>' for any still-missing)\n", stderr='').returncode
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:161: AssertionError
+_________ test_cli_installs_all_resources_and_preserves_existing[add] __________
+
+cli_repo = PosixPath('/tmp/pytest-of-rczx/pytest-417/matt-cli-repo0')
+catalog = [SkillInfo(name='ai-comic-workflow', source_path=PosixPath('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/...Path('/home/rczx/orca/workspaces/vibe-coding/game-manifest/mine/ai-visual-content'), id_path='ai-visual-content'), ...]
+tmp_path = PosixPath('/tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource1')
+operation = 'add'
+
+    @pytest.mark.parametrize("operation", ["init", "add"])
+    def test_cli_installs_all_resources_and_preserves_existing(cli_repo, catalog, tmp_path, operation) -> None:
+        target = tmp_path / "project"
+        if operation == "init":
+            args = ("init", "vibe-coding", target, "--provider=git")
+        else:
+            target.mkdir()
+            (target / "user.txt").write_text("keep me\n")
+            args = ("add", "manifest", "vibe-coding", target, "--provider=git")
+        result = cli(cli_repo, *args)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError:   USE VERSION 0.1.0; preserve existing VERSION/CHANGELOG.md
+E         === Vibe Coding Unified Manifest Init ===
+E           Source:    /tmp/pytest-of-rczx/pytest-417/matt-cli-repo0/manifests/vibe-coding
+E           Target:    /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource1/project
+E           Scenarios: default
+E           Provider:  git
+E         
+E         ── Zone 1: Directory Structure ──
+E           CREATE  directories
+E         
+E         ── Zone 2: Core Files ──
+E           COPY  MANIFEST.md
+E           LINK  CLAUDE.md -> MANIFEST.md
+E           LINK  AGENTS.md -> MANIFEST.md
+E           COPY  README.md
+E           COPY  CONTRIBUTING.md
+E           COPY  .cursorrules
+E           COPY  .editorconfig
+E           COPY  .gitignore
+E           COPY  scripts/version_guard.py
+E           COPY  references/codegraph-workflow.json
+E           COPY  references/codegraph-workflow.svg
+E           COPY  scripts/render_codegraph_workflow.py
+E         
+E         ── Zone 3: Rules ──
+E           COPY  rules/claude-md-maintenance.mdc
+E           COPY  rules/vibe-coding-agent-dev.mdc
+E           COPY  rules/vibe-coding-backend.mdc
+E           COPY  rules/vibe-coding-cloud.mdc
+E           COPY  rules/vibe-coding-collaboration.mdc
+E           COPY  rules/vibe-coding-core.mdc
+E           COPY  rules/vibe-coding-deployment.mdc
+E           COPY  rules/vibe-coding-desktop.mdc
+E           COPY  rules/vibe-coding-enterprise.mdc
+E           COPY  rules/vibe-coding-frontend.mdc
+E           COPY  rules/vibe-coding-lifecycle.mdc
+E           COPY  rules/vibe-coding-optimization.mdc
+E           COPY  rules/vibe-coding-refactoring.mdc
+E           COPY  rules/vibe-coding-standards.mdc
+E           COPY  rules/vibe-coding-testing.mdc
+E           COPY  rules/vibe-coding-ui-design.mdc
+E         
+E         ── Zone 5: git Governance and CI/CD ──
+E         
+E         ── Zone 6: References ──
+E           COPY  .cursor/references/language-specs/go.md
+E           COPY  .cursor/references/language-specs/java.md
+E           COPY  .cursor/references/language-specs/python.md
+E           COPY  .cursor/references/language-specs/rust.md
+E           COPY  .cursor/references/language-specs/typescript.md
+E           COPY  .cursor/references/decision-trees/architecture-patterns.md
+E           COPY  .cursor/references/decision-trees/language-selection.md
+E           COPY  .cursor/references/branching-strategy.md
+E           COPY  .cursor/references/pages-guide.md
+E           COPY  .cursor/references/pr-conventions.md
+E           COPY  .cursor/references/readme-guide.md
+E           COPY  .cursor/references/release-process.md
+E           COPY  .cursor/references/tag-convention.md
+E           COPY  .cursor/references/lifecycle-guide.md
+E         
+E         ── Zone 8: Commands ──
+E           COPY  commands/agent-eval
+E           COPY  commands/cloud-deploy
+E           COPY  commands/deploy-check
+E           COPY  commands/desktop-build
+E           COPY  commands/frontend-check
+E           COPY  commands/implement
+E           COPY  commands/lang-select
+E           COPY  commands/plan
+E           COPY  commands/quality-gate
+E           COPY  commands/release
+E           COPY  commands/scaffold
+E           COPY  commands/update-docker
+E           COPY  commands/update-docs
+E           COPY  commands/update-examples
+E           COPY  commands/update-scripts
+E         
+E         ── Zone 9: Git Repository ──
+E         已初始化空的 Git 仓库于 /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource1/project/.git/
+E           INIT  git repository
+E         
+E         ── Zone 10: Agents ──
+E           Installing .claude/agents...
+E           Installing .codex/agents...
+E         
+E         ── Zone 11: Templates ──
+E           COPY  .cursor/templates/CHANGELOG.md.example
+E           COPY  .cursor/templates/README.md.example
+E           COPY  .cursor/templates/RELEASE_CHECKLIST.md.example
+E           COPY  .cursor/templates/ROADMAP.md.example
+E         
+E         === Initialization Complete ===
+E         
+E         Scenarios activated: default (all core rules)
+E         Code provider: git
+E         
+E         Next steps:
+E           1. Review CLAUDE.md and customize for your project
+E           2. Maintain VERSION and CHANGELOG.md together for every version bump
+E           3. Run python3 scripts/version_guard.py check before publishing
+E           4. Configure CI secrets and branch protection on your selected platform
+E           5. Commit and push:
+E                git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'
+E         Running: /tmp/pytest-of-rczx/pytest-417/matt-cli-repo0/manifests/vibe-coding/scripts/vibe-init.sh /tmp/pytest-of-rczx/pytest-417/test_cli_installs_all_resource1/project --provider=git
+E         
+E         Installing 39 required skills:
+E           COPY  domain-dispatcher
+E           COPY  language-advisor
+E           COPY  lifecycle-orchestrator
+E           COPY  vibe-coding
+E           WARN  anthropics-skills-canvas-design: not found
+E           WARN  wxa-skills-generate: not found
+E           WARN  wxa-skills-validate: not found
+E           WARN  wxa-skills-eval: not found
+E           WARN  ask-matt: not found
+E           WARN  code-review: not found
+E           WARN  codebase-design: not found
+E           WARN  diagnosing-bugs: not found
+E           WARN  domain-modeling: not found
+E           WARN  grill-with-docs: not found
+E           WARN  implement: not found
+E           WARN  implement-spec: not found
+E           WARN  improve-codebase-architecture: not found
+E           WARN  pr: not found
+E           WARN  prototype: not found
+E           WARN  research: not found
+E           WARN  retro: not found
+E           WARN  setup-matt-pocock-skills: not found
+E           WARN  tdd: not found
+E           WARN  to-spec: not found
+E           WARN  to-tickets: not found
+E           WARN  triage: not found
+E           WARN  wayfinder: not found
+E           WARN  wizard: not found
+E           WARN  grill-me: not found
+E           WARN  grilling: not found
+E           WARN  handoff: not found
+E           WARN  teach: not found
+E           WARN  to-questionnaire: not found
+E           WARN  wait-what: not found
+E           WARN  writing-for-agents: not found
+E           WARN  git-guardrails-claude-code: not found
+E           WARN  migrate-to-shoehorn: not found
+E           WARN  scaffold-exercises: not found
+E           WARN  setup-pre-commit: not found
+E           (tip: run 'vibe update' to fetch skill submodules, then 'vibe add skill <name>' for any still-missing)
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/rczx/miniconda3/bin/python3', '-B', '-m', 'vibe_tool', 'add', 'manifest', 'vibe-coding',...  (tip: run 'vibe update' to fetch skill submodules, then 'vibe add skill <name>' for any still-missing)\n", stderr='').returncode
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:161: AssertionError
+_______ test_cli_dry_run_reports_all_dependencies_without_writing[init] ________
+
+cli_repo = PosixPath('/tmp/pytest-of-rczx/pytest-417/matt-cli-repo0')
+tmp_path = PosixPath('/tmp/pytest-of-rczx/pytest-417/test_cli_dry_run_reports_all_d0')
+operation = 'init'
+
+    @pytest.mark.parametrize("operation", ["init", "add"])
+    def test_cli_dry_run_reports_all_dependencies_without_writing(cli_repo, tmp_path, operation) -> None:
+        target = tmp_path / "project"
+        if operation == "init":
+            args = ("init", "vibe-coding", target, "--provider=git", "--dry-run")
+        else:
+            target.mkdir()
+            args = ("add", "manifest", "vibe-coding", target, "--provider=git", "--dry-run")
+        result = cli(cli_repo, *args)
+        assert result.returncode == 0, result.stdout + result.stderr
+>       assert "WARN" not in result.stdout
+E       AssertionError: assert 'WARN' not in '  WILL USE ...l-missing)\n'
+E         
+E         'WARN' is contained here:
+E           -coding
+E             WARN  anthropics-skills-canvas-design: not found
+E         ?   ++++
+E             WARN  wxa-skills-generate: not found
+E             WARN  wxa-skills-validate: not found...
+E         
+E         ...Full output truncated (33 lines hidden), use '-vv' to show
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:184: AssertionError
+________ test_cli_dry_run_reports_all_dependencies_without_writing[add] ________
+
+cli_repo = PosixPath('/tmp/pytest-of-rczx/pytest-417/matt-cli-repo0')
+tmp_path = PosixPath('/tmp/pytest-of-rczx/pytest-417/test_cli_dry_run_reports_all_d1')
+operation = 'add'
+
+    @pytest.mark.parametrize("operation", ["init", "add"])
+    def test_cli_dry_run_reports_all_dependencies_without_writing(cli_repo, tmp_path, operation) -> None:
+        target = tmp_path / "project"
+        if operation == "init":
+            args = ("init", "vibe-coding", target, "--provider=git", "--dry-run")
+        else:
+            target.mkdir()
+            args = ("add", "manifest", "vibe-coding", target, "--provider=git", "--dry-run")
+        result = cli(cli_repo, *args)
+        assert result.returncode == 0, result.stdout + result.stderr
+>       assert "WARN" not in result.stdout
+E       AssertionError: assert 'WARN' not in '  WILL USE ...l-missing)\n'
+E         
+E         'WARN' is contained here:
+E           -coding
+E             WARN  anthropics-skills-canvas-design: not found
+E         ?   ++++
+E             WARN  wxa-skills-generate: not found
+E             WARN  wxa-skills-validate: not found...
+E         
+E         ...Full output truncated (33 lines hidden), use '-vv' to show
+
+tools/vibe_tool/tests/test_mattpocock_manifest.py:184: AssertionError
+=============================== warnings summary ===============================
+test_production.py::ProductionTests::test_upgrade_previous_manifest_preserves_project_data
+  /home/rczx/orca/workspaces/vibe-coding/game-manifest/manifests/game-design/tests/test_production.py:175: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    tar.extractall(before)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tools/vibe_tool/tests/test_ccfa_skill_replacement.py::test_ccfa_skills_is_the_registered_upstream
+FAILED tools/vibe_tool/tests/test_ccfa_skill_replacement.py::test_happy_figure_skill_is_fully_replaced
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_formal_bundle_is_complete_and_excludes_maintenance_and_beta
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_submodule_tracks_main_and_participates_in_managed_updates
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_every_dependency_resolves_to_its_intended_source
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_cli_installs_all_resources_and_preserves_existing[init]
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_cli_installs_all_resources_and_preserves_existing[add]
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_cli_dry_run_reports_all_dependencies_without_writing[init]
+FAILED tools/vibe_tool/tests/test_mattpocock_manifest.py::test_cli_dry_run_reports_all_dependencies_without_writing[add]
+9 failed, 469 passed, 9 skipped, 1 warning, 1274 subtests passed in 82.74s (0:01:22)

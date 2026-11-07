@@ -1,0 +1,1 @@
+asset_id,req_id,work_id,kind,owner,revision,source_path,source_sha256,exchange_path,exchange_sha256,dependency_manifest,engine_resource_id,dcc_version,exporter_version,engine_version,importer_version,license_ref,source_revision,dcc_status,exchange_status,engine_status,device_status,technical_review,visual_review,reviewer,evidence_ref,notes

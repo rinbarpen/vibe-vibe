@@ -1,0 +1,4656 @@
+diff --git a/README.md b/README.md
+index 6dbadd3..3f6a8ab 100644
+--- a/README.md
++++ b/README.md
+@@ -164,6 +164,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
+ | `office` | DOCX / XLSX / PPTX / PDF：正文写作、原生可编辑交付、全量视觉验收与独立 QA |
+ | `social-media` | 社交媒体内容创作与运营 |
+ | `ui-testing` | Web、组件、移动端、视觉与无障碍测试 |
++| `game-design` | 多引擎游戏设计与制作契约，23 项引擎/框架适配、GDD/数值/关卡/试玩与 [workflow SVG](manifests/game-design/references/workflow.svg) |
+ | `unity-game` | Unity 游戏制作全流程，Claude Code/Codex 角色、执行/Reviewer 技能与 [workflow SVG](manifests/unity-game/references/workflow.svg) |
+ 
+ 实际可用模板以 `vibe list manifests` 为准。`tutor` 是原 `knowledge-learning` 的新名称，新项目使用 `vibe init tutor [target]`。
+diff --git a/manifests/game-design/AGENTS.md b/manifests/game-design/AGENTS.md
+new file mode 100644
+index 0000000..17edf63
+--- /dev/null
++++ b/manifests/game-design/AGENTS.md
+@@ -0,0 +1,23 @@
++# Game Design — 多引擎游戏设计与制作契约
++
++先读取 `.game-design/README.md`、`.game-design/references/lifecycle.md` 与 `.game-design/state/` 中的 project.json、status.md、decisions.md、evidence.md。恢复已有工作，从首个未满足的验收继续；不要重建已有工程。若当前是模板源码目录，资源位于同级 README.md、references/、templates/，安装到项目后才使用 `.game-design/` 路径。
++
++## 默认目标
++先设计可验证的游戏，再按用户约定进入实现。默认 `design-only`：交付设计包，不自动建工程、安装引擎、下载付费资源或发布。用户明确要求开发后，记录 mode=implementation 并沿用同一设计、测试、制作、发布流程。主流适配器以 references/engine-matrix.md 和 engines.json 为准。
++
++## 第一次会话
++1. 读取状态、已有代码/设计/构建证据；运行 `python3 .game-design/scripts/game_design.py detect --project .` 取得只读引擎线索。复合仓库对用户指定的游戏子目录执行，不扫描所有资产或缓存。
++2. 整理受众、体验支柱、核心循环、类型/视角、目标平台、输入、联网、商业模式、预算/工期、团队和成功标准。缺省可提出显式假设；影响方向的选项给人决定，技术实现疑问由 AI 调研/实验解决。
++3. 有工程则保持其引擎与版本；新项目比较 2–3 个合适引擎及成本，以人确认的引擎/版本/平台填写 state/project.json 和 engine-decision.md。检测不等于选择，空工程不默认 Unity。多个候选不自动择一。
++4. 只加载所选适配器（references/adapters/<id>.md）及 references/adapter-contract.md。先检查本机工具、插件/SDK 和命令帮助，再将其示例绑定到实际工程；不运行未解析占位命令。
++5. 设计 GDD、系统数值、关卡叙事、视听/UI、技术映射和测试计划。每个玩法需求分配 REQ-ID，连接实现、用例与证据。方向确认后才启动约定内原型；设计模式到设计包审查/确认即停。
++
++## 执行与验收
++- 以 references/lifecycle.md 为唯一阶段规则；workflow.svg 是规范图，不是项目当前进度。
++- 角色是职责而非自动创建的多个代理：设计负责人、引擎实现者、QA/审查者可由同一会话分轮承担；用户明确需要时再安排多人。作者自检与独立审查分别记录；没有独立人员时标记 self-review，不冒称独立。
++- Scene/World/Prefab、事件数据库和云项目共享资源采用单写者；源与生成物分离，保留 GUID/UID/资源 ID。二进制资源使用对应 Editor/工具，不用文本替换伪造。
++- 数据表校验、静态检查、单测、真实启动/操作、目标设备、真人试玩互不替代。记录命令、版本、输入、stdout/stderr、exit code、截图/日志和产物哈希；缺环境记 not_run/blocked_dependency，不报告通过。
++- “编译成功”不是“好玩”；原型必须验证最小玩法闭环和关键体验假设，真人反馈与 AI 操作证据分开。
++- 每次实现修改先保留可回退基线，在工作分支/副本操作，验证后再纳入；失败由原 owner 修复并重跑原用例。改引擎/版本/付费依赖、改变目标/预算、切片放行、对外发布需要明确决策记录。未回复保持 waiting_human，确认后由 AI 从记录的 resume 节点继续。
++- Unity 需要深化制作时可接已有 unity-game / unity-game-development；复用其目录和技能，不将 Unity API 套到其他引擎。不自动安装无关技能或改写宿主 MCP。
++- 实际发布必须人工确认目标包哈希、平台/受众、存档迁移与回退计划；模板安装和检查不构成发布批准。
+diff --git a/manifests/game-design/CLAUDE.md b/manifests/game-design/CLAUDE.md
+new file mode 100644
+index 0000000..17edf63
+--- /dev/null
++++ b/manifests/game-design/CLAUDE.md
+@@ -0,0 +1,23 @@
++# Game Design — 多引擎游戏设计与制作契约
++
++先读取 `.game-design/README.md`、`.game-design/references/lifecycle.md` 与 `.game-design/state/` 中的 project.json、status.md、decisions.md、evidence.md。恢复已有工作，从首个未满足的验收继续；不要重建已有工程。若当前是模板源码目录，资源位于同级 README.md、references/、templates/，安装到项目后才使用 `.game-design/` 路径。
++
++## 默认目标
++先设计可验证的游戏，再按用户约定进入实现。默认 `design-only`：交付设计包，不自动建工程、安装引擎、下载付费资源或发布。用户明确要求开发后，记录 mode=implementation 并沿用同一设计、测试、制作、发布流程。主流适配器以 references/engine-matrix.md 和 engines.json 为准。
++
++## 第一次会话
++1. 读取状态、已有代码/设计/构建证据；运行 `python3 .game-design/scripts/game_design.py detect --project .` 取得只读引擎线索。复合仓库对用户指定的游戏子目录执行，不扫描所有资产或缓存。
++2. 整理受众、体验支柱、核心循环、类型/视角、目标平台、输入、联网、商业模式、预算/工期、团队和成功标准。缺省可提出显式假设；影响方向的选项给人决定，技术实现疑问由 AI 调研/实验解决。
++3. 有工程则保持其引擎与版本；新项目比较 2–3 个合适引擎及成本，以人确认的引擎/版本/平台填写 state/project.json 和 engine-decision.md。检测不等于选择，空工程不默认 Unity。多个候选不自动择一。
++4. 只加载所选适配器（references/adapters/<id>.md）及 references/adapter-contract.md。先检查本机工具、插件/SDK 和命令帮助，再将其示例绑定到实际工程；不运行未解析占位命令。
++5. 设计 GDD、系统数值、关卡叙事、视听/UI、技术映射和测试计划。每个玩法需求分配 REQ-ID，连接实现、用例与证据。方向确认后才启动约定内原型；设计模式到设计包审查/确认即停。
++
++## 执行与验收
++- 以 references/lifecycle.md 为唯一阶段规则；workflow.svg 是规范图，不是项目当前进度。
++- 角色是职责而非自动创建的多个代理：设计负责人、引擎实现者、QA/审查者可由同一会话分轮承担；用户明确需要时再安排多人。作者自检与独立审查分别记录；没有独立人员时标记 self-review，不冒称独立。
++- Scene/World/Prefab、事件数据库和云项目共享资源采用单写者；源与生成物分离，保留 GUID/UID/资源 ID。二进制资源使用对应 Editor/工具，不用文本替换伪造。
++- 数据表校验、静态检查、单测、真实启动/操作、目标设备、真人试玩互不替代。记录命令、版本、输入、stdout/stderr、exit code、截图/日志和产物哈希；缺环境记 not_run/blocked_dependency，不报告通过。
++- “编译成功”不是“好玩”；原型必须验证最小玩法闭环和关键体验假设，真人反馈与 AI 操作证据分开。
++- 每次实现修改先保留可回退基线，在工作分支/副本操作，验证后再纳入；失败由原 owner 修复并重跑原用例。改引擎/版本/付费依赖、改变目标/预算、切片放行、对外发布需要明确决策记录。未回复保持 waiting_human，确认后由 AI 从记录的 resume 节点继续。
++- Unity 需要深化制作时可接已有 unity-game / unity-game-development；复用其目录和技能，不将 Unity API 套到其他引擎。不自动安装无关技能或改写宿主 MCP。
++- 实际发布必须人工确认目标包哈希、平台/受众、存档迁移与回退计划；模板安装和检查不构成发布批准。
+diff --git a/manifests/game-design/README.md b/manifests/game-design/README.md
+new file mode 100644
+index 0000000..c09539d
+--- /dev/null
++++ b/manifests/game-design/README.md
+@@ -0,0 +1,102 @@
++# Game Design：多引擎游戏设计 Manifest
++
++用于把游戏想法变成可评审的设计包，并在明确约定后推进到可玩原型、垂直切片、制作、测试、发布和运营。不是一个假定所有引擎共用 API 的空工程模板，也不承诺一键生成完整游戏。
++
++## 安装
++
++```bash
++vibe init game-design ./my-game
++vibe add manifest game-design ./existing-game
++# 直接安装；仅 Python 3.10+ 与 Bash，无第三方依赖
++bash manifests/game-design/scripts/init-game-design.sh './my game' --dry-run
++bash manifests/game-design/scripts/init-game-design.sh './my game'
++```
++
++安装复制工作流，不安装游戏引擎、不创建运行时工程、不改游戏资源、不发布。没有必需外部 skill，避免非 Unity 项目被迫装 Unity 包。CLI 对新模板 dry-run 只展示调用，精确文件预览用上面的直接脚本。引擎在安装后记录，不使用未映射的 `vibe --scenario` 参数。
++
++默认逐文件保留已有文件；`--force` 仅刷新本安装器 ledger 中登记的模板资源，覆盖前在 `.game-design/backups/<id>/` 保存原件和可运行 restore.py。state/ 与 deliverables/ 从不强制覆盖。已有根 CLAUDE.md/AGENTS.md 即使首次 `--force` 也保留；按提示手工合并入口。目标包 README 不覆盖游戏自己的 README。
++
++```text
++CLAUDE.md / AGENTS.md                项目入口（相同契约）
++.game-design/
++  README.md
++  references/lifecycle.md            阶段、验收与人工决策
++  references/adapter-contract.md     引擎适配协议
++  references/engines.json            23 项单一事实源
++  references/engine-matrix.md        生成的覆盖矩阵
++  references/adapters/*.md           按需加载的引擎细则
++  references/workflow.json / .svg    可编辑源 / 人机流程图
++  scripts/game_design.py             只读检测/查询/状态检查与文档生成
++  scripts/render_workflow.py         零依赖流程图渲染/漂移检查
++  templates/                        设计/数值/测试/发布模板
++  state/                            项目状态、决策、证据（用户数据）
++  deliverables/                      已填写的设计包与后续产物
++```
++
++## 引擎覆盖
++
++完整细则见 [覆盖矩阵](references/engine-matrix.md)，数据见 [engines.json](references/engines.json)。
++
++| 分组 | 已登记适配器 |
++|---|---|
++| 通用编辑器 | Unity、Unreal Engine、Godot、Cocos Creator、O3DE、Stride |
++| Web 游戏/渲染 | Phaser、PixiJS、Three.js、Babylon.js、PlayCanvas |
++| 低代码 | GameMaker、Construct 3、GDevelop |
++| 叙事/RPG | Ren'Py、RPG Maker MZ/MV |
++| 代码优先 | Defold、LÖVE、MonoGame、libGDX、Bevy、raylib |
++| 平台型 | Roblox Studio |
++
++**覆盖级别为 design-adapter**：场景/实体、脚本/数据、资源管线、坐标/输入、存档/联网、测试、导出和风险均有映射。PixiJS/Three.js/raylib 等是渲染库/框架，不伪装成自带完整玩法工具链的编辑器。此模板的 23 项运行时验证初值均为 `not_run`，真实运行结果只在具体项目证据中填写。官方资料核验日期为 2026-11-03，不锁定“最新版本”；以已有项目和官方对应版本文档为准。
++
++## 首次使用
++
++可对代理说：
++
++> 使用 game-design 设计这款游戏。先看现有工程和资料，明确体验支柱、核心循环、目标平台、团队与工期。引擎未定时比较候选；已有工程保持原引擎和版本。先交付 GDD、系统/关卡/叙事、视听 UI、技术映射与试玩验收计划，方向由我确认后再决定是否进入原型。
++
++安装后从项目根运行：
++
++```bash
++python3 .game-design/scripts/game_design.py list
++python3 .game-design/scripts/game_design.py detect --project .
++python3 .game-design/scripts/game_design.py adapter --engine godot
++python3 .game-design/scripts/game_design.py check-project --project .
++```
++
++detect 只看所指定根的有限文件/依赖，单一命中返回 0；多命中 ambiguous、无命中 unrecognized 返回 1；无目录或非法输入返回 2。自定义依赖别名、深层 monorepo、vendor-only、云 Editor 工程需显式定位/选择；线索不代表完整语义解析。模板目录本身含多个引擎示例，不将其当游戏工程。
++
++填写 state/project.json：engine 使用 list 中 ID，engine_version 记录实际版本，targets 填目标平台，budgets 填帧时/内存/下载体积。未定保持 null/空串，并记录待决，不用伪值通过检查。check-project 返回 1 表示 pending，0 仅代表配置齐备，绝不是游戏或发布验收。
++
++## 设计产物与流程
++
++复制所需 templates 到 deliverables 后填写，不直接用占位模板当交付。覆盖 brief、GDD、系统/经济数值 CSV、关卡、叙事、视听/可访问性、引擎决策、技术设计、原型/试玩、制作/发布和需求追踪。模式默认为 design-only；implementation 模式才进入开发链。
++
++[阶段契约与验收](references/lifecycle.md) · [适配协议](references/adapter-contract.md) · [工作流源](references/workflow.json)
++
++![游戏设计人机协作工作流](references/workflow.svg)
++
++图表示规则而非当前进度；AI 执行、AI 验证与人工决策分泳道，包含返工、等待、回退与恢复点。
++
++## 生成与检查
++
++以下命令在 **安装后项目根** 运行：
++
++```bash
++python3 .game-design/scripts/game_design.py check-catalog
++python3 .game-design/scripts/game_design.py render-adapters --check
++python3 .game-design/scripts/render_workflow.py --source .game-design/references/workflow.json --output .game-design/references/workflow.svg --check
++```
++
++修改 engines.json 后先运行 `render-adapters`（不带 --check）；修改 workflow.json 后运行对应渲染命令（不带 --check）。两个 check 模式只读，缺文件或漂移返回非零，不自动修复。源码仓库中把命令前缀 `.game-design/` 换成 `manifests/game-design/`。
++
++源码测试：
++
++```bash
++PYTHONPATH=tools/vibe_tool/src PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s manifests/game-design/tests -v
++```
++
++## 升级与回退
++
++使用 `vibe add manifest game-design ./my-game --force` 或直接 init 脚本 `--force` 刷新本模板管理的资源。自定义模板资源也会被显式 force 覆盖，请先比较备份；项目状态、交付物、实际游戏资产保留。不要假定通用 `vibe update manifest` 会同步本模板的任意 payload。
++
++安装器进程内异常会恢复已写路径；强制刷新后可执行其打印的 `python3 .../restore.py`，恢复该次更改。恢复会拒绝覆盖刷新之后的新编辑；先人工处理冲突再重试。中断/断电后检查 backups 中 transaction.json 与原件，先恢复再重新安装。已有其他 manifest 的根入口需要合并，Unity 专项实现可继续使用独立 unity-game，不由本模板迁移。
+diff --git a/manifests/game-design/references/adapter-contract.md b/manifests/game-design/references/adapter-contract.md
+new file mode 100644
+index 0000000..18a3b3a
+--- /dev/null
++++ b/manifests/game-design/references/adapter-contract.md
+@@ -0,0 +1,37 @@
++# 引擎适配协议
++
++## 一份设计，多种工程映射
++
++GDD 描述玩家体验和行为，不写某引擎 API 为前提。TDD 将 REQ-ID 映射到所选引擎的实体/场景、脚本/数据、资源与工具，并明确测试/导出证据。转换引擎是迁移决策，不是替换引擎名。
++
++每个 engines.json 条目必须包含：稳定 ID/name/category、fit、detection、version、scene、code、assets、space、input、save_network、tests、build、pitfalls、sources、support、runtime_validation。`check-catalog` 检查完整性；`render-adapters` 从该数据生成可读指南，避免目录与文档双份手工维护。
++
++## 必须绑定的项目能力
++
++| 适配面 | 项目需明确的事实/证据 |
++|---|---|
++| 识别/版本 | 实际引擎/版本、项目位置、OS、锁文件、依赖、SDK、工具路径；检测命中仅为线索 |
++| 实体/生命周期 | GDD 对象、状态和关卡在 Scene/World/Node/Room/Event/ECS 的归属，初始化/销毁/切场景规则 |
++| 脚本/数据 | 语言/运行时、纯领域边界、数值源/生成物、schema 与迁移、随机种子和固定模拟步长 |
++| 资源 | 源/导出/缓存目录、GUID/UID/ID、模型/动画/材质/贴图/音频/字体、许可、压缩和异步加载 |
++| 坐标/输入 | 轴向、手性、单位、像素密度、物理尺度、相机、UI 安全区、键鼠/手柄/触控动作表 |
++| 存档/联网 | 写入路径、旧档样本和 schema、断电/重试；联网需要 authority、同步、弱网和测试数据隔离 |
++| 测试 | 静态/单测/场景测试/构建/真实游玩/目标设备/真人反馈分别记录，缺工具为 not_run |
++| 发布 | 本机工具/许可证/平台资格、真实命令、预期退出码、日志、产物路径/hash、签名、发布门与回退 |
++
++## 按需加载与能力降级
++
++- 只读所选 adapter；Web renderer 与完整引擎分开。没有场景、物理、存档、编辑器的框架，应在 TDD 中显式补设计，不能借用 Unity 概念宣称已具备。
++- CLI/MCP 已连接且适用时优先程序化路径；只能 GUI 的编辑器使用项目允许的 GUI 工具/人工步骤，记录操作输入输出。不臆造每个引擎通用的 `--headless --test --export`。
++- 构建模板中的变量全部解析、核验 `--help` 与工具版本后再执行；写清 host shell、cwd、环境和引擎特定退出码。Cocos Creator 3.8 成功码 36 是重要反例。
++- 本机没有某 Editor/设备时可完成设计映射与纯数据测试；运行时保持 not_run，并说明所缺依赖和恢复用例。文档/目录检查不能替代引擎启动、资产导入和实际游戏操作。
++- VR/XR、主机、小游戏、多人、mod 和 live-ops 是横切能力，不因选某引擎而自动通过；平台规则与 SDK/许可按项目和日期核验。
++
++## 添加新引擎
++
++1. 以官方对应版本资料填写完整条目，登记限制与可复现测试入口，不宣称未运行结果。
++2. 识别规则应依赖特征签名，避免任意 package.json/Cargo.toml/project.json；未知/冲突不自动选择。
++3. 为独立规则创建正例、误判反例与多引擎冲突用例；实际引擎测试分开记录。
++4. 运行 check-catalog、render-adapters、render-adapters --check 及模板测试；原流程有变化时同步更新 workflow 源与 SVG。
++
++Unity 深化适配复用仓库的 unity-game 与 unity-game-development，不复制其 skill-map.json 或 renderer。新 manifest 的 workflow 表达跨引擎流程，与 Unity 原工作流分别维护。
+diff --git a/manifests/game-design/references/adapters/babylon.md b/manifests/game-design/references/adapters/babylon.md
+new file mode 100644
+index 0000000..5018830
+--- /dev/null
++++ b/manifests/game-design/references/adapters/babylon.md
+@@ -0,0 +1,62 @@
++# Babylon.js 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++浏览器 3D、可选 WebXR 和较完整的场景工具链。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "dependencies": [
++    "@babylonjs/core",
++    "babylonjs"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 @babylonjs 全套包版本、渲染后端与 lockfile；物理插件版本匹配。
++
++## 场景与实体
++
++Scene/Mesh/TransformNode 与 Entity 领域层映射，关卡流式和资产容器单独设计。
++
++## 脚本与数值
++
++JS/TS；行为状态与渲染循环分离，配置表通过类型化数据进入。
++
++## 资产管线
++
++glTF/GLB、PBR、纹理、骨骼与 AssetContainer；加载/销毁和 Inspector 检查。
++
++## 坐标与尺度
++
++默认左手系、可切右手系；坐标选择写进 TDD，验证 glTF 转换和物理尺度。
++
++## 输入与 UI
++
++输入管理器/ActionManager 或自定义动作层；测试摄像机控制、UI 焦点和手柄。
++
++## 存档与联网
++
++存档模型独立于 Scene 快照；联网与后端权限设计单独验收。
++
++## 测试与证据
++
++领域单测、浏览器玩法、物理与动画回放；WebGPU/WebGL 兼容按项目目标测试。
++
++## 构建与导出
++
++沿用已安装包和 package scripts，HTTP 验证 asset URLs、引擎包拆分与加载失败恢复。
++
++## 约束与风险
++
++Havok 等物理依赖与包体成本需单独审查；WebXR 与目标设备是附加验收。
++
++## 官方资料
++
++- [官方文档](https://doc.babylonjs.com/)
+diff --git a/manifests/game-design/references/adapters/bevy.md b/manifests/game-design/references/adapters/bevy.md
+new file mode 100644
+index 0000000..a5c2165
+--- /dev/null
++++ b/manifests/game-design/references/adapters/bevy.md
+@@ -0,0 +1,64 @@
++# Bevy 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++Rust ECS、系统组合与定制 2D/3D。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "text": [
++    [
++      "Cargo.toml",
++      "BEVY_DEPENDENCY"
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 Cargo.lock、rust-toolchain 和 Bevy 主次版本；插件 API 随版本快速变化。
++
++## 场景与实体
++
++Entity/Component/System→玩法对象，States/Schedules→流程，Scenes/Assets→内容。
++
++## 脚本与数值
++
++Rust ECS 系统；事件/消息与资源按当前版本 API，领域逻辑可脱离渲染 App 测试。
++
++## 资产管线
++
++AssetServer/Handle、glTF/纹理，异步加载状态与卸载检查。
++
++## 坐标与尺度
++
++2D/3D 与 transform、camera、物理插件坐标统一，固定时间步与渲染更新分离。
++
++## 输入与 UI
++
++Action mapping 基于当前输入 API 或已锁定插件，焦点/手柄/触控检查。
++
++## 存档与联网
++
++显式序列化领域数据，不直接存 ECS world；联网插件与 authority 单独确定。
++
++## 测试与证据
++
++cargo test 测纯逻辑/无窗口 App；cargo check 不等同测试；GPU/输入/音频需真实运行。
++
++## 构建与导出
++
++工程根 cargo check --locked、cargo test --locked；发布按实际 target/features 的 cargo build --release --locked，并包含资产。
++
++## 约束与风险
++
++workspace 继承版本需按 member 解析；不把任意 Cargo 项目识别为 Bevy，不自动升级生态插件。
++
++## 官方资料
++
++- [官方文档](https://github.com/bevyengine/bevy)
+diff --git a/manifests/game-design/references/adapters/cocos.md b/manifests/game-design/references/adapters/cocos.md
+new file mode 100644
+index 0000000..31cb0e1
+--- /dev/null
++++ b/manifests/game-design/references/adapters/cocos.md
+@@ -0,0 +1,66 @@
++# Cocos Creator 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++移动、Web 与小游戏平台，组件化 2D/3D。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "json_keys": [
++    [
++      "package.json",
++      [
++        "creator"
++      ]
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++读取 package.json creator.version；2.x/3.x 分支与构建参数分别处理，小游戏 SDK 跟平台锁定。
++
++## 场景与实体
++
++关卡→Scene，实体→Node/Component，复用→Prefab，UI→Canvas/Widget。
++
++## 脚本与数值
++
++3.x TypeScript 组件；数值配置与生命周期分离，资源 UUID 和序列化引用保持稳定。
++
++## 资产管线
++
++assets/.meta 成对保存，Asset Bundle/图集/纹理压缩按分包预算设计。
++
++## 坐标与尺度
++
++记录 2D UI 与 3D 坐标约定；适配分辨率、安全区、DPR 与相机投影。
++
++## 输入与 UI
++
++事件系统/触摸输入；小游戏平台返回、暂停、音频激活和触点冲突专项测试。
++
++## 存档与联网
++
++本地存储与平台用户数据分离；联网重试、平台登录和业务版本迁移分别设计。
++
++## 测试与证据
++
++纯逻辑测试 + Creator 预览 + 平台开发者工具 + 真机，分包加载/后台恢复/弱网留日志。
++
++## 构建与导出
++
++3.x 模板："$CREATOR" --project "$PROJECT" --build "configPath=$CONFIG"；从当前 Editor 构建面板导出配置。3.8 文档成功码为 36，失败码 32/34，不能套统一 exit=0。
++
++## 约束与风险
++
++小游戏不是普通 Web 页面；GUI/SDK/签名依实际工具链；2.x 的 --path 不能直接套到 3.x。
++
++## 官方资料
++
++- [官方文档](https://docs.cocos.com/creator/3.8/manual/en/editor/publish/publish-in-command-line.html)
+diff --git a/manifests/game-design/references/adapters/construct.md b/manifests/game-design/references/adapters/construct.md
+new file mode 100644
+index 0000000..8f40458
+--- /dev/null
++++ b/manifests/game-design/references/adapters/construct.md
+@@ -0,0 +1,62 @@
++# Construct 3 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++事件表驱动的 2D/Web 和低代码原型。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.c3p",
++    "project.c3proj"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 Editor release、插件版本和项目备份；单文件 .c3p 为容器，不按文本源文件改写。
++
++## 场景与实体
++
++Layout→关卡，Event Sheet→规则，Object/Family/Behavior→实体族与复用。
++
++## 脚本与数值
++
++事件表为主，JS 脚本是可选扩展；把数值常量整理为变量/数据表。
++
++## 资产管线
++
++Animation/Tilemap/Audio 与插件资源；验证导出 asset paths 和下载缓存。
++
++## 坐标与尺度
++
++2D Y-down；layout、layer parallax、viewport 和 fullscreen 缩放区分。
++
++## 输入与 UI
++
++Keyboard/Touch/Gamepad behaviors，UI 事件优先级与多点触控。
++
++## 存档与联网
++
++Local Storage/Savegame 或后端方案明确版本与插件兼容。
++
++## 测试与证据
++
++Preview/Debugger、布局跳转、事件触发顺序和导出包跨浏览器试玩，保留事件表证据。
++
++## 构建与导出
++
++通过 Editor Export 选择实际平台；自动化仅使用当前订阅与版本提供的接口，记录导出 preset。
++
++## 约束与风险
++
++低代码不是零测试；不直接解压/批改 c3p 容器，不假定全部平台导出可用。
++
++## 官方资料
++
++- [官方文档](https://www.construct.net/en/make-games/manuals/construct-3)
+diff --git a/manifests/game-design/references/adapters/defold.md b/manifests/game-design/references/adapters/defold.md
+new file mode 100644
+index 0000000..239bc24
+--- /dev/null
++++ b/manifests/game-design/references/adapters/defold.md
+@@ -0,0 +1,61 @@
++# Defold 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++轻量 2D/3D、移动/Web 与 Lua 组件式开发。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "game.project"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 Editor/Engine/Bob 版本、JDK 和依赖 URL/commit；不假定任意 bob.jar 匹配。
++
++## 场景与实体
++
++Collection→场景，GameObject/Component→实体，Factory/CollectionFactory→生成。
++
++## 脚本与数值
++
++Lua scripts/gui_scripts 与消息系统，配置属性/资源，纯规则模块独立测试。
++
++## 资产管线
++
++Atlas/Tile Source/Model，依赖从构建根可达；动态 raw 文件放 Custom Resources。
++
++## 坐标与尺度
++
++记录世界/GUI 坐标、投影与物理尺度；相机与不同屏幕比例分别验证。
++
++## 输入与 UI
++
++Input binding 与 acquire_input_focus；GUI/多触点/手柄焦点管理。
++
++## 存档与联网
++
++sys.save/load 版本化，网络消息与游戏状态边界明确。
++
++## 测试与证据
++
++Lua 规则测试 + Editor 运行 + 真机；消息时序、collection 生命周期和加载失败专项测试。
++
++## 构建与导出
++
++在工程根模板：java -jar "$BOB" --archive --platform "$PLATFORM" resolve build bundle；核验 JDK、平台、扩展服务器与签名。
++
++## 约束与风险
++
++native extension 可能使用远程构建服务，先记录依赖和数据边界；构建根不可达资源不会自动进入包。
++
++## 官方资料
++
++- [官方文档](https://defold.com/manuals/bob/)
+diff --git a/manifests/game-design/references/adapters/gamemaker.md b/manifests/game-design/references/adapters/gamemaker.md
+new file mode 100644
+index 0000000..c655ff6
+--- /dev/null
++++ b/manifests/game-design/references/adapters/gamemaker.md
+@@ -0,0 +1,61 @@
++# GameMaker 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++2D、房间驱动、GML 或可视化制作。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.yyp"
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 IDE、Runtime 与目标模块版本；项目格式随版本变化，先备份再由 Editor 迁移。
++
++## 场景与实体
++
++Room→关卡，Object/Instance→实体，Sequence→过场，Prefab 类需求用已有对象/数据生成模式。
++
++## 脚本与数值
++
++GML 或项目既有可视化事件；Create/Step/Draw 生命周期与规则层分离。
++
++## 资产管线
++
++Sprite/TileSet/Texture Group 与音频资源；使用 Editor 修改资源引用，检查 YY 路径。
++
++## 坐标与尺度
++
++2D 通常 Y-down；room 坐标、camera/view 和 GUI 层区分。
++
++## 输入与 UI
++
++键盘/鼠标/手柄/触控映射到动作，检查不同帧率下 Step 逻辑。
++
++## 存档与联网
++
++版本化存档与平台沙盒目录；联网/回滚逻辑按需求另建。
++
++## 测试与证据
++
++调试运行、房间切换、碰撞、存档读写、目标导出包试玩；自建断言需有明确退出/报告。
++
++## 构建与导出
++
++以当前 IDE 的 Build/Run/Create Executable 流程与已购/可用模块为准；自动化先验证对应 Runtime/Igor 接口。
++
++## 约束与风险
++
++不编造跨版本通用 headless 命令；VM/YYC、许可与 console 模块能力单独核验。
++
++## 官方资料
++
++- [官方文档](https://manual.gamemaker.io/monthly/en/)
+diff --git a/manifests/game-design/references/adapters/gdevelop.md b/manifests/game-design/references/adapters/gdevelop.md
+new file mode 100644
+index 0000000..44fe544
+--- /dev/null
++++ b/manifests/game-design/references/adapters/gdevelop.md
+@@ -0,0 +1,68 @@
++# GDevelop 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++事件驱动 2D/轻量 3D、低代码快速验证。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "json_keys": [
++    [
++      "*.json",
++      [
++        "gdVersion",
++        "layouts",
++        "properties"
++      ]
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 Editor/gdVersion、扩展版本与导出工具；同名 game.json 不能仅凭文件名识别。
++
++## 场景与实体
++
++Scene→关卡，Object/Behavior→实体，External Events/Layouts→复用。
++
++## 脚本与数值
++
++事件与变量作用域明确，JS 扩展沿用项目；数值用可追溯表驱动。
++
++## 资产管线
++
++Resources 资源映射与相对路径，源文件和导出目录分离；检查大小写与远程资产。
++
++## 坐标与尺度
++
++2D 场景坐标、相机和层 UI 分开；3D 行为需固定坐标/尺度约定。
++
++## 输入与 UI
++
++事件条件映射键鼠/触控/手柄；检查多触点、暂停、窗口尺寸变化。
++
++## 存档与联网
++
++Storage/JSON 版本化；平台服务与多人扩展仅在需求明确后引入。
++
++## 测试与证据
++
++Preview/Debugger + 事件边界与变量检查 + 导出包试玩；真机网络/性能另测。
++
++## 构建与导出
++
++记录 Editor 或已验证 gdexport 工作流，导出平台配置与云/本地构建成本明确。
++
++## 约束与风险
++
++不能把有 properties 的任意 JSON 当项目；云导出不是默认允许的自动发布。
++
++## 官方资料
++
++- [官方文档](https://wiki.gdevelop.io/gdevelop5/)
+diff --git a/manifests/game-design/references/adapters/godot.md b/manifests/game-design/references/adapters/godot.md
+new file mode 100644
+index 0000000..cd796a7
+--- /dev/null
++++ b/manifests/game-design/references/adapters/godot.md
+@@ -0,0 +1,61 @@
++# Godot 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++轻量 2D/3D、开源工具链与节点组合。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "project.godot"
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 project.godot config_version/features 与 godot --version；Godot 3/4、GDScript/C# 和导出模板分开锁定。
++
++## 场景与实体
++
++实体→Node；复用→PackedScene；关卡→.tscn；信号连接表达系统边界。
++
++## 脚本与数值
++
++GDScript 或 C# 遵循既有项目；Resource/.tres 承载配置，Autoload 仅用于必要全局服务。
++
++## 资产管线
++
++保留 .uid 与导入配置，缓存 .godot 不当源资产；验证 glTF、动画、碰撞和资源路径大小写。
++
++## 坐标与尺度
++
++2D Y-down、3D Y-up；明确像素/米制约定，分离 Control 布局和世界坐标。
++
++## 输入与 UI
++
++InputMap actions；处理触控、手柄 deadzone 和 UI focus。
++
++## 存档与联网
++
++user:// 存档加版本迁移；多人按项目选择 MultiplayerAPI 与权威节点。
++
++## 测试与证据
++
++headless 导入/脚本检查仅是静态入口；行为测试用项目已有 GUT/GdUnit 或自建 harness，并执行真实图形试玩。
++
++## 构建与导出
++
++模板："$GODOT" --headless --path "$PROJECT" --import；导出："$GODOT" --headless --path "$PROJECT" --export-release "$PRESET" "$OUTPUT"；先安装匹配导出模板、创建输出父目录。
++
++## 约束与风险
++
++不能将 headless import 等同于测试；C#、Web、移动导出能力查对应版本；不能自动迁移 3→4。
++
++## 官方资料
++
++- [官方文档](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html)
+diff --git a/manifests/game-design/references/adapters/libgdx.md b/manifests/game-design/references/adapters/libgdx.md
+new file mode 100644
+index 0000000..9e66399
+--- /dev/null
++++ b/manifests/game-design/references/adapters/libgdx.md
+@@ -0,0 +1,72 @@
++# libGDX 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++Java/Kotlin 跨平台、代码优先 2D/3D。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "text": [
++    [
++      "build.gradle",
++      "com.badlogicgames.gdx"
++    ],
++    [
++      "build.gradle.kts",
++      "com.badlogicgames.gdx"
++    ],
++    [
++      "gradle.properties",
++      "gdxVersion"
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 Gradle Wrapper、JDK、gdx 与各 backend；旧 lwjgl 与 lwjgl3 区分。
++
++## 场景与实体
++
++Game/Screen→场景，Scene2D→UI/2D 表现；实体系统根据实际需求选择。
++
++## 脚本与数值
++
++Java/Kotlin，核心逻辑在 core，平台代码在 backend；数值表与资源服务分离。
++
++## 资产管线
++
++AssetManager/TextureAtlas/模型与字体，引用计数与 dispose 生命周期明确。
++
++## 坐标与尺度
++
++世界/相机与 Scene2D Viewport 分离；输入坐标转换和物理尺度验收。
++
++## 输入与 UI
++
++InputProcessor/InputMultiplexer 映射动作，Android 返回/暂停/恢复按平台处理。
++
++## 存档与联网
++
++Files/Preferences 或显式版本化存档；网络接口和线程边界明确。
++
++## 测试与证据
++
++已有 Gradle test 任务测逻辑，图形 backend 真实运行；安卓生命周期和资源泄漏另测。
++
++## 构建与导出
++
++先用 ./gradlew tasks 确认可用 backend 任务，再执行项目已有 lwjgl3/Android/其他目标构建任务。
++
++## 约束与风险
++
++不硬编码所有项目都有 desktop:dist；HTML backend 与反射/库兼容需查项目实际选择。
++
++## 官方资料
++
++- [官方文档](https://libgdx.com/wiki/)
+diff --git a/manifests/game-design/references/adapters/love.md b/manifests/game-design/references/adapters/love.md
+new file mode 100644
+index 0000000..48aed57
+--- /dev/null
++++ b/manifests/game-design/references/adapters/love.md
+@@ -0,0 +1,62 @@
++# LÖVE 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++Lua 2D、游戏循环清晰的小型项目。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "all": [
++    "main.lua",
++    "conf.lua"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 love --version、LuaJIT 与第三方模块；只有 main.lua 是弱线索，显式选择也可接入。
++
++## 场景与实体
++
++love.load/update/draw 为入口；自行设计 Scene/Entity、状态机与内容系统。
++
++## 脚本与数值
++
++Lua 模块化规则，固定步长更新与 draw 分离；配置表与运行时对象区分。
++
++## 资产管线
++
++图片/音频/字体/图集相对路径，按打包大小写和纹理过滤验证。
++
++## 坐标与尺度
++
++2D Y-down；世界坐标、相机、像素比例和 DPI 分开。
++
++## 输入与 UI
++
++love.keyboard/mouse/touch/joystick 映射动作，处理 focus 与 resize。
++
++## 存档与联网
++
++love.filesystem 读写身份目录，存档 schema 与不可信数据解析隔离。
++
++## 测试与证据
++
++纯 Lua 测试 + love 运行输入回放；计时、碰撞、音频与窗口缩放检查。
++
++## 构建与导出
++
++运行模板："$LOVE" "$PROJECT"；.love 包必须以 main.lua 为根，原生分发按目标合并/打包。
++
++## 约束与风险
++
++不假定自带场景编辑器或测试 runner；只有 main.lua 的项目需确认而不是误判通用 Lua。
++
++## 官方资料
++
++- [官方文档](https://github.com/love2d/love)
+diff --git a/manifests/game-design/references/adapters/monogame.md b/manifests/game-design/references/adapters/monogame.md
+new file mode 100644
+index 0000000..36ccdcc
+--- /dev/null
++++ b/manifests/game-design/references/adapters/monogame.md
+@@ -0,0 +1,64 @@
++# MonoGame 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++C# 2D/3D、自定义游戏架构和内容管线。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "text": [
++    [
++      "*.csproj",
++      "MonoGame.Framework"
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 .NET SDK、MonoGame NuGet、MGCB 与目标 backend；读取 global.json/项目文件。
++
++## 场景与实体
++
++Game/Update/Draw 为核心；自行映射场景管理、实体/组件和关卡格式。
++
++## 脚本与数值
++
++C# 纯规则层 + 服务/内容边界，避免把全部逻辑集中在 Game1。
++
++## 资产管线
++
++.mgcb/MGCB 内容管线、源资产与编译 .xnb 分离，检查平台适用性。
++
++## 坐标与尺度
++
++2D SpriteBatch 和 3D camera 坐标独立约定；viewport、DPI、单位与投影明示。
++
++## 输入与 UI
++
++Keyboard/Mouse/GamePad/Touch 统一动作层，处理设备断连。
++
++## 存档与联网
++
++自建版本化存档与网络层；路径按目标平台约定。
++
++## 测试与证据
++
++dotnet test 只针对已有测试项目；图形/音频/输入必须运行真实 Game。
++
++## 构建与导出
++
++沿用 csproj/sln 的 dotnet build/publish 配置、RID 与 MGCB 工具，不假定本机可交叉发布所有目标。
++
++## 约束与风险
++
++framework 不附带完整编辑器/游戏状态机；跨平台内容与 native 库缺失需单独诊断。
++
++## 官方资料
++
++- [官方文档](https://docs.monogame.net/articles/getting_started/)
+diff --git a/manifests/game-design/references/adapters/o3de.md b/manifests/game-design/references/adapters/o3de.md
+new file mode 100644
+index 0000000..79ae2e3
+--- /dev/null
++++ b/manifests/game-design/references/adapters/o3de.md
+@@ -0,0 +1,67 @@
++# O3DE 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++开源大型 3D、组件系统与自定义管线。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "json_keys": [
++    [
++      "project.json",
++      [
++        "project_name",
++        "engine"
++      ]
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++读取 project.json、engine.json、Gem 与 CMake preset；版本、编译器和目标平台锁定。
++
++## 场景与实体
++
++Entity/Component、Prefab、Level 映射玩法；Gem 边界与系统组件职责明确。
++
++## 脚本与数值
++
++C++/Lua/Script Canvas 按项目实际选择；配置与规则分离。
++
++## 资产管线
++
++Asset Processor、源资产与 asset cache 分开；Prefab 引用、材质/模型处理状态检查。
++
++## 坐标与尺度
++
++明确项目 Z-up/米制约定，DCC、相机和 PhysX 统一验证。
++
++## 输入与 UI
++
++Input 系统映射设备动作，UI 与世界输入分流。
++
++## 存档与联网
++
++自建版本化存档；联网使用项目选定 Gem，authority/replication 单独设计。
++
++## 测试与证据
++
++C++/Gem 测试 + Editor/GameLauncher，Asset Processor 失败与运行时加载分别追踪。
++
++## 构建与导出
++
++使用项目已验证的 CMake presets 与 O3DE export 工具；先完成资产处理，再导出目标 runtime。
++
++## 约束与风险
++
++构建树/资产缓存体积和编译器成本大；不使用通用 project.json 文件名直接判定。
++
++## 官方资料
++
++- [官方文档](https://docs.o3de.org/docs/)
+diff --git a/manifests/game-design/references/adapters/phaser.md b/manifests/game-design/references/adapters/phaser.md
+new file mode 100644
+index 0000000..015e7f5
+--- /dev/null
++++ b/manifests/game-design/references/adapters/phaser.md
+@@ -0,0 +1,61 @@
++# Phaser 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++浏览器 2D 游戏；需要场景、输入与物理的轻量 Web 团队。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "dependencies": [
++    "phaser"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 package.json 与对应 lockfile 中 Phaser 主版本，物理插件与 bundler；不同主版本 API 单独核验。
++
++## 场景与实体
++
++玩法阶段→Scene，实体→GameObject，预加载与运行 Scene 分开，复用通过工厂/类。
++
++## 脚本与数值
++
++JS/TS，纯数值/状态机与 Scene update 分离；数据通过 JSON 配置进入。
++
++## 资产管线
++
++Loader/纹理图集，资源 URL、CORS、大小写与音频编码验证；首屏和分场景加载预算。
++
++## 坐标与尺度
++
++2D 屏幕 Y-down；逻辑分辨率、Scale 配置与 CSS/DPR 分离。
++
++## 输入与 UI
++
++键盘/指针/触控映射成动作；失焦暂停、触控滚动冲突和音频首次交互测试。
++
++## 存档与联网
++
++IndexedDB/localStorage schema；在线功能用独立后端，浏览器不持有服务端秘密。
++
++## 测试与证据
++
++纯逻辑单测 + 项目已有浏览器 harness；验证 Canvas/WebGL、移动浏览器与断网恢复。
++
++## 构建与导出
++
++沿用 package.json 实际 scripts 和锁文件包管理器；只有存在 build/test 脚本才运行，产物在真实 HTTP 服务下验收。
++
++## 约束与风险
++
++不为所有项目假定 npm/Vite/Playwright 已安装；浏览器包不等于原生应用或小游戏包。
++
++## 官方资料
++
++- [官方文档](https://docs.phaser.io/phaser/getting-started/what-is-phaser)
+diff --git a/manifests/game-design/references/adapters/pixi.md b/manifests/game-design/references/adapters/pixi.md
+new file mode 100644
+index 0000000..12ebd02
+--- /dev/null
++++ b/manifests/game-design/references/adapters/pixi.md
+@@ -0,0 +1,61 @@
++# PixiJS 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++高性能 2D 渲染与定制玩法；不是完整游戏引擎。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "dependencies": [
++    "pixi.js"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 pixi.js 主版本、渲染后端、扩展包和 lockfile；v7/v8 初始化/加载接口差异先核验。
++
++## 场景与实体
++
++显示层→Container/Sprite；另建玩法状态机与场景管理，不将显示树当完整实体系统。
++
++## 脚本与数值
++
++JS/TS，Ticker 驱动表现；规则、碰撞与物理库需要显式选择并与渲染解耦。
++
++## 资产管线
++
++Assets/图集/字体与纹理生命周期，切场景销毁 GPU 资源，检查批处理与资源卸载。
++
++## 坐标与尺度
++
++2D Y-down；anchor/pivot、DPR、分辨率缩放和 UI 坐标明确转换。
++
++## 输入与 UI
++
++Federated Events 映射动作；键盘与手柄另接输入层，测试命中区域。
++
++## 存档与联网
++
++自建版本化存档/网络层；不假定 renderer 附带物理或联网。
++
++## 测试与证据
++
++规则单测 + 浏览器输入回放/视觉基线；渲染内存和上下文丢失专项测试。
++
++## 构建与导出
++
++沿用项目 lockfile 与实际 scripts；静态包在 HTTP 下检查纹理/字体 URL、缓存更新与降级。
++
++## 约束与风险
++
++完整玩法、物理、编辑器与存档是额外设计工作；视觉快照不代表玩法通过。
++
++## 官方资料
++
++- [官方文档](https://pixijs.com/8.x/guides/getting-started/intro)
+diff --git a/manifests/game-design/references/adapters/playcanvas.md b/manifests/game-design/references/adapters/playcanvas.md
+new file mode 100644
+index 0000000..3344a74
+--- /dev/null
++++ b/manifests/game-design/references/adapters/playcanvas.md
+@@ -0,0 +1,61 @@
++# PlayCanvas 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++Web 3D；云 Editor 或 Engine-only 两种工作方式。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "dependencies": [
++    "playcanvas"
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 Engine npm 版本或 Editor 导出版本、项目 ID 和下载快照；云端工程不凭本地空目录识别。
++
++## 场景与实体
++
++Entity/Component、Scene/Template 映射设计对象；云端项目记录资源 ID 与场景版本。
++
++## 脚本与数值
++
++沿用项目 Script 类型/JS/TS 规范；系统数值与实体脚本分离。
++
++## 资产管线
++
++Asset Registry、GLB、贴图压缩与异步加载，云导出时保留可复建的资源映射。
++
++## 坐标与尺度
++
++Y-up，尺度按米约定；摄像机、光照/烘焙、碰撞和 UI 布局核验。
++
++## 输入与 UI
++
++Keyboard/Mouse/Touch/Gamepad 接统一动作层；移动输入与 UI 焦点专项验证。
++
++## 存档与联网
++
++自定义存档后端；云编辑协作不等于游戏运行时多人同步。
++
++## 测试与证据
++
++Editor Launch + 下载包真实 HTTP 试玩；Engine-only 逻辑单测和浏览器 QA。
++
++## 构建与导出
++
++区分 Editor 的发布/下载与 Engine-only bundler；记录导出快照、缓存与 URL，不自动云发布。
++
++## 约束与风险
++
++不假定拥有云会话或 API TOKEN；本地依赖检测覆盖 Engine-only，Editor 模式需人工记录。
++
++## 官方资料
++
++- [官方文档](https://developer.playcanvas.com/user-manual/)
+diff --git a/manifests/game-design/references/adapters/raylib.md b/manifests/game-design/references/adapters/raylib.md
+new file mode 100644
+index 0000000..ee9ad56
+--- /dev/null
++++ b/manifests/game-design/references/adapters/raylib.md
+@@ -0,0 +1,68 @@
++# raylib 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++C/C++ 小型 2D/3D、教学和自定义工具链。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "text": [
++    [
++      "CMakeLists.txt",
++      "raylib"
++    ],
++    [
++      "Makefile",
++      "raylib"
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 raylib release、编译器、CMake/Make 与平台 backend；vendored 与系统库分开。
++
++## 场景与实体
++
++InitWindow/循环→入口；自行定义状态机、实体与关卡数据，不依赖虚构 Editor。
++
++## 脚本与数值
++
++C/C++ 模块化规则；资源与生命周期显式管理，接口边界清晰。
++
++## 资产管线
++
++纹理/模型/字体/音频 Load/Unload 成对；工作目录与打包相对路径验证。
++
++## 坐标与尺度
++
++2D 屏幕 Y-down、3D 通常 Y-up；Camera、碰撞和物理约定明示。
++
++## 输入与 UI
++
++键鼠/触控/手柄通过动作层映射；帧时间独立于移动速度。
++
++## 存档与联网
++
++自建文件存档 schema 与联网；内存/字节序/版本兼容按目标考虑。
++
++## 测试与证据
++
++纯逻辑单测/编译器检查 + 实际窗口试玩；内存与资源生命周期单独测试。
++
++## 构建与导出
++
++使用项目已有 CMake preset/Make target；cmake --build "$BUILD_DIR" 仅在已配置构建树后执行。
++
++## 约束与风险
++
++不是全功能编辑器；不得默认所有 raylib 项目使用 CMake 或可直接交叉编译。
++
++## 官方资料
++
++- [官方文档](https://www.raylib.com/)
+diff --git a/manifests/game-design/references/adapters/renpy.md b/manifests/game-design/references/adapters/renpy.md
+new file mode 100644
+index 0000000..8d58b87
+--- /dev/null
++++ b/manifests/game-design/references/adapters/renpy.md
+@@ -0,0 +1,61 @@
++# Ren'Py 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++视觉小说、分支叙事和对话系统。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "game/options.rpy"
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 Ren'Py SDK 与 Python 版本、屏幕语言/插件和发行目标；保留源 .rpy。
++
++## 场景与实体
++
++剧情节点→label/jump/call，界面→screen，立绘/背景→image，分支→menu/状态变量。
++
++## 脚本与数值
++
++Ren'Py script + Python，default/define 生命周期明确；分支可达性和变量更新可测试。
++
++## 资产管线
++
++立绘差分、背景、音频、字体、翻译单独列清单，文件名/图层与版权可追踪。
++
++## 坐标与尺度
++
++虚拟分辨率与 screen/transform 锚点；触控 UI、字体与语言溢出验证。
++
++## 输入与 UI
++
++键鼠/触控/手柄、快进/自动/历史/回滚与可访问性按目标验收。
++
++## 存档与联网
++
++save/load 与 persistent 区分；分支状态/存档兼容和 rollback 行为必须测试。
++
++## 测试与证据
++
++模板："$RENPY_SH" "$PROJECT" lint --error-code；lint 后仍需测试各结局、存取档、回滚、翻译和音频。
++
++## 构建与导出
++
++SDK Launcher Build Distributions 按目标导出；CLI 接口依 SDK 核验，移动目标另需工具链。
++
++## 约束与风险
++
++lint 不是全分支覆盖；旧存档兼容、Python 对象可序列化性和 screen 脚本上下文需审查。
++
++## 官方资料
++
++- [官方文档](https://www.renpy.org/doc/html/cli.html)
+diff --git a/manifests/game-design/references/adapters/roblox.md b/manifests/game-design/references/adapters/roblox.md
+new file mode 100644
+index 0000000..64d199a
+--- /dev/null
++++ b/manifests/game-design/references/adapters/roblox.md
+@@ -0,0 +1,70 @@
++# Roblox Studio 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++UGC/多人在线平台体验；平台内发布。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.rbxl",
++    "*.rbxlx"
++  ],
++  "json_keys": [
++    [
++      "*.project.json",
++      [
++        "tree"
++      ]
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 Studio 版本、Experience/Place 快照和包版本；Rojo 可选且不能仅凭 *.project.json 认定。
++
++## 场景与实体
++
++DataModel/Instance/Model→对象；Workspace→世界；Services 和 Packages 明确边界。
++
++## 脚本与数值
++
++Luau，ServerScriptService/StarterPlayerScripts/ReplicatedStorage 区分权威、客户端与共享模块。
++
++## 资产管线
++
++Asset ID、模型/动画/音频许可与平台审核状态留记录；云资产快照与本地源映射。
++
++## 坐标与尺度
++
++Y-up、stud 单位，角色/相机/碰撞按平台约定；不与其他引擎米制值直接共用。
++
++## 输入与 UI
++
++跨设备动作映射、UI navigation、移动/手柄；避免仅桌面键盘体验。
++
++## 存档与联网
++
++DataStore 预算/重试/迁移；server authority，RemoteEvent 参数验证和多人状态同步。
++
++## 测试与证据
++
++Studio Play + Server & Clients，区分客户端/服务器日志；设备与网络模拟后仍需目标设备试玩。
++
++## 构建与导出
++
++Studio 保存/发布流程，先隔离测试 place；Rojo 同步是可选工程工具，不等同平台发布。
++
++## 约束与风险
++
++不默认开通 API 服务或写生产 DataStore；测试数据与生产体验分离；发布必须经过明确人工门。
++
++## 官方资料
++
++- [官方文档](https://create.roblox.com/docs/studio/testing-modes)
+diff --git a/manifests/game-design/references/adapters/rpgmaker.md b/manifests/game-design/references/adapters/rpgmaker.md
+new file mode 100644
+index 0000000..95cbf1b
+--- /dev/null
++++ b/manifests/game-design/references/adapters/rpgmaker.md
+@@ -0,0 +1,62 @@
++# RPG Maker MZ/MV 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++地图/事件/数据库驱动 RPG；MZ 与 MV 分开管理。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.rmmzproject",
++    "*.rpgproject"
++  ]
++}
++```
++
++## 版本与工具链
++
++记录 MZ/MV、runtime 与插件顺序；绝不混用两代 API、插件和项目文件。
++
++## 场景与实体
++
++Map/MapEvent→关卡互动，Common Event→复用，Actor/Class/Skill/Enemy/Troop→系统数据。
++
++## 脚本与数值
++
++事件页、开关/变量优先；JS 插件是版本化扩展，数值按数据库 ID 绑定。
++
++## 资产管线
++
++img/audio/tilesets 与数据库 JSON/插件保留引用，地图和数据库通过 Editor 管理。
++
++## 坐标与尺度
++
++地图格坐标与像素移动分离；按 tileset、UI 分辨率、相机与插件核验。
++
++## 输入与 UI
++
++键盘/手柄/触控、菜单/对话输入、事件页触发优先级专项测试。
++
++## 存档与联网
++
++存档中的开关/变量/插件对象兼容；数据库 ID 不随意重排。
++
++## 测试与证据
++
++Test Play、战斗测试、事件死锁/传送/支线可达性、旧存档与部署包 QA。
++
++## 构建与导出
++
++Editor Deployment 按目标发布；剔除未使用资源前检查插件动态引用，签名与商店发布独立。
++
++## 约束与风险
++
++不把插件兼容当默认；动态资源误删和开关编号冲突是重点风险。
++
++## 官方资料
++
++- [官方文档](https://rpgmakerofficial.com/product/MZ_help-en/)
+diff --git a/manifests/game-design/references/adapters/stride.md b/manifests/game-design/references/adapters/stride.md
+new file mode 100644
+index 0000000..cb9a6e9
+--- /dev/null
++++ b/manifests/game-design/references/adapters/stride.md
+@@ -0,0 +1,67 @@
++# Stride 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++C#/.NET 组件化 3D 与 Game Studio。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.sdpkg"
++  ],
++  "text": [
++    [
++      "*.csproj",
++      "Stride.Engine"
++    ]
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 Stride NuGet、.NET SDK 与 Game Studio；sln/包与项目版本保持匹配。
++
++## 场景与实体
++
++Scene/Entity/Component、Prefab 与场景层级映射设计；系统脚本独立。
++
++## 脚本与数值
++
++C# SyncScript/AsyncScript 与纯规则层分离，异步生命周期与资源访问明确。
++
++## 资产管线
++
++Game Studio 资产与 .sd* 描述保留；编译资产与源模型/材质分离。
++
++## 坐标与尺度
++
++Y-up 约定与相机投影、物理尺度写入 TDD；导入变换需实际核验。
++
++## 输入与 UI
++
++Input/虚拟按钮按项目实现；多设备、UI 焦点与失焦行为测试。
++
++## 存档与联网
++
++领域数据存档加 schema；网络库按需求选定，不假定自带完整后端。
++
++## 测试与证据
++
++dotnet 规则测试 + Game Studio/真实 runtime；资产编译与图形验收分别记录。
++
++## 构建与导出
++
++使用项目实际 sln/csproj 和平台配置构建/发布；验证目标 runtime、native 依赖与资产打包。
++
++## 约束与风险
++
++普通 .NET 项目不是 Stride；跨平台支持按版本/依赖核验，禁止自动迁移资产。
++
++## 官方资料
++
++- [官方文档](https://doc.stride3d.net/latest/en/manual/)
+diff --git a/manifests/game-design/references/adapters/three.md b/manifests/game-design/references/adapters/three.md
+new file mode 100644
+index 0000000..efc3b1d
+--- /dev/null
++++ b/manifests/game-design/references/adapters/three.md
+@@ -0,0 +1,61 @@
++# Three.js 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++自定义浏览器 3D、轻量交互和实验性游戏；属于渲染库。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "dependencies": [
++    "three"
++  ]
++}
++```
++
++## 版本与工具链
++
++锁定 three revision、addons、GLTF/DRACO/KTX2 解码器与构建锁文件。
++
++## 场景与实体
++
++Scene/Object3D/Mesh 负责显示层，另建实体生命周期、关卡与玩法状态机。
++
++## 脚本与数值
++
++JS/TS；render loop 与固定步长模拟分离，物理/寻路/碰撞库单独选择。
++
++## 资产管线
++
++glTF/GLB、PBR、纹理颜色空间和压缩贴图；显式 dispose 几何体/材质/纹理。
++
++## 坐标与尺度
++
++通常右手 Y-up，单位由项目约定；相机、物理和 DCC 缩放统一。
++
++## 输入与 UI
++
++Pointer/Keyboard/Gamepad/WebXR 按目标映射动作；Raycaster 仅是拾取不是完整交互系统。
++
++## 存档与联网
++
++单独设计存档、网络同步和 authority；避免渲染对象序列化成为存档格式。
++
++## 测试与证据
++
++领域单测 + 浏览器交互 + GPU/帧时/上下文恢复；实际触控与设备测试独立。
++
++## 构建与导出
++
++按 package scripts 构建，HTTP 验证模型/解码器路径、CORS、WebGL 能力与部署 base URL。
++
++## 约束与风险
++
++不自带完整玩法/物理/编辑器；不能将可旋转模型示例称为可玩原型。
++
++## 官方资料
++
++- [官方文档](https://threejs.org/manual/#en/fundamentals)
+diff --git a/manifests/game-design/references/adapters/unity.md b/manifests/game-design/references/adapters/unity.md
+new file mode 100644
+index 0000000..0b505b5
+--- /dev/null
++++ b/manifests/game-design/references/adapters/unity.md
+@@ -0,0 +1,62 @@
++# Unity 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++2D/3D、移动与跨平台；复杂项目可接既有 unity-game 专项流程。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "all": [
++    "ProjectSettings/ProjectVersion.txt",
++    "Assets"
++  ]
++}
++```
++
++## 版本与工具链
++
++读取 ProjectVersion.txt、Packages/manifest.json 与 packages-lock.json；锁定 Editor、渲染管线和测试框架。
++
++## 场景与实体
++
++GDD 实体→GameObject/Component；关卡→Scene；复用→Prefab/Variant。
++
++## 脚本与数值
++
++C# 组件与纯领域层分离；数值→ScriptableObject 或有版本的外部表。
++
++## 资产管线
++
++Assets/.meta 配对提交，GUID 不重建；DCC 源文件与导出物分离，Addressables 按实际依赖选用。
++
++## 坐标与尺度
++
++3D 通常 Y-up、1 单位按 1m 约定；2D 指定 Pixels Per Unit，验证根运动、物理和 UI 缩放。
++
++## 输入与 UI
++
++确认旧 Input Manager 或 Input System；Action 映射键鼠/手柄/触控，处理失焦与重绑定。
++
++## 存档与联网
++
++存档按 persistentDataPath 和 schema 迁移；联网库与 authority 单独选型，单机设计不默认联网。
++
++## 测试与证据
++
++EditMode 验纯逻辑；PlayMode 验场景与生命周期；真实构建试玩、Profiler 与目标设备各留证据。
++
++## 构建与导出
++
++模板："$UNITY" -batchmode -projectPath "$PROJECT" -runTests -testPlatform EditMode -testResults "$RESULTS" -logFile "$LOG"；构建使用项目已存在的 executeMethod，不能把测试命令当构建。
++
++## 约束与风险
++
++同工程 Editor 操作串行；不得自动升级管线/包；console 导出依平台 SDK 和资格；可选手动安装 unity-game-development，不复制其技能目录。
++
++## 官方资料
++
++- [官方文档](https://docs.unity.com/en-us/engine/6000.5/manual/scripting/test-framework-introduction/running-tests/run-tests-from-command-line)
+diff --git a/manifests/game-design/references/adapters/unreal.md b/manifests/game-design/references/adapters/unreal.md
+new file mode 100644
+index 0000000..dccd4a3
+--- /dev/null
++++ b/manifests/game-design/references/adapters/unreal.md
+@@ -0,0 +1,61 @@
++# Unreal Engine 适配器
++
++> 由 engines.json 生成；修改数据后运行 render-adapters。
++
++高保真 3D、大型关卡、Blueprint/C++ 协同与多人体验。
++
++状态：设计/工程映射已登记；运行时验证 **not_run**。
++
++识别规则（仅线索，不选择/升级引擎）：
++
++```json
++{
++  "files": [
++    "*.uproject"
++  ]
++}
++```
++
++## 版本与工具链
++
++读取 .uproject EngineAssociation、插件和 Target.cs；匹配已装 UE 与工具链，禁止隐式资产升级。
++
++## 场景与实体
++
++规则→GameMode/GameState；玩家→Controller/Pawn；关卡→World/Level；复用→Actor/Component/Blueprint。
++
++## 脚本与数值
++
++C++ 保持稳定接口，Blueprint 负责可视化组合；数值→DataAsset/DataTable。
++
++## 资产管线
++
++.uasset/.umap 属二进制，使用 LFS/文件锁或项目既有分工；导入材质、骨骼、LOD 和碰撞需要 Editor 核验。
++
++## 坐标与尺度
++
++Z-up、厘米；DCC 米制转换、左右手坐标差异、导航代理与根运动统一验收。
++
++## 输入与 UI
++
++Enhanced Input 的 Action/Mapping Context；测试 UI 焦点、手柄与触控。
++
++## 存档与联网
++
++SaveGame 版本化；多人明确 server authority、Replication/RPC 与断线重连。
++
++## 测试与证据
++
++Automation/Functional Test + PIE 多客户端；Shipping/Development 包分别测试，检查 cook 日志与 Insights。
++
++## 构建与导出
++
++模板："$RUN_UAT" BuildCookRun -project="$UPROJECT" -platform="$PLATFORM" -build -cook -stage -pak；按主机选 RunUAT.sh/bat，补项目实际打包/归档参数。
++
++## 约束与风险
++
++PIE 通过不代表 cook 后通过；禁止文本批改二进制资产；World Partition、插件和平台 SDK 随版本核验。
++
++## 官方资料
++
++- [官方文档](https://dev.epicgames.com/documentation/unreal-engine/build-operations-cooking-packaging-deploying-and-running-projects-in-unreal-engine)
+diff --git a/manifests/game-design/references/engine-matrix.md b/manifests/game-design/references/engine-matrix.md
+new file mode 100644
+index 0000000..eeef438
+--- /dev/null
++++ b/manifests/game-design/references/engine-matrix.md
+@@ -0,0 +1,29 @@
++# 引擎覆盖矩阵
++
++> 自动生成，事实源为 [engines.json](engines.json)。覆盖表示设计适配，不表示构建通过。
++
++| ID | 引擎/框架 | 类别 | 适用与边界 |
++|---|---|---|---|
++| `unity` | [Unity](adapters/unity.md) | general | 2D/3D、移动与跨平台；复杂项目可接既有 unity-game 专项流程。 |
++| `unreal` | [Unreal Engine](adapters/unreal.md) | general | 高保真 3D、大型关卡、Blueprint/C++ 协同与多人体验。 |
++| `godot` | [Godot](adapters/godot.md) | general | 轻量 2D/3D、开源工具链与节点组合。 |
++| `cocos` | [Cocos Creator](adapters/cocos.md) | general | 移动、Web 与小游戏平台，组件化 2D/3D。 |
++| `phaser` | [Phaser](adapters/phaser.md) | web | 浏览器 2D 游戏；需要场景、输入与物理的轻量 Web 团队。 |
++| `pixi` | [PixiJS](adapters/pixi.md) | web-renderer | 高性能 2D 渲染与定制玩法；不是完整游戏引擎。 |
++| `three` | [Three.js](adapters/three.md) | web-renderer | 自定义浏览器 3D、轻量交互和实验性游戏；属于渲染库。 |
++| `babylon` | [Babylon.js](adapters/babylon.md) | web | 浏览器 3D、可选 WebXR 和较完整的场景工具链。 |
++| `playcanvas` | [PlayCanvas](adapters/playcanvas.md) | web | Web 3D；云 Editor 或 Engine-only 两种工作方式。 |
++| `gamemaker` | [GameMaker](adapters/gamemaker.md) | low-code | 2D、房间驱动、GML 或可视化制作。 |
++| `construct` | [Construct 3](adapters/construct.md) | low-code | 事件表驱动的 2D/Web 和低代码原型。 |
++| `gdevelop` | [GDevelop](adapters/gdevelop.md) | low-code | 事件驱动 2D/轻量 3D、低代码快速验证。 |
++| `renpy` | [Ren'Py](adapters/renpy.md) | narrative | 视觉小说、分支叙事和对话系统。 |
++| `rpgmaker` | [RPG Maker MZ/MV](adapters/rpgmaker.md) | narrative | 地图/事件/数据库驱动 RPG；MZ 与 MV 分开管理。 |
++| `defold` | [Defold](adapters/defold.md) | code-first | 轻量 2D/3D、移动/Web 与 Lua 组件式开发。 |
++| `love` | [LÖVE](adapters/love.md) | code-first | Lua 2D、游戏循环清晰的小型项目。 |
++| `monogame` | [MonoGame](adapters/monogame.md) | code-first | C# 2D/3D、自定义游戏架构和内容管线。 |
++| `libgdx` | [libGDX](adapters/libgdx.md) | code-first | Java/Kotlin 跨平台、代码优先 2D/3D。 |
++| `bevy` | [Bevy](adapters/bevy.md) | code-first | Rust ECS、系统组合与定制 2D/3D。 |
++| `raylib` | [raylib](adapters/raylib.md) | code-first | C/C++ 小型 2D/3D、教学和自定义工具链。 |
++| `roblox` | [Roblox Studio](adapters/roblox.md) | platform | UGC/多人在线平台体验；平台内发布。 |
++| `o3de` | [O3DE](adapters/o3de.md) | general | 开源大型 3D、组件系统与自定义管线。 |
++| `stride` | [Stride](adapters/stride.md) | general | C#/.NET 组件化 3D 与 Game Studio。 |
+diff --git a/manifests/game-design/references/engines.json b/manifests/game-design/references/engines.json
+new file mode 100644
+index 0000000..1320587
+--- /dev/null
++++ b/manifests/game-design/references/engines.json
+@@ -0,0 +1,666 @@
++{
++  "schema_version": 1,
++  "researched_on": "2026-11-03",
++  "engines": [
++    {
++      "id": "unity",
++      "name": "Unity",
++      "category": "general",
++      "fit": "2D/3D、移动与跨平台；复杂项目可接既有 unity-game 专项流程。",
++      "detection": {
++        "all": [
++          "ProjectSettings/ProjectVersion.txt",
++          "Assets"
++        ]
++      },
++      "version": "读取 ProjectVersion.txt、Packages/manifest.json 与 packages-lock.json；锁定 Editor、渲染管线和测试框架。",
++      "scene": "GDD 实体→GameObject/Component；关卡→Scene；复用→Prefab/Variant。",
++      "code": "C# 组件与纯领域层分离；数值→ScriptableObject 或有版本的外部表。",
++      "assets": "Assets/.meta 配对提交，GUID 不重建；DCC 源文件与导出物分离，Addressables 按实际依赖选用。",
++      "space": "3D 通常 Y-up、1 单位按 1m 约定；2D 指定 Pixels Per Unit，验证根运动、物理和 UI 缩放。",
++      "input": "确认旧 Input Manager 或 Input System；Action 映射键鼠/手柄/触控，处理失焦与重绑定。",
++      "save_network": "存档按 persistentDataPath 和 schema 迁移；联网库与 authority 单独选型，单机设计不默认联网。",
++      "tests": "EditMode 验纯逻辑；PlayMode 验场景与生命周期；真实构建试玩、Profiler 与目标设备各留证据。",
++      "build": "模板：\"$UNITY\" -batchmode -projectPath \"$PROJECT\" -runTests -testPlatform EditMode -testResults \"$RESULTS\" -logFile \"$LOG\"；构建使用项目已存在的 executeMethod，不能把测试命令当构建。",
++      "pitfalls": "同工程 Editor 操作串行；不得自动升级管线/包；console 导出依平台 SDK 和资格；可选手动安装 unity-game-development，不复制其技能目录。",
++      "sources": [
++        "https://docs.unity.com/en-us/engine/6000.5/manual/scripting/test-framework-introduction/running-tests/run-tests-from-command-line"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "unreal",
++      "name": "Unreal Engine",
++      "category": "general",
++      "fit": "高保真 3D、大型关卡、Blueprint/C++ 协同与多人体验。",
++      "detection": {
++        "files": [
++          "*.uproject"
++        ]
++      },
++      "version": "读取 .uproject EngineAssociation、插件和 Target.cs；匹配已装 UE 与工具链，禁止隐式资产升级。",
++      "scene": "规则→GameMode/GameState；玩家→Controller/Pawn；关卡→World/Level；复用→Actor/Component/Blueprint。",
++      "code": "C++ 保持稳定接口，Blueprint 负责可视化组合；数值→DataAsset/DataTable。",
++      "assets": ".uasset/.umap 属二进制，使用 LFS/文件锁或项目既有分工；导入材质、骨骼、LOD 和碰撞需要 Editor 核验。",
++      "space": "Z-up、厘米；DCC 米制转换、左右手坐标差异、导航代理与根运动统一验收。",
++      "input": "Enhanced Input 的 Action/Mapping Context；测试 UI 焦点、手柄与触控。",
++      "save_network": "SaveGame 版本化；多人明确 server authority、Replication/RPC 与断线重连。",
++      "tests": "Automation/Functional Test + PIE 多客户端；Shipping/Development 包分别测试，检查 cook 日志与 Insights。",
++      "build": "模板：\"$RUN_UAT\" BuildCookRun -project=\"$UPROJECT\" -platform=\"$PLATFORM\" -build -cook -stage -pak；按主机选 RunUAT.sh/bat，补项目实际打包/归档参数。",
++      "pitfalls": "PIE 通过不代表 cook 后通过；禁止文本批改二进制资产；World Partition、插件和平台 SDK 随版本核验。",
++      "sources": [
++        "https://dev.epicgames.com/documentation/unreal-engine/build-operations-cooking-packaging-deploying-and-running-projects-in-unreal-engine"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "godot",
++      "name": "Godot",
++      "category": "general",
++      "fit": "轻量 2D/3D、开源工具链与节点组合。",
++      "detection": {
++        "files": [
++          "project.godot"
++        ]
++      },
++      "version": "记录 project.godot config_version/features 与 godot --version；Godot 3/4、GDScript/C# 和导出模板分开锁定。",
++      "scene": "实体→Node；复用→PackedScene；关卡→.tscn；信号连接表达系统边界。",
++      "code": "GDScript 或 C# 遵循既有项目；Resource/.tres 承载配置，Autoload 仅用于必要全局服务。",
++      "assets": "保留 .uid 与导入配置，缓存 .godot 不当源资产；验证 glTF、动画、碰撞和资源路径大小写。",
++      "space": "2D Y-down、3D Y-up；明确像素/米制约定，分离 Control 布局和世界坐标。",
++      "input": "InputMap actions；处理触控、手柄 deadzone 和 UI focus。",
++      "save_network": "user:// 存档加版本迁移；多人按项目选择 MultiplayerAPI 与权威节点。",
++      "tests": "headless 导入/脚本检查仅是静态入口；行为测试用项目已有 GUT/GdUnit 或自建 harness，并执行真实图形试玩。",
++      "build": "模板：\"$GODOT\" --headless --path \"$PROJECT\" --import；导出：\"$GODOT\" --headless --path \"$PROJECT\" --export-release \"$PRESET\" \"$OUTPUT\"；先安装匹配导出模板、创建输出父目录。",
++      "pitfalls": "不能将 headless import 等同于测试；C#、Web、移动导出能力查对应版本；不能自动迁移 3→4。",
++      "sources": [
++        "https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "cocos",
++      "name": "Cocos Creator",
++      "category": "general",
++      "fit": "移动、Web 与小游戏平台，组件化 2D/3D。",
++      "detection": {
++        "json_keys": [
++          [
++            "package.json",
++            [
++              "creator"
++            ]
++          ]
++        ]
++      },
++      "version": "读取 package.json creator.version；2.x/3.x 分支与构建参数分别处理，小游戏 SDK 跟平台锁定。",
++      "scene": "关卡→Scene，实体→Node/Component，复用→Prefab，UI→Canvas/Widget。",
++      "code": "3.x TypeScript 组件；数值配置与生命周期分离，资源 UUID 和序列化引用保持稳定。",
++      "assets": "assets/.meta 成对保存，Asset Bundle/图集/纹理压缩按分包预算设计。",
++      "space": "记录 2D UI 与 3D 坐标约定；适配分辨率、安全区、DPR 与相机投影。",
++      "input": "事件系统/触摸输入；小游戏平台返回、暂停、音频激活和触点冲突专项测试。",
++      "save_network": "本地存储与平台用户数据分离；联网重试、平台登录和业务版本迁移分别设计。",
++      "tests": "纯逻辑测试 + Creator 预览 + 平台开发者工具 + 真机，分包加载/后台恢复/弱网留日志。",
++      "build": "3.x 模板：\"$CREATOR\" --project \"$PROJECT\" --build \"configPath=$CONFIG\"；从当前 Editor 构建面板导出配置。3.8 文档成功码为 36，失败码 32/34，不能套统一 exit=0。",
++      "pitfalls": "小游戏不是普通 Web 页面；GUI/SDK/签名依实际工具链；2.x 的 --path 不能直接套到 3.x。",
++      "sources": [
++        "https://docs.cocos.com/creator/3.8/manual/en/editor/publish/publish-in-command-line.html"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "phaser",
++      "name": "Phaser",
++      "category": "web",
++      "fit": "浏览器 2D 游戏；需要场景、输入与物理的轻量 Web 团队。",
++      "detection": {
++        "dependencies": [
++          "phaser"
++        ]
++      },
++      "version": "锁定 package.json 与对应 lockfile 中 Phaser 主版本，物理插件与 bundler；不同主版本 API 单独核验。",
++      "scene": "玩法阶段→Scene，实体→GameObject，预加载与运行 Scene 分开，复用通过工厂/类。",
++      "code": "JS/TS，纯数值/状态机与 Scene update 分离；数据通过 JSON 配置进入。",
++      "assets": "Loader/纹理图集，资源 URL、CORS、大小写与音频编码验证；首屏和分场景加载预算。",
++      "space": "2D 屏幕 Y-down；逻辑分辨率、Scale 配置与 CSS/DPR 分离。",
++      "input": "键盘/指针/触控映射成动作；失焦暂停、触控滚动冲突和音频首次交互测试。",
++      "save_network": "IndexedDB/localStorage schema；在线功能用独立后端，浏览器不持有服务端秘密。",
++      "tests": "纯逻辑单测 + 项目已有浏览器 harness；验证 Canvas/WebGL、移动浏览器与断网恢复。",
++      "build": "沿用 package.json 实际 scripts 和锁文件包管理器；只有存在 build/test 脚本才运行，产物在真实 HTTP 服务下验收。",
++      "pitfalls": "不为所有项目假定 npm/Vite/Playwright 已安装；浏览器包不等于原生应用或小游戏包。",
++      "sources": [
++        "https://docs.phaser.io/phaser/getting-started/what-is-phaser"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "pixi",
++      "name": "PixiJS",
++      "category": "web-renderer",
++      "fit": "高性能 2D 渲染与定制玩法；不是完整游戏引擎。",
++      "detection": {
++        "dependencies": [
++          "pixi.js"
++        ]
++      },
++      "version": "锁定 pixi.js 主版本、渲染后端、扩展包和 lockfile；v7/v8 初始化/加载接口差异先核验。",
++      "scene": "显示层→Container/Sprite；另建玩法状态机与场景管理，不将显示树当完整实体系统。",
++      "code": "JS/TS，Ticker 驱动表现；规则、碰撞与物理库需要显式选择并与渲染解耦。",
++      "assets": "Assets/图集/字体与纹理生命周期，切场景销毁 GPU 资源，检查批处理与资源卸载。",
++      "space": "2D Y-down；anchor/pivot、DPR、分辨率缩放和 UI 坐标明确转换。",
++      "input": "Federated Events 映射动作；键盘与手柄另接输入层，测试命中区域。",
++      "save_network": "自建版本化存档/网络层；不假定 renderer 附带物理或联网。",
++      "tests": "规则单测 + 浏览器输入回放/视觉基线；渲染内存和上下文丢失专项测试。",
++      "build": "沿用项目 lockfile 与实际 scripts；静态包在 HTTP 下检查纹理/字体 URL、缓存更新与降级。",
++      "pitfalls": "完整玩法、物理、编辑器与存档是额外设计工作；视觉快照不代表玩法通过。",
++      "sources": [
++        "https://pixijs.com/8.x/guides/getting-started/intro"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "three",
++      "name": "Three.js",
++      "category": "web-renderer",
++      "fit": "自定义浏览器 3D、轻量交互和实验性游戏；属于渲染库。",
++      "detection": {
++        "dependencies": [
++          "three"
++        ]
++      },
++      "version": "锁定 three revision、addons、GLTF/DRACO/KTX2 解码器与构建锁文件。",
++      "scene": "Scene/Object3D/Mesh 负责显示层，另建实体生命周期、关卡与玩法状态机。",
++      "code": "JS/TS；render loop 与固定步长模拟分离，物理/寻路/碰撞库单独选择。",
++      "assets": "glTF/GLB、PBR、纹理颜色空间和压缩贴图；显式 dispose 几何体/材质/纹理。",
++      "space": "通常右手 Y-up，单位由项目约定；相机、物理和 DCC 缩放统一。",
++      "input": "Pointer/Keyboard/Gamepad/WebXR 按目标映射动作；Raycaster 仅是拾取不是完整交互系统。",
++      "save_network": "单独设计存档、网络同步和 authority；避免渲染对象序列化成为存档格式。",
++      "tests": "领域单测 + 浏览器交互 + GPU/帧时/上下文恢复；实际触控与设备测试独立。",
++      "build": "按 package scripts 构建，HTTP 验证模型/解码器路径、CORS、WebGL 能力与部署 base URL。",
++      "pitfalls": "不自带完整玩法/物理/编辑器；不能将可旋转模型示例称为可玩原型。",
++      "sources": [
++        "https://threejs.org/manual/#en/fundamentals"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "babylon",
++      "name": "Babylon.js",
++      "category": "web",
++      "fit": "浏览器 3D、可选 WebXR 和较完整的场景工具链。",
++      "detection": {
++        "dependencies": [
++          "@babylonjs/core",
++          "babylonjs"
++        ]
++      },
++      "version": "锁定 @babylonjs 全套包版本、渲染后端与 lockfile；物理插件版本匹配。",
++      "scene": "Scene/Mesh/TransformNode 与 Entity 领域层映射，关卡流式和资产容器单独设计。",
++      "code": "JS/TS；行为状态与渲染循环分离，配置表通过类型化数据进入。",
++      "assets": "glTF/GLB、PBR、纹理、骨骼与 AssetContainer；加载/销毁和 Inspector 检查。",
++      "space": "默认左手系、可切右手系；坐标选择写进 TDD，验证 glTF 转换和物理尺度。",
++      "input": "输入管理器/ActionManager 或自定义动作层；测试摄像机控制、UI 焦点和手柄。",
++      "save_network": "存档模型独立于 Scene 快照；联网与后端权限设计单独验收。",
++      "tests": "领域单测、浏览器玩法、物理与动画回放；WebGPU/WebGL 兼容按项目目标测试。",
++      "build": "沿用已安装包和 package scripts，HTTP 验证 asset URLs、引擎包拆分与加载失败恢复。",
++      "pitfalls": "Havok 等物理依赖与包体成本需单独审查；WebXR 与目标设备是附加验收。",
++      "sources": [
++        "https://doc.babylonjs.com/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "playcanvas",
++      "name": "PlayCanvas",
++      "category": "web",
++      "fit": "Web 3D；云 Editor 或 Engine-only 两种工作方式。",
++      "detection": {
++        "dependencies": [
++          "playcanvas"
++        ]
++      },
++      "version": "记录 Engine npm 版本或 Editor 导出版本、项目 ID 和下载快照；云端工程不凭本地空目录识别。",
++      "scene": "Entity/Component、Scene/Template 映射设计对象；云端项目记录资源 ID 与场景版本。",
++      "code": "沿用项目 Script 类型/JS/TS 规范；系统数值与实体脚本分离。",
++      "assets": "Asset Registry、GLB、贴图压缩与异步加载，云导出时保留可复建的资源映射。",
++      "space": "Y-up，尺度按米约定；摄像机、光照/烘焙、碰撞和 UI 布局核验。",
++      "input": "Keyboard/Mouse/Touch/Gamepad 接统一动作层；移动输入与 UI 焦点专项验证。",
++      "save_network": "自定义存档后端；云编辑协作不等于游戏运行时多人同步。",
++      "tests": "Editor Launch + 下载包真实 HTTP 试玩；Engine-only 逻辑单测和浏览器 QA。",
++      "build": "区分 Editor 的发布/下载与 Engine-only bundler；记录导出快照、缓存与 URL，不自动云发布。",
++      "pitfalls": "不假定拥有云会话或 API TOKEN；本地依赖检测覆盖 Engine-only，Editor 模式需人工记录。",
++      "sources": [
++        "https://developer.playcanvas.com/user-manual/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "gamemaker",
++      "name": "GameMaker",
++      "category": "low-code",
++      "fit": "2D、房间驱动、GML 或可视化制作。",
++      "detection": {
++        "files": [
++          "*.yyp"
++        ]
++      },
++      "version": "记录 IDE、Runtime 与目标模块版本；项目格式随版本变化，先备份再由 Editor 迁移。",
++      "scene": "Room→关卡，Object/Instance→实体，Sequence→过场，Prefab 类需求用已有对象/数据生成模式。",
++      "code": "GML 或项目既有可视化事件；Create/Step/Draw 生命周期与规则层分离。",
++      "assets": "Sprite/TileSet/Texture Group 与音频资源；使用 Editor 修改资源引用，检查 YY 路径。",
++      "space": "2D 通常 Y-down；room 坐标、camera/view 和 GUI 层区分。",
++      "input": "键盘/鼠标/手柄/触控映射到动作，检查不同帧率下 Step 逻辑。",
++      "save_network": "版本化存档与平台沙盒目录；联网/回滚逻辑按需求另建。",
++      "tests": "调试运行、房间切换、碰撞、存档读写、目标导出包试玩；自建断言需有明确退出/报告。",
++      "build": "以当前 IDE 的 Build/Run/Create Executable 流程与已购/可用模块为准；自动化先验证对应 Runtime/Igor 接口。",
++      "pitfalls": "不编造跨版本通用 headless 命令；VM/YYC、许可与 console 模块能力单独核验。",
++      "sources": [
++        "https://manual.gamemaker.io/monthly/en/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "construct",
++      "name": "Construct 3",
++      "category": "low-code",
++      "fit": "事件表驱动的 2D/Web 和低代码原型。",
++      "detection": {
++        "files": [
++          "*.c3p",
++          "project.c3proj"
++        ]
++      },
++      "version": "锁定 Editor release、插件版本和项目备份；单文件 .c3p 为容器，不按文本源文件改写。",
++      "scene": "Layout→关卡，Event Sheet→规则，Object/Family/Behavior→实体族与复用。",
++      "code": "事件表为主，JS 脚本是可选扩展；把数值常量整理为变量/数据表。",
++      "assets": "Animation/Tilemap/Audio 与插件资源；验证导出 asset paths 和下载缓存。",
++      "space": "2D Y-down；layout、layer parallax、viewport 和 fullscreen 缩放区分。",
++      "input": "Keyboard/Touch/Gamepad behaviors，UI 事件优先级与多点触控。",
++      "save_network": "Local Storage/Savegame 或后端方案明确版本与插件兼容。",
++      "tests": "Preview/Debugger、布局跳转、事件触发顺序和导出包跨浏览器试玩，保留事件表证据。",
++      "build": "通过 Editor Export 选择实际平台；自动化仅使用当前订阅与版本提供的接口，记录导出 preset。",
++      "pitfalls": "低代码不是零测试；不直接解压/批改 c3p 容器，不假定全部平台导出可用。",
++      "sources": [
++        "https://www.construct.net/en/make-games/manuals/construct-3"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "gdevelop",
++      "name": "GDevelop",
++      "category": "low-code",
++      "fit": "事件驱动 2D/轻量 3D、低代码快速验证。",
++      "detection": {
++        "json_keys": [
++          [
++            "*.json",
++            [
++              "gdVersion",
++              "layouts",
++              "properties"
++            ]
++          ]
++        ]
++      },
++      "version": "记录 Editor/gdVersion、扩展版本与导出工具；同名 game.json 不能仅凭文件名识别。",
++      "scene": "Scene→关卡，Object/Behavior→实体，External Events/Layouts→复用。",
++      "code": "事件与变量作用域明确，JS 扩展沿用项目；数值用可追溯表驱动。",
++      "assets": "Resources 资源映射与相对路径，源文件和导出目录分离；检查大小写与远程资产。",
++      "space": "2D 场景坐标、相机和层 UI 分开；3D 行为需固定坐标/尺度约定。",
++      "input": "事件条件映射键鼠/触控/手柄；检查多触点、暂停、窗口尺寸变化。",
++      "save_network": "Storage/JSON 版本化；平台服务与多人扩展仅在需求明确后引入。",
++      "tests": "Preview/Debugger + 事件边界与变量检查 + 导出包试玩；真机网络/性能另测。",
++      "build": "记录 Editor 或已验证 gdexport 工作流，导出平台配置与云/本地构建成本明确。",
++      "pitfalls": "不能把有 properties 的任意 JSON 当项目；云导出不是默认允许的自动发布。",
++      "sources": [
++        "https://wiki.gdevelop.io/gdevelop5/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "renpy",
++      "name": "Ren'Py",
++      "category": "narrative",
++      "fit": "视觉小说、分支叙事和对话系统。",
++      "detection": {
++        "files": [
++          "game/options.rpy"
++        ]
++      },
++      "version": "记录 Ren'Py SDK 与 Python 版本、屏幕语言/插件和发行目标；保留源 .rpy。",
++      "scene": "剧情节点→label/jump/call，界面→screen，立绘/背景→image，分支→menu/状态变量。",
++      "code": "Ren'Py script + Python，default/define 生命周期明确；分支可达性和变量更新可测试。",
++      "assets": "立绘差分、背景、音频、字体、翻译单独列清单，文件名/图层与版权可追踪。",
++      "space": "虚拟分辨率与 screen/transform 锚点；触控 UI、字体与语言溢出验证。",
++      "input": "键鼠/触控/手柄、快进/自动/历史/回滚与可访问性按目标验收。",
++      "save_network": "save/load 与 persistent 区分；分支状态/存档兼容和 rollback 行为必须测试。",
++      "tests": "模板：\"$RENPY_SH\" \"$PROJECT\" lint --error-code；lint 后仍需测试各结局、存取档、回滚、翻译和音频。",
++      "build": "SDK Launcher Build Distributions 按目标导出；CLI 接口依 SDK 核验，移动目标另需工具链。",
++      "pitfalls": "lint 不是全分支覆盖；旧存档兼容、Python 对象可序列化性和 screen 脚本上下文需审查。",
++      "sources": [
++        "https://www.renpy.org/doc/html/cli.html"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "rpgmaker",
++      "name": "RPG Maker MZ/MV",
++      "category": "narrative",
++      "fit": "地图/事件/数据库驱动 RPG；MZ 与 MV 分开管理。",
++      "detection": {
++        "files": [
++          "*.rmmzproject",
++          "*.rpgproject"
++        ]
++      },
++      "version": "记录 MZ/MV、runtime 与插件顺序；绝不混用两代 API、插件和项目文件。",
++      "scene": "Map/MapEvent→关卡互动，Common Event→复用，Actor/Class/Skill/Enemy/Troop→系统数据。",
++      "code": "事件页、开关/变量优先；JS 插件是版本化扩展，数值按数据库 ID 绑定。",
++      "assets": "img/audio/tilesets 与数据库 JSON/插件保留引用，地图和数据库通过 Editor 管理。",
++      "space": "地图格坐标与像素移动分离；按 tileset、UI 分辨率、相机与插件核验。",
++      "input": "键盘/手柄/触控、菜单/对话输入、事件页触发优先级专项测试。",
++      "save_network": "存档中的开关/变量/插件对象兼容；数据库 ID 不随意重排。",
++      "tests": "Test Play、战斗测试、事件死锁/传送/支线可达性、旧存档与部署包 QA。",
++      "build": "Editor Deployment 按目标发布；剔除未使用资源前检查插件动态引用，签名与商店发布独立。",
++      "pitfalls": "不把插件兼容当默认；动态资源误删和开关编号冲突是重点风险。",
++      "sources": [
++        "https://rpgmakerofficial.com/product/MZ_help-en/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "defold",
++      "name": "Defold",
++      "category": "code-first",
++      "fit": "轻量 2D/3D、移动/Web 与 Lua 组件式开发。",
++      "detection": {
++        "files": [
++          "game.project"
++        ]
++      },
++      "version": "锁定 Editor/Engine/Bob 版本、JDK 和依赖 URL/commit；不假定任意 bob.jar 匹配。",
++      "scene": "Collection→场景，GameObject/Component→实体，Factory/CollectionFactory→生成。",
++      "code": "Lua scripts/gui_scripts 与消息系统，配置属性/资源，纯规则模块独立测试。",
++      "assets": "Atlas/Tile Source/Model，依赖从构建根可达；动态 raw 文件放 Custom Resources。",
++      "space": "记录世界/GUI 坐标、投影与物理尺度；相机与不同屏幕比例分别验证。",
++      "input": "Input binding 与 acquire_input_focus；GUI/多触点/手柄焦点管理。",
++      "save_network": "sys.save/load 版本化，网络消息与游戏状态边界明确。",
++      "tests": "Lua 规则测试 + Editor 运行 + 真机；消息时序、collection 生命周期和加载失败专项测试。",
++      "build": "在工程根模板：java -jar \"$BOB\" --archive --platform \"$PLATFORM\" resolve build bundle；核验 JDK、平台、扩展服务器与签名。",
++      "pitfalls": "native extension 可能使用远程构建服务，先记录依赖和数据边界；构建根不可达资源不会自动进入包。",
++      "sources": [
++        "https://defold.com/manuals/bob/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "love",
++      "name": "LÖVE",
++      "category": "code-first",
++      "fit": "Lua 2D、游戏循环清晰的小型项目。",
++      "detection": {
++        "all": [
++          "main.lua",
++          "conf.lua"
++        ]
++      },
++      "version": "锁定 love --version、LuaJIT 与第三方模块；只有 main.lua 是弱线索，显式选择也可接入。",
++      "scene": "love.load/update/draw 为入口；自行设计 Scene/Entity、状态机与内容系统。",
++      "code": "Lua 模块化规则，固定步长更新与 draw 分离；配置表与运行时对象区分。",
++      "assets": "图片/音频/字体/图集相对路径，按打包大小写和纹理过滤验证。",
++      "space": "2D Y-down；世界坐标、相机、像素比例和 DPI 分开。",
++      "input": "love.keyboard/mouse/touch/joystick 映射动作，处理 focus 与 resize。",
++      "save_network": "love.filesystem 读写身份目录，存档 schema 与不可信数据解析隔离。",
++      "tests": "纯 Lua 测试 + love 运行输入回放；计时、碰撞、音频与窗口缩放检查。",
++      "build": "运行模板：\"$LOVE\" \"$PROJECT\"；.love 包必须以 main.lua 为根，原生分发按目标合并/打包。",
++      "pitfalls": "不假定自带场景编辑器或测试 runner；只有 main.lua 的项目需确认而不是误判通用 Lua。",
++      "sources": [
++        "https://github.com/love2d/love"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "monogame",
++      "name": "MonoGame",
++      "category": "code-first",
++      "fit": "C# 2D/3D、自定义游戏架构和内容管线。",
++      "detection": {
++        "text": [
++          [
++            "*.csproj",
++            "MonoGame.Framework"
++          ]
++        ]
++      },
++      "version": "锁定 .NET SDK、MonoGame NuGet、MGCB 与目标 backend；读取 global.json/项目文件。",
++      "scene": "Game/Update/Draw 为核心；自行映射场景管理、实体/组件和关卡格式。",
++      "code": "C# 纯规则层 + 服务/内容边界，避免把全部逻辑集中在 Game1。",
++      "assets": ".mgcb/MGCB 内容管线、源资产与编译 .xnb 分离，检查平台适用性。",
++      "space": "2D SpriteBatch 和 3D camera 坐标独立约定；viewport、DPI、单位与投影明示。",
++      "input": "Keyboard/Mouse/GamePad/Touch 统一动作层，处理设备断连。",
++      "save_network": "自建版本化存档与网络层；路径按目标平台约定。",
++      "tests": "dotnet test 只针对已有测试项目；图形/音频/输入必须运行真实 Game。",
++      "build": "沿用 csproj/sln 的 dotnet build/publish 配置、RID 与 MGCB 工具，不假定本机可交叉发布所有目标。",
++      "pitfalls": "framework 不附带完整编辑器/游戏状态机；跨平台内容与 native 库缺失需单独诊断。",
++      "sources": [
++        "https://docs.monogame.net/articles/getting_started/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "libgdx",
++      "name": "libGDX",
++      "category": "code-first",
++      "fit": "Java/Kotlin 跨平台、代码优先 2D/3D。",
++      "detection": {
++        "text": [
++          [
++            "build.gradle",
++            "com.badlogicgames.gdx"
++          ],
++          [
++            "build.gradle.kts",
++            "com.badlogicgames.gdx"
++          ],
++          [
++            "gradle.properties",
++            "gdxVersion"
++          ]
++        ]
++      },
++      "version": "锁定 Gradle Wrapper、JDK、gdx 与各 backend；旧 lwjgl 与 lwjgl3 区分。",
++      "scene": "Game/Screen→场景，Scene2D→UI/2D 表现；实体系统根据实际需求选择。",
++      "code": "Java/Kotlin，核心逻辑在 core，平台代码在 backend；数值表与资源服务分离。",
++      "assets": "AssetManager/TextureAtlas/模型与字体，引用计数与 dispose 生命周期明确。",
++      "space": "世界/相机与 Scene2D Viewport 分离；输入坐标转换和物理尺度验收。",
++      "input": "InputProcessor/InputMultiplexer 映射动作，Android 返回/暂停/恢复按平台处理。",
++      "save_network": "Files/Preferences 或显式版本化存档；网络接口和线程边界明确。",
++      "tests": "已有 Gradle test 任务测逻辑，图形 backend 真实运行；安卓生命周期和资源泄漏另测。",
++      "build": "先用 ./gradlew tasks 确认可用 backend 任务，再执行项目已有 lwjgl3/Android/其他目标构建任务。",
++      "pitfalls": "不硬编码所有项目都有 desktop:dist；HTML backend 与反射/库兼容需查项目实际选择。",
++      "sources": [
++        "https://libgdx.com/wiki/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "bevy",
++      "name": "Bevy",
++      "category": "code-first",
++      "fit": "Rust ECS、系统组合与定制 2D/3D。",
++      "detection": {
++        "text": [
++          [
++            "Cargo.toml",
++            "BEVY_DEPENDENCY"
++          ]
++        ]
++      },
++      "version": "锁定 Cargo.lock、rust-toolchain 和 Bevy 主次版本；插件 API 随版本快速变化。",
++      "scene": "Entity/Component/System→玩法对象，States/Schedules→流程，Scenes/Assets→内容。",
++      "code": "Rust ECS 系统；事件/消息与资源按当前版本 API，领域逻辑可脱离渲染 App 测试。",
++      "assets": "AssetServer/Handle、glTF/纹理，异步加载状态与卸载检查。",
++      "space": "2D/3D 与 transform、camera、物理插件坐标统一，固定时间步与渲染更新分离。",
++      "input": "Action mapping 基于当前输入 API 或已锁定插件，焦点/手柄/触控检查。",
++      "save_network": "显式序列化领域数据，不直接存 ECS world；联网插件与 authority 单独确定。",
++      "tests": "cargo test 测纯逻辑/无窗口 App；cargo check 不等同测试；GPU/输入/音频需真实运行。",
++      "build": "工程根 cargo check --locked、cargo test --locked；发布按实际 target/features 的 cargo build --release --locked，并包含资产。",
++      "pitfalls": "workspace 继承版本需按 member 解析；不把任意 Cargo 项目识别为 Bevy，不自动升级生态插件。",
++      "sources": [
++        "https://github.com/bevyengine/bevy"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "raylib",
++      "name": "raylib",
++      "category": "code-first",
++      "fit": "C/C++ 小型 2D/3D、教学和自定义工具链。",
++      "detection": {
++        "text": [
++          [
++            "CMakeLists.txt",
++            "raylib"
++          ],
++          [
++            "Makefile",
++            "raylib"
++          ]
++        ]
++      },
++      "version": "锁定 raylib release、编译器、CMake/Make 与平台 backend；vendored 与系统库分开。",
++      "scene": "InitWindow/循环→入口；自行定义状态机、实体与关卡数据，不依赖虚构 Editor。",
++      "code": "C/C++ 模块化规则；资源与生命周期显式管理，接口边界清晰。",
++      "assets": "纹理/模型/字体/音频 Load/Unload 成对；工作目录与打包相对路径验证。",
++      "space": "2D 屏幕 Y-down、3D 通常 Y-up；Camera、碰撞和物理约定明示。",
++      "input": "键鼠/触控/手柄通过动作层映射；帧时间独立于移动速度。",
++      "save_network": "自建文件存档 schema 与联网；内存/字节序/版本兼容按目标考虑。",
++      "tests": "纯逻辑单测/编译器检查 + 实际窗口试玩；内存与资源生命周期单独测试。",
++      "build": "使用项目已有 CMake preset/Make target；cmake --build \"$BUILD_DIR\" 仅在已配置构建树后执行。",
++      "pitfalls": "不是全功能编辑器；不得默认所有 raylib 项目使用 CMake 或可直接交叉编译。",
++      "sources": [
++        "https://www.raylib.com/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "roblox",
++      "name": "Roblox Studio",
++      "category": "platform",
++      "fit": "UGC/多人在线平台体验；平台内发布。",
++      "detection": {
++        "files": [
++          "*.rbxl",
++          "*.rbxlx"
++        ],
++        "json_keys": [
++          [
++            "*.project.json",
++            [
++              "tree"
++            ]
++          ]
++        ]
++      },
++      "version": "记录 Studio 版本、Experience/Place 快照和包版本；Rojo 可选且不能仅凭 *.project.json 认定。",
++      "scene": "DataModel/Instance/Model→对象；Workspace→世界；Services 和 Packages 明确边界。",
++      "code": "Luau，ServerScriptService/StarterPlayerScripts/ReplicatedStorage 区分权威、客户端与共享模块。",
++      "assets": "Asset ID、模型/动画/音频许可与平台审核状态留记录；云资产快照与本地源映射。",
++      "space": "Y-up、stud 单位，角色/相机/碰撞按平台约定；不与其他引擎米制值直接共用。",
++      "input": "跨设备动作映射、UI navigation、移动/手柄；避免仅桌面键盘体验。",
++      "save_network": "DataStore 预算/重试/迁移；server authority，RemoteEvent 参数验证和多人状态同步。",
++      "tests": "Studio Play + Server & Clients，区分客户端/服务器日志；设备与网络模拟后仍需目标设备试玩。",
++      "build": "Studio 保存/发布流程，先隔离测试 place；Rojo 同步是可选工程工具，不等同平台发布。",
++      "pitfalls": "不默认开通 API 服务或写生产 DataStore；测试数据与生产体验分离；发布必须经过明确人工门。",
++      "sources": [
++        "https://create.roblox.com/docs/studio/testing-modes"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "o3de",
++      "name": "O3DE",
++      "category": "general",
++      "fit": "开源大型 3D、组件系统与自定义管线。",
++      "detection": {
++        "json_keys": [
++          [
++            "project.json",
++            [
++              "project_name",
++              "engine"
++            ]
++          ]
++        ]
++      },
++      "version": "读取 project.json、engine.json、Gem 与 CMake preset；版本、编译器和目标平台锁定。",
++      "scene": "Entity/Component、Prefab、Level 映射玩法；Gem 边界与系统组件职责明确。",
++      "code": "C++/Lua/Script Canvas 按项目实际选择；配置与规则分离。",
++      "assets": "Asset Processor、源资产与 asset cache 分开；Prefab 引用、材质/模型处理状态检查。",
++      "space": "明确项目 Z-up/米制约定，DCC、相机和 PhysX 统一验证。",
++      "input": "Input 系统映射设备动作，UI 与世界输入分流。",
++      "save_network": "自建版本化存档；联网使用项目选定 Gem，authority/replication 单独设计。",
++      "tests": "C++/Gem 测试 + Editor/GameLauncher，Asset Processor 失败与运行时加载分别追踪。",
++      "build": "使用项目已验证的 CMake presets 与 O3DE export 工具；先完成资产处理，再导出目标 runtime。",
++      "pitfalls": "构建树/资产缓存体积和编译器成本大；不使用通用 project.json 文件名直接判定。",
++      "sources": [
++        "https://docs.o3de.org/docs/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    },
++    {
++      "id": "stride",
++      "name": "Stride",
++      "category": "general",
++      "fit": "C#/.NET 组件化 3D 与 Game Studio。",
++      "detection": {
++        "files": [
++          "*.sdpkg"
++        ],
++        "text": [
++          [
++            "*.csproj",
++            "Stride.Engine"
++          ]
++        ]
++      },
++      "version": "锁定 Stride NuGet、.NET SDK 与 Game Studio；sln/包与项目版本保持匹配。",
++      "scene": "Scene/Entity/Component、Prefab 与场景层级映射设计；系统脚本独立。",
++      "code": "C# SyncScript/AsyncScript 与纯规则层分离，异步生命周期与资源访问明确。",
++      "assets": "Game Studio 资产与 .sd* 描述保留；编译资产与源模型/材质分离。",
++      "space": "Y-up 约定与相机投影、物理尺度写入 TDD；导入变换需实际核验。",
++      "input": "Input/虚拟按钮按项目实现；多设备、UI 焦点与失焦行为测试。",
++      "save_network": "领域数据存档加 schema；网络库按需求选定，不假定自带完整后端。",
++      "tests": "dotnet 规则测试 + Game Studio/真实 runtime；资产编译与图形验收分别记录。",
++      "build": "使用项目实际 sln/csproj 和平台配置构建/发布；验证目标 runtime、native 依赖与资产打包。",
++      "pitfalls": "普通 .NET 项目不是 Stride；跨平台支持按版本/依赖核验，禁止自动迁移资产。",
++      "sources": [
++        "https://doc.stride3d.net/latest/en/manual/"
++      ],
++      "support": "design-adapter",
++      "runtime_validation": "not_run"
++    }
++  ]
++}
+diff --git a/manifests/game-design/references/lifecycle.md b/manifests/game-design/references/lifecycle.md
+new file mode 100644
+index 0000000..673219a
+--- /dev/null
++++ b/manifests/game-design/references/lifecycle.md
+@@ -0,0 +1,42 @@
++# 游戏设计 → 制作：阶段与决策契约
++
++## 总规则
++
++- 默认 design-only：设计包审查、人工方向确认后交付；implementation：继续原型到运营。每阶段记录 owner、输入、产物、revision、验收、证据与 resume。未完成上一阶段门不声称后续完成。
++- 角色职责：设计负责人主导体验与范围；引擎实现者负责映射与代码/Editor 操作；内容作者负责关卡/叙事/视听；QA 验证行为；审查者检查需求证据；人负责新增取舍、切片放行、对外发布。角色不要求生成独立代理。
++- 技术不确定性先调研、最小实验、测试并形成 ADR；同一问题三轮有证据的修复仍失败且需改变约定时，提交选项、成本与推荐给人，不把普通调试整体交还。
++- state/status.md 是当前事实；diagram 只是规则。engine JSON 的 not_run 不随模板测试自动变 pass。
++
++## 阶段表
++
++| 阶段 | 输入/执行职责 | 交付与验收 | 失败/通过后去向 |
++|---|---|---|---|
++| discover | 设计负责人恢复资料/工程，收敛玩家、题材、支柱、核心循环、约束 | brief 含可验证成功标准、must/should/cut、风险、未定项；竞品判断带来源与日期 | 缺技术事实由 AI 调研；有方向冲突走人工方向门 |
++| engine-fit | 引擎实现者检测现有项目；新项目比较 2–3 项 | engine-decision 比较平台/输入、内容管线、性能、团队、许可/成本；选定版本/SDK 与首个验证命令 | 已有项目不重选；迁移必须另立人工决策 |
++| design | 设计与内容职责展开系统、数值、关卡、叙事、UI/视听；引擎实现者写 TDD | GDD 定义操作→反馈→目标→失败/重试；至少一条完整关卡/节拍；每条 REQ-ID 连到用例；TDD 绑定所选引擎与性能预算 | 审查缺漏回 design；设计包齐备进入方向门 |
++| direction-gate | AI 汇总设计包和未定项；人确认方向/引擎/模式/预算 | 显式记录 revision、决定、约束及 resume；未回复 waiting_human | 调整回 design/engine-fit；design-only 同意即交付，implementation 同意进入 prototype |
++| prototype | 引擎实现者用占位资源验证最小玩法闭环与最大技术/体验风险 | 可启动入口、完成一次核心循环、胜负/失败/重试；实际输入/日志和试玩观察；真人体验反馈独立 | 行为失败回 prototype，需改核心支柱回方向门 |
++| vertical-slice | 内容+实现制作一个代表性切片，串通资产/工具/存档/构建 | 目标品质片段、资源预算、目标设备帧时、真实包、风险/工期更新 | AI QA 失败回 owner；通过后人工决定扩量/缩减/停止 |
++| slice-gate | 人判断切片是否支撑规模化制作 | 记录包 hash、设计 revision、成本、余留风险和生产范围 | 放行→production；调整→prototype；未答复等待 |
++| production | 按功能/内容批次单写者实现；QA 逐批回归 | 覆盖 must 需求、可追踪资源许可、里程碑状态；变更走差异评审 | 在既定目标内返工；新预算/平台/引擎变更走 change-gate |
++| qa | Alpha 功能完整；Beta 平衡、性能、兼容、本地化/可访问性；发布审查 | 原用例复测+相邻回归；目标设备/多人/存档迁移；缺陷分级、构建/试玩/真人反馈分开；未测项显式记账 | 失败回 production；依赖缺失先环境等待；通过生成候选包 |
++| release-gate | AI 汇总候选包、商店素材、许可、隐私、迁移、回退；人决定对外发布 | 批准绑定目标平台/受众、包 hash、设计 revision；无阻断缺陷或明确接受风险 | 同意→release/live；退回→production；未答复等待 |
++| release/live | AI 在批准范围执行发布/监测并保留回退点 | 发布记录、存档/配置兼容、崩溃与反馈指标、热修复/复盘；不伪造平台批准 | 异常→rollback，再进入 QA；新增体验目标→discover/design |
++
++## 跨阶段分支
++
++### 技术返工与依赖等待
++
++技术失败由原 owner 修复，QA 重跑原测试。缺 Editor/SDK/设备/连接则记 `waiting_dependency`、阻断原因、所需工具与恢复用例；AI 可先完成不受阻的设计/纯逻辑任务。环境就绪后 AI 在原验收点续跑，不以未运行填通过。依赖选择需要新增付费或平台取舍时进入 change-gate。
++
++### 高影响变更门
++
++触发：改核心支柱/平台/联网或商业化；切换引擎、升级大版本；引入付费或云服务；超预算；破坏旧存档；对外可见操作。AI 提交 delta、受影响需求、成本与回退；人可同意、调整或暂停。同意后 AI 从受影响的 design/engine-fit 恢复；调整返回原方案；未答复继续等待，暂停保持状态不丢弃产物。
++
++### 回退
++
++每次有状态修改前保留分支/commit/资产快照、平台版本和存档样本；不要将代码回退当成云数据回退。候选包或上线异常先在约定权限内停止扩大影响，按 production-release 中的步骤恢复已验证版本/配置；不可逆存档迁移须事前决策。回退后进入 QA 验证恢复行为，再决定是否重发；模板图不表示已经执行回退。
++
++## 最小证据
++
++`REQ-ID → 设计段落/数值行 → 实现路径/资源 ID → TEST-ID → 构建/设备/输入/结果/日志或截图`。证据可标 pass/fail/not_run，不允许将 not_run 隐藏在通过总数内。真人试玩记录受试者范围与观察，不把 AI 自动操作称作真人反馈。自审和独立审查各自具名，缺独立 reviewer 要显式记录。
+diff --git a/manifests/game-design/references/workflow.json b/manifests/game-design/references/workflow.json
+new file mode 100644
+index 0000000..df4c246
+--- /dev/null
++++ b/manifests/game-design/references/workflow.json
+@@ -0,0 +1,336 @@
++{
++  "schema_version": 1,
++  "title": "多引擎游戏设计与制作工作流",
++  "description": "默认设计交付；明确约定后进入实现。AI 执行与验证，人负责新增取舍、切片和发布；图为流程规范而非实际状态。",
++  "nodes": [
++    {
++      "id": "start",
++      "label": "进入 / 恢复现状",
++      "kind": "terminal",
++      "row": 0,
++      "detail": "读取状态、设计与实际工程"
++    },
++    {
++      "id": "discover",
++      "label": "AI 设计负责人：立项",
++      "kind": "ai",
++      "row": 1,
++      "detail": "brief / 体验支柱 / 约束 / 风险"
++    },
++    {
++      "id": "engine",
++      "label": "AI 引擎实现者：适配",
++      "kind": "ai",
++      "row": 2,
++      "detail": "现有引擎沿用；新项目比较候选"
++    },
++    {
++      "id": "design",
++      "label": "AI 设计与内容：设计包",
++      "kind": "ai",
++      "row": 3,
++      "detail": "GDD / 数值 / 关卡叙事 / 视听 / TDD"
++    },
++    {
++      "id": "designqa",
++      "label": "AI 审查：设计一致性",
++      "kind": "check",
++      "row": 4,
++      "detail": "需求→用例；范围与引擎能力映射"
++    },
++    {
++      "id": "direction",
++      "label": "人：方向与模式决策",
++      "kind": "human",
++      "row": 5,
++      "detail": "确认体验 / 引擎 / 平台 / 预算",
++      "trigger": "新项目设计包齐备或方向发生冲突",
++      "resume": "同意：设计交付或原型；调整：设计"
++    },
++    {
++      "id": "prototype",
++      "label": "AI 实现：可玩原型",
++      "kind": "ai",
++      "row": 6,
++      "detail": "占位资源闭环与关键风险实验"
++    },
++    {
++      "id": "playtest",
++      "label": "AI QA：真实输入与试玩",
++      "kind": "check",
++      "row": 7,
++      "detail": "启动/操作/反馈；真人反馈分记"
++    },
++    {
++      "id": "slice",
++      "label": "AI 内容与实现：垂直切片",
++      "kind": "ai",
++      "row": 8,
++      "detail": "代表关卡、品质链路与可复现包"
++    },
++    {
++      "id": "sliceqa",
++      "label": "AI QA：切片验收",
++      "kind": "check",
++      "row": 9,
++      "detail": "设备预算 / 资产链 / 风险 / 工期"
++    },
++    {
++      "id": "slicegate",
++      "label": "人：制作放行",
++      "kind": "human",
++      "row": 10,
++      "detail": "扩量 / 缩减 / 调整 / 等待",
++      "trigger": "切片证据齐备，需要承诺制作范围",
++      "resume": "同意进入制作，调整返回原型"
++    },
++    {
++      "id": "production",
++      "label": "AI 制作：功能与内容批次",
++      "kind": "ai",
++      "row": 11,
++      "detail": "单写者 / 资产许可 / 版本化存档"
++    },
++    {
++      "id": "qa",
++      "label": "AI QA：Alpha / Beta",
++      "kind": "check",
++      "row": 12,
++      "detail": "原用例与回归 / 设备 / 候选包 hash"
++    },
++    {
++      "id": "dependency",
++      "label": "AI：等待环境依赖",
++      "kind": "check",
++      "row": 13,
++      "detail": "记 not_run；工具就绪后续跑原用例"
++    },
++    {
++      "id": "change",
++      "label": "人：高影响变更决策",
++      "kind": "human",
++      "row": 13,
++      "detail": "新预算 / 迁移 / 付费依赖 / 新目标",
++      "trigger": "需改变已有约定或三轮修复需新取舍",
++      "resume": "同意回设计适配；调整沿原约定制作"
++    },
++    {
++      "id": "releasegate",
++      "label": "人：对外发布决定",
++      "kind": "human",
++      "row": 14,
++      "detail": "批准绑定平台、受众与候选包 hash",
++      "trigger": "候选包和 QA、许可、回退证据齐备",
++      "resume": "同意发布；退回制作；未答复等待"
++    },
++    {
++      "id": "live",
++      "label": "AI 发布与运营",
++      "kind": "ai",
++      "row": 15,
++      "detail": "按批准范围执行，监测指标与反馈"
++    },
++    {
++      "id": "rollback",
++      "label": "AI 回退：恢复已验证版本",
++      "kind": "ai",
++      "row": 16,
++      "detail": "保留代码/资产/配置/存档恢复证据"
++    },
++    {
++      "id": "done",
++      "label": "交付 / 约定迭代完成",
++      "kind": "terminal",
++      "row": 17,
++      "detail": "设计包或已批准发布与运营记录"
++    }
++  ],
++  "edges": [
++    {
++      "from": "start",
++      "to": "discover",
++      "label": "读取首个未完成项",
++      "kind": "normal"
++    },
++    {
++      "from": "discover",
++      "to": "engine",
++      "label": "简报齐备",
++      "kind": "normal"
++    },
++    {
++      "from": "engine",
++      "to": "design",
++      "label": "技术映射",
++      "kind": "normal"
++    },
++    {
++      "from": "design",
++      "to": "designqa",
++      "label": "提交审查",
++      "kind": "normal"
++    },
++    {
++      "from": "designqa",
++      "to": "direction",
++      "label": "通过",
++      "kind": "normal"
++    },
++    {
++      "from": "direction",
++      "to": "done",
++      "label": "同意：design-only",
++      "kind": "normal"
++    },
++    {
++      "from": "direction",
++      "to": "prototype",
++      "label": "同意：implementation",
++      "kind": "normal"
++    },
++    {
++      "from": "prototype",
++      "to": "playtest",
++      "label": "提交可玩包",
++      "kind": "normal"
++    },
++    {
++      "from": "playtest",
++      "to": "slice",
++      "label": "闭环与假设通过",
++      "kind": "normal"
++    },
++    {
++      "from": "slice",
++      "to": "sliceqa",
++      "label": "提交切片",
++      "kind": "normal"
++    },
++    {
++      "from": "sliceqa",
++      "to": "slicegate",
++      "label": "通过",
++      "kind": "normal"
++    },
++    {
++      "from": "slicegate",
++      "to": "production",
++      "label": "放行制作",
++      "kind": "normal"
++    },
++    {
++      "from": "production",
++      "to": "qa",
++      "label": "提交批次/候选包",
++      "kind": "normal"
++    },
++    {
++      "from": "qa",
++      "to": "releasegate",
++      "label": "通过",
++      "kind": "normal"
++    },
++    {
++      "from": "releasegate",
++      "to": "live",
++      "label": "同意发布",
++      "kind": "normal"
++    },
++    {
++      "from": "live",
++      "to": "done",
++      "label": "完成约定迭代",
++      "kind": "normal"
++    },
++    {
++      "from": "designqa",
++      "to": "design",
++      "label": "缺漏返工",
++      "kind": "rework"
++    },
++    {
++      "from": "direction",
++      "to": "design",
++      "label": "调整；未答复留本节点",
++      "kind": "rework"
++    },
++    {
++      "from": "playtest",
++      "to": "prototype",
++      "label": "修复并复测",
++      "kind": "rework"
++    },
++    {
++      "from": "sliceqa",
++      "to": "slice",
++      "label": "品质或性能未达标",
++      "kind": "rework"
++    },
++    {
++      "from": "slicegate",
++      "to": "prototype",
++      "label": "调整；未答复留本节点",
++      "kind": "rework"
++    },
++    {
++      "from": "qa",
++      "to": "production",
++      "label": "缺陷返回 owner",
++      "kind": "rework"
++    },
++    {
++      "from": "qa",
++      "to": "dependency",
++      "label": "缺工具/设备",
++      "kind": "rework"
++    },
++    {
++      "from": "dependency",
++      "to": "qa",
++      "label": "就绪后恢复原验收",
++      "kind": "rework"
++    },
++    {
++      "from": "dependency",
++      "to": "change",
++      "label": "依赖需新增取舍",
++      "kind": "rework"
++    },
++    {
++      "from": "production",
++      "to": "change",
++      "label": "高影响变更",
++      "kind": "rework"
++    },
++    {
++      "from": "change",
++      "to": "design",
++      "label": "同意变更，重新适配",
++      "kind": "rework"
++    },
++    {
++      "from": "change",
++      "to": "production",
++      "label": "调整按原约定；未答复等待",
++      "kind": "rework"
++    },
++    {
++      "from": "releasegate",
++      "to": "production",
++      "label": "退回；未答复留本节点",
++      "kind": "rework"
++    },
++    {
++      "from": "live",
++      "to": "rollback",
++      "label": "发布异常，按约定回退",
++      "kind": "rework"
++    },
++    {
++      "from": "rollback",
++      "to": "qa",
++      "label": "恢复后再验证",
++      "kind": "rework"
++    }
++  ]
++}
+diff --git a/manifests/game-design/references/workflow.svg b/manifests/game-design/references/workflow.svg
+new file mode 100644
+index 0000000..b8e73c2
+--- /dev/null
++++ b/manifests/game-design/references/workflow.svg
+@@ -0,0 +1,222 @@
++<svg xmlns="http://www.w3.org/2000/svg" width="1910" height="3670" viewBox="0 0 1910 3670" role="img" aria-labelledby="workflow-title workflow-description">
++  <title id="workflow-title">多引擎游戏设计与制作工作流</title>
++  <desc id="workflow-description">默认设计交付；明确约定后进入实现。AI 执行与验证，人负责新增取舍、切片和发布；图为流程规范而非实际状态。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
++  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
++  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
++    <rect width="1910" height="3670" fill="#ffffff"/>
++    <text x="28" y="38" font-size="26" font-weight="700">多引擎游戏设计与制作工作流</text>
++    <text x="28" y="70" font-size="14" fill="#475569">默认设计交付；明确约定后进入实现。AI 执行与验证，人负责新增取舍、切片和发布；图为流程规范而非实际状态。</text>
++    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
++    <rect x="20" y="128" width="400" height="3476" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
++    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
++    <rect x="430" y="128" width="400" height="3476" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
++    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
++    <rect x="840" y="128" width="400" height="3476" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
++    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
++    <path data-from="design" data-to="designqa" d="M 220.0,812 V 855.0 H 630.0 V 898" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="designqa" data-to="direction" d="M 630.0,992 V 1035.0 H 1040.0 V 1078" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="direction" data-to="done" d="M 1040.0,1226 V 1269.0 H 434 V 3430 H 630.0 V 3454" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="direction" data-to="prototype" d="M 1040.0,1226 V 1269.0 H 220.0 V 1312" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="discover" data-to="engine" d="M 220.0,452 V 495.0 H 220.0 V 538" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="engine" data-to="design" d="M 220.0,632 V 675.0 H 220.0 V 718" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="live" data-to="done" d="M 220.0,3188 V 3231.0 H 630.0 V 3454" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="playtest" data-to="slice" d="M 630.0,1586 V 1629.0 H 220.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="production" data-to="qa" d="M 220.0,2360 V 2403.0 H 630.0 V 2446" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="prototype" data-to="playtest" d="M 220.0,1406 V 1449.0 H 630.0 V 1492" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="qa" data-to="releasegate" d="M 630.0,2540 V 2583.0 H 844 V 2836 H 1040.0 V 2860" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="releasegate" data-to="live" d="M 1040.0,3008 V 3051.0 H 220.0 V 3094" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="slice" data-to="sliceqa" d="M 220.0,1766 V 1809.0 H 630.0 V 1852" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="slicegate" data-to="production" d="M 1040.0,2180 V 2223.0 H 220.0 V 2266" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="sliceqa" data-to="slicegate" d="M 630.0,1946 V 1989.0 H 1040.0 V 2032" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="start" data-to="discover" d="M 630.0,272 V 315.0 H 220.0 V 358" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
++    <path data-from="change" data-to="design" d="M 1220,2700.0 H 1270 V 695 H 220.0 V 718" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="change" data-to="production" d="M 1220,2700.0 H 1296 V 2243 H 220.0 V 2266" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="dependency" data-to="change" d="M 810,2700.0 H 1322 V 2603 H 1040.0 V 2626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="dependency" data-to="qa" d="M 810,2700.0 H 1348 V 2423 H 630.0 V 2446" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="designqa" data-to="design" d="M 810,945.0 H 1374 V 695 H 220.0 V 718" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="direction" data-to="design" d="M 1220,1152.0 H 1400 V 695 H 220.0 V 718" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="live" data-to="rollback" d="M 400,3141.0 H 1426 V 3251 H 220.0 V 3274" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="playtest" data-to="prototype" d="M 810,1539.0 H 1452 V 1289 H 220.0 V 1312" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="production" data-to="change" d="M 400,2313.0 H 1478 V 2603 H 1040.0 V 2626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="qa" data-to="dependency" d="M 810,2493.0 H 1504 V 2603 H 630.0 V 2626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="qa" data-to="production" d="M 810,2493.0 H 1530 V 2243 H 220.0 V 2266" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="releasegate" data-to="production" d="M 1220,2934.0 H 1556 V 2243 H 220.0 V 2266" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="rollback" data-to="qa" d="M 400,3321.0 H 1582 V 2423 H 630.0 V 2446" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="slicegate" data-to="prototype" d="M 1220,2106.0 H 1608 V 1289 H 220.0 V 1312" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <path data-from="sliceqa" data-to="slice" d="M 810,1899.0 H 1634 V 1649 H 220.0 V 1672" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
++    <g id="node-start" data-kind="terminal" data-row="0">
++      <title>进入 / 恢复现状 — 读取状态、设计与实际工程</title>
++      <rect x="450" y="178" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
++      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
++      <text x="466" y="228" font-size="18" font-weight="700">进入 / 恢复现状</text>
++      <text x="466" y="252" font-size="14" fill="#334155">读取状态、设计与实际工程</text>
++    </g>
++    <g id="node-discover" data-kind="ai" data-row="1">
++      <title>AI 设计负责人：立项 — brief / 体验支柱 / 约束 / 风险</title>
++      <rect x="40" y="358" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="382" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="408" font-size="18" font-weight="700">AI 设计负责人：立项</text>
++      <text x="56" y="432" font-size="14" fill="#334155">brief / 体验支柱 / 约束 / 风险</text>
++    </g>
++    <g id="node-engine" data-kind="ai" data-row="2">
++      <title>AI 引擎实现者：适配 — 现有引擎沿用；新项目比较候选</title>
++      <rect x="40" y="538" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="562" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="588" font-size="18" font-weight="700">AI 引擎实现者：适配</text>
++      <text x="56" y="612" font-size="14" fill="#334155">现有引擎沿用；新项目比较候选</text>
++    </g>
++    <g id="node-design" data-kind="ai" data-row="3">
++      <title>AI 设计与内容：设计包 — GDD / 数值 / 关卡叙事 / 视听 / TDD</title>
++      <rect x="40" y="718" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="742" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="768" font-size="18" font-weight="700">AI 设计与内容：设计包</text>
++      <text x="56" y="792" font-size="14" fill="#334155">GDD / 数值 / 关卡叙事 / 视听 / TDD</text>
++    </g>
++    <g id="node-designqa" data-kind="check" data-row="4">
++      <title>AI 审查：设计一致性 — 需求→用例；范围与引擎能力映射</title>
++      <rect x="450" y="898" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
++      <text x="466" y="922" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
++      <text x="466" y="948" font-size="18" font-weight="700">AI 审查：设计一致性</text>
++      <text x="466" y="972" font-size="14" fill="#334155">需求→用例；范围与引擎能力映射</text>
++    </g>
++    <g id="node-direction" data-kind="human" data-row="5">
++      <title>人：方向与模式决策 — 确认体验 / 引擎 / 平台 / 预算</title>
++      <rect x="860" y="1078" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
++      <text x="876" y="1102" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
++      <text x="876" y="1128" font-size="18" font-weight="700">人：方向与模式决策</text>
++      <text x="876" y="1152" font-size="14" fill="#334155">确认体验 / 引擎 / 平台 / 预算</text>
++      <text x="876" y="1184" font-size="14" fill="#9a3412">介入条件：新项目设计包齐备或方向发生冲突</text>
++      <text x="876" y="1204" font-size="14" fill="#9a3412">恢复执行：同意：设计交付或原型；调整：设计</text>
++    </g>
++    <g id="node-prototype" data-kind="ai" data-row="6">
++      <title>AI 实现：可玩原型 — 占位资源闭环与关键风险实验</title>
++      <rect x="40" y="1312" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="1336" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="1362" font-size="18" font-weight="700">AI 实现：可玩原型</text>
++      <text x="56" y="1386" font-size="14" fill="#334155">占位资源闭环与关键风险实验</text>
++    </g>
++    <g id="node-playtest" data-kind="check" data-row="7">
++      <title>AI QA：真实输入与试玩 — 启动/操作/反馈；真人反馈分记</title>
++      <rect x="450" y="1492" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
++      <text x="466" y="1516" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
++      <text x="466" y="1542" font-size="18" font-weight="700">AI QA：真实输入与试玩</text>
++      <text x="466" y="1566" font-size="14" fill="#334155">启动/操作/反馈；真人反馈分记</text>
++    </g>
++    <g id="node-slice" data-kind="ai" data-row="8">
++      <title>AI 内容与实现：垂直切片 — 代表关卡、品质链路与可复现包</title>
++      <rect x="40" y="1672" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="1696" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="1722" font-size="18" font-weight="700">AI 内容与实现：垂直切片</text>
++      <text x="56" y="1746" font-size="14" fill="#334155">代表关卡、品质链路与可复现包</text>
++    </g>
++    <g id="node-sliceqa" data-kind="check" data-row="9">
++      <title>AI QA：切片验收 — 设备预算 / 资产链 / 风险 / 工期</title>
++      <rect x="450" y="1852" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
++      <text x="466" y="1876" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
++      <text x="466" y="1902" font-size="18" font-weight="700">AI QA：切片验收</text>
++      <text x="466" y="1926" font-size="14" fill="#334155">设备预算 / 资产链 / 风险 / 工期</text>
++    </g>
++    <g id="node-slicegate" data-kind="human" data-row="10">
++      <title>人：制作放行 — 扩量 / 缩减 / 调整 / 等待</title>
++      <rect x="860" y="2032" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
++      <text x="876" y="2056" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
++      <text x="876" y="2082" font-size="18" font-weight="700">人：制作放行</text>
++      <text x="876" y="2106" font-size="14" fill="#334155">扩量 / 缩减 / 调整 / 等待</text>
++      <text x="876" y="2138" font-size="14" fill="#9a3412">介入条件：切片证据齐备，需要承诺制作范围</text>
++      <text x="876" y="2158" font-size="14" fill="#9a3412">恢复执行：同意进入制作，调整返回原型</text>
++    </g>
++    <g id="node-production" data-kind="ai" data-row="11">
++      <title>AI 制作：功能与内容批次 — 单写者 / 资产许可 / 版本化存档</title>
++      <rect x="40" y="2266" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="2290" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="2316" font-size="18" font-weight="700">AI 制作：功能与内容批次</text>
++      <text x="56" y="2340" font-size="14" fill="#334155">单写者 / 资产许可 / 版本化存档</text>
++    </g>
++    <g id="node-qa" data-kind="check" data-row="12">
++      <title>AI QA：Alpha / Beta — 原用例与回归 / 设备 / 候选包 hash</title>
++      <rect x="450" y="2446" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
++      <text x="466" y="2470" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
++      <text x="466" y="2496" font-size="18" font-weight="700">AI QA：Alpha / Beta</text>
++      <text x="466" y="2520" font-size="14" fill="#334155">原用例与回归 / 设备 / 候选包 hash</text>
++    </g>
++    <g id="node-dependency" data-kind="check" data-row="13">
++      <title>AI：等待环境依赖 — 记 not_run；工具就绪后续跑原用例</title>
++      <rect x="450" y="2626" width="360" height="148" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
++      <text x="466" y="2650" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
++      <text x="466" y="2676" font-size="18" font-weight="700">AI：等待环境依赖</text>
++      <text x="466" y="2700" font-size="14" fill="#334155">记 not_run；工具就绪后续跑原用例</text>
++    </g>
++    <g id="node-change" data-kind="human" data-row="13">
++      <title>人：高影响变更决策 — 新预算 / 迁移 / 付费依赖 / 新目标</title>
++      <rect x="860" y="2626" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
++      <text x="876" y="2650" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
++      <text x="876" y="2676" font-size="18" font-weight="700">人：高影响变更决策</text>
++      <text x="876" y="2700" font-size="14" fill="#334155">新预算 / 迁移 / 付费依赖 / 新目标</text>
++      <text x="876" y="2732" font-size="14" fill="#9a3412">介入条件：需改变已有约定或三轮修复需新取舍</text>
++      <text x="876" y="2752" font-size="14" fill="#9a3412">恢复执行：同意回设计适配；调整沿原约定制作</text>
++    </g>
++    <g id="node-releasegate" data-kind="human" data-row="14">
++      <title>人：对外发布决定 — 批准绑定平台、受众与候选包 hash</title>
++      <rect x="860" y="2860" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
++      <text x="876" y="2884" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
++      <text x="876" y="2910" font-size="18" font-weight="700">人：对外发布决定</text>
++      <text x="876" y="2934" font-size="14" fill="#334155">批准绑定平台、受众与候选包 hash</text>
++      <text x="876" y="2966" font-size="14" fill="#9a3412">介入条件：候选包和 QA、许可、回退证据齐备</text>
++      <text x="876" y="2986" font-size="14" fill="#9a3412">恢复执行：同意发布；退回制作；未答复等待</text>
++    </g>
++    <g id="node-live" data-kind="ai" data-row="15">
++      <title>AI 发布与运营 — 按批准范围执行，监测指标与反馈</title>
++      <rect x="40" y="3094" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="3118" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="3144" font-size="18" font-weight="700">AI 发布与运营</text>
++      <text x="56" y="3168" font-size="14" fill="#334155">按批准范围执行，监测指标与反馈</text>
++    </g>
++    <g id="node-rollback" data-kind="ai" data-row="16">
++      <title>AI 回退：恢复已验证版本 — 保留代码/资产/配置/存档恢复证据</title>
++      <rect x="40" y="3274" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
++      <text x="56" y="3298" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
++      <text x="56" y="3324" font-size="18" font-weight="700">AI 回退：恢复已验证版本</text>
++      <text x="56" y="3348" font-size="14" fill="#334155">保留代码/资产/配置/存档恢复证据</text>
++    </g>
++    <g id="node-done" data-kind="terminal" data-row="17">
++      <title>交付 / 约定迭代完成 — 设计包或已批准发布与运营记录</title>
++      <rect x="450" y="3454" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
++      <text x="466" y="3478" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
++      <text x="466" y="3504" font-size="18" font-weight="700">交付 / 约定迭代完成</text>
++      <text x="466" y="3528" font-size="14" fill="#334155">设计包或已批准发布与运营记录</text>
++    </g>
++    <text x="425.0" y="846.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交审查</text>
++    <text x="835.0" y="1026.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
++    <text x="835.0" y="1260.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意：design-only</text>
++    <text x="630.0" y="1260.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意：implementation</text>
++    <text x="232.0" y="486.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">简报齐备</text>
++    <text x="232.0" y="666.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">技术映射</text>
++    <text x="425.0" y="3222.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">完成约定迭代</text>
++    <text x="425.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">闭环与假设通过</text>
++    <text x="425.0" y="2394.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交批次/候选包</text>
++    <text x="425.0" y="1440.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交可玩包</text>
++    <text x="835.0" y="2574.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
++    <text x="630.0" y="3042.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意发布</text>
++    <text x="425.0" y="1800.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交切片</text>
++    <text x="630.0" y="2214.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">放行制作</text>
++    <text x="835.0" y="1980.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
++    <text x="425.0" y="306.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">读取首个未完成项</text>
++    <text x="1280" y="1697.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意变更，重新适配</text>
++    <text x="1306" y="2471.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整按原约定；未答复等</text>
++    <text x="1306" y="2488.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">待</text>
++    <text x="1332" y="2651.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">依赖需新增取舍</text>
++    <text x="1358" y="2561.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">就绪后恢复原验收</text>
++    <text x="1384" y="820.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺漏返工</text>
++    <text x="1410" y="923.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整；未答复留本节点</text>
++    <text x="1436" y="3196.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">发布异常，按约定回退</text>
++    <text x="1462" y="1414.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">修复并复测</text>
++    <text x="1488" y="2458.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">高影响变更</text>
++    <text x="1514" y="2548.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺工具/设备</text>
++    <text x="1540" y="2368.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺陷返回 owner</text>
++    <text x="1566" y="2588.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">退回；未答复留本节点</text>
++    <text x="1592" y="2872.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复后再验证</text>
++    <text x="1618" y="1697.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整；未答复留本节点</text>
++    <text x="1644" y="1774.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">品质或性能未达标</text>
++    <text x="28" y="3644" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
++  </g>
++</svg>
+diff --git a/manifests/game-design/scripts/game_design.py b/manifests/game-design/scripts/game_design.py
+new file mode 100644
+index 0000000..8156e17
+--- /dev/null
++++ b/manifests/game-design/scripts/game_design.py
+@@ -0,0 +1,259 @@
++#!/usr/bin/env python3
++"""Read-only engine discovery and design-contract checks. Python 3.10+, stdlib only."""
++from __future__ import annotations
++
++import argparse
++import json
++import os
++from pathlib import Path
++import re
++import sys
++import tempfile
++
++HOME = Path(__file__).resolve().parents[1]
++FIELDS = ("id", "name", "category", "fit", "version", "scene", "code", "assets",
++          "space", "input", "save_network", "tests", "build", "pitfalls")
++LABELS = ("版本与工具链", "场景与实体", "脚本与数值", "资产管线", "坐标与尺度",
++          "输入与 UI", "存档与联网", "测试与证据", "构建与导出", "约束与风险")
++ADAPT = ("version", "scene", "code", "assets", "space", "input", "save_network",
++         "tests", "build", "pitfalls")
++
++
++def load_catalog():
++    catalog = json.loads((HOME / "references/engines.json").read_text(encoding="utf-8"))
++    if type(catalog.get("schema_version")) is not int or catalog["schema_version"] != 1:
++        raise ValueError("catalog schema_version must be 1")
++    if not isinstance(catalog.get("engines"), list) or not catalog["engines"]:
++        raise ValueError("catalog engines must be a non-empty list")
++    seen = set()
++    for engine in catalog["engines"]:
++        if not isinstance(engine, dict):
++            raise ValueError("engine must be an object")
++        for key in FIELDS:
++            if not isinstance(engine.get(key), str) or not engine[key].strip():
++                raise ValueError(f"engine missing {key}")
++        if not re.fullmatch(r"[a-z][a-z0-9-]*", engine["id"]) or engine["id"] in seen:
++            raise ValueError("invalid or duplicate engine id")
++        seen.add(engine["id"])
++        if engine.get("support") != "design-adapter" or engine.get("runtime_validation") != "not_run":
++            raise ValueError("catalog describes adapters, not runtime pass claims")
++        if not isinstance(engine.get("sources"), list) or not engine["sources"] or any(
++                not isinstance(url, str) or not url.startswith("https://") for url in engine["sources"]):
++            raise ValueError("official source links required")
++        detect = engine.get("detection")
++        if not isinstance(detect, dict) or not detect or detect.keys() - {
++                "all", "files", "text", "json_keys", "dependencies"}:
++            raise ValueError("invalid detection rules")
++        for kind, values in detect.items():
++            if not isinstance(values, list) or not values:
++                raise ValueError("detection values must be non-empty lists")
++            for value in values:
++                if kind in ("text", "json_keys"):
++                    if not isinstance(value, list) or len(value) != 2:
++                        raise ValueError("invalid structured detection rule")
++                    pattern, criterion = value
++                    if kind == "text" and (not isinstance(criterion, str) or not criterion):
++                        raise ValueError("text criterion required")
++                    if kind == "json_keys" and (not isinstance(criterion, list) or not criterion
++                            or any(not isinstance(k, str) or not k for k in criterion)):
++                        raise ValueError("JSON keys required")
++                else:
++                    pattern = value
++                if (not isinstance(pattern, str) or not pattern or ".." in Path(pattern).parts
++                        or Path(pattern).is_absolute() or "**" in pattern or "\\" in pattern
++                        or len(Path(pattern).parts) > 3):
++                    raise ValueError("detection must stay in bounded project paths")
++    return catalog
++
++
++def safe_matches(project, pattern):
++    # Never inspect symlinks or recursively scan large asset/dependency trees.
++    matches = []
++    for path in project.glob(pattern):
++        if path.is_symlink():
++            continue
++        if any((project / parent).is_symlink() for parent in path.relative_to(project).parents):
++            continue
++        matches.append(path)
++    return sorted(matches)
++
++
++def read_small(path):
++    if not path.is_file() or path.stat().st_size > 2_000_000:
++        return ""
++    return path.read_text(encoding="utf-8", errors="replace")
++
++
++def detect(project, catalog):
++    if not project.is_dir():
++        raise ValueError(f"project directory missing: {project}")
++    hits, warnings = [], []
++    package = {}
++    package_path = project / "package.json"
++    if package_path in safe_matches(project, "package.json"):
++        try:
++            package = json.loads(read_small(package_path))
++            if not isinstance(package, dict):
++                raise ValueError("expected JSON object")
++        except (ValueError, OSError) as exc:
++            warnings.append(f"package.json: {exc}")
++    deps = set()
++    for group in ("dependencies", "devDependencies", "peerDependencies", "optionalDependencies"):
++        if isinstance(package.get(group), dict):
++            deps.update(package[group])
++    for engine in catalog["engines"]:
++        rules, evidence = engine["detection"], []
++        if "all" in rules and all(safe_matches(project, p) for p in rules["all"]):
++            evidence.extend(rules["all"])
++        for pattern in rules.get("files", []):
++            evidence.extend(str(p.relative_to(project)) for p in safe_matches(project, pattern) if p.is_file())
++        for dep in rules.get("dependencies", []):
++            if dep in deps:
++                evidence.append(f"package.json dependency: {dep}")
++        for pattern, text in rules.get("text", []):
++            for path in safe_matches(project, pattern):
++                source = read_small(path)
++                matched = text in source
++                if text == "BEVY_DEPENDENCY":
++                    matched = bool(re.search(r"(?m)^\s*(?:bevy\s*=|\[(?:workspace\.)?dependencies\.bevy\])", source))
++                if matched:
++                    evidence.append(str(path.relative_to(project)))
++        for pattern, keys in rules.get("json_keys", []):
++            for path in safe_matches(project, pattern):
++                try:
++                    obj = json.loads(read_small(path))
++                    if isinstance(obj, dict) and all(k in obj for k in keys):
++                        evidence.append(str(path.relative_to(project)))
++                except (ValueError, OSError):
++                    continue  # Most root JSON files are not engine project files.
++        if evidence:
++            hits.append({"engine": engine["id"], "evidence": sorted(set(evidence))})
++    status = "detected" if len(hits) == 1 else "ambiguous" if hits else "unrecognized"
++    return {"status": status, "candidates": hits, "warnings": warnings,
++            "runtime_validation": "not_run", "note": "Root-only hints; confirm engine/version, or inspect an explicit subproject."}
++
++
++def adapter_markdown(engine):
++    lines = [f"# {engine['name']} 适配器", "", "> 由 engines.json 生成；修改数据后运行 render-adapters。", "",
++             engine["fit"], "", "状态：设计/工程映射已登记；运行时验证 **not_run**。", "",
++             "识别规则（仅线索，不选择/升级引擎）：", "", "```json",
++             json.dumps(engine["detection"], ensure_ascii=False, indent=2), "```", ""]
++    for key, label in zip(ADAPT, LABELS):
++        lines += [f"## {label}", "", engine[key], ""]
++    lines += ["## 官方资料", ""] + [f"- [官方文档]({u})" for u in engine["sources"]]
++    return "\n".join(lines) + "\n"
++
++
++def render_adapters(catalog, check=False):
++    expected = {}
++    rows = ["# 引擎覆盖矩阵", "", "> 自动生成，事实源为 [engines.json](engines.json)。覆盖表示设计适配，不表示构建通过。", "",
++            "| ID | 引擎/框架 | 类别 | 适用与边界 |", "|---|---|---|---|"]
++    for engine in catalog["engines"]:
++        expected[HOME / f"references/adapters/{engine['id']}.md"] = adapter_markdown(engine)
++        rows.append(f"| `{engine['id']}` | [{engine['name']}](adapters/{engine['id']}.md) | {engine['category']} | {engine['fit']} |")
++    expected[HOME / "references/engine-matrix.md"] = "\n".join(rows) + "\n"
++    drift = []
++    for path, content in expected.items():
++        if not path.is_file() or path.read_bytes() != content.encode():
++            drift.append(str(path.relative_to(HOME)))
++            if not check:
++                atomic_write(path, content.encode())
++    extras = set((HOME / "references/adapters").glob("*.md")) - set(expected)
++    if extras:
++        raise ValueError("stale adapter files; review/remove explicitly: " + ", ".join(str(p) for p in sorted(extras)))
++    return {"status": "drift" if check and drift else "ok", "engines": len(catalog["engines"]), "changed": drift}
++
++
++def atomic_write(path, data):
++    path.parent.mkdir(parents=True, exist_ok=True)
++    fd, temp = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.")
++    try:
++        with os.fdopen(fd, "wb") as out:
++            out.write(data)
++        os.replace(temp, path)
++    finally:
++        if os.path.exists(temp):
++            os.unlink(temp)
++
++
++def check_project(project, catalog):
++    state = json.loads((project / ".game-design/state/project.json").read_text(encoding="utf-8"))
++    if not isinstance(state, dict) or type(state.get("schema_version")) is not int or state["schema_version"] != 1:
++        raise ValueError("project state schema_version must be 1")
++    ids = {e["id"] for e in catalog["engines"]}
++    if state.get("engine") is not None and state["engine"] not in ids:
++        raise ValueError("unknown engine; add a complete adapter before selecting it")
++    if state.get("mode") not in ("design-only", "implementation"):
++        raise ValueError("mode must be design-only or implementation")
++    if not isinstance(state.get("engine_version"), str):
++        raise ValueError("engine_version must be a string")
++    if not isinstance(state.get("targets"), list) or any(not isinstance(x, str) or not x.strip() for x in state["targets"]):
++        raise ValueError("targets must be a list of non-empty platform strings")
++    if not isinstance(state.get("budgets"), dict):
++        raise ValueError("budgets must be an object")
++    for key in ("frame_time_ms", "memory_mb", "download_mb"):
++        value = state.get("budgets", {}).get(key)
++        if value is not None and (type(value) not in (float, int) or not 0 < value < float("inf")):
++            raise ValueError(f"budget {key} must be positive or null")
++    result = detect(project, catalog)
++    pending = []
++    if not state["engine"]:
++        pending.append("engine decision")
++    if not state["engine_version"].strip():
++        pending.append("engine version")
++    if not state["targets"]:
++        pending.append("target platforms")
++    for key in ("frame_time_ms", "memory_mb", "download_mb"):
++        if state["budgets"].get(key) is None:
++            pending.append(f"budget: {key}")
++    if result["candidates"] and state["engine"] not in (None, *(x["engine"] for x in result["candidates"])):
++        raise ValueError("selected engine conflicts with detected project; record migration decision first")
++    if result["status"] == "ambiguous":
++        pending.append("multiple runtimes: choose an explicit subproject and record primary engine")
++    return {"status": "pending" if pending else "configured", "pending": pending,
++            "detection": result, "runtime_validation": "not_run",
++            "note": "Configuration check only; does not approve design, playability, build, or release."}
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    sub = parser.add_subparsers(dest="command", required=True)
++    sub.add_parser("list")
++    sub.add_parser("check-catalog")
++    p = sub.add_parser("adapter")
++    p.add_argument("--engine", required=True)
++    for name in ("detect", "check-project"):
++        p = sub.add_parser(name)
++        p.add_argument("--project", default=".")
++    p = sub.add_parser("render-adapters")
++    p.add_argument("--check", action="store_true")
++    args = parser.parse_args()
++    try:
++        catalog = load_catalog()
++        rc = 0
++        if args.command == "list":
++            result = [{k: e[k] for k in ("id", "name", "category", "support")} for e in catalog["engines"]]
++        elif args.command == "adapter":
++            result = next((e for e in catalog["engines"] if e["id"] == args.engine), None)
++            if result is None:
++                raise ValueError(f"unknown engine: {args.engine}")
++        elif args.command == "check-catalog":
++            result = {"status": "ok", "engines": len(catalog["engines"])}
++        elif args.command == "render-adapters":
++            result = render_adapters(catalog, args.check)
++            rc = int(result["status"] == "drift")
++        elif args.command == "detect":
++            result = detect(Path(args.project).resolve(), catalog)
++            rc = int(result["status"] != "detected")
++        else:
++            result = check_project(Path(args.project).resolve(), catalog)
++            rc = int(result["status"] == "pending")
++        print(json.dumps(result, ensure_ascii=False, indent=2))
++        return rc
++    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
++        print(json.dumps({"status": "error", "error": str(exc)}, ensure_ascii=False), file=sys.stderr)
++        return 2
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff --git a/manifests/game-design/scripts/init-game-design.sh b/manifests/game-design/scripts/init-game-design.sh
+new file mode 100755
+index 0000000..e6f73df
+--- /dev/null
++++ b/manifests/game-design/scripts/init-game-design.sh
+@@ -0,0 +1,4 @@
++#!/usr/bin/env bash
++set -euo pipefail
++SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
++exec "${PYTHON:-python3}" "$SCRIPT_DIR/install_manifest.py" "$@"
+diff --git a/manifests/game-design/scripts/install_manifest.py b/manifests/game-design/scripts/install_manifest.py
+new file mode 100644
+index 0000000..bdfe251
+--- /dev/null
++++ b/manifests/game-design/scripts/install_manifest.py
+@@ -0,0 +1,133 @@
++#!/usr/bin/env python3
++"""Install game-design resources; preserve user state, ledger-limit force, record rollback."""
++from __future__ import annotations
++import argparse
++from datetime import datetime, timezone
++import json
++import os
++from pathlib import Path
++import re
++import sys
++import uuid
++from restore_install import atomic, checked, restore, sha
++
++SOURCE = Path(__file__).resolve().parents[1]
++LEDGER = '.game-design/install.json'
++
++
++def source_files():
++    result = []
++    for name in ('CLAUDE.md', 'AGENTS.md'):
++        result.append((SOURCE / name, name, False))
++    result.append((SOURCE / 'README.md', '.game-design/README.md', False))
++    for directory in ('references', 'templates', 'scripts'):
++        for path in sorted((SOURCE / directory).rglob('*')):
++            if path.is_symlink():
++                raise ValueError(f'symlink source: {path}')
++            if not path.is_file() or '__pycache__' in path.parts or path.suffix == '.pyc':
++                continue
++            if path.name in ('init-game-design.sh', 'install_manifest.py', 'restore_install.py'):
++                continue
++            result.append((path, '.game-design/' + path.relative_to(SOURCE).as_posix(), False))
++    for source in sorted((SOURCE / 'templates/state').iterdir()):
++        result.append((source, '.game-design/state/' + source.name, True))
++    for path, _, _ in result:
++        if not path.is_file():
++            raise ValueError(f'missing source: {path}')
++    return result
++
++
++def install(target, force=False, dry_run=False):
++    target = target.expanduser().resolve()
++    if target.exists() and not target.is_dir():
++        raise ValueError('target must be a directory')
++    if target == SOURCE or SOURCE.is_relative_to(target) or target.is_relative_to(SOURCE):
++        raise ValueError('target must be separate from source')
++    ledger_path = checked(target, LEDGER)
++    owned = {}
++    if ledger_path.exists():
++        previous = json.loads(ledger_path.read_text(encoding='utf-8'))
++        if (not isinstance(previous, dict) or previous.get('manifest') != 'game-design'
++                or type(previous.get('schema_version')) is not int or previous['schema_version'] != 1
++                or not isinstance(previous.get('files'), dict)):
++            raise ValueError('invalid installation ledger')
++        for key, value in previous['files'].items():
++            checked(target, key)
++            if not isinstance(value, str) or not re.fullmatch('[a-f0-9]{64}', value):
++                raise ValueError('invalid ledger hash')
++        owned = dict(previous['files'])
++    actions = []
++    for source, relative, protected in source_files():
++        dest = checked(target, relative)
++        # Preflight file and all parent types before any write.
++        if dest.exists() and not dest.is_file():
++            raise ValueError(f'expected file: {relative}')
++        for parent in dest.parents:
++            if parent == target.parent:
++                break
++            if parent.exists() and not parent.is_dir():
++                raise ValueError(f'expected directory: {parent}')
++        data = source.read_bytes()
++        if dest.exists() and (protected or relative not in owned or not force):
++            print(f'KEEP {relative}')
++            continue
++        if dest.is_file() and dest.read_bytes() == data:
++            continue
++        actions.append((dest, relative, data, source.stat().st_mode & 0o777))
++        if not protected:
++            owned[relative] = sha(data)
++        print(f'COPY {relative}')
++    new_ledger = (json.dumps({'manifest': 'game-design', 'schema_version': 1, 'files': owned},
++                             indent=2, sort_keys=True) + '\n').encode()
++    if not ledger_path.is_file() or ledger_path.read_bytes() != new_ledger:
++        actions.append((ledger_path, LEDGER, new_ledger, 0o644))
++    for name in ('.game-design/deliverables', '.game-design/backups'):
++        path = checked(target, name)
++        if path.exists() and not path.is_dir():
++            raise ValueError(f'expected directory: {name}')
++    print(f'{"[dry-run]" if dry_run else "[game-design]"} {len(actions)} writes: {target}')
++    if dry_run:
++        return 0
++    # The complete plan and original hashes are durable before the first payload write.
++    if actions:
++        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]
++        base = checked(target, '.game-design/backups/' + stamp)
++        transaction = {'manifest': 'game-design', 'schema_version': 1, 'target': str(target), 'files': []}
++        for dest, relative, data, mode in actions:
++            old = dest.read_bytes() if dest.is_file() else None
++            old_mode = dest.stat().st_mode & 0o777 if old is not None else 0o644
++            if old is not None:
++                atomic(checked(base / 'originals', relative), old, old_mode)
++            transaction['files'].append({'path': relative, 'old_sha256': sha(old) if old is not None else None,
++                                         'new_sha256': sha(data), 'old_mode': old_mode})
++        atomic(base / 'transaction.json', (json.dumps(transaction, indent=2) + '\n').encode())
++        atomic(base / 'restore.py', (SOURCE / 'scripts/restore_install.py').read_bytes(), 0o755)
++        try:
++            for dest, _, data, mode in actions:
++                atomic(dest, data, mode)
++        except OSError:
++            restore(base, target)
++            raise
++        print(f'Rollback: python3 {str(base / "restore.py")!r}')
++    (target / '.game-design/deliverables').mkdir(parents=True, exist_ok=True)
++    if any((target / name).read_bytes() != (SOURCE / name).read_bytes() for name in ('CLAUDE.md', 'AGENTS.md')):
++        print('Existing root instructions preserved: merge the .game-design/README.md entry manually.')
++    print('Next: read .game-design/README.md; detect the project, then confirm design direction.')
++    return 0
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('target', nargs='?', default='.')
++    parser.add_argument('-f', '--force', action='store_true')
++    parser.add_argument('-n', '--dry-run', action='store_true')
++    args = parser.parse_args()
++    try:
++        return install(Path(args.target), args.force, args.dry_run)
++    except (OSError, ValueError, TypeError, KeyError) as exc:
++        print(f'Installation failed: {exc}', file=sys.stderr)
++        return 1
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/manifests/game-design/scripts/render_workflow.py b/manifests/game-design/scripts/render_workflow.py
+new file mode 100755
+index 0000000..34c1576
+--- /dev/null
++++ b/manifests/game-design/scripts/render_workflow.py
+@@ -0,0 +1,328 @@
++#!/usr/bin/env python3
++"""Render a validated manifest workflow JSON as a deterministic, standalone SVG.
++
++Copy this file to a manifest's scripts/render_workflow.py without dependencies.
++Usage: python3 render_workflow.py --source workflow.json --output workflow.svg [--check]
++"""
++from __future__ import annotations
++
++import argparse
++from collections import deque
++import html
++import json
++import os
++from pathlib import Path
++import re
++import sys
++import tempfile
++import unicodedata
++
++LANES = {"ai": 0, "check": 1, "terminal": 1, "human": 2}
++COLORS = {
++    "ai": ("#eff6ff", "#2563eb", "AI 执行"),
++    "check": ("#ecfdf5", "#047857", "AI 判定 / 校验"),
++    "human": ("#fff7ed", "#c2410c", "人工决策"),
++    "terminal": ("#f1f5f9", "#475569", "起点 / 交付"),
++}
++ID = re.compile(r"[A-Za-z_][A-Za-z0-9_-]*\Z")
++
++
++def _text(value, where, limit):
++    if not isinstance(value, str) or not value.strip():
++        raise ValueError(f"{where}: expected a non-empty string")
++    if len(value) > limit:
++        raise ValueError(f"{where}: exceeds {limit} characters")
++    if any(not (ord(c) in (9, 10, 13) or 0x20 <= ord(c) <= 0xD7FF
++                or 0xE000 <= ord(c) <= 0xFFFD or 0x10000 <= ord(c) <= 0x10FFFF)
++           for c in value):
++        raise ValueError(f"{where}: contains an invalid XML character")
++    return value
++
++
++def _keys(value, required, where, optional=()):
++    if not isinstance(value, dict):
++        raise ValueError(f"{where}: expected an object")
++    missing, extra = set(required) - value.keys(), value.keys() - set(required) - set(optional)
++    if missing or extra:
++        raise ValueError(f"{where}: missing keys {sorted(missing)}; unknown keys {sorted(extra)}")
++
++
++def _reachable(start, adjacency):
++    seen, pending = {start}, deque([start])
++    while pending:
++        for target in adjacency[pending.popleft()]:
++            if target not in seen:
++                seen.add(target)
++                pending.append(target)
++    return seen
++
++
++def _validate(workflow):
++    _keys(workflow, ("schema_version", "title", "description", "nodes", "edges"), "workflow")
++    if type(workflow["schema_version"]) is not int or workflow["schema_version"] != 1:
++        raise ValueError("schema_version: expected integer 1")
++    _text(workflow["title"], "title", 120)
++    _text(workflow["description"], "description", 500)
++    nodes, edges = workflow["nodes"], workflow["edges"]
++    if not isinstance(nodes, list) or not 2 <= len(nodes) <= 80:
++        raise ValueError("nodes: expected 2 to 80 nodes")
++    if not isinstance(edges, list) or not 1 <= len(edges) <= 160:
++        raise ValueError("edges: expected 1 to 160 edges")
++    by_id, occupied = {}, set()
++    for i, node in enumerate(nodes):
++        where = f"nodes[{i}]"
++        _keys(node, ("id", "label", "kind", "row", "detail"), where, ("trigger", "resume"))
++        identifier = _text(node["id"], f"{where}.id", 80)
++        if not ID.fullmatch(identifier):
++            raise ValueError(f"{where}.id: expected an ASCII identifier")
++        if identifier in by_id:
++            raise ValueError(f"{where}.id: duplicate node {identifier}")
++        if not isinstance(node["kind"], str) or node["kind"] not in LANES:
++            raise ValueError(f"{where}.kind: expected ai, check, human, or terminal")
++        if type(node["row"]) is not int or node["row"] < 0:
++            raise ValueError(f"{where}.row: expected a non-negative integer")
++        cell = (LANES[node["kind"]], node["row"])
++        if cell in occupied:
++            raise ValueError(f"{where}: overlapping lane/row {cell}")
++        occupied.add(cell)
++        _text(node["label"], f"{where}.label", 120)
++        _text(node["detail"], f"{where}.detail", 500)
++        if node["kind"] == "human":
++            for field in ("trigger", "resume"):
++                _text(node.get(field), f"{where}.{field}", 250)
++        elif "trigger" in node or "resume" in node:
++            raise ValueError(f"{where}: trigger/resume apply only to human nodes")
++        by_id[identifier] = node
++    forward = {identifier: [] for identifier in by_id}
++    reverse = {identifier: [] for identifier in by_id}
++    seen_edges = set()
++    for i, edge in enumerate(edges):
++        where = f"edges[{i}]"
++        _keys(edge, ("from", "to", "label", "kind"), where)
++        for field in ("from", "to"):
++            _text(edge[field], f"{where}.{field}", 80)
++            if edge[field] not in by_id:
++                raise ValueError(f"{where}.{field}: unknown node {edge[field]}")
++        _text(edge["label"], f"{where}.label", 80)
++        if not isinstance(edge["kind"], str) or edge["kind"] not in ("normal", "rework"):
++            raise ValueError(f"{where}.kind: expected normal or rework")
++        identity = (edge["from"], edge["to"], edge["kind"], edge["label"])
++        if identity in seen_edges:
++            raise ValueError(f"{where}: duplicate edge")
++        seen_edges.add(identity)
++        forward[edge["from"]].append(edge["to"])
++        reverse[edge["to"]].append(edge["from"])
++    starts = [identifier for identifier in by_id if not reverse[identifier]]
++    ends = [identifier for identifier in by_id if not forward[identifier]]
++    if len(starts) != 1 or len(ends) != 1 or starts == ends:
++        raise ValueError("workflow: expected one distinct start (no incoming edges) and end (no outgoing edges)")
++    if any(by_id[identifier]["kind"] != "terminal" for identifier in starts + ends):
++        raise ValueError("workflow: start and end must have kind terminal")
++    if set(by_id) != _reachable(starts[0], forward):
++        raise ValueError("workflow: every node must be reachable from the start")
++    if set(by_id) != _reachable(ends[0], reverse):
++        raise ValueError("workflow: every node must be able to reach the end")
++    return by_id
++
++
++def _unique_object(pairs):
++    result = {}
++    for key, value in pairs:
++        if key in result:
++            raise ValueError(f"JSON: duplicate object key {key}")
++        result[key] = value
++    return result
++
++
++def load_workflow(path):
++    """Load UTF-8 JSON and validate its schema, layout, and graph."""
++    with Path(path).open(encoding="utf-8") as source:
++        workflow = json.load(source, object_pairs_hook=_unique_object)
++    _validate(workflow)
++    return workflow
++
++
++def _width(text):
++    return sum(2 if unicodedata.east_asian_width(c) in ("W", "F") else 1 for c in text)
++
++
++def _wrap(text, width):
++    # Character-level wrapping handles CJK and long unbroken identifiers alike.
++    lines, line, used = [], "", 0
++    for char in " ".join(text.split()):
++        size = _width(char)
++        if used + size > width and line:
++            lines.append(line.rstrip())
++            line, used = "", 0
++        if char != " " or line:
++            line += char
++            used += size
++    if line:
++        lines.append(line.rstrip())
++    return lines
++
++
++def render(workflow):
++    """Return deterministic accessible SVG text; no filesystem writes."""
++    by_id = _validate(workflow)
++    nodes = sorted(by_id.values(), key=lambda node: (node["row"], LANES[node["kind"]], node["id"]))
++    edges = sorted(workflow["edges"], key=lambda edge: (edge["kind"], edge["from"], edge["to"], edge["label"]))
++    esc = html.escape
++    parts = []
++    add = parts.append
++    font = "system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif"
++    card_width, lane_pitch, left, gap = 360, 410, 40, 86
++    title_lines = _wrap(workflow["title"], 76)
++    desc_lines = _wrap(workflow["description"], 138)
++    header_bottom = 36 + len(title_lines) * 32 + len(desc_lines) * 20 + 40
++    content_top = header_bottom + 50
++    row_heights, text_lines = {}, {}
++    for node in nodes:
++        label = _wrap(node["label"], 33)
++        detail = _wrap(node["detail"], 43)
++        extra = []
++        if node["kind"] == "human":
++            extra = _wrap("介入条件：" + node["trigger"], 43) + _wrap("恢复执行：" + node["resume"], 43)
++        height = 50 + len(label) * 24 + (len(detail) + len(extra)) * 20 + (14 if extra else 0)
++        text_lines[node["id"]] = (label, detail, extra)
++        row_heights[node["row"]] = max(row_heights.get(node["row"], 0), height)
++    row_y, cursor = {}, content_top
++    # Empty row numbers are ordering slots rather than blank, unbounded space.
++    for row in sorted(row_heights):
++        row_y[row] = cursor
++        cursor += row_heights[row] + gap
++    positions = {node["id"]: (left + LANES[node["kind"]] * lane_pitch,
++                               row_y[node["row"]], card_width, row_heights[node["row"]]) for node in nodes}
++    reworks = [edge for edge in edges if edge["kind"] == "rework"]
++    width = max(1260, 1310 + 26 * len(reworks) + (210 if reworks else 0))
++    height = cursor + 36
++    add(f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-labelledby="workflow-title workflow-description">')
++    add(f'  <title id="workflow-title">{esc(workflow["title"])}</title>')
++    add(f'  <desc id="workflow-description">{esc(workflow["description"])} 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>')
++    add('  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>')
++    add(f'  <g font-family="{font}" fill="#0f172a">')
++    add(f'    <rect width="{width}" height="{height}" fill="#ffffff"/>')
++    y = 38
++    for line in title_lines:
++        add(f'    <text x="28" y="{y}" font-size="26" font-weight="700">{esc(line)}</text>')
++        y += 32
++    for line in desc_lines:
++        add(f'    <text x="28" y="{y}" font-size="14" fill="#475569">{esc(line)}</text>')
++        y += 20
++    add(f'    <text x="28" y="{y + 4}" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>')
++    for lane, label in enumerate(("AI 自主执行", "AI 判定 / 校验与起止", "人工决策门")):
++        x = 20 + lane * lane_pitch
++        add(f'    <rect x="{x}" y="{header_bottom}" width="400" height="{cursor - header_bottom - 30}" rx="14" fill="{("#f8faff", "#f6fbf9", "#fffbf5")[lane]}" stroke="#e2e8f0"/>')
++        add(f'    <text x="{x + 200}" y="{header_bottom + 29}" text-anchor="middle" font-size="16" font-weight="700">{label}</text>')
++    edge_labels = []
++    rework_index = 0
++    for edge in edges:
++        sx, sy, sw, sh = positions[edge["from"]]
++        tx, ty, tw, th = positions[edge["to"]]
++        source, target = by_id[edge["from"]], by_id[edge["to"]]
++        source_center, target_center = sx + sw / 2, tx + tw / 2
++        color = "#c2410c" if edge["kind"] == "rework" else "#64748b"
++        dash = ' stroke-dasharray="7 5"' if edge["kind"] == "rework" else ""
++        marker = "rework-arrow" if edge["kind"] == "rework" else "arrow"
++        if edge["kind"] == "rework":
++            rail = 1270 + 26 * rework_index
++            rework_index += 1
++            # Route above the target card, so the final arrow never passes through another card.
++            target_gap = ty - 23
++            start_y = sy + sh / 2
++            path = f"M {sx + sw},{start_y} H {rail} V {target_gap} H {target_center} V {ty}"
++            edge_labels.append((rail + 10, (start_y + target_gap) / 2, edge["label"], color, "start"))
++        elif ty > sy:
++            mid_y = sy + sh + gap / 2
++            intervening = any(node["id"] not in (source["id"], target["id"])
++                              and LANES[node["kind"]] == LANES[target["kind"]]
++                              and source["row"] < node["row"] < target["row"] for node in nodes)
++            if intervening:
++                rail = tx - 16
++                end_gap = ty - 24
++                path = f"M {source_center},{sy + sh} V {mid_y} H {rail} V {end_gap} H {target_center} V {ty}"
++            else:
++                path = f"M {source_center},{sy + sh} V {mid_y} H {target_center} V {ty}"
++            anchor_x = (source_center + target_center) / 2
++            edge_labels.append((anchor_x + (12 if source_center == target_center else 0), mid_y - 9, edge["label"], color, "start" if source_center == target_center else "middle"))
++        else:
++            # Same-row or upward normal edges remain supported via a gutter.
++            rail = max(sx + sw, tx + tw) + 18
++            start_y, end_y = sy + sh / 2, ty + th / 2
++            path = f"M {sx + sw},{start_y} H {rail} V {end_y} H {tx + tw}"
++            edge_labels.append((rail + 6, (start_y + end_y) / 2 - 7, edge["label"], color, "start"))
++        add(f'    <path data-from="{esc(edge["from"])}" data-to="{esc(edge["to"])}" d="{path}" fill="none" stroke="{color}" stroke-width="2"{dash} marker-end="url(#{marker})"/>')
++    for node in nodes:
++        x, y, w, h = positions[node["id"]]
++        fill, border, badge = COLORS[node["kind"]]
++        label, detail, extra = text_lines[node["id"]]
++        add(f'    <g id="node-{esc(node["id"])}" data-kind="{node["kind"]}" data-row="{node["row"]}">')
++        add(f'      <title>{esc(node["label"] + " — " + node["detail"])}</title>')
++        add(f'      <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{26 if node["kind"] == "terminal" else 10}" fill="{fill}" stroke="{border}" stroke-width="1.8"/>')
++        add(f'      <text x="{x + 16}" y="{y + 24}" font-size="12" fill="{border}" font-weight="700">{badge}</text>')
++        line_y = y + 50
++        for line in label:
++            add(f'      <text x="{x + 16}" y="{line_y}" font-size="18" font-weight="700">{esc(line)}</text>')
++            line_y += 24
++        for line in detail:
++            add(f'      <text x="{x + 16}" y="{line_y}" font-size="14" fill="#334155">{esc(line)}</text>')
++            line_y += 20
++        if extra:
++            line_y += 12
++            for line in extra:
++                add(f'      <text x="{x + 16}" y="{line_y}" font-size="14" fill="#9a3412">{esc(line)}</text>')
++                line_y += 20
++        add('    </g>')
++    for x, y, label, color, anchor in edge_labels:
++        for i, line in enumerate(_wrap(label, 23)):
++            add(f'    <text x="{x}" y="{y + i * 17}" text-anchor="{anchor}" font-size="12" fill="{color}" stroke="#ffffff" stroke-width="4" paint-order="stroke">{esc(line)}</text>')
++    add(f'    <text x="28" y="{height - 26}" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>')
++    add('  </g>\n</svg>')
++    return "\n".join(parts) + "\n"
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--source", required=True, type=Path, help="UTF-8 workflow JSON")
++    parser.add_argument("--output", required=True, type=Path, help="generated SVG")
++    parser.add_argument("--check", action="store_true", help="compare only; never write files")
++    args = parser.parse_args(argv)
++    try:
++        same = args.source.resolve() == args.output.resolve()
++        if args.source.exists() and args.output.exists():
++            same = same or os.path.samefile(args.source, args.output)
++        if same:
++            raise ValueError("source and output must be different files")
++        svg = render(load_workflow(args.source))
++        if args.check:
++            if not args.output.is_file():
++                print(f"MISSING: {args.output}", file=sys.stderr)
++                return 1
++            if args.output.read_bytes() != svg.encode("utf-8"):
++                print(f"DRIFT: {args.output}; regenerate from {args.source}", file=sys.stderr)
++                return 1
++            print(f"OK: {args.output} is up to date.")
++            return 0
++        args.output.parent.mkdir(parents=True, exist_ok=True)
++        temporary = None
++        try:
++            with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n",
++                                             dir=args.output.parent, prefix=f".{args.output.name}.",
++                                             suffix=".tmp", delete=False) as target:
++                temporary = target.name
++                target.write(svg)
++                target.flush()
++                os.fsync(target.fileno())
++            os.replace(temporary, args.output)
++        finally:
++            if temporary is not None and os.path.exists(temporary):
++                os.unlink(temporary)
++        print(f"Wrote SVG: {args.output}")
++        return 0
++    except (ValueError, OSError, UnicodeError) as exc:
++        print(f"ERROR: {exc}", file=sys.stderr)
++        return 2
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/manifests/game-design/scripts/restore_install.py b/manifests/game-design/scripts/restore_install.py
+new file mode 100644
+index 0000000..db8d5fa
+--- /dev/null
++++ b/manifests/game-design/scripts/restore_install.py
+@@ -0,0 +1,90 @@
++#!/usr/bin/env python3
++"""Standalone file-level rollback; leaves transaction evidence and user files intact."""
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import sys
++import tempfile
++
++
++def sha(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def checked(root, relative):
++    rel = Path(relative)
++    if (not relative or rel.is_absolute() or '..' in rel.parts or '\\' in relative
++            or rel.as_posix() != relative
++            or not (relative in ('CLAUDE.md', 'AGENTS.md') or relative.startswith('.game-design/'))):
++        raise ValueError(f'invalid managed path: {relative}')
++    path = root
++    for part in rel.parts:
++        path = path / part
++        if path.is_symlink():
++            raise ValueError(f'symlink destination: {relative}')
++    return path
++
++
++def atomic(path, data, mode=0o644):
++    path.parent.mkdir(parents=True, exist_ok=True)
++    fd, temp = tempfile.mkstemp(dir=path.parent, prefix='.' + path.name + '.')
++    try:
++        with os.fdopen(fd, 'wb') as out:
++            out.write(data)
++        os.chmod(temp, mode)
++        os.replace(temp, path)
++    finally:
++        if os.path.exists(temp):
++            os.unlink(temp)
++
++
++def restore(base, target=None, check=False):
++    transaction = json.loads((base / 'transaction.json').read_text(encoding='utf-8'))
++    if transaction.get('manifest') != 'game-design' or transaction.get('schema_version') != 1:
++        raise ValueError('invalid transaction')
++    root = Path(target or transaction['target']).resolve()
++    actions = []
++    for item in transaction['files']:
++        dest = checked(root, item['path'])
++        if dest.exists() and not dest.is_file():
++            raise ValueError(f'expected file: {item["path"]}')
++        current = sha(dest.read_bytes()) if dest.is_file() else None
++        old = item['old_sha256']
++        if current not in (item['new_sha256'], old):
++            raise ValueError(f'post-install edit conflict: {item["path"]}')
++        if current == old:
++            continue
++        data = None
++        if old is not None:
++            source = checked(base / 'originals', item['path'])
++            data = source.read_bytes()
++            if sha(data) != old:
++                raise ValueError(f'backup hash mismatch: {item["path"]}')
++        actions.append((dest, data, item['old_mode']))
++    if not check:
++        for dest, data, mode in reversed(actions):
++            if data is None:
++                dest.unlink()
++            else:
++                atomic(dest, data, mode)
++    return len(actions)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--target')
++    parser.add_argument('--check', action='store_true')
++    args = parser.parse_args()
++    try:
++        count = restore(Path(__file__).resolve().parent, args.target, args.check)
++        print(f'{"Checked" if args.check else "Restored"}: {count} paths')
++        return 0
++    except (OSError, ValueError, KeyError, TypeError) as exc:
++        print(f'Rollback failed: {exc}', file=sys.stderr)
++        return 1
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff --git a/manifests/game-design/templates/art-audio-ui.md b/manifests/game-design/templates/art-audio-ui.md
+new file mode 100644
+index 0000000..c04256d
+--- /dev/null
++++ b/manifests/game-design/templates/art-audio-ui.md
+@@ -0,0 +1,14 @@
++# 视听、资产与 UI 规范
++状态：draft；revision：
++
++## 风格与生产
++风格参考及来源/许可、可读性规则、色板/光照、角色/环境/动画/VFX 与音效/音乐职责；明确源文件格式、命名、模型单位/轴向、骨骼、PBR、贴图尺寸/压缩、音频采样/响度与字体授权。
++
++| ASSET-ID/REQ-ID | 用途/验收参考 | 源→导出→引擎格式 | 预算 | 许可/来源 | owner | 完成与证据 |
++|---|---|---|---|---|---|---|
++
++## UI 与可访问性
++屏幕状态/导航图、HUD 信息优先级、键鼠/手柄/触控、重绑定、字幕/文本缩放、色弱非颜色提示、运动/闪光选项、音量/动态范围、安全区与多分辨率。每项关联 TEST-ID。
++
++## 导入与验证
++模型/动画/材质/字体/音频在实际引擎导入并截图/录制；透明、色彩空间、根运动、碰撞、音画同步和切场景卸载核验；尚未导入保持 not_run。
+diff --git a/manifests/game-design/templates/brief.md b/manifests/game-design/templates/brief.md
+new file mode 100644
+index 0000000..33e59b8
+--- /dev/null
++++ b/manifests/game-design/templates/brief.md
+@@ -0,0 +1,17 @@
++# 游戏简报
++状态：draft；revision：；owner：；假设/未定项：
++
++## 玩家与体验
++- 目标受众/场景、受众验证来源与日期：
++- 一句话提案、体验支柱（最多 3 条）与反目标：
++- 类型、视角、2D/3D、单人/多人：
++- 30 秒核心循环（动作→反馈→目标→奖励→再选择）：
++- 失败、重试、结束与长期动机：
++
++## 约束与范围
++- 平台/设备/输入/本地化/可访问性：
++- 团队技能、工期/预算、可用工具、许可与商业模式：
++- must/should/cut，各含可测成功标准：
++- 最大体验风险/技术风险、低成本证伪实验与止损阈值：
++- 需要人决定的取舍、推荐与成本：
++- 模式：design-only / implementation；批准的 revision 与 resume：
+diff --git a/manifests/game-design/templates/engine-decision.md b/manifests/game-design/templates/engine-decision.md
+new file mode 100644
+index 0000000..7f5bfc4
+--- /dev/null
++++ b/manifests/game-design/templates/engine-decision.md
+@@ -0,0 +1,15 @@
++# 引擎与平台决策
++状态：proposed；DEC-ID：；设计 revision：
++
++已有项目：引擎/版本、工程目录、锁文件、资产与技术债；原则是延续，不为了模板重选。
++新项目：比较 2–3 个候选，不做脱离需求的榜单。
++
++| 候选/版本 | 平台/输入 | 团队成本 | 资源/编辑器 | 性能/包体 | 测试/发布 | 许可/付费/云 | 风险与证伪 |
++|---|---|---|---|---|---|---|---|
++
++推荐与弃选理由：
++原型先验证的能力、可测阈值：
++已选 adapter、实际工具/SDK/插件与对应官方文档日期：
++人决定：同意/调整/暂停；决定人/日期；绑定 revision：
++恢复节点与仍待验证项：
++迁移/升级时：旧版本备份、资产/脚本/存档转换与回退成本：
+diff --git a/manifests/game-design/templates/gdd.md b/manifests/game-design/templates/gdd.md
+new file mode 100644
+index 0000000..cf5a0f0
+--- /dev/null
++++ b/manifests/game-design/templates/gdd.md
+@@ -0,0 +1,21 @@
++# 游戏设计文档 GDD
++状态：draft；revision：；关联 brief/决策：
++
++## 支柱与循环
++描述玩家为什么做出选择；按秒/分钟/局外层级写动作、反馈、资源、目标。列 REQ-ID、玩法假设及证伪标准。
++
++## 可执行玩法规格
++| REQ-ID | 玩家输入/前置条件 | 规则/状态转换 | 可观察反馈 | 失败/边界/重试 | TEST-ID |
++|---|---|---|---|---|---|
++
++## 系统与内容
++角色/能力、战斗/交互、经济/成长、随机/难度曲线、关卡/探索、叙事/任务、教程/新手、社交/联网（不适用写理由）。复杂公式与 units 引用 systems-balance.csv。
++
++## UI/UX 与视听
++屏幕流、HUD/菜单/暂停、动作映射、可访问性、视听反馈与 art-audio-ui.md 对齐；不能只给美术风格词。
++
++## 原型与量产
++最小闭环、明确排除、体验/技术实验、可接受误差/性能阈值、代表性切片、内容产能、里程碑和发布/运营假设。
++
++## 追踪与验收
++每条 must 需求绑定实现位置/资源 ID、用例、证据；未决定项、反目标、变更影响和审批 revision 单独列出。玩法/UI/数值/叙事之间做一致性审查。
+diff --git a/manifests/game-design/templates/level-design.md b/manifests/game-design/templates/level-design.md
+new file mode 100644
+index 0000000..a7b8586
+--- /dev/null
++++ b/manifests/game-design/templates/level-design.md
+@@ -0,0 +1,10 @@
++# 关卡与内容设计
++状态：draft；LEVEL-ID/REQ-ID：
++
++- 玩家入口状态、目标、成功/失败/重试点、退出与存档点：
++- 空间草图（可编辑源路径）/节点连接与门钥匙/导航/视线：
++- 节拍：引入→练习→变体→挑战→回报；每段时长、挑战、资源和可观察反馈：
++- 遭遇/敌人/机关/掉落、数值表引用；不同路径和难度下资源账：
++- 教程提示、迷路/软锁/越界/卡死检查与无障碍替代交互：
++- 所选引擎 Scene/World/Room/Map/Collection 与复用资源 ID：
++- 游玩路径、边界用例、完成率/耗时/死亡等指标与验收阈值：
+diff --git a/manifests/game-design/templates/narrative.md b/manifests/game-design/templates/narrative.md
+new file mode 100644
+index 0000000..a68f6ad
+--- /dev/null
++++ b/manifests/game-design/templates/narrative.md
+@@ -0,0 +1,9 @@
++# 叙事、任务与分支
++状态：draft；REQ-ID：
++
++- 世界规则、主题、角色动机与玩法支柱的对应：
++- 故事/任务图：节点 ID、前置条件、选择、状态改变、后继、失败/重试、结局：
++- 台词/文本 ID、说话者/情境、长度、配音/字幕、本地化占位：
++- 分支覆盖、不可达/死循环/软锁、跳过/回看与旧存档迁移：
++- 触发器映射到所选引擎事件/label/quest data：
++- 测试存档、分支预期与证据；不适用叙事时说明如何承载目标反馈：
+diff --git a/manifests/game-design/templates/production-release.md b/manifests/game-design/templates/production-release.md
+new file mode 100644
+index 0000000..4e0db6a
+--- /dev/null
++++ b/manifests/game-design/templates/production-release.md
+@@ -0,0 +1,17 @@
++# 制作、QA、发布与运营
++状态：draft；设计 revision/候选包 hash：
++
++## 制作与质量门
++批次、owner、依赖、must/should/cut、产能、单写者路径、Alpha/Beta 标准；里程碑变动与预算影响；需求追踪缺口和缺陷分级。
++
++## 候选包
++实际 engine/toolchain/SDK、源码 revision、构建命令 cwd/env/input/stdout/stderr/exit、输出路径/hash、目标平台/设备；性能/存档/联网/可访问性/本地化/隐私和许可证据；未测/接受风险列清。
++
++## 人工发布决定
++批准人/日期、平台/受众、包 hash、商店/分发方式、允许范围、批准的 revision 和 resume。未答复保持等待，不以模板存在当批准。
++
++## 更新与回退
++代码/资产/配置/平台版本的快照、旧档样本、schema 兼容、可逆步骤、不可逆风险、停止扩散阈值、恢复命令与恢复后验证；若存档不可逆先人工决策。保留已验证旧包，不删除唯一源文件。
++
++## 运营与复盘
++崩溃/性能/玩法指标、反馈来源和日期、隐私最小化、缺陷/平衡补丁、热修复审查、更新门、长期支持和停服策略（如适用）。
+diff --git a/manifests/game-design/templates/prototype-playtest.md b/manifests/game-design/templates/prototype-playtest.md
+new file mode 100644
+index 0000000..3326a49
+--- /dev/null
++++ b/manifests/game-design/templates/prototype-playtest.md
+@@ -0,0 +1,18 @@
++# 原型假设、测试计划与试玩记录
++状态：draft；包 hash/设计 revision/engine/version/device：
++
++## 实验
++- 最高风险假设、最小可玩闭环、固定输入/种子、对照/变体：
++- 样本/场景、指标与阈值；通过/失败后的设计动作：
++- 玩家需完成的目标（不要预先诱导反馈）；边界/失败/重试用例：
++
++| TEST-ID/REQ-ID | 层级/环境 | 前置/输入/步骤 | 预期 | 实际结果 | pass/fail/not_run | 日志/截图/命令/退出码 |
++|---|---|---|---|---|---|---|
++
++静态、领域单测、引擎场景、构建、真实输入操作、目标设备/多人、真人试玩分别填。真人体验观察记录样本与偏差，不用 AI 的“觉得好玩”代替。
++
++## 缺陷与复测
++BUG-ID、严重度、最短复现、频率、预期/实际、证据、owner、修复 revision、原用例重跑、邻近回归、关闭人。环境阻断记依赖和恢复用例。
++
++## 结论
++保留/迭代/放弃的假设与理由、支柱变化是否需回方向门、下一轮实验、审查者（独立审查/self-review）。
+diff --git a/manifests/game-design/templates/state/decisions.md b/manifests/game-design/templates/state/decisions.md
+new file mode 100644
+index 0000000..d99d46d
+--- /dev/null
++++ b/manifests/game-design/templates/state/decisions.md
+@@ -0,0 +1,6 @@
++# 决策台账
++
++| DEC-ID | 触发/问题 | 选项/成本/推荐 | revision/包 hash | 人的决定/日期 | 约束 | resume |
++|---|---|---|---|---|---|---|
++
++没有明确答复保持 waiting_human。技术实验结论可由 AI 形成 ADR，高影响取舍须记录人的决定。
+diff --git a/manifests/game-design/templates/state/evidence.md b/manifests/game-design/templates/state/evidence.md
+new file mode 100644
+index 0000000..463efd0
+--- /dev/null
++++ b/manifests/game-design/templates/state/evidence.md
+@@ -0,0 +1,6 @@
++# 验证与交付台账
++
++| REQ-ID/TEST-ID | 设计/实现 revision | 工具/版本/平台 | 命令 cwd/env/输入 | stdout/stderr/exit | 产物路径/hash | pass/fail/not_run | reviewer |
++|---|---|---|---|---|---|---|---|
++
++模板安装、配置完整和目录存在不是引擎运行结果；保留原始输出和真实游玩记录，真人试玩与自动化分开。
+diff --git a/manifests/game-design/templates/state/project.json b/manifests/game-design/templates/state/project.json
+new file mode 100644
+index 0000000..6434fef
+--- /dev/null
++++ b/manifests/game-design/templates/state/project.json
+@@ -0,0 +1,12 @@
++{
++  "schema_version": 1,
++  "mode": "design-only",
++  "engine": null,
++  "engine_version": "",
++  "targets": [],
++  "budgets": {
++    "frame_time_ms": null,
++    "memory_mb": null,
++    "download_mb": null
++  }
++}
+diff --git a/manifests/game-design/templates/state/status.md b/manifests/game-design/templates/state/status.md
+new file mode 100644
+index 0000000..b6852ea
+--- /dev/null
++++ b/manifests/game-design/templates/state/status.md
+@@ -0,0 +1,12 @@
++# 当前状态
++- stage: discover
++- status: pending
++- revision: draft
++- owner: 待分配
++- mode: design-only
++- first_unfinished: 阅读已有项目并填写 brief
++- resume: discover
++- blockers/assumptions: 尚未确定引擎、平台与体验目标
++- runtime_validation: not_run
++
++每阶段记录输入、产物、验收、证据和下一步；waiting_human 与 waiting_dependency 区分。
+diff --git a/manifests/game-design/templates/systems-balance.csv b/manifests/game-design/templates/systems-balance.csv
+new file mode 100644
+index 0000000..87a5b2a
+--- /dev/null
++++ b/manifests/game-design/templates/systems-balance.csv
+@@ -0,0 +1,2 @@
++REQ-ID,system,parameter,value,unit,min,max,formula_or_source,random_seed,scenario,expected_metric,threshold,TEST-ID,revision
++REQ-EXAMPLE,replace_with_system,replace_with_parameter,,define_unit,,,,,define_scenario,define_metric,,TEST-EXAMPLE,draft
+diff --git a/manifests/game-design/templates/technical-design.md b/manifests/game-design/templates/technical-design.md
+new file mode 100644
+index 0000000..fec361e
+--- /dev/null
++++ b/manifests/game-design/templates/technical-design.md
+@@ -0,0 +1,20 @@
++# 技术设计与引擎绑定 TDD
++状态：draft；engine/version/host/targets：；设计 revision：
++
++## 能力与架构
++- adapter ID/版本来源、实际 Editor/SDK/插件、命令帮助记录：
++- REQ-ID → 领域模块 → 引擎 Scene/World/Room/Entity/Event/Resource → owner：
++- 初始化/销毁/场景切换、固定步长/渲染、事件/线程与状态机：
++- 世界坐标轴/手性/单位、物理尺度、像素比例、UI 安全区、动作映射：
++- 数据源/schema/随机种子、资源导入/GUID、缓存与生成物：
++- 存档 schema/迁移/隔离样本；联网 authority/弱网/断线（若适用）：
++
++## 性能与工具链
++- 目标帧时 ms（例：60fps 对应约 16.67ms，需人确认）、内存 MB、下载包 MB、首屏与加载时间：
++- CPU/GPU/物理/DrawCall/纹理/音频预算，测量设备、场景、样本数、p95/最大值阈值：
++- source→export→import→build→runtime 链、版本锁定、可复建命令 cwd/env/stdout/stderr/exit：
++- 缺失依赖、能力降级、not_run 项及恢复用例：
++
++## 验收与回退
++单测/场景测试/真实启动与输入/目标设备/真人试玩分层；每层 PASS 条件、证据路径与负责者。写明预期成功码，不默认所有引擎 exit=0。
++修改前 commit/资源快照、存档样本、恢复命令和恢复后用例；不可逆迁移先决策。
+diff --git a/manifests/game-design/templates/traceability.csv b/manifests/game-design/templates/traceability.csv
+new file mode 100644
+index 0000000..54a3877
+--- /dev/null
++++ b/manifests/game-design/templates/traceability.csv
+@@ -0,0 +1,2 @@
++REQ-ID,design_ref,implementation_ref,asset_id,TEST-ID,evidence_path,result,owner,revision
++REQ-EXAMPLE,gdd.md#replace,,,,,not_run,,draft
+diff --git a/manifests/game-design/tests/test_game_design.py b/manifests/game-design/tests/test_game_design.py
+new file mode 100644
+index 0000000..4d66a86
+--- /dev/null
++++ b/manifests/game-design/tests/test_game_design.py
+@@ -0,0 +1,386 @@
++"""Contract/fixture tests; deliberately not engine-runtime acceptance tests."""
++import copy
++import contextlib
++import hashlib
++import importlib.util
++import io
++import json
++import os
++from pathlib import Path
++import re
++import shutil
++import subprocess
++import sys
++import tempfile
++import unittest
++import xml.etree.ElementTree as ET
++
++HOME = Path(__file__).resolve().parents[1]
++ROOT = HOME.parents[1]
++SCRIPTS = HOME / 'scripts'
++sys.dont_write_bytecode = True
++sys.path.insert(0, str(SCRIPTS))
++from game_design import load_catalog, detect, render_adapters, check_project
++import game_design
++import install_manifest
++from restore_install import restore
++
++
++def snapshot(root):
++    return {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
++            for p in root.rglob('*') if p.is_file() and not p.is_symlink()}
++
++
++class GameDesignTests(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory(prefix='game design test ')
++        self.addCleanup(self.tmp.cleanup)
++        self.base = Path(self.tmp.name)
++        self.project = self.base / 'project with spaces'
++        self.project.mkdir()
++        self.catalog = load_catalog()
++
++    def write(self, name, value):
++        path = self.project / name
++        path.parent.mkdir(parents=True, exist_ok=True)
++        path.write_text(value, encoding='utf-8')
++        return path
++
++    def cli(self, *args, cwd=None):
++        env = {**os.environ, 'PYTHONDONTWRITEBYTECODE': '1',
++               'PYTHONPATH': str(ROOT / 'tools/vibe_tool/src'), 'VIBE_HOME': str(ROOT)}
++        return subprocess.run([sys.executable, *map(str, args)], cwd=cwd or ROOT,
++                              env=env, text=True, capture_output=True)
++
++    def install(self, *flags):
++        p = self.cli(SCRIPTS / 'install_manifest.py', self.project, *flags)
++        self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
++        return p
++
++    def test_catalog_and_generated_guides(self):
++        self.assertEqual(len(self.catalog['engines']), 23)
++        self.assertEqual(render_adapters(self.catalog, True)['status'], 'ok')
++        self.assertEqual((HOME / 'CLAUDE.md').read_bytes(), (HOME / 'AGENTS.md').read_bytes())
++        for engine in self.catalog['engines']:
++            self.assertEqual(engine['runtime_validation'], 'not_run')
++
++    def test_renderer_is_canonical_copy(self):
++        self.assertEqual((SCRIPTS / 'render_workflow.py').read_bytes(),
++                         (ROOT / 'scripts/render-manifest-workflow.py').read_bytes())
++
++    def test_unrecognized_and_read_only(self):
++        for name, content in [('package.json', '{}'), ('Cargo.toml', '[package]\nname="x"'),
++                              ('project.json', '{}'), ('game.json', '{"properties":{}}')]:
++            self.write(name, content)
++        before = snapshot(self.project)
++        self.assertEqual(detect(self.project, self.catalog)['status'], 'unrecognized')
++        self.assertEqual(snapshot(self.project), before)
++
++    def test_ambiguous_does_not_choose(self):
++        self.write('project.godot', 'config_version=5')
++        self.write('sample.uproject', '{}')
++        result = detect(self.project, self.catalog)
++        self.assertEqual(result['status'], 'ambiguous')
++        self.assertEqual(len(result['candidates']), 2)
++        p = self.cli(SCRIPTS / 'game_design.py', 'detect', '--project', self.project)
++        self.assertEqual(p.returncode, 1)
++
++    def test_subproject_must_be_explicit(self):
++        self.write('nested/project.godot', 'config_version=5')
++        self.assertEqual(detect(self.project, self.catalog)['status'], 'unrecognized')
++        self.assertEqual(detect(self.project / 'nested', self.catalog)['candidates'][0]['engine'], 'godot')
++
++    def test_symlink_detection_is_ignored(self):
++        external = self.base / 'external'
++        external.mkdir()
++        (external / 'ProjectVersion.txt').write_text('x')
++        self.write('Assets/file.txt', 'x')
++        (self.project / 'ProjectSettings').symlink_to(external, target_is_directory=True)
++        self.assertEqual(detect(self.project, self.catalog)['status'], 'unrecognized')
++
++    def test_catalog_rejects_incomplete_and_traversal(self):
++        original = game_design.HOME
++        local = self.base / 'copy'
++        (local / 'references').mkdir(parents=True)
++        game_design.HOME = local
++        try:
++            for change in ('duplicate', 'empty', 'traversal', 'runtime'):
++                data = copy.deepcopy(self.catalog)
++                if change == 'duplicate':
++                    data['engines'].append(data['engines'][0])
++                elif change == 'empty':
++                    data['engines'][0]['build'] = ''
++                elif change == 'runtime':
++                    data['engines'][0]['runtime_validation'] = 'pass'
++                else:
++                    data['engines'][0]['detection'] = {'files': ['../project.godot']}
++                (local / 'references/engines.json').write_text(json.dumps(data))
++                with self.assertRaises(ValueError):
++                    load_catalog()
++        finally:
++            game_design.HOME = original
++
++    def test_guide_check_read_only_when_missing_or_changed(self):
++        original = game_design.HOME
++        local = self.base / 'copy'
++        (local / 'references/adapters').mkdir(parents=True)
++        game_design.HOME = local
++        try:
++            self.assertEqual(render_adapters(self.catalog, True)['status'], 'drift')
++            self.assertEqual(snapshot(local), {})
++            render_adapters(self.catalog)
++            (local / 'references/adapters/godot.md').write_text('drift')
++            before = snapshot(local)
++            self.assertEqual(render_adapters(self.catalog, True)['status'], 'drift')
++            self.assertEqual(snapshot(local), before)
++        finally:
++            game_design.HOME = original
++
++    def test_native_dry_run_does_not_create_target(self):
++        target = self.base / 'not created'
++        p = self.cli(SCRIPTS / 'install_manifest.py', target, '-n')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        self.assertFalse(target.exists())
++
++    def test_new_install_and_idempotence(self):
++        self.install()
++        self.assertTrue((self.project / '.game-design/references/engines.json').is_file())
++        self.assertTrue((self.project / '.game-design/references/workflow.svg').is_file())
++        before = snapshot(self.project)
++        self.install()
++        self.assertEqual(snapshot(self.project), before)
++        self.assertEqual(check_project(self.project, self.catalog)['status'], 'pending')
++
++    def test_existing_root_and_state_preserved_even_force(self):
++        self.write('CLAUDE.md', '# Existing owner\n')
++        self.write('Assets/keep.txt', 'game asset')
++        self.write('README.md', 'my game')
++        self.write('.game-design/state/status.md', 'existing state')
++        self.install('--force')
++        self.assertEqual((self.project / 'CLAUDE.md').read_text(), '# Existing owner\n')
++        self.assertEqual((self.project / 'Assets/keep.txt').read_text(), 'game asset')
++        self.assertEqual((self.project / 'README.md').read_text(), 'my game')
++        self.assertEqual((self.project / '.game-design/state/status.md').read_text(), 'existing state')
++        ledger = json.loads((self.project / '.game-design/install.json').read_text())
++        self.assertNotIn('CLAUDE.md', ledger['files'])
++
++    def test_unowned_payload_preserved_even_force(self):
++        self.write('.game-design/references/adapters/godot.md', 'custom adapter')
++        self.install('-f')
++        self.assertEqual((self.project / '.game-design/references/adapters/godot.md').read_text(), 'custom adapter')
++
++    def test_symlink_install_fails_before_any_write(self):
++        external = self.base / 'external'
++        external.mkdir()
++        (self.project / '.game-design').symlink_to(external, target_is_directory=True)
++        p = self.cli(SCRIPTS / 'install_manifest.py', self.project)
++        self.assertNotEqual(p.returncode, 0)
++        self.assertFalse((self.project / 'CLAUDE.md').exists())
++        self.assertEqual(snapshot(external), {})
++
++    def test_parent_file_preflight(self):
++        self.write('.game-design/references', 'file not directory')
++        p = self.cli(SCRIPTS / 'install_manifest.py', self.project)
++        self.assertNotEqual(p.returncode, 0)
++        self.assertFalse((self.project / 'CLAUDE.md').exists())
++
++    def test_malformed_ledger_preflight(self):
++        self.write('.game-design/install.json', '{bad json')
++        before = snapshot(self.project)
++        p = self.cli(SCRIPTS / 'install_manifest.py', self.project)
++        self.assertNotEqual(p.returncode, 0)
++        self.assertEqual(snapshot(self.project), before)
++
++    def test_force_backup_and_standalone_rollback(self):
++        self.install()
++        path = self.project / '.game-design/references/adapter-contract.md'
++        path.write_text('customized managed file')
++        self.write('.game-design/state/status.md', 'game in progress')
++        self.write('.game-design/deliverables/GDD.md', 'user design')
++        result = self.install('-f')
++        restore_path = Path(re.search(r"Rollback: python3 '([^']+)'", result.stdout)[1])
++        p = self.cli(restore_path, '--check')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        p = self.cli(restore_path)
++        self.assertEqual(p.returncode, 0, p.stderr)
++        self.assertEqual(path.read_text(), 'customized managed file')
++        self.assertEqual((self.project / '.game-design/state/status.md').read_text(), 'game in progress')
++        self.assertEqual((self.project / '.game-design/deliverables/GDD.md').read_text(), 'user design')
++        self.assertEqual(self.cli(restore_path).returncode, 0)  # idempotent restore
++
++    def test_post_install_edit_blocks_rollback(self):
++        result = self.install()
++        restore_path = Path(re.search(r"Rollback: python3 '([^']+)'", result.stdout)[1])
++        self.write('CLAUDE.md', 'new edit after install')
++        before = snapshot(self.project)
++        p = self.cli(restore_path)
++        self.assertNotEqual(p.returncode, 0)
++        self.assertEqual(snapshot(self.project), before)
++
++    def test_in_process_failure_rolls_back_written_paths(self):
++        original = install_manifest.atomic
++        counter = 0
++        def failing(path, data, mode=0o644):
++            nonlocal counter
++            # Failure after first payload, not while writing transaction evidence.
++            if 'backups' not in path.parts:
++                counter += 1
++                if counter == 2:
++                    raise OSError('injected write failure')
++            return original(path, data, mode)
++        install_manifest.atomic = failing
++        try:
++            with self.assertRaises(OSError), contextlib.redirect_stdout(io.StringIO()):
++                install_manifest.install(self.project)
++            self.assertFalse((self.project / 'CLAUDE.md').exists())
++            self.assertFalse((self.project / 'AGENTS.md').exists())
++        finally:
++            install_manifest.atomic = original
++
++    def test_installed_links_and_rendering(self):
++        self.install()
++        runtime = self.project / '.game-design'
++        for doc in runtime.rglob('*.md'):
++            for link in re.findall(r'\]\(([^)]+)\)', doc.read_text()):
++                if '://' not in link and not link.startswith('#'):
++                    self.assertTrue((doc.parent / link.split('#')[0]).exists(), f'{doc}: {link}')
++        before = snapshot(self.project)
++        for args in [
++            [runtime / 'scripts/game_design.py', 'check-catalog'],
++            [runtime / 'scripts/game_design.py', 'render-adapters', '--check'],
++            [runtime / 'scripts/render_workflow.py', '--source', runtime / 'references/workflow.json',
++             '--output', runtime / 'references/workflow.svg', '--check']]:
++            p = self.cli(*args, cwd=self.project)
++            self.assertEqual(p.returncode, 0, p.stderr + p.stdout)
++        self.assertEqual(snapshot(self.project), before)
++
++    def test_workflow_has_branches_and_svg_is_current(self):
++        data = json.loads((HOME / 'references/workflow.json').read_text())
++        ids = {node['id'] for node in data['nodes']}
++        self.assertTrue({'direction','slicegate','releasegate','change','dependency','rollback'} <= ids)
++        self.assertTrue(any(e['from']=='direction' and e['to']=='done' for e in data['edges']))
++        ET.parse(HOME / 'references/workflow.svg')
++        p = self.cli(SCRIPTS / 'render_workflow.py', '--source', HOME / 'references/workflow.json',
++                     '--output', HOME / 'references/workflow.svg', '--check')
++        self.assertEqual(p.returncode, 0, p.stderr)
++
++    def test_workflow_drift_is_read_only(self):
++        output = self.project / 'drift.svg'
++        output.write_text('changed')
++        p = self.cli(SCRIPTS / 'render_workflow.py', '--source', HOME / 'references/workflow.json',
++                     '--output', output, '--check')
++        self.assertEqual(p.returncode, 1)
++        self.assertEqual(output.read_text(), 'changed')
++
++    def test_unknown_engine_and_project_fail_cleanly(self):
++        p = self.cli(SCRIPTS / 'game_design.py', 'adapter', '--engine', 'unknown')
++        self.assertEqual(p.returncode, 2)
++        p = self.cli(SCRIPTS / 'game_design.py', 'detect', '--project', self.project / 'absent')
++        self.assertEqual(p.returncode, 2)
++
++    def test_project_selection_conflict(self):
++        self.install()
++        path = self.project / '.game-design/state/project.json'
++        state = json.loads(path.read_text())
++        state.update(engine='unity',engine_version='recorded',targets=['desktop'])
++        path.write_text(json.dumps(state))
++        self.write('project.godot', 'config_version=5')
++        with self.assertRaises(ValueError):
++            check_project(self.project, self.catalog)
++
++    def test_configured_project_still_has_no_runtime_pass(self):
++        self.install()
++        path = self.project / '.game-design/state/project.json'
++        state = json.loads(path.read_text())
++        state.update(engine='godot', engine_version='recorded', targets=['desktop'],
++                     budgets={'frame_time_ms': 16.67, 'memory_mb': 256, 'download_mb': 50})
++        path.write_text(json.dumps(state))
++        result = check_project(self.project, self.catalog)
++        self.assertEqual(result['status'], 'configured')
++        self.assertEqual(result['runtime_validation'], 'not_run')
++
++    def test_rollback_rejects_changed_destination_type(self):
++        result = self.install()
++        restore_path = Path(re.search(r"Rollback: python3 '([^']+)'", result.stdout)[1])
++        doc = self.project / 'AGENTS.md'
++        doc.unlink()
++        doc.mkdir()
++        p = self.cli(restore_path)
++        self.assertNotEqual(p.returncode, 0)
++        self.assertTrue((self.project / 'CLAUDE.md').is_file())
++
++    def test_project_budget_and_enum_validation(self):
++        self.install()
++        path = self.project / '.game-design/state/project.json'
++        original = json.loads(path.read_text())
++        for field, value in [('engine','missing'),('mode','auto-publish'),('targets','all'),('engine_version',None)]:
++            state = copy.deepcopy(original)
++            state[field] = value
++            path.write_text(json.dumps(state))
++            with self.assertRaises(ValueError):
++                check_project(self.project, self.catalog)
++        for value in (-1,0,True,float('inf')):
++            state = copy.deepcopy(original)
++            state['budgets']['frame_time_ms'] = value
++            path.write_text(json.dumps(state))
++            with self.assertRaises(ValueError):
++                check_project(self.project, self.catalog)
++
++    def test_vibe_discovery_init_add_and_dry_run(self):
++        p = self.cli('-m','vibe_tool','list','manifests','--json')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        manifest = next(x for x in json.loads(p.stdout) if x['name']=='game-design')
++        self.assertTrue(manifest['has_init_script'])
++        target = self.base / 'vibe init target'
++        p = self.cli('-m','vibe_tool','init','game-design',target,'--dry-run')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        self.assertFalse(target.exists())
++        p = self.cli('-m','vibe_tool','init','game-design',target)
++        self.assertEqual(p.returncode, 0, p.stderr)
++        self.assertTrue((target / '.game-design/references/workflow.svg').is_file())
++        p = self.cli('-m','vibe_tool','add','manifest','game-design',target,'--force')
++        self.assertEqual(p.returncode, 0, p.stderr)
++        record = json.loads((target / '.vibe-tool/installations.json').read_text())
++        self.assertIn('game-design', json.dumps(record))
++
++
++# A positive fixture for every adapter; these are format hints, never runtime tests.
++FIXTURES = {
++ 'unity': {'ProjectSettings/ProjectVersion.txt':'m_EditorVersion: test', 'Assets/.keep':''},
++ 'unreal': {'Game.uproject':'{}'}, 'godot': {'project.godot':'config_version=5'},
++ 'cocos': {'package.json':'{"creator":{"version":"3.8.0"}}'},
++ 'phaser': {'package.json':'{"dependencies":{"phaser":"test"}}'},
++ 'pixi': {'package.json':'{"dependencies":{"pixi.js":"test"}}'},
++ 'three': {'package.json':'{"devDependencies":{"three":"test"}}'},
++ 'babylon': {'package.json':'{"dependencies":{"@babylonjs/core":"test"}}'},
++ 'playcanvas': {'package.json':'{"dependencies":{"playcanvas":"test"}}'},
++ 'gamemaker': {'Game.yyp':'{}'},'construct': {'Game.c3p':'fixture container'},
++ 'gdevelop': {'mygame.json':'{"gdVersion":{},"layouts":[],"properties":{}}'},
++ 'renpy': {'game/options.rpy':'define config.name = "test"'},
++ 'rpgmaker': {'Game.rmmzproject':'RPGMZ'},'defold': {'game.project':'[project]'},
++ 'love': {'main.lua':'function love.load() end','conf.lua':'function love.conf(t) end'},
++ 'monogame': {'Game.csproj':'<PackageReference Include="MonoGame.Framework.DesktopGL" />'},
++ 'libgdx': {'build.gradle':'implementation "com.badlogicgames.gdx:gdx:test"'},
++ 'bevy': {'Cargo.toml':'[dependencies]\nbevy = "test"'},
++ 'raylib': {'CMakeLists.txt':'find_package(raylib REQUIRED)'},
++ 'roblox': {'game.rbxlx':'<roblox></roblox>'},
++ 'o3de': {'project.json':'{"project_name":"test","engine":"test"}'},
++ 'stride': {'Game.sdpkg':'!Package'}
++}
++
++def fixture_test(id, files):
++    def run(self):
++        for name, content in files.items():
++            self.write(name, content)
++        before = snapshot(self.project)
++        result = detect(self.project, self.catalog)
++        self.assertEqual(result['status'], 'detected', result)
++        self.assertEqual([x['engine'] for x in result['candidates']], [id])
++        self.assertEqual(result['runtime_validation'], 'not_run')
++        self.assertEqual(snapshot(self.project), before)
++    return run
++for id, files in FIXTURES.items():
++    setattr(GameDesignTests, 'test_detect_' + id, fixture_test(id,files))
++
++if __name__ == '__main__':
++    unittest.main()

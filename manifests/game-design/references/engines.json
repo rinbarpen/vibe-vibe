@@ -1,0 +1,666 @@
+{
+  "schema_version": 1,
+  "researched_on": "2026-11-03",
+  "engines": [
+    {
+      "id": "unity",
+      "name": "Unity",
+      "category": "general",
+      "fit": "2D/3D、移动与跨平台；复杂项目可接既有 unity-game 专项流程。",
+      "detection": {
+        "all": [
+          "ProjectSettings/ProjectVersion.txt",
+          "Assets"
+        ]
+      },
+      "version": "读取 ProjectVersion.txt、Packages/manifest.json 与 packages-lock.json；锁定 Editor、渲染管线和测试框架。",
+      "scene": "GDD 实体→GameObject/Component；关卡→Scene；复用→Prefab/Variant。",
+      "code": "C# 组件与纯领域层分离；数值→ScriptableObject 或有版本的外部表。",
+      "assets": "Assets/.meta 配对提交，GUID 不重建；DCC 源文件与导出物分离，Addressables 按实际依赖选用。",
+      "space": "3D 通常 Y-up、1 单位按 1m 约定；2D 指定 Pixels Per Unit，验证根运动、物理和 UI 缩放。",
+      "input": "确认旧 Input Manager 或 Input System；Action 映射键鼠/手柄/触控，处理失焦与重绑定。",
+      "save_network": "存档按 persistentDataPath 和 schema 迁移；联网库与 authority 单独选型，单机设计不默认联网。",
+      "tests": "EditMode 验纯逻辑；PlayMode 验场景与生命周期；真实构建试玩、Profiler 与目标设备各留证据。",
+      "build": "模板：\"$UNITY\" -batchmode -projectPath \"$PROJECT\" -runTests -testPlatform EditMode -testResults \"$RESULTS\" -logFile \"$LOG\"；构建使用项目已存在的 executeMethod，不能把测试命令当构建。",
+      "pitfalls": "同工程 Editor 操作串行；不得自动升级管线/包；console 导出依平台 SDK 和资格；可选手动安装 unity-game-development，不复制其技能目录。",
+      "sources": [
+        "https://docs.unity.com/en-us/engine/6000.5/manual/scripting/test-framework-introduction/running-tests/run-tests-from-command-line"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "unreal",
+      "name": "Unreal Engine",
+      "category": "general",
+      "fit": "高保真 3D、大型关卡、Blueprint/C++ 协同与多人体验。",
+      "detection": {
+        "files": [
+          "*.uproject"
+        ]
+      },
+      "version": "读取 .uproject EngineAssociation、插件和 Target.cs；匹配已装 UE 与工具链，禁止隐式资产升级。",
+      "scene": "规则→GameMode/GameState；玩家→Controller/Pawn；关卡→World/Level；复用→Actor/Component/Blueprint。",
+      "code": "C++ 保持稳定接口，Blueprint 负责可视化组合；数值→DataAsset/DataTable。",
+      "assets": ".uasset/.umap 属二进制，使用 LFS/文件锁或项目既有分工；导入材质、骨骼、LOD 和碰撞需要 Editor 核验。",
+      "space": "Z-up、厘米；DCC 米制转换、左右手坐标差异、导航代理与根运动统一验收。",
+      "input": "Enhanced Input 的 Action/Mapping Context；测试 UI 焦点、手柄与触控。",
+      "save_network": "SaveGame 版本化；多人明确 server authority、Replication/RPC 与断线重连。",
+      "tests": "Automation/Functional Test + PIE 多客户端；Shipping/Development 包分别测试，检查 cook 日志与 Insights。",
+      "build": "模板：\"$RUN_UAT\" BuildCookRun -project=\"$UPROJECT\" -platform=\"$PLATFORM\" -build -cook -stage -pak；按主机选 RunUAT.sh/bat，补项目实际打包/归档参数。",
+      "pitfalls": "PIE 通过不代表 cook 后通过；禁止文本批改二进制资产；World Partition、插件和平台 SDK 随版本核验。",
+      "sources": [
+        "https://dev.epicgames.com/documentation/unreal-engine/build-operations-cooking-packaging-deploying-and-running-projects-in-unreal-engine"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "godot",
+      "name": "Godot",
+      "category": "general",
+      "fit": "轻量 2D/3D、开源工具链与节点组合。",
+      "detection": {
+        "files": [
+          "project.godot"
+        ]
+      },
+      "version": "记录 project.godot config_version/features 与 godot --version；Godot 3/4、GDScript/C# 和导出模板分开锁定。",
+      "scene": "实体→Node；复用→PackedScene；关卡→.tscn；信号连接表达系统边界。",
+      "code": "GDScript 或 C# 遵循既有项目；Resource/.tres 承载配置，Autoload 仅用于必要全局服务。",
+      "assets": "保留 .uid 与导入配置，缓存 .godot 不当源资产；验证 glTF、动画、碰撞和资源路径大小写。",
+      "space": "2D Y-down、3D Y-up；明确像素/米制约定，分离 Control 布局和世界坐标。",
+      "input": "InputMap actions；处理触控、手柄 deadzone 和 UI focus。",
+      "save_network": "user:// 存档加版本迁移；多人按项目选择 MultiplayerAPI 与权威节点。",
+      "tests": "headless 导入/脚本检查仅是静态入口；行为测试用项目已有 GUT/GdUnit 或自建 harness，并执行真实图形试玩。",
+      "build": "模板：\"$GODOT\" --headless --path \"$PROJECT\" --import；导出：\"$GODOT\" --headless --path \"$PROJECT\" --export-release \"$PRESET\" \"$OUTPUT\"；先安装匹配导出模板、创建输出父目录。",
+      "pitfalls": "不能将 headless import 等同于测试；C#、Web、移动导出能力查对应版本；不能自动迁移 3→4。",
+      "sources": [
+        "https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "cocos",
+      "name": "Cocos Creator",
+      "category": "general",
+      "fit": "移动、Web 与小游戏平台，组件化 2D/3D。",
+      "detection": {
+        "json_keys": [
+          [
+            "package.json",
+            [
+              "creator"
+            ]
+          ]
+        ]
+      },
+      "version": "读取 package.json creator.version；2.x/3.x 分支与构建参数分别处理，小游戏 SDK 跟平台锁定。",
+      "scene": "关卡→Scene，实体→Node/Component，复用→Prefab，UI→Canvas/Widget。",
+      "code": "3.x TypeScript 组件；数值配置与生命周期分离，资源 UUID 和序列化引用保持稳定。",
+      "assets": "assets/.meta 成对保存，Asset Bundle/图集/纹理压缩按分包预算设计。",
+      "space": "记录 2D UI 与 3D 坐标约定；适配分辨率、安全区、DPR 与相机投影。",
+      "input": "事件系统/触摸输入；小游戏平台返回、暂停、音频激活和触点冲突专项测试。",
+      "save_network": "本地存储与平台用户数据分离；联网重试、平台登录和业务版本迁移分别设计。",
+      "tests": "纯逻辑测试 + Creator 预览 + 平台开发者工具 + 真机，分包加载/后台恢复/弱网留日志。",
+      "build": "3.x 模板：\"$CREATOR\" --project \"$PROJECT\" --build \"configPath=$CONFIG\"；从当前 Editor 构建面板导出配置。3.8 文档成功码为 36，失败码 32/34，不能套统一 exit=0。",
+      "pitfalls": "小游戏不是普通 Web 页面；GUI/SDK/签名依实际工具链；2.x 的 --path 不能直接套到 3.x。",
+      "sources": [
+        "https://docs.cocos.com/creator/3.8/manual/en/editor/publish/publish-in-command-line.html"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "phaser",
+      "name": "Phaser",
+      "category": "web",
+      "fit": "浏览器 2D 游戏；需要场景、输入与物理的轻量 Web 团队。",
+      "detection": {
+        "dependencies": [
+          "phaser"
+        ]
+      },
+      "version": "锁定 package.json 与对应 lockfile 中 Phaser 主版本，物理插件与 bundler；不同主版本 API 单独核验。",
+      "scene": "玩法阶段→Scene，实体→GameObject，预加载与运行 Scene 分开，复用通过工厂/类。",
+      "code": "JS/TS，纯数值/状态机与 Scene update 分离；数据通过 JSON 配置进入。",
+      "assets": "Loader/纹理图集，资源 URL、CORS、大小写与音频编码验证；首屏和分场景加载预算。",
+      "space": "2D 屏幕 Y-down；逻辑分辨率、Scale 配置与 CSS/DPR 分离。",
+      "input": "键盘/指针/触控映射成动作；失焦暂停、触控滚动冲突和音频首次交互测试。",
+      "save_network": "IndexedDB/localStorage schema；在线功能用独立后端，浏览器不持有服务端秘密。",
+      "tests": "纯逻辑单测 + 项目已有浏览器 harness；验证 Canvas/WebGL、移动浏览器与断网恢复。",
+      "build": "沿用 package.json 实际 scripts 和锁文件包管理器；只有存在 build/test 脚本才运行，产物在真实 HTTP 服务下验收。",
+      "pitfalls": "不为所有项目假定 npm/Vite/Playwright 已安装；浏览器包不等于原生应用或小游戏包。",
+      "sources": [
+        "https://docs.phaser.io/phaser/getting-started/what-is-phaser"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "pixi",
+      "name": "PixiJS",
+      "category": "web-renderer",
+      "fit": "高性能 2D 渲染与定制玩法；不是完整游戏引擎。",
+      "detection": {
+        "dependencies": [
+          "pixi.js"
+        ]
+      },
+      "version": "锁定 pixi.js 主版本、渲染后端、扩展包和 lockfile；v7/v8 初始化/加载接口差异先核验。",
+      "scene": "显示层→Container/Sprite；另建玩法状态机与场景管理，不将显示树当完整实体系统。",
+      "code": "JS/TS，Ticker 驱动表现；规则、碰撞与物理库需要显式选择并与渲染解耦。",
+      "assets": "Assets/图集/字体与纹理生命周期，切场景销毁 GPU 资源，检查批处理与资源卸载。",
+      "space": "2D Y-down；anchor/pivot、DPR、分辨率缩放和 UI 坐标明确转换。",
+      "input": "Federated Events 映射动作；键盘与手柄另接输入层，测试命中区域。",
+      "save_network": "自建版本化存档/网络层；不假定 renderer 附带物理或联网。",
+      "tests": "规则单测 + 浏览器输入回放/视觉基线；渲染内存和上下文丢失专项测试。",
+      "build": "沿用项目 lockfile 与实际 scripts；静态包在 HTTP 下检查纹理/字体 URL、缓存更新与降级。",
+      "pitfalls": "完整玩法、物理、编辑器与存档是额外设计工作；视觉快照不代表玩法通过。",
+      "sources": [
+        "https://pixijs.com/8.x/guides/getting-started/intro"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "three",
+      "name": "Three.js",
+      "category": "web-renderer",
+      "fit": "自定义浏览器 3D、轻量交互和实验性游戏；属于渲染库。",
+      "detection": {
+        "dependencies": [
+          "three"
+        ]
+      },
+      "version": "锁定 three revision、addons、GLTF/DRACO/KTX2 解码器与构建锁文件。",
+      "scene": "Scene/Object3D/Mesh 负责显示层，另建实体生命周期、关卡与玩法状态机。",
+      "code": "JS/TS；render loop 与固定步长模拟分离，物理/寻路/碰撞库单独选择。",
+      "assets": "glTF/GLB、PBR、纹理颜色空间和压缩贴图；显式 dispose 几何体/材质/纹理。",
+      "space": "通常右手 Y-up，单位由项目约定；相机、物理和 DCC 缩放统一。",
+      "input": "Pointer/Keyboard/Gamepad/WebXR 按目标映射动作；Raycaster 仅是拾取不是完整交互系统。",
+      "save_network": "单独设计存档、网络同步和 authority；避免渲染对象序列化成为存档格式。",
+      "tests": "领域单测 + 浏览器交互 + GPU/帧时/上下文恢复；实际触控与设备测试独立。",
+      "build": "按 package scripts 构建，HTTP 验证模型/解码器路径、CORS、WebGL 能力与部署 base URL。",
+      "pitfalls": "不自带完整玩法/物理/编辑器；不能将可旋转模型示例称为可玩原型。",
+      "sources": [
+        "https://threejs.org/manual/#en/fundamentals"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "babylon",
+      "name": "Babylon.js",
+      "category": "web",
+      "fit": "浏览器 3D、可选 WebXR 和较完整的场景工具链。",
+      "detection": {
+        "dependencies": [
+          "@babylonjs/core",
+          "babylonjs"
+        ]
+      },
+      "version": "锁定 @babylonjs 全套包版本、渲染后端与 lockfile；物理插件版本匹配。",
+      "scene": "Scene/Mesh/TransformNode 与 Entity 领域层映射，关卡流式和资产容器单独设计。",
+      "code": "JS/TS；行为状态与渲染循环分离，配置表通过类型化数据进入。",
+      "assets": "glTF/GLB、PBR、纹理、骨骼与 AssetContainer；加载/销毁和 Inspector 检查。",
+      "space": "默认左手系、可切右手系；坐标选择写进 TDD，验证 glTF 转换和物理尺度。",
+      "input": "输入管理器/ActionManager 或自定义动作层；测试摄像机控制、UI 焦点和手柄。",
+      "save_network": "存档模型独立于 Scene 快照；联网与后端权限设计单独验收。",
+      "tests": "领域单测、浏览器玩法、物理与动画回放；WebGPU/WebGL 兼容按项目目标测试。",
+      "build": "沿用已安装包和 package scripts，HTTP 验证 asset URLs、引擎包拆分与加载失败恢复。",
+      "pitfalls": "Havok 等物理依赖与包体成本需单独审查；WebXR 与目标设备是附加验收。",
+      "sources": [
+        "https://doc.babylonjs.com/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "playcanvas",
+      "name": "PlayCanvas",
+      "category": "web",
+      "fit": "Web 3D；云 Editor 或 Engine-only 两种工作方式。",
+      "detection": {
+        "dependencies": [
+          "playcanvas"
+        ]
+      },
+      "version": "记录 Engine npm 版本或 Editor 导出版本、项目 ID 和下载快照；云端工程不凭本地空目录识别。",
+      "scene": "Entity/Component、Scene/Template 映射设计对象；云端项目记录资源 ID 与场景版本。",
+      "code": "沿用项目 Script 类型/JS/TS 规范；系统数值与实体脚本分离。",
+      "assets": "Asset Registry、GLB、贴图压缩与异步加载，云导出时保留可复建的资源映射。",
+      "space": "Y-up，尺度按米约定；摄像机、光照/烘焙、碰撞和 UI 布局核验。",
+      "input": "Keyboard/Mouse/Touch/Gamepad 接统一动作层；移动输入与 UI 焦点专项验证。",
+      "save_network": "自定义存档后端；云编辑协作不等于游戏运行时多人同步。",
+      "tests": "Editor Launch + 下载包真实 HTTP 试玩；Engine-only 逻辑单测和浏览器 QA。",
+      "build": "区分 Editor 的发布/下载与 Engine-only bundler；记录导出快照、缓存与 URL，不自动云发布。",
+      "pitfalls": "不假定拥有云会话或 API TOKEN；本地依赖检测覆盖 Engine-only，Editor 模式需人工记录。",
+      "sources": [
+        "https://developer.playcanvas.com/user-manual/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "gamemaker",
+      "name": "GameMaker",
+      "category": "low-code",
+      "fit": "2D、房间驱动、GML 或可视化制作。",
+      "detection": {
+        "files": [
+          "*.yyp"
+        ]
+      },
+      "version": "记录 IDE、Runtime 与目标模块版本；项目格式随版本变化，先备份再由 Editor 迁移。",
+      "scene": "Room→关卡，Object/Instance→实体，Sequence→过场，Prefab 类需求用已有对象/数据生成模式。",
+      "code": "GML 或项目既有可视化事件；Create/Step/Draw 生命周期与规则层分离。",
+      "assets": "Sprite/TileSet/Texture Group 与音频资源；使用 Editor 修改资源引用，检查 YY 路径。",
+      "space": "2D 通常 Y-down；room 坐标、camera/view 和 GUI 层区分。",
+      "input": "键盘/鼠标/手柄/触控映射到动作，检查不同帧率下 Step 逻辑。",
+      "save_network": "版本化存档与平台沙盒目录；联网/回滚逻辑按需求另建。",
+      "tests": "调试运行、房间切换、碰撞、存档读写、目标导出包试玩；自建断言需有明确退出/报告。",
+      "build": "以当前 IDE 的 Build/Run/Create Executable 流程与已购/可用模块为准；自动化先验证对应 Runtime/Igor 接口。",
+      "pitfalls": "不编造跨版本通用 headless 命令；VM/YYC、许可与 console 模块能力单独核验。",
+      "sources": [
+        "https://manual.gamemaker.io/monthly/en/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "construct",
+      "name": "Construct 3",
+      "category": "low-code",
+      "fit": "事件表驱动的 2D/Web 和低代码原型。",
+      "detection": {
+        "files": [
+          "*.c3p",
+          "project.c3proj"
+        ]
+      },
+      "version": "锁定 Editor release、插件版本和项目备份；单文件 .c3p 为容器，不按文本源文件改写。",
+      "scene": "Layout→关卡，Event Sheet→规则，Object/Family/Behavior→实体族与复用。",
+      "code": "事件表为主，JS 脚本是可选扩展；把数值常量整理为变量/数据表。",
+      "assets": "Animation/Tilemap/Audio 与插件资源；验证导出 asset paths 和下载缓存。",
+      "space": "2D Y-down；layout、layer parallax、viewport 和 fullscreen 缩放区分。",
+      "input": "Keyboard/Touch/Gamepad behaviors，UI 事件优先级与多点触控。",
+      "save_network": "Local Storage/Savegame 或后端方案明确版本与插件兼容。",
+      "tests": "Preview/Debugger、布局跳转、事件触发顺序和导出包跨浏览器试玩，保留事件表证据。",
+      "build": "通过 Editor Export 选择实际平台；自动化仅使用当前订阅与版本提供的接口，记录导出 preset。",
+      "pitfalls": "低代码不是零测试；不直接解压/批改 c3p 容器，不假定全部平台导出可用。",
+      "sources": [
+        "https://www.construct.net/en/make-games/manuals/construct-3"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "gdevelop",
+      "name": "GDevelop",
+      "category": "low-code",
+      "fit": "事件驱动 2D/轻量 3D、低代码快速验证。",
+      "detection": {
+        "json_keys": [
+          [
+            "*.json",
+            [
+              "gdVersion",
+              "layouts",
+              "properties"
+            ]
+          ]
+        ]
+      },
+      "version": "记录 Editor/gdVersion、扩展版本与导出工具；同名 game.json 不能仅凭文件名识别。",
+      "scene": "Scene→关卡，Object/Behavior→实体，External Events/Layouts→复用。",
+      "code": "事件与变量作用域明确，JS 扩展沿用项目；数值用可追溯表驱动。",
+      "assets": "Resources 资源映射与相对路径，源文件和导出目录分离；检查大小写与远程资产。",
+      "space": "2D 场景坐标、相机和层 UI 分开；3D 行为需固定坐标/尺度约定。",
+      "input": "事件条件映射键鼠/触控/手柄；检查多触点、暂停、窗口尺寸变化。",
+      "save_network": "Storage/JSON 版本化；平台服务与多人扩展仅在需求明确后引入。",
+      "tests": "Preview/Debugger + 事件边界与变量检查 + 导出包试玩；真机网络/性能另测。",
+      "build": "记录 Editor 或已验证 gdexport 工作流，导出平台配置与云/本地构建成本明确。",
+      "pitfalls": "不能把有 properties 的任意 JSON 当项目；云导出不是默认允许的自动发布。",
+      "sources": [
+        "https://wiki.gdevelop.io/gdevelop5/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "renpy",
+      "name": "Ren'Py",
+      "category": "narrative",
+      "fit": "视觉小说、分支叙事和对话系统。",
+      "detection": {
+        "files": [
+          "game/options.rpy"
+        ]
+      },
+      "version": "记录 Ren'Py SDK 与 Python 版本、屏幕语言/插件和发行目标；保留源 .rpy。",
+      "scene": "剧情节点→label/jump/call，界面→screen，立绘/背景→image，分支→menu/状态变量。",
+      "code": "Ren'Py script + Python，default/define 生命周期明确；分支可达性和变量更新可测试。",
+      "assets": "立绘差分、背景、音频、字体、翻译单独列清单，文件名/图层与版权可追踪。",
+      "space": "虚拟分辨率与 screen/transform 锚点；触控 UI、字体与语言溢出验证。",
+      "input": "键鼠/触控/手柄、快进/自动/历史/回滚与可访问性按目标验收。",
+      "save_network": "save/load 与 persistent 区分；分支状态/存档兼容和 rollback 行为必须测试。",
+      "tests": "模板：\"$RENPY_SH\" \"$PROJECT\" lint --error-code；lint 后仍需测试各结局、存取档、回滚、翻译和音频。",
+      "build": "SDK Launcher Build Distributions 按目标导出；CLI 接口依 SDK 核验，移动目标另需工具链。",
+      "pitfalls": "lint 不是全分支覆盖；旧存档兼容、Python 对象可序列化性和 screen 脚本上下文需审查。",
+      "sources": [
+        "https://www.renpy.org/doc/html/cli.html"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "rpgmaker",
+      "name": "RPG Maker MZ/MV",
+      "category": "narrative",
+      "fit": "地图/事件/数据库驱动 RPG；MZ 与 MV 分开管理。",
+      "detection": {
+        "files": [
+          "*.rmmzproject",
+          "*.rpgproject"
+        ]
+      },
+      "version": "记录 MZ/MV、runtime 与插件顺序；绝不混用两代 API、插件和项目文件。",
+      "scene": "Map/MapEvent→关卡互动，Common Event→复用，Actor/Class/Skill/Enemy/Troop→系统数据。",
+      "code": "事件页、开关/变量优先；JS 插件是版本化扩展，数值按数据库 ID 绑定。",
+      "assets": "img/audio/tilesets 与数据库 JSON/插件保留引用，地图和数据库通过 Editor 管理。",
+      "space": "地图格坐标与像素移动分离；按 tileset、UI 分辨率、相机与插件核验。",
+      "input": "键盘/手柄/触控、菜单/对话输入、事件页触发优先级专项测试。",
+      "save_network": "存档中的开关/变量/插件对象兼容；数据库 ID 不随意重排。",
+      "tests": "Test Play、战斗测试、事件死锁/传送/支线可达性、旧存档与部署包 QA。",
+      "build": "Editor Deployment 按目标发布；剔除未使用资源前检查插件动态引用，签名与商店发布独立。",
+      "pitfalls": "不把插件兼容当默认；动态资源误删和开关编号冲突是重点风险。",
+      "sources": [
+        "https://rpgmakerofficial.com/product/MZ_help-en/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "defold",
+      "name": "Defold",
+      "category": "code-first",
+      "fit": "轻量 2D/3D、移动/Web 与 Lua 组件式开发。",
+      "detection": {
+        "files": [
+          "game.project"
+        ]
+      },
+      "version": "锁定 Editor/Engine/Bob 版本、JDK 和依赖 URL/commit；不假定任意 bob.jar 匹配。",
+      "scene": "Collection→场景，GameObject/Component→实体，Factory/CollectionFactory→生成。",
+      "code": "Lua scripts/gui_scripts 与消息系统，配置属性/资源，纯规则模块独立测试。",
+      "assets": "Atlas/Tile Source/Model，依赖从构建根可达；动态 raw 文件放 Custom Resources。",
+      "space": "记录世界/GUI 坐标、投影与物理尺度；相机与不同屏幕比例分别验证。",
+      "input": "Input binding 与 acquire_input_focus；GUI/多触点/手柄焦点管理。",
+      "save_network": "sys.save/load 版本化，网络消息与游戏状态边界明确。",
+      "tests": "Lua 规则测试 + Editor 运行 + 真机；消息时序、collection 生命周期和加载失败专项测试。",
+      "build": "在工程根模板：java -jar \"$BOB\" --archive --platform \"$PLATFORM\" resolve build bundle；核验 JDK、平台、扩展服务器与签名。",
+      "pitfalls": "native extension 可能使用远程构建服务，先记录依赖和数据边界；构建根不可达资源不会自动进入包。",
+      "sources": [
+        "https://defold.com/manuals/bob/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "love",
+      "name": "LÖVE",
+      "category": "code-first",
+      "fit": "Lua 2D、游戏循环清晰的小型项目。",
+      "detection": {
+        "all": [
+          "main.lua",
+          "conf.lua"
+        ]
+      },
+      "version": "锁定 love --version、LuaJIT 与第三方模块；只有 main.lua 是弱线索，显式选择也可接入。",
+      "scene": "love.load/update/draw 为入口；自行设计 Scene/Entity、状态机与内容系统。",
+      "code": "Lua 模块化规则，固定步长更新与 draw 分离；配置表与运行时对象区分。",
+      "assets": "图片/音频/字体/图集相对路径，按打包大小写和纹理过滤验证。",
+      "space": "2D Y-down；世界坐标、相机、像素比例和 DPI 分开。",
+      "input": "love.keyboard/mouse/touch/joystick 映射动作，处理 focus 与 resize。",
+      "save_network": "love.filesystem 读写身份目录，存档 schema 与不可信数据解析隔离。",
+      "tests": "纯 Lua 测试 + love 运行输入回放；计时、碰撞、音频与窗口缩放检查。",
+      "build": "运行模板：\"$LOVE\" \"$PROJECT\"；.love 包必须以 main.lua 为根，原生分发按目标合并/打包。",
+      "pitfalls": "不假定自带场景编辑器或测试 runner；只有 main.lua 的项目需确认而不是误判通用 Lua。",
+      "sources": [
+        "https://github.com/love2d/love"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "monogame",
+      "name": "MonoGame",
+      "category": "code-first",
+      "fit": "C# 2D/3D、自定义游戏架构和内容管线。",
+      "detection": {
+        "text": [
+          [
+            "*.csproj",
+            "MonoGame.Framework"
+          ]
+        ]
+      },
+      "version": "锁定 .NET SDK、MonoGame NuGet、MGCB 与目标 backend；读取 global.json/项目文件。",
+      "scene": "Game/Update/Draw 为核心；自行映射场景管理、实体/组件和关卡格式。",
+      "code": "C# 纯规则层 + 服务/内容边界，避免把全部逻辑集中在 Game1。",
+      "assets": ".mgcb/MGCB 内容管线、源资产与编译 .xnb 分离，检查平台适用性。",
+      "space": "2D SpriteBatch 和 3D camera 坐标独立约定；viewport、DPI、单位与投影明示。",
+      "input": "Keyboard/Mouse/GamePad/Touch 统一动作层，处理设备断连。",
+      "save_network": "自建版本化存档与网络层；路径按目标平台约定。",
+      "tests": "dotnet test 只针对已有测试项目；图形/音频/输入必须运行真实 Game。",
+      "build": "沿用 csproj/sln 的 dotnet build/publish 配置、RID 与 MGCB 工具，不假定本机可交叉发布所有目标。",
+      "pitfalls": "framework 不附带完整编辑器/游戏状态机；跨平台内容与 native 库缺失需单独诊断。",
+      "sources": [
+        "https://docs.monogame.net/articles/getting_started/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "libgdx",
+      "name": "libGDX",
+      "category": "code-first",
+      "fit": "Java/Kotlin 跨平台、代码优先 2D/3D。",
+      "detection": {
+        "text": [
+          [
+            "build.gradle",
+            "com.badlogicgames.gdx"
+          ],
+          [
+            "build.gradle.kts",
+            "com.badlogicgames.gdx"
+          ],
+          [
+            "gradle.properties",
+            "gdxVersion"
+          ]
+        ]
+      },
+      "version": "锁定 Gradle Wrapper、JDK、gdx 与各 backend；旧 lwjgl 与 lwjgl3 区分。",
+      "scene": "Game/Screen→场景，Scene2D→UI/2D 表现；实体系统根据实际需求选择。",
+      "code": "Java/Kotlin，核心逻辑在 core，平台代码在 backend；数值表与资源服务分离。",
+      "assets": "AssetManager/TextureAtlas/模型与字体，引用计数与 dispose 生命周期明确。",
+      "space": "世界/相机与 Scene2D Viewport 分离；输入坐标转换和物理尺度验收。",
+      "input": "InputProcessor/InputMultiplexer 映射动作，Android 返回/暂停/恢复按平台处理。",
+      "save_network": "Files/Preferences 或显式版本化存档；网络接口和线程边界明确。",
+      "tests": "已有 Gradle test 任务测逻辑，图形 backend 真实运行；安卓生命周期和资源泄漏另测。",
+      "build": "先用 ./gradlew tasks 确认可用 backend 任务，再执行项目已有 lwjgl3/Android/其他目标构建任务。",
+      "pitfalls": "不硬编码所有项目都有 desktop:dist；HTML backend 与反射/库兼容需查项目实际选择。",
+      "sources": [
+        "https://libgdx.com/wiki/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "bevy",
+      "name": "Bevy",
+      "category": "code-first",
+      "fit": "Rust ECS、系统组合与定制 2D/3D。",
+      "detection": {
+        "text": [
+          [
+            "Cargo.toml",
+            "BEVY_DEPENDENCY"
+          ]
+        ]
+      },
+      "version": "锁定 Cargo.lock、rust-toolchain 和 Bevy 主次版本；插件 API 随版本快速变化。",
+      "scene": "Entity/Component/System→玩法对象，States/Schedules→流程，Scenes/Assets→内容。",
+      "code": "Rust ECS 系统；事件/消息与资源按当前版本 API，领域逻辑可脱离渲染 App 测试。",
+      "assets": "AssetServer/Handle、glTF/纹理，异步加载状态与卸载检查。",
+      "space": "2D/3D 与 transform、camera、物理插件坐标统一，固定时间步与渲染更新分离。",
+      "input": "Action mapping 基于当前输入 API 或已锁定插件，焦点/手柄/触控检查。",
+      "save_network": "显式序列化领域数据，不直接存 ECS world；联网插件与 authority 单独确定。",
+      "tests": "cargo test 测纯逻辑/无窗口 App；cargo check 不等同测试；GPU/输入/音频需真实运行。",
+      "build": "工程根 cargo check --locked、cargo test --locked；发布按实际 target/features 的 cargo build --release --locked，并包含资产。",
+      "pitfalls": "workspace 继承版本需按 member 解析；不把任意 Cargo 项目识别为 Bevy，不自动升级生态插件。",
+      "sources": [
+        "https://github.com/bevyengine/bevy"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "raylib",
+      "name": "raylib",
+      "category": "code-first",
+      "fit": "C/C++ 小型 2D/3D、教学和自定义工具链。",
+      "detection": {
+        "text": [
+          [
+            "CMakeLists.txt",
+            "raylib"
+          ],
+          [
+            "Makefile",
+            "raylib"
+          ]
+        ]
+      },
+      "version": "锁定 raylib release、编译器、CMake/Make 与平台 backend；vendored 与系统库分开。",
+      "scene": "InitWindow/循环→入口；自行定义状态机、实体与关卡数据，不依赖虚构 Editor。",
+      "code": "C/C++ 模块化规则；资源与生命周期显式管理，接口边界清晰。",
+      "assets": "纹理/模型/字体/音频 Load/Unload 成对；工作目录与打包相对路径验证。",
+      "space": "2D 屏幕 Y-down、3D 通常 Y-up；Camera、碰撞和物理约定明示。",
+      "input": "键鼠/触控/手柄通过动作层映射；帧时间独立于移动速度。",
+      "save_network": "自建文件存档 schema 与联网；内存/字节序/版本兼容按目标考虑。",
+      "tests": "纯逻辑单测/编译器检查 + 实际窗口试玩；内存与资源生命周期单独测试。",
+      "build": "使用项目已有 CMake preset/Make target；cmake --build \"$BUILD_DIR\" 仅在已配置构建树后执行。",
+      "pitfalls": "不是全功能编辑器；不得默认所有 raylib 项目使用 CMake 或可直接交叉编译。",
+      "sources": [
+        "https://www.raylib.com/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "roblox",
+      "name": "Roblox Studio",
+      "category": "platform",
+      "fit": "UGC/多人在线平台体验；平台内发布。",
+      "detection": {
+        "files": [
+          "*.rbxl",
+          "*.rbxlx"
+        ],
+        "json_keys": [
+          [
+            "*.project.json",
+            [
+              "tree"
+            ]
+          ]
+        ]
+      },
+      "version": "记录 Studio 版本、Experience/Place 快照和包版本；Rojo 可选且不能仅凭 *.project.json 认定。",
+      "scene": "DataModel/Instance/Model→对象；Workspace→世界；Services 和 Packages 明确边界。",
+      "code": "Luau，ServerScriptService/StarterPlayerScripts/ReplicatedStorage 区分权威、客户端与共享模块。",
+      "assets": "Asset ID、模型/动画/音频许可与平台审核状态留记录；云资产快照与本地源映射。",
+      "space": "Y-up、stud 单位，角色/相机/碰撞按平台约定；不与其他引擎米制值直接共用。",
+      "input": "跨设备动作映射、UI navigation、移动/手柄；避免仅桌面键盘体验。",
+      "save_network": "DataStore 预算/重试/迁移；server authority，RemoteEvent 参数验证和多人状态同步。",
+      "tests": "Studio Play + Server & Clients，区分客户端/服务器日志；设备与网络模拟后仍需目标设备试玩。",
+      "build": "Studio 保存/发布流程，先隔离测试 place；Rojo 同步是可选工程工具，不等同平台发布。",
+      "pitfalls": "不默认开通 API 服务或写生产 DataStore；测试数据与生产体验分离；发布必须经过明确人工门。",
+      "sources": [
+        "https://create.roblox.com/docs/studio/testing-modes"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "o3de",
+      "name": "O3DE",
+      "category": "general",
+      "fit": "开源大型 3D、组件系统与自定义管线。",
+      "detection": {
+        "json_keys": [
+          [
+            "project.json",
+            [
+              "project_name",
+              "engine"
+            ]
+          ]
+        ]
+      },
+      "version": "读取 project.json、engine.json、Gem 与 CMake preset；版本、编译器和目标平台锁定。",
+      "scene": "Entity/Component、Prefab、Level 映射玩法；Gem 边界与系统组件职责明确。",
+      "code": "C++/Lua/Script Canvas 按项目实际选择；配置与规则分离。",
+      "assets": "Asset Processor、源资产与 asset cache 分开；Prefab 引用、材质/模型处理状态检查。",
+      "space": "明确项目 Z-up/米制约定，DCC、相机和 PhysX 统一验证。",
+      "input": "Input 系统映射设备动作，UI 与世界输入分流。",
+      "save_network": "自建版本化存档；联网使用项目选定 Gem，authority/replication 单独设计。",
+      "tests": "C++/Gem 测试 + Editor/GameLauncher，Asset Processor 失败与运行时加载分别追踪。",
+      "build": "使用项目已验证的 CMake presets 与 O3DE export 工具；先完成资产处理，再导出目标 runtime。",
+      "pitfalls": "构建树/资产缓存体积和编译器成本大；不使用通用 project.json 文件名直接判定。",
+      "sources": [
+        "https://docs.o3de.org/docs/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    },
+    {
+      "id": "stride",
+      "name": "Stride",
+      "category": "general",
+      "fit": "C#/.NET 组件化 3D 与 Game Studio。",
+      "detection": {
+        "files": [
+          "*.sdpkg"
+        ],
+        "text": [
+          [
+            "*.csproj",
+            "Stride.Engine"
+          ]
+        ]
+      },
+      "version": "锁定 Stride NuGet、.NET SDK 与 Game Studio；sln/包与项目版本保持匹配。",
+      "scene": "Scene/Entity/Component、Prefab 与场景层级映射设计；系统脚本独立。",
+      "code": "C# SyncScript/AsyncScript 与纯规则层分离，异步生命周期与资源访问明确。",
+      "assets": "Game Studio 资产与 .sd* 描述保留；编译资产与源模型/材质分离。",
+      "space": "Y-up 约定与相机投影、物理尺度写入 TDD；导入变换需实际核验。",
+      "input": "Input/虚拟按钮按项目实现；多设备、UI 焦点与失焦行为测试。",
+      "save_network": "领域数据存档加 schema；网络库按需求选定，不假定自带完整后端。",
+      "tests": "dotnet 规则测试 + Game Studio/真实 runtime；资产编译与图形验收分别记录。",
+      "build": "使用项目实际 sln/csproj 和平台配置构建/发布；验证目标 runtime、native 依赖与资产打包。",
+      "pitfalls": "普通 .NET 项目不是 Stride；跨平台支持按版本/依赖核验，禁止自动迁移资产。",
+      "sources": [
+        "https://doc.stride3d.net/latest/en/manual/"
+      ],
+      "support": "design-adapter",
+      "runtime_validation": "not_run"
+    }
+  ]
+}
