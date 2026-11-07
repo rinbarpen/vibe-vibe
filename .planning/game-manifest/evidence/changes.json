@@ -1,0 +1,329 @@
+{
+  "target": "/home/rczx/orca/workspaces/vibe-coding/game-manifest",
+  "files": [
+    {
+      "path": "README.md",
+      "before": "558bedb49c14b8470ae3407cf7025fa34f57de769426ed04116c36799c949051",
+      "after": "0250030a423c79a082a4bc24fc3e1731ee065c393826dc3ea3452f767c9018b9",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/AGENTS.md",
+      "before": null,
+      "after": "26537ceeb04ea35c79e4cbaae7471435262a92f16354c09b3de7a4a932bc9094",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/CLAUDE.md",
+      "before": null,
+      "after": "26537ceeb04ea35c79e4cbaae7471435262a92f16354c09b3de7a4a932bc9094",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/README.md",
+      "before": null,
+      "after": "3aa7e3b86abb7aebb19dbdaed2c79b76d16de460368014505801a3b4895609ac",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/references/adapter-contract.md",
+      "before": null,
+      "after": "bc418f8ecfb5fce2c986c83c989833f47208cb1e2fa54f4b028021a60939a40c",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/references/adapters/babylon.md",
+      "before": null,
+      "after": "4429ec822361d602450811d706f42f06000bde96091d014aee6342c9412a6f50",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/bevy.md",
+      "before": null,
+      "after": "1e379b91b867a81c766966ca0a37a003656c0b06f5235705d26af9952f8ac124",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/cocos.md",
+      "before": null,
+      "after": "21fbfc05d69b468e4c412811ce8fcdc93d68d21703cbfd2d98adb0aab1d1561b",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/construct.md",
+      "before": null,
+      "after": "1dc925ad4e99f325df698bb6e9d715b3bd4c88501c8f23c3d66aa4766d607685",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/defold.md",
+      "before": null,
+      "after": "ddef1fd4bc070a6a88bce260e4b25843b612d91b225dfd9e9add5ad57f997502",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/gamemaker.md",
+      "before": null,
+      "after": "f1150309c83fd8e4a34d60574b494592b36625e22d093fbbf1cbffc581313e68",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/gdevelop.md",
+      "before": null,
+      "after": "7298e5dd118508f70151ae62ed76afa9dbabceeac22077bd19fe5ca42b76afe6",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/godot.md",
+      "before": null,
+      "after": "d9d4f7f6990109034945af0d8862e42b3501ab67f673abd3538bc7196af8c1cf",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/libgdx.md",
+      "before": null,
+      "after": "b833582fe0cd070e20a71bbddae774669bdbde31ef206917b1408b5b2ecdd1e4",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/love.md",
+      "before": null,
+      "after": "7a5dfdc04ad057da4112e8da09473facf305ee8542cf0e7bbbc034289a9767c7",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/monogame.md",
+      "before": null,
+      "after": "e2344c7693d26d52d4e581846adba67ed94fc030f4fb306cb6e2cc131f0e0811",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/o3de.md",
+      "before": null,
+      "after": "b6c079ae276b05c6caf0fd323e300bd379b49481311c88fdc217139d6486b516",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/phaser.md",
+      "before": null,
+      "after": "ef88631afc1cc090d97009f1da63990a281389267054d772e29734119a5c789b",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/pixi.md",
+      "before": null,
+      "after": "175e27a90aaaa966607a818ee89d1603dcf5eb218b26b42e617aec9a016b0d1f",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/playcanvas.md",
+      "before": null,
+      "after": "956024978d612cbc01c30506683c1680a8f93e7ec23aabbca36d5c9c297e154d",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/raylib.md",
+      "before": null,
+      "after": "45240154461e4b20b5f817384683e38c4962476fccf2bff4316793ac3f5f9376",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/renpy.md",
+      "before": null,
+      "after": "d5c98a3a29882039c7b513642d167666e4f5a30a08c4bd6e270bd73b0e59fe78",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/roblox.md",
+      "before": null,
+      "after": "8820fb09bb015e40a8d180f98d46d1e06430e101612652156a1a5e97235d08e1",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/rpgmaker.md",
+      "before": null,
+      "after": "0fc7b6141a008b6182bb5f1e1df065a03de7c8e31e4708ca8b3091ec83abb959",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/stride.md",
+      "before": null,
+      "after": "19ef351333e1265f5aa9d1b70f0dadec4b586e93ac4c2af176df09a241ee5a9b",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/three.md",
+      "before": null,
+      "after": "d5f061986725b3a798558efb66604e69fd7088967df909b7fb0addf1af707394",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/unity.md",
+      "before": null,
+      "after": "bf1ee548b2e0b26905dfcaf1459f717a6a29a1ddef719f87cf9852cc658fda0e",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/adapters/unreal.md",
+      "before": null,
+      "after": "ee70189eb60eca98726c5007381281e6f6e2a4fea7f7d9921dd9a2d151c0ac0e",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/engine-matrix.md",
+      "before": null,
+      "after": "b50e423661aa02f4cd7191169074fbd0cfe8a8351dbc7625090c33427718b292",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/references/engines.json",
+      "before": null,
+      "after": "070d300b711abd573dff2af601ef78fa747be4cbf05cac26fe7cdd5cf568b38a",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/references/lifecycle.md",
+      "before": null,
+      "after": "26ca4541f4339a20f7c981bde9b4210253898941ef7efe96452997ba7511e5d5",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/references/workflow.json",
+      "before": null,
+      "after": "6e31f77749f59a53c53b82809555bcb67edf5bb1ab2cfb9930dd42079e6df08c",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/references/workflow.svg",
+      "before": null,
+      "after": "19e76b3cdbb6ecd56de9a9288bdabc5f09f4546cf8cb3dfeac21e097604a2cf7",
+      "mode": 384
+    },
+    {
+      "path": "manifests/game-design/scripts/game_design.py",
+      "before": null,
+      "after": "3bbafd372ac177d53b5142db11a8f8fab420d2960fb63dbebcb7d2c7648d3957",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/scripts/init-game-design.sh",
+      "before": null,
+      "after": "eab68f5012264e44e67e24076b378fd9fe74a7977c52e04684dab768c0b3e7ae",
+      "mode": 509
+    },
+    {
+      "path": "manifests/game-design/scripts/install_manifest.py",
+      "before": null,
+      "after": "c2da9e149a9164315ad0c2f215f33a554eb0abc88b70b49e3f8f2ca2f14ab42a",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/scripts/render_workflow.py",
+      "before": null,
+      "after": "49f870cfc0fc10e2b4e6cec38079c1ca2f8121afff07543fddec8895af846d25",
+      "mode": 509
+    },
+    {
+      "path": "manifests/game-design/scripts/restore_install.py",
+      "before": null,
+      "after": "9c938988763396e6751c251adee158c69cdad4ca3328ce2e8437b2ffbce2c7b7",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/art-audio-ui.md",
+      "before": null,
+      "after": "733331d2ee5774f88813fb5c3ad17a48872a5b353008e4dd0ed28abccc93e65c",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/brief.md",
+      "before": null,
+      "after": "02fd9dddb0e34cc2b594170e65b483e4bf3f91709228da584bf6e0e0104ad891",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/engine-decision.md",
+      "before": null,
+      "after": "09ae1a9ccc5a4ac459f12729480b2623d8a3cb05b9dfb11c62ee7f5cd93cefc7",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/gdd.md",
+      "before": null,
+      "after": "cead493b92c8e8db5a3ac8b44f7bf8a63a0c88d4ff8f15cebd81bbf7804d942b",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/level-design.md",
+      "before": null,
+      "after": "67fac134c7bc2175f931978d1bfd3e8dcd578fe807a58ddd14194af802142fda",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/narrative.md",
+      "before": null,
+      "after": "45733ebef6d04c1fd2d79bff5e1a170a28ca102e2c60c88530a3519c02ccbc8b",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/production-release.md",
+      "before": null,
+      "after": "05759b05f55ac86ec860a5665731026f0801832e53e0711dcda1f33cad944900",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/prototype-playtest.md",
+      "before": null,
+      "after": "3092bf0792d0abbc81b8cea97e631cbdd7002ab21c6e7e60c34e0cb1c44ff03a",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/state/decisions.md",
+      "before": null,
+      "after": "d5fc4c846cb89abe3f14b1a94eafe763dd47055549769445da3b48739104c3b8",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/state/evidence.md",
+      "before": null,
+      "after": "8be7d2770c737735485811334dd6143afce4a3e2c91b97419e32492783b3ff99",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/state/project.json",
+      "before": null,
+      "after": "449e918d21007c1231b58e11bfa5cc5c70a7355a11e489ebfcdae3ce07fbdfe6",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/state/status.md",
+      "before": null,
+      "after": "416cb822caf86e08a35dc2cecc25f0815bb69f8211da1605f7d813e9501385db",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/systems-balance.csv",
+      "before": null,
+      "after": "e50cbc34b89878f1104f7390aeea5aa785d48535890f13c4bb744e7aa578c7d3",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/technical-design.md",
+      "before": null,
+      "after": "10f6901655b841cebe286870112761b1b0236407ef95fe5058600c093c1ee9c5",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/templates/traceability.csv",
+      "before": null,
+      "after": "8835e51c5a7d7275b1d12303593d8a37d629ead3eeeaaf8bef8b79627def8933",
+      "mode": 436
+    },
+    {
+      "path": "manifests/game-design/tests/test_game_design.py",
+      "before": null,
+      "after": "f731ce0aa35c7a5825b80ccc7506099835c02cc983ab455fb7b1a96b6c18f171",
+      "mode": 436
+    }
+  ]
+}

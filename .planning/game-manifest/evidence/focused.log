@@ -1,0 +1,55 @@
+test_ambiguous_does_not_choose (test_game_design.GameDesignTests.test_ambiguous_does_not_choose) ... ok
+test_catalog_and_generated_guides (test_game_design.GameDesignTests.test_catalog_and_generated_guides) ... ok
+test_catalog_rejects_incomplete_and_traversal (test_game_design.GameDesignTests.test_catalog_rejects_incomplete_and_traversal) ... ok
+test_configured_project_still_has_no_runtime_pass (test_game_design.GameDesignTests.test_configured_project_still_has_no_runtime_pass) ... ok
+test_detect_babylon (test_game_design.GameDesignTests.test_detect_babylon) ... ok
+test_detect_bevy (test_game_design.GameDesignTests.test_detect_bevy) ... ok
+test_detect_cocos (test_game_design.GameDesignTests.test_detect_cocos) ... ok
+test_detect_construct (test_game_design.GameDesignTests.test_detect_construct) ... ok
+test_detect_defold (test_game_design.GameDesignTests.test_detect_defold) ... ok
+test_detect_gamemaker (test_game_design.GameDesignTests.test_detect_gamemaker) ... ok
+test_detect_gdevelop (test_game_design.GameDesignTests.test_detect_gdevelop) ... ok
+test_detect_godot (test_game_design.GameDesignTests.test_detect_godot) ... ok
+test_detect_libgdx (test_game_design.GameDesignTests.test_detect_libgdx) ... ok
+test_detect_love (test_game_design.GameDesignTests.test_detect_love) ... ok
+test_detect_monogame (test_game_design.GameDesignTests.test_detect_monogame) ... ok
+test_detect_o3de (test_game_design.GameDesignTests.test_detect_o3de) ... ok
+test_detect_phaser (test_game_design.GameDesignTests.test_detect_phaser) ... ok
+test_detect_pixi (test_game_design.GameDesignTests.test_detect_pixi) ... ok
+test_detect_playcanvas (test_game_design.GameDesignTests.test_detect_playcanvas) ... ok
+test_detect_raylib (test_game_design.GameDesignTests.test_detect_raylib) ... ok
+test_detect_renpy (test_game_design.GameDesignTests.test_detect_renpy) ... ok
+test_detect_roblox (test_game_design.GameDesignTests.test_detect_roblox) ... ok
+test_detect_rpgmaker (test_game_design.GameDesignTests.test_detect_rpgmaker) ... ok
+test_detect_stride (test_game_design.GameDesignTests.test_detect_stride) ... ok
+test_detect_three (test_game_design.GameDesignTests.test_detect_three) ... ok
+test_detect_unity (test_game_design.GameDesignTests.test_detect_unity) ... ok
+test_detect_unreal (test_game_design.GameDesignTests.test_detect_unreal) ... ok
+test_existing_root_and_state_preserved_even_force (test_game_design.GameDesignTests.test_existing_root_and_state_preserved_even_force) ... ok
+test_force_backup_and_standalone_rollback (test_game_design.GameDesignTests.test_force_backup_and_standalone_rollback) ... ok
+test_guide_check_read_only_when_missing_or_changed (test_game_design.GameDesignTests.test_guide_check_read_only_when_missing_or_changed) ... ok
+test_in_process_failure_rolls_back_written_paths (test_game_design.GameDesignTests.test_in_process_failure_rolls_back_written_paths) ... ok
+test_installed_links_and_rendering (test_game_design.GameDesignTests.test_installed_links_and_rendering) ... ok
+test_malformed_ledger_preflight (test_game_design.GameDesignTests.test_malformed_ledger_preflight) ... ok
+test_native_dry_run_does_not_create_target (test_game_design.GameDesignTests.test_native_dry_run_does_not_create_target) ... ok
+test_new_install_and_idempotence (test_game_design.GameDesignTests.test_new_install_and_idempotence) ... ok
+test_parent_file_preflight (test_game_design.GameDesignTests.test_parent_file_preflight) ... ok
+test_post_install_edit_blocks_rollback (test_game_design.GameDesignTests.test_post_install_edit_blocks_rollback) ... ok
+test_project_budget_and_enum_validation (test_game_design.GameDesignTests.test_project_budget_and_enum_validation) ... ok
+test_project_selection_conflict (test_game_design.GameDesignTests.test_project_selection_conflict) ... ok
+test_renderer_is_canonical_copy (test_game_design.GameDesignTests.test_renderer_is_canonical_copy) ... ok
+test_rollback_rejects_changed_destination_type (test_game_design.GameDesignTests.test_rollback_rejects_changed_destination_type) ... ok
+test_subproject_must_be_explicit (test_game_design.GameDesignTests.test_subproject_must_be_explicit) ... ok
+test_symlink_detection_is_ignored (test_game_design.GameDesignTests.test_symlink_detection_is_ignored) ... ok
+test_symlink_install_fails_before_any_write (test_game_design.GameDesignTests.test_symlink_install_fails_before_any_write) ... ok
+test_unknown_engine_and_project_fail_cleanly (test_game_design.GameDesignTests.test_unknown_engine_and_project_fail_cleanly) ... ok
+test_unowned_payload_preserved_even_force (test_game_design.GameDesignTests.test_unowned_payload_preserved_even_force) ... ok
+test_unrecognized_and_read_only (test_game_design.GameDesignTests.test_unrecognized_and_read_only) ... ok
+test_vibe_discovery_init_add_and_dry_run (test_game_design.GameDesignTests.test_vibe_discovery_init_add_and_dry_run) ... ok
+test_workflow_drift_is_read_only (test_game_design.GameDesignTests.test_workflow_drift_is_read_only) ... ok
+test_workflow_has_branches_and_svg_is_current (test_game_design.GameDesignTests.test_workflow_has_branches_and_svg_is_current) ... ok
+
+----------------------------------------------------------------------
+Ran 50 tests in 1.880s
+
+OK

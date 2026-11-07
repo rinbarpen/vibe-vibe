@@ -1,0 +1,367 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2222" height="6050" viewBox="0 0 2222 6050" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">多引擎游戏设计与制作工作流</title>
+  <desc id="workflow-description">类型×工作包×工具链×引擎。独立任务通过真实host subagent并行，队列预留与集成/QA/独立审查控制后继；人工门、依赖等待和回退仍保留，图不表示实际通过。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="2222" height="6050" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">多引擎游戏设计与制作工作流</text>
+    <text x="28" y="70" font-size="14" fill="#475569">类型×工作包×工具链×引擎。独立任务通过真实host subagent并行，队列预留与集成/QA/独立审查控制后继；人工门、依赖等待和回退仍保留，图不表示实际</text>
+    <text x="28" y="90" font-size="14" fill="#475569">通过。</text>
+    <text x="28" y="114" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="148" width="400" height="5836" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="177" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="148" width="400" height="5836" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="177" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="148" width="400" height="5836" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="177" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="assetplan" data-to="dcc" d="M 220.0,2146 V 2189.0 H 220.0 V 2232" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="assetplan" data-to="import" d="M 220.0,2146 V 2189.0 H 24 V 2568 H 220.0 V 2592" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="assetqa" data-to="import" d="M 630.0,2506 V 2549.0 H 220.0 V 2592" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="collect" data-to="integration" d="M 630.0,4000 V 4043.0 H 220.0 V 4086" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="dcc" data-to="assetqa" d="M 220.0,2326 V 2369.0 H 630.0 V 2412" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="design" data-to="designqa" d="M 220.0,1192 V 1235.0 H 630.0 V 1278" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="designqa" data-to="direction" d="M 630.0,1372 V 1415.0 H 1040.0 V 1458" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="direction" data-to="done" d="M 1040.0,1606 V 1649.0 H 434 V 5810 H 630.0 V 5834" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="direction" data-to="prototype" d="M 1040.0,1606 V 1649.0 H 220.0 V 1692" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="discover" data-to="profile" d="M 220.0,472 V 515.0 H 220.0 V 558" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="engine" data-to="version" d="M 220.0,832 V 875.0 H 220.0 V 918" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="import" data-to="importqa" d="M 220.0,2686 V 2729.0 H 630.0 V 2772" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="importqa" data-to="slice" d="M 630.0,2866 V 2909.0 H 220.0 V 2952" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="integration" data-to="parallelqa" d="M 220.0,4180 V 4223.0 H 630.0 V 4266" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="live" data-to="done" d="M 220.0,5568 V 5611.0 H 630.0 V 5834" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="parallelqa" data-to="parallelreview" d="M 630.0,4360 V 4403.0 H 630.0 V 4446" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="parallelreview" data-to="qa" d="M 630.0,4540 V 4583.0 H 630.0 V 4806" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="playtest" data-to="assetplan" d="M 630.0,1966 V 2009.0 H 220.0 V 2052" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="production" data-to="workers" d="M 220.0,3640 V 3683.0 H 220.0 V 3726" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="profile" data-to="engine" d="M 220.0,652 V 695.0 H 220.0 V 738" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="prototype" data-to="playtest" d="M 220.0,1786 V 1829.0 H 630.0 V 1872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="qa" data-to="releasegate" d="M 630.0,4900 V 4943.0 H 844 V 5216 H 1040.0 V 5240" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="releasegate" data-to="live" d="M 1040.0,5388 V 5431.0 H 220.0 V 5474" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="slice" data-to="sliceqa" d="M 220.0,3046 V 3089.0 H 630.0 V 3132" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="slicegate" data-to="production" d="M 1040.0,3460 V 3503.0 H 220.0 V 3546" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="sliceqa" data-to="slicegate" d="M 630.0,3226 V 3269.0 H 1040.0 V 3312" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="discover" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="version" data-to="design" d="M 220.0,1012 V 1055.0 H 220.0 V 1098" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="workers" data-to="collect" d="M 220.0,3820 V 3863.0 H 630.0 V 3906" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="assetqa" data-to="dcc" d="M 810,2459.0 H 1270 V 2209 H 220.0 V 2232" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="change" data-to="design" d="M 1220,5070.0 H 1296 V 1075 H 220.0 V 1098" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="change" data-to="production" d="M 1220,5070.0 H 1322 V 3523 H 220.0 V 3546" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="change" data-to="version" d="M 1220,5070.0 H 1348 V 895 H 220.0 V 918" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="collect" data-to="parallelrecover" d="M 810,3953.0 H 1374 V 4603 H 220.0 V 4626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dcc" data-to="dependency" d="M 400,2279.0 H 1400 V 4963 H 630.0 V 4986" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dependency" data-to="change" d="M 810,5070.0 H 1426 V 4963 H 1040.0 V 4986" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dependency" data-to="dcc" d="M 810,5070.0 H 1452 V 2209 H 220.0 V 2232" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dependency" data-to="qa" d="M 810,5070.0 H 1478 V 4783 H 630.0 V 4806" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="designqa" data-to="design" d="M 810,1325.0 H 1504 V 1075 H 220.0 V 1098" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="direction" data-to="design" d="M 1220,1532.0 H 1530 V 1075 H 220.0 V 1098" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="importqa" data-to="dcc" d="M 810,2819.0 H 1556 V 2209 H 220.0 V 2232" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="importqa" data-to="import" d="M 810,2819.0 H 1582 V 2569 H 220.0 V 2592" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="live" data-to="rollback" d="M 400,5521.0 H 1608 V 5631 H 220.0 V 5654" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="parallelqa" data-to="parallelrecover" d="M 810,4313.0 H 1634 V 4603 H 220.0 V 4626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="parallelrecover" data-to="production" d="M 400,4673.0 H 1660 V 3523 H 220.0 V 3546" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="parallelreview" data-to="parallelrecover" d="M 810,4493.0 H 1686 V 4603 H 220.0 V 4626" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="parallelreview" data-to="production" d="M 810,4493.0 H 1712 V 3523 H 220.0 V 3546" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="playtest" data-to="prototype" d="M 810,1919.0 H 1738 V 1669 H 220.0 V 1692" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="production" data-to="change" d="M 400,3593.0 H 1764 V 4963 H 1040.0 V 4986" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="qa" data-to="dependency" d="M 810,4853.0 H 1790 V 4963 H 630.0 V 4986" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="qa" data-to="production" d="M 810,4853.0 H 1816 V 3523 H 220.0 V 3546" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="releasegate" data-to="production" d="M 1220,5314.0 H 1842 V 3523 H 220.0 V 3546" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="rollback" data-to="qa" d="M 400,5701.0 H 1868 V 4783 H 630.0 V 4806" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="slicegate" data-to="prototype" d="M 1220,3386.0 H 1894 V 1669 H 220.0 V 1692" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="sliceqa" data-to="slice" d="M 810,3179.0 H 1920 V 2929 H 220.0 V 2952" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="version" data-to="change" d="M 400,965.0 H 1946 V 4963 H 1040.0 V 4986" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>进入 / 恢复现状 — 读取状态、设计与实际工程</title>
+      <rect x="450" y="198" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="222" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="248" font-size="18" font-weight="700">进入 / 恢复现状</text>
+      <text x="466" y="272" font-size="14" fill="#334155">读取状态、设计与实际工程</text>
+    </g>
+    <g id="node-discover" data-kind="ai" data-row="1">
+      <title>AI 设计负责人：立项 — brief / 体验支柱 / 约束 / 风险</title>
+      <rect x="40" y="378" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">AI 设计负责人：立项</text>
+      <text x="56" y="452" font-size="14" fill="#334155">brief / 体验支柱 / 约束 / 风险</text>
+    </g>
+    <g id="node-profile" data-kind="ai" data-row="2">
+      <title>AI 类型专项与工作包裁剪 — 主辅类型 / 维度联网 / 专业职责与验收</title>
+      <rect x="40" y="558" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="582" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="608" font-size="18" font-weight="700">AI 类型专项与工作包裁剪</text>
+      <text x="56" y="632" font-size="14" fill="#334155">主辅类型 / 维度联网 / 专业职责与验收</text>
+    </g>
+    <g id="node-engine" data-kind="ai" data-row="3">
+      <title>AI 引擎实现者：适配 — 现有引擎沿用；新项目比较候选</title>
+      <rect x="40" y="738" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="762" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="788" font-size="18" font-weight="700">AI 引擎实现者：适配</text>
+      <text x="56" y="812" font-size="14" fill="#334155">现有引擎沿用；新项目比较候选</text>
+    </g>
+    <g id="node-version" data-kind="ai" data-row="4">
+      <title>AI 版本与资产基线 — 现有VCS / LFS或P4 / 锁 / 版本字段</title>
+      <rect x="40" y="918" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="942" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="968" font-size="18" font-weight="700">AI 版本与资产基线</text>
+      <text x="56" y="992" font-size="14" fill="#334155">现有VCS / LFS或P4 / 锁 / 版本字段</text>
+    </g>
+    <g id="node-design" data-kind="ai" data-row="5">
+      <title>AI 设计与内容：设计包 — GDD / 数值 / 关卡叙事 / 视听 / TDD</title>
+      <rect x="40" y="1098" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1122" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1148" font-size="18" font-weight="700">AI 设计与内容：设计包</text>
+      <text x="56" y="1172" font-size="14" fill="#334155">GDD / 数值 / 关卡叙事 / 视听 / TDD</text>
+    </g>
+    <g id="node-designqa" data-kind="check" data-row="6">
+      <title>AI 审查：设计一致性 — 需求→用例；范围与引擎能力映射</title>
+      <rect x="450" y="1278" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1302" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1328" font-size="18" font-weight="700">AI 审查：设计一致性</text>
+      <text x="466" y="1352" font-size="14" fill="#334155">需求→用例；范围与引擎能力映射</text>
+    </g>
+    <g id="node-direction" data-kind="human" data-row="7">
+      <title>人：方向与模式决策 — 确认体验 / 引擎 / 平台 / 预算</title>
+      <rect x="860" y="1458" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1482" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1508" font-size="18" font-weight="700">人：方向与模式决策</text>
+      <text x="876" y="1532" font-size="14" fill="#334155">确认体验 / 引擎 / 平台 / 预算</text>
+      <text x="876" y="1564" font-size="14" fill="#9a3412">介入条件：新项目设计包齐备或方向发生冲突</text>
+      <text x="876" y="1584" font-size="14" fill="#9a3412">恢复执行：同意：设计交付或原型；调整：设计</text>
+    </g>
+    <g id="node-prototype" data-kind="ai" data-row="8">
+      <title>AI 实现：可玩原型 — 占位资源闭环与关键风险实验</title>
+      <rect x="40" y="1692" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1716" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1742" font-size="18" font-weight="700">AI 实现：可玩原型</text>
+      <text x="56" y="1766" font-size="14" fill="#334155">占位资源闭环与关键风险实验</text>
+    </g>
+    <g id="node-playtest" data-kind="check" data-row="9">
+      <title>AI QA：真实输入与试玩 — 启动/操作/反馈；真人反馈分记</title>
+      <rect x="450" y="1872" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1896" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1922" font-size="18" font-weight="700">AI QA：真实输入与试玩</text>
+      <text x="466" y="1946" font-size="14" fill="#334155">启动/操作/反馈；真人反馈分记</text>
+    </g>
+    <g id="node-assetplan" data-kind="ai" data-row="10">
+      <title>AI 资产规格与生产路由 — 规格 / 许可 / 源文件 / 预算 / 适用性</title>
+      <rect x="40" y="2052" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2076" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2102" font-size="18" font-weight="700">AI 资产规格与生产路由</text>
+      <text x="56" y="2126" font-size="14" fill="#334155">规格 / 许可 / 源文件 / 预算 / 适用性</text>
+    </g>
+    <g id="node-dcc" data-kind="ai" data-row="11">
+      <title>AI 内容职责：实际 DCC 制作 — 建模 / UV材质 / 绑定动画 / LOD碰撞</title>
+      <rect x="40" y="2232" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2256" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2282" font-size="18" font-weight="700">AI 内容职责：实际 DCC 制作</text>
+      <text x="56" y="2306" font-size="14" fill="#334155">建模 / UV材质 / 绑定动画 / LOD碰撞</text>
+    </g>
+    <g id="node-assetqa" data-kind="check" data-row="12">
+      <title>AI 检查：资产导出与审查 — 拓扑 / 依赖 / hash / 质量审查分记</title>
+      <rect x="450" y="2412" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2436" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2462" font-size="18" font-weight="700">AI 检查：资产导出与审查</text>
+      <text x="466" y="2486" font-size="14" fill="#334155">拓扑 / 依赖 / hash / 质量审查分记</text>
+    </g>
+    <g id="node-import" data-kind="ai" data-row="13">
+      <title>AI 按所选引擎接力 — 2D/3D/音频导入 / 引用 / 单位 / 材质</title>
+      <rect x="40" y="2592" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2616" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2642" font-size="18" font-weight="700">AI 按所选引擎接力</text>
+      <text x="56" y="2666" font-size="14" fill="#334155">2D/3D/音频导入 / 引用 / 单位 / 材质</text>
+    </g>
+    <g id="node-importqa" data-kind="check" data-row="14">
+      <title>AI 检查：真实引擎资产验收 — 显示 / 动画 / 碰撞 / 性能 / 设备</title>
+      <rect x="450" y="2772" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2796" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2822" font-size="18" font-weight="700">AI 检查：真实引擎资产验收</text>
+      <text x="466" y="2846" font-size="14" fill="#334155">显示 / 动画 / 碰撞 / 性能 / 设备</text>
+    </g>
+    <g id="node-slice" data-kind="ai" data-row="15">
+      <title>AI 内容与实现：垂直切片 — 代表关卡、品质链路与可复现包</title>
+      <rect x="40" y="2952" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2976" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="3002" font-size="18" font-weight="700">AI 内容与实现：垂直切片</text>
+      <text x="56" y="3026" font-size="14" fill="#334155">代表关卡、品质链路与可复现包</text>
+    </g>
+    <g id="node-sliceqa" data-kind="check" data-row="16">
+      <title>AI QA：切片验收 — 设备预算 / 资产链 / 风险 / 工期</title>
+      <rect x="450" y="3132" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="3156" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3182" font-size="18" font-weight="700">AI QA：切片验收</text>
+      <text x="466" y="3206" font-size="14" fill="#334155">设备预算 / 资产链 / 风险 / 工期</text>
+    </g>
+    <g id="node-slicegate" data-kind="human" data-row="17">
+      <title>人：制作放行 — 扩量 / 缩减 / 调整 / 等待</title>
+      <rect x="860" y="3312" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="3336" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="3362" font-size="18" font-weight="700">人：制作放行</text>
+      <text x="876" y="3386" font-size="14" fill="#334155">扩量 / 缩减 / 调整 / 等待</text>
+      <text x="876" y="3418" font-size="14" fill="#9a3412">介入条件：切片证据齐备，需要承诺制作范围</text>
+      <text x="876" y="3438" font-size="14" fill="#9a3412">恢复执行：同意进入制作，调整返回原型</text>
+    </g>
+    <g id="node-production" data-kind="ai" data-row="18">
+      <title>AI 主代理：就绪任务与并行派工 — 裁剪DAG / 路径资源预留 / 真实spawn与run ID</title>
+      <rect x="40" y="3546" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="3570" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="3596" font-size="18" font-weight="700">AI 主代理：就绪任务与并行派工</text>
+      <text x="56" y="3620" font-size="14" fill="#334155">裁剪DAG / 路径资源预留 / 真实spawn与run ID</text>
+    </g>
+    <g id="node-workers" data-kind="ai" data-row="19">
+      <title>Subagents：独立任务并行执行 — 冻结输入 / 独占路径 / 真实产物与证据</title>
+      <rect x="40" y="3726" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="3750" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="3776" font-size="18" font-weight="700">Subagents：独立任务并行执行</text>
+      <text x="56" y="3800" font-size="14" fill="#334155">冻结输入 / 独占路径 / 真实产物与证据</text>
+    </g>
+    <g id="node-collect" data-kind="check" data-row="20">
+      <title>AI 收件：token / hash / 证据 — 提交不等于完成；失效结果返回owner</title>
+      <rect x="450" y="3906" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="3930" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3956" font-size="18" font-weight="700">AI 收件：token / hash / 证据</text>
+      <text x="466" y="3980" font-size="14" fill="#334155">提交不等于完成；失效结果返回owner</text>
+    </g>
+    <g id="node-integration" data-kind="ai" data-row="21">
+      <title>独立集成者：落地主项目 — 主目录字节一致 / 实际diff / 保留回退</title>
+      <rect x="40" y="4086" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="4110" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="4136" font-size="18" font-weight="700">独立集成者：落地主项目</text>
+      <text x="56" y="4160" font-size="14" fill="#334155">主目录字节一致 / 实际diff / 保留回退</text>
+    </g>
+    <g id="node-parallelqa" data-kind="check" data-row="22">
+      <title>独立 QA：执行并验证 — 真实用例 / 状态pass-fail-not_run</title>
+      <rect x="450" y="4266" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="4290" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="4316" font-size="18" font-weight="700">独立 QA：执行并验证</text>
+      <text x="466" y="4340" font-size="14" fill="#334155">真实用例 / 状态pass-fail-not_run</text>
+    </g>
+    <g id="node-parallelreview" data-kind="check" data-row="23">
+      <title>独立 reviewer：绑定revision复核 — 不同上下文 / 通过才done并解锁后继</title>
+      <rect x="450" y="4446" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="4470" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="4496" font-size="18" font-weight="700">独立 reviewer：绑定revision复核</text>
+      <text x="466" y="4520" font-size="14" fill="#334155">不同上下文 / 通过才done并解锁后继</text>
+    </g>
+    <g id="node-parallelrecover" data-kind="ai" data-row="24">
+      <title>主代理：停止旧worker后恢复 — 过期不重派 / 停止证据 / 旧token失效</title>
+      <rect x="40" y="4626" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="4650" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="4676" font-size="18" font-weight="700">主代理：停止旧worker后恢复</text>
+      <text x="56" y="4700" font-size="14" fill="#334155">过期不重派 / 停止证据 / 旧token失效</text>
+    </g>
+    <g id="node-qa" data-kind="check" data-row="25">
+      <title>AI QA：Alpha / Beta — 原用例与回归 / 设备 / 候选包 hash</title>
+      <rect x="450" y="4806" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="4830" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="4856" font-size="18" font-weight="700">AI QA：Alpha / Beta</text>
+      <text x="466" y="4880" font-size="14" fill="#334155">原用例与回归 / 设备 / 候选包 hash</text>
+    </g>
+    <g id="node-dependency" data-kind="check" data-row="26">
+      <title>AI：等待环境依赖 — 记 not_run；工具就绪后续跑原用例</title>
+      <rect x="450" y="4986" width="360" height="168" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="5010" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="5036" font-size="18" font-weight="700">AI：等待环境依赖</text>
+      <text x="466" y="5060" font-size="14" fill="#334155">记 not_run；工具就绪后续跑原用例</text>
+    </g>
+    <g id="node-change" data-kind="human" data-row="26">
+      <title>人：高影响变更决策 — 新预算 / 迁移 / 付费依赖 / 新目标</title>
+      <rect x="860" y="4986" width="360" height="168" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="5010" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="5036" font-size="18" font-weight="700">人：高影响变更决策</text>
+      <text x="876" y="5060" font-size="14" fill="#334155">新预算 / 迁移 / 付费依赖 / 新目标</text>
+      <text x="876" y="5092" font-size="14" fill="#9a3412">介入条件：需改变已有约定或三轮修复需新取舍</text>
+      <text x="876" y="5112" font-size="14" fill="#9a3412">恢复执行：按记录的阶段恢复：版本基线、设计</text>
+      <text x="876" y="5132" font-size="14" fill="#9a3412">适配或制作；未答复等待</text>
+    </g>
+    <g id="node-releasegate" data-kind="human" data-row="27">
+      <title>人：对外发布决定 — 批准绑定平台、受众与候选包 hash</title>
+      <rect x="860" y="5240" width="360" height="148" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="5264" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="5290" font-size="18" font-weight="700">人：对外发布决定</text>
+      <text x="876" y="5314" font-size="14" fill="#334155">批准绑定平台、受众与候选包 hash</text>
+      <text x="876" y="5346" font-size="14" fill="#9a3412">介入条件：候选包和 QA、许可、回退证据齐备</text>
+      <text x="876" y="5366" font-size="14" fill="#9a3412">恢复执行：同意发布；退回制作；未答复等待</text>
+    </g>
+    <g id="node-live" data-kind="ai" data-row="28">
+      <title>AI 发布与运营 — 按批准范围执行，监测指标与反馈</title>
+      <rect x="40" y="5474" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="5498" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="5524" font-size="18" font-weight="700">AI 发布与运营</text>
+      <text x="56" y="5548" font-size="14" fill="#334155">按批准范围执行，监测指标与反馈</text>
+    </g>
+    <g id="node-rollback" data-kind="ai" data-row="29">
+      <title>AI 回退：恢复已验证版本 — 保留代码/资产/配置/存档恢复证据</title>
+      <rect x="40" y="5654" width="360" height="94" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="5678" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="5704" font-size="18" font-weight="700">AI 回退：恢复已验证版本</text>
+      <text x="56" y="5728" font-size="14" fill="#334155">保留代码/资产/配置/存档恢复证据</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="30">
+      <title>交付 / 约定迭代完成 — 设计包或已批准发布与运营记录</title>
+      <rect x="450" y="5834" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="5858" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="5884" font-size="18" font-weight="700">交付 / 约定迭代完成</text>
+      <text x="466" y="5908" font-size="14" fill="#334155">设计包或已批准发布与运营记录</text>
+    </g>
+    <text x="232.0" y="2180.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">需要3D制作</text>
+    <text x="232.0" y="2180.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">2D/音频/外部资产，无DCC</text>
+    <text x="425.0" y="2540.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">审查与文件检查通过</text>
+    <text x="425.0" y="4034.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">领取与产物匹配</text>
+    <text x="425.0" y="2360.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">源/导出/日志</text>
+    <text x="425.0" y="1226.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交审查</text>
+    <text x="835.0" y="1406.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
+    <text x="835.0" y="1640.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意：design-only</text>
+    <text x="630.0" y="1640.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意：implementation</text>
+    <text x="232.0" y="506.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">明确体验约束</text>
+    <text x="232.0" y="866.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">工程适配</text>
+    <text x="425.0" y="2720.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交实际引擎证据</text>
+    <text x="425.0" y="2900.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">资产链验收通过</text>
+    <text x="425.0" y="4214.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">集成落地</text>
+    <text x="425.0" y="5602.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">完成约定迭代</text>
+    <text x="642.0" y="4394.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
+    <text x="642.0" y="4574.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">本阶段任务全部done</text>
+    <text x="425.0" y="2000.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">闭环与假设通过</text>
+    <text x="232.0" y="3674.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">领取就绪且互不冲突任务</text>
+    <text x="232.0" y="686.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">裁剪专项与工作包</text>
+    <text x="425.0" y="1820.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交可玩包</text>
+    <text x="835.0" y="4934.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
+    <text x="630.0" y="5422.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意发布</text>
+    <text x="425.0" y="3080.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">提交切片</text>
+    <text x="630.0" y="3494.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">放行制作</text>
+    <text x="835.0" y="3260.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">通过</text>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">读取首个未完成项</text>
+    <text x="232.0" y="1046.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">基线与分工明确</text>
+    <text x="425.0" y="3854.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">结果回收</text>
+    <text x="1280" y="2334.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">资产问题返工</text>
+    <text x="1306" y="3072.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意影响设计的变更</text>
+    <text x="1332" y="4296.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">仅生产阶段：调整沿原约</text>
+    <text x="1332" y="4313.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">定</text>
+    <text x="1358" y="2982.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">基线阶段：决定后恢复原</text>
+    <text x="1358" y="2999.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">节点</text>
+    <text x="1384" y="4278.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">失联/过期/失效结果</text>
+    <text x="1410" y="3621.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺DCC工具</text>
+    <text x="1436" y="5016.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">依赖需新增取舍</text>
+    <text x="1462" y="3639.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">工具就绪，恢复DCC用例</text>
+    <text x="1488" y="4926.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">就绪后恢复原验收</text>
+    <text x="1514" y="1200.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺漏返工</text>
+    <text x="1540" y="1303.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整；未答复留本节点</text>
+    <text x="1566" y="2514.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">3D源资产需修正</text>
+    <text x="1592" y="2694.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">导入/资源引用问题</text>
+    <text x="1618" y="5576.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">发布异常，按约定回退</text>
+    <text x="1644" y="4458.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">失败或not_run返工</text>
+    <text x="1670" y="4098.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">真实stop确认后recover</text>
+    <text x="1696" y="4548.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">要求修改</text>
+    <text x="1722" y="4008.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">done解锁新就绪任务</text>
+    <text x="1748" y="1794.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">修复并复测</text>
+    <text x="1774" y="4278.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">高影响变更</text>
+    <text x="1800" y="4908.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺工具/设备</text>
+    <text x="1826" y="4188.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺陷返回 owner</text>
+    <text x="1852" y="4418.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">退回；未答复留本节点</text>
+    <text x="1878" y="5242.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复后再验证</text>
+    <text x="1904" y="2527.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整；未答复留本节点</text>
+    <text x="1930" y="3054.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">品质或性能未达标</text>
+    <text x="1956" y="2964.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">基线阶段：新增迁移/付费</text>
+    <text x="1956" y="2981.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">取舍</text>
+    <text x="28" y="6024" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

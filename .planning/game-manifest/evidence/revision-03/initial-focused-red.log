@@ -1,0 +1,96 @@
+................................................................... [ 47%]
+...........F..............................................................                                          [100%]
+=================================== FAILURES ===================================
+_ ParallelRuntimeTests.test_mutable_child_scope_does_not_exempt_parent_review_evidence _
+
+self = <test_parallel.ParallelRuntimeTests testMethod=test_mutable_child_scope_does_not_exempt_parent_review_evidence>
+
+        self.finish(claim)
+        self.put('Work/a.txt', 'changed after final approval')
+        self.assertEqual(self.cli('next')['ready'], [])
+        self.assertEqual(self.claim(), [])
+    
+    
+    
+    def test_modified_parent_review_evidence_does_not_unlock_successor(self):
+        self.initialize(self.plan([self.task(), self.task('b', depends_on=['a'])]))
+        claim = self.claim()[0]
+>       self.bind(claim)
+
+manifests/game-design/tests/test_parallel.py:472: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+manifests/game-design/tests/test_parallel.py:65: in cli
+    self.assertEqual(result.returncode, expected,
+E   AssertionError: 0 != 2 : command=('submit', '--result', PosixPath('/tmp/game parallel fixture efw7abe_/result-b-2.json'))
+E   stdout={
+E     "id": "b",
+E     "custom_reason": "Project-specific deterministic test fixture",
+E     "role": "game-design-designer",
+E     "depends_on": [
+E       "a"
+E     ],
+E     "writes": [
+E       "Work/b.txt",
+E       "Evidence"
+E     ],
+E     "resources": [],
+E     "inputs": [],
+E     "outputs": [
+E       "Work/b.txt"
+E     ],
+E     "effect": "design",
+E     "gates": [],
+E     "workspace": "/tmp/game parallel fixture efw7abe_/game project",
+E     "status": "submitted",
+E     "attempt": 1,
+E     "claim_token": "035ee6602f9c49e88b2495f0177f159b",
+E     "run_id": "fixture-author-run-b",
+E     "worker": "fixture-author:b",
+E     "lease_until": null,
+E     "input_hashes": {},
+E     "artifact_hashes": {
+E       "Work/b.txt": "ffefa13f4ec1d208182052e8254b29cecc5dd5dfb3b770b6860e1c9bdd4fc80c"
+E     },
+E     "history": [],
+E     "stages": {},
+E     "result": {
+E       "task_id": "b",
+E       "claim_token": "035ee6602f9c49e88b2495f0177f159b",
+E       "status": "submitted",
+E       "summary": "Deterministic file fixture; no LLM or engine execution",
+E       "artifacts": [
+E         {
+E           "path": "Work/b.txt",
+E           "sha256": "ffefa13f4ec1d208182052e8254b29cecc5dd5dfb3b770b6860e1c9bdd4fc80c"
+E         }
+E       ],
+E       "evidence": [
+E         "Evidence/b/author.txt"
+E       ],
+E       "tests": [
+E         {
+E           "name": "fixture bytes",
+E           "status": "pass",
+E           "command": "fixture write/read check",
+E           "exit_status": 0
+E         }
+E       ],
+E       "verified_evidence": [
+E         {
+E           "path": "Evidence/b/author.txt",
+E           "sha256": "ebedef2f0755c74b21fd8a61e5b727867e1af09d3e2af299d5f0e5a8984e53af"
+E         }
+E       ]
+E     }
+E   }
+E   
+E   stderr=
+=============================== warnings summary ===============================
+manifests/game-design/tests/test_production.py::ProductionTests::test_upgrade_previous_manifest_preserves_project_data
+  /home/rczx/orca/workspaces/vibe-coding/game-manifest/manifests/game-design/tests/test_production.py:175: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    tar.extractall(before)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED manifests/game-design/tests/test_parallel.py::ParallelRuntimeTests::test_mutable_child_scope_does_not_exempt_parent_review_evidence
+1 failed, 140 passed, 1 warning, 106 subtests passed in 22.23s

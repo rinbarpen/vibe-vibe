@@ -1,0 +1,208 @@
+[
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "bind",
+      "--id",
+      "design-loop",
+      "--token",
+      "34e7af25e662488283fa43cafb42c0c5",
+      "--run-id",
+      "/root/parallel_docs"
+    ],
+    "stdout": "{\n  \"id\": \"design-loop\",\n  \"custom_reason\": \"项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/core-loop.md\",\n    \"Evidence/design-loop\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/core-loop.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"running\",\n  \"attempt\": 1,\n  \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n  \"run_id\": \"/root/parallel_docs\",\n  \"worker\": \"live-demo:design-loop\",\n  \"lease_until\": 1793900715.5341518,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {},\n  \"history\": [],\n  \"stages\": {}\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "bind",
+      "--id",
+      "design-level",
+      "--token",
+      "3b801c2e658c4df780a92262bb362957",
+      "--run-id",
+      "/root/demo_level_author"
+    ],
+    "stdout": "{\n  \"id\": \"design-level\",\n  \"custom_reason\": \"项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/level-outline.md\",\n    \"Evidence/design-level\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/level-outline.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"running\",\n  \"attempt\": 1,\n  \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n  \"run_id\": \"/root/demo_level_author\",\n  \"worker\": \"live-demo:design-level\",\n  \"lease_until\": 1793900715.534055,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {},\n  \"history\": [],\n  \"stages\": {}\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "submit",
+      "--result",
+      "/tmp/game-design-host-demo-QtGBlr/Evidence/design-loop/result.json"
+    ],
+    "stdout": "{\n  \"id\": \"design-loop\",\n  \"custom_reason\": \"项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/core-loop.md\",\n    \"Evidence/design-loop\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/core-loop.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"submitted\",\n  \"attempt\": 1,\n  \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n  \"run_id\": \"/root/parallel_docs\",\n  \"worker\": \"live-demo:design-loop\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n    \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n  },\n  \"history\": [],\n  \"stages\": {},\n  \"result\": {\n    \"task_id\": \"design-loop\",\n    \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n    \"status\": \"submitted\",\n    \"summary\": \"Delivered core-loop design specification and actual document assertion evidence; this verifies document structure/rules and unchanged Brief only, not a running game, engine, DCC, or device.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/core-loop.md\",\n        \"sha256\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\"\n      },\n      {\n        \"path\": \"Evidence/design-loop/check_spec.py\",\n        \"sha256\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-loop/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"core-loop-document-contract\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-loop/check_spec.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-loop/check.txt\",\n        \"sha256\": \"b1a50d0b9d7750c0aec1b85030c9b207c069ed3dcd20a0ed1083e2113a269301\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "submit",
+      "--result",
+      "/tmp/game-design-host-demo-QtGBlr/Evidence/design-level/result.json"
+    ],
+    "stdout": "{\n  \"id\": \"design-level\",\n  \"custom_reason\": \"项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/level-outline.md\",\n    \"Evidence/design-level\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/level-outline.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"submitted\",\n  \"attempt\": 1,\n  \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n  \"run_id\": \"/root/demo_level_author\",\n  \"worker\": \"live-demo:design-level\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n    \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n  },\n  \"history\": [],\n  \"stages\": {},\n  \"result\": {\n    \"task_id\": \"design-level\",\n    \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n    \"status\": \"submitted\",\n    \"summary\": \"Completed level design and seven executable grid-rule checks via Python simulation. No engine, game, DCC or device execution; runtime validation remains not_run.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/level-outline.md\",\n        \"sha256\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\"\n      },\n      {\n        \"path\": \"Evidence/design-level/validate_level.py\",\n        \"sha256\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-level/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"level design grid and rule simulation\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-level/validate_level.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-level/check.txt\",\n        \"sha256\": \"290e03f9977d67ec58dd282355ef766669d777d2849e353096e10e75f803b41d\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "integrate",
+      "--id",
+      "design-loop",
+      "--actor",
+      "/root/native_roles",
+      "--evidence",
+      "Evidence/integration/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-loop\",\n  \"custom_reason\": \"项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/core-loop.md\",\n    \"Evidence/design-loop\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/core-loop.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"integrated\",\n  \"attempt\": 1,\n  \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n  \"run_id\": \"/root/parallel_docs\",\n  \"worker\": \"live-demo:design-loop\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n    \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899381.7229385\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-loop\",\n    \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n    \"status\": \"submitted\",\n    \"summary\": \"Delivered core-loop design specification and actual document assertion evidence; this verifies document structure/rules and unchanged Brief only, not a running game, engine, DCC, or device.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/core-loop.md\",\n        \"sha256\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\"\n      },\n      {\n        \"path\": \"Evidence/design-loop/check_spec.py\",\n        \"sha256\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-loop/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"core-loop-document-contract\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-loop/check_spec.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-loop/check.txt\",\n        \"sha256\": \"b1a50d0b9d7750c0aec1b85030c9b207c069ed3dcd20a0ed1083e2113a269301\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "integrate",
+      "--id",
+      "design-level",
+      "--actor",
+      "/root/native_roles",
+      "--evidence",
+      "Evidence/integration/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-level\",\n  \"custom_reason\": \"项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/level-outline.md\",\n    \"Evidence/design-level\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/level-outline.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"integrated\",\n  \"attempt\": 1,\n  \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n  \"run_id\": \"/root/demo_level_author\",\n  \"worker\": \"live-demo:design-level\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n    \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899381.786148\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-level\",\n    \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n    \"status\": \"submitted\",\n    \"summary\": \"Completed level design and seven executable grid-rule checks via Python simulation. No engine, game, DCC or device execution; runtime validation remains not_run.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/level-outline.md\",\n        \"sha256\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\"\n      },\n      {\n        \"path\": \"Evidence/design-level/validate_level.py\",\n        \"sha256\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-level/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"level design grid and rule simulation\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-level/validate_level.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-level/check.txt\",\n        \"sha256\": \"290e03f9977d67ec58dd282355ef766669d777d2849e353096e10e75f803b41d\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "validate",
+      "--id",
+      "design-loop",
+      "--actor",
+      "/root/parallel_tests",
+      "--decision",
+      "pass",
+      "--evidence",
+      "Evidence/qa/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-loop\",\n  \"custom_reason\": \"项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/core-loop.md\",\n    \"Evidence/design-loop\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/core-loop.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"validated\",\n  \"attempt\": 1,\n  \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n  \"run_id\": \"/root/parallel_docs\",\n  \"worker\": \"live-demo:design-loop\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n    \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899381.7229385\n    },\n    \"validate\": {\n      \"actor\": \"/root/parallel_tests\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/qa/check.txt\",\n        \"sha256\": \"bad2bfc4f908c5a4b5259d7456629f1f97ce415d1faa5d4ea44ad85c11e5958a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899557.6502578\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-loop\",\n    \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n    \"status\": \"submitted\",\n    \"summary\": \"Delivered core-loop design specification and actual document assertion evidence; this verifies document structure/rules and unchanged Brief only, not a running game, engine, DCC, or device.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/core-loop.md\",\n        \"sha256\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\"\n      },\n      {\n        \"path\": \"Evidence/design-loop/check_spec.py\",\n        \"sha256\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-loop/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"core-loop-document-contract\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-loop/check_spec.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-loop/check.txt\",\n        \"sha256\": \"b1a50d0b9d7750c0aec1b85030c9b207c069ed3dcd20a0ed1083e2113a269301\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "validate",
+      "--id",
+      "design-level",
+      "--actor",
+      "/root/parallel_tests",
+      "--decision",
+      "pass",
+      "--evidence",
+      "Evidence/qa/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-level\",\n  \"custom_reason\": \"项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/level-outline.md\",\n    \"Evidence/design-level\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/level-outline.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"validated\",\n  \"attempt\": 1,\n  \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n  \"run_id\": \"/root/demo_level_author\",\n  \"worker\": \"live-demo:design-level\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n    \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899381.786148\n    },\n    \"validate\": {\n      \"actor\": \"/root/parallel_tests\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/qa/check.txt\",\n        \"sha256\": \"bad2bfc4f908c5a4b5259d7456629f1f97ce415d1faa5d4ea44ad85c11e5958a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899557.8705132\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-level\",\n    \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n    \"status\": \"submitted\",\n    \"summary\": \"Completed level design and seven executable grid-rule checks via Python simulation. No engine, game, DCC or device execution; runtime validation remains not_run.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/level-outline.md\",\n        \"sha256\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\"\n      },\n      {\n        \"path\": \"Evidence/design-level/validate_level.py\",\n        \"sha256\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-level/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"level design grid and rule simulation\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-level/validate_level.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-level/check.txt\",\n        \"sha256\": \"290e03f9977d67ec58dd282355ef766669d777d2849e353096e10e75f803b41d\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "before_independent_review",
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "next"
+    ],
+    "stdout": "{\n  \"ready\": [],\n  \"blocked\": {\n    \"design-package\": [\n      \"dependency not independently reviewed: design-loop\",\n      \"dependency not independently reviewed: design-level\",\n      \"write/resource reservation conflict\"\n    ]\n  },\n  \"capacity\": 3\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "review",
+      "--id",
+      "design-loop",
+      "--actor",
+      "/root/demo_reviewer",
+      "--decision",
+      "pass",
+      "--evidence",
+      "Evidence/review/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-loop\",\n  \"custom_reason\": \"项目设计样例：把已确认体验目标写成最小核心循环规格；不代表已运行游戏。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/core-loop.md\",\n    \"Evidence/design-loop\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/core-loop.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"done\",\n  \"attempt\": 1,\n  \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n  \"run_id\": \"/root/parallel_docs\",\n  \"worker\": \"live-demo:design-loop\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n    \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899381.7229385\n    },\n    \"validate\": {\n      \"actor\": \"/root/parallel_tests\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/qa/check.txt\",\n        \"sha256\": \"bad2bfc4f908c5a4b5259d7456629f1f97ce415d1faa5d4ea44ad85c11e5958a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899557.6502578\n    },\n    \"review\": {\n      \"actor\": \"/root/demo_reviewer\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/review/check.txt\",\n        \"sha256\": \"f3df4d95bfc822d824b48c89c56c9209c932a42ed34cada27e34fda48d1fc46a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/core-loop.md\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\",\n        \"Evidence/design-loop/check_spec.py\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      },\n      \"time\": 1793899786.6800983\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-loop\",\n    \"claim_token\": \"34e7af25e662488283fa43cafb42c0c5\",\n    \"status\": \"submitted\",\n    \"summary\": \"Delivered core-loop design specification and actual document assertion evidence; this verifies document structure/rules and unchanged Brief only, not a running game, engine, DCC, or device.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/core-loop.md\",\n        \"sha256\": \"706eda0389c2ecb2a415d8877991a9fa5884f853a51221602a8d77e2396293b4\"\n      },\n      {\n        \"path\": \"Evidence/design-loop/check_spec.py\",\n        \"sha256\": \"6473aa61a0ca3aea50daff15e0f38e5bad86e36db8e70b2153ce2874465e7ac9\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-loop/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"core-loop-document-contract\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-loop/check_spec.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-loop/check.txt\",\n        \"sha256\": \"b1a50d0b9d7750c0aec1b85030c9b207c069ed3dcd20a0ed1083e2113a269301\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "review",
+      "--id",
+      "design-level",
+      "--actor",
+      "/root/demo_reviewer",
+      "--decision",
+      "pass",
+      "--evidence",
+      "Evidence/review/check.txt"
+    ],
+    "stdout": "{\n  \"id\": \"design-level\",\n  \"custom_reason\": \"项目设计样例：独立编写代表性关卡的空间/节拍草图与验收计划；不直接编辑引擎场景。\",\n  \"role\": \"game-design-designer\",\n  \"depends_on\": [],\n  \"writes\": [\n    \"Design/level-outline.md\",\n    \"Evidence/design-level\"\n  ],\n  \"resources\": [],\n  \"inputs\": [\n    \"Brief.md\"\n  ],\n  \"outputs\": [\n    \"Design/level-outline.md\"\n  ],\n  \"effect\": \"design\",\n  \"gates\": [],\n  \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n  \"status\": \"done\",\n  \"attempt\": 1,\n  \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n  \"run_id\": \"/root/demo_level_author\",\n  \"worker\": \"live-demo:design-level\",\n  \"lease_until\": null,\n  \"input_hashes\": {\n    \"Brief.md\": \"213074511a65fee023186d32376a4921c50d06883e5f8c17564e0c8f6632ce6e\"\n  },\n  \"artifact_hashes\": {\n    \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n    \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n  },\n  \"history\": [],\n  \"stages\": {\n    \"integrate\": {\n      \"actor\": \"/root/native_roles\",\n      \"decision\": \"integrated\",\n      \"evidence\": {\n        \"path\": \"Evidence/integration/check.txt\",\n        \"sha256\": \"dcd3faf92a3b14305697d7dae4cc19abd4e1cf0d631a81477a293351c5a731db\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899381.786148\n    },\n    \"validate\": {\n      \"actor\": \"/root/parallel_tests\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/qa/check.txt\",\n        \"sha256\": \"bad2bfc4f908c5a4b5259d7456629f1f97ce415d1faa5d4ea44ad85c11e5958a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899557.8705132\n    },\n    \"review\": {\n      \"actor\": \"/root/demo_reviewer\",\n      \"decision\": \"pass\",\n      \"evidence\": {\n        \"path\": \"Evidence/review/check.txt\",\n        \"sha256\": \"f3df4d95bfc822d824b48c89c56c9209c932a42ed34cada27e34fda48d1fc46a\"\n      },\n      \"artifact_hashes\": {\n        \"Design/level-outline.md\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\",\n        \"Evidence/design-level/validate_level.py\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      },\n      \"time\": 1793899786.9479132\n    }\n  },\n  \"result\": {\n    \"task_id\": \"design-level\",\n    \"claim_token\": \"3b801c2e658c4df780a92262bb362957\",\n    \"status\": \"submitted\",\n    \"summary\": \"Completed level design and seven executable grid-rule checks via Python simulation. No engine, game, DCC or device execution; runtime validation remains not_run.\",\n    \"artifacts\": [\n      {\n        \"path\": \"Design/level-outline.md\",\n        \"sha256\": \"2226ca0900a4a28dafd5de639dec68649f1633e899652279158597ec3e97d6be\"\n      },\n      {\n        \"path\": \"Evidence/design-level/validate_level.py\",\n        \"sha256\": \"86c302d5839d562a5e0d3489a637c0023ac0abf19fc6ce0decc1065cc31bd992\"\n      }\n    ],\n    \"evidence\": [\n      \"Evidence/design-level/check.txt\"\n    ],\n    \"tests\": [\n      {\n        \"name\": \"level design grid and rule simulation\",\n        \"status\": \"pass\",\n        \"command\": \"python3 Evidence/design-level/validate_level.py\",\n        \"exit_status\": 0\n      }\n    ],\n    \"verified_evidence\": [\n      {\n        \"path\": \"Evidence/design-level/check.txt\",\n        \"sha256\": \"290e03f9977d67ec58dd282355ef766669d777d2849e353096e10e75f803b41d\"\n      }\n    ]\n  }\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  },
+  {
+    "label": "after_independent_review",
+    "command": [
+      "python3",
+      "/tmp/game-design-host-demo-QtGBlr/.game-design/scripts/parallel.py",
+      "--project",
+      "/tmp/game-design-host-demo-QtGBlr",
+      "next"
+    ],
+    "stdout": "{\n  \"ready\": [\n    {\n      \"id\": \"design-package\",\n      \"custom_reason\": \"项目设计样例：前两项完成并审查后，整合循环与关卡的设计一致性。\",\n      \"role\": \"game-design-designer\",\n      \"depends_on\": [\n        \"design-loop\",\n        \"design-level\"\n      ],\n      \"writes\": [\n        \"Design/design-package.md\",\n        \"Evidence/design-package\"\n      ],\n      \"resources\": [],\n      \"inputs\": [\n        \"Design/core-loop.md\",\n        \"Design/level-outline.md\",\n        \"Brief.md\"\n      ],\n      \"outputs\": [\n        \"Design/design-package.md\"\n      ],\n      \"effect\": \"design\",\n      \"gates\": [],\n      \"workspace\": \"/tmp/game-design-host-demo-QtGBlr\",\n      \"status\": \"pending\",\n      \"attempt\": 0,\n      \"claim_token\": null,\n      \"run_id\": null,\n      \"worker\": null,\n      \"lease_until\": null,\n      \"input_hashes\": {},\n      \"artifact_hashes\": {},\n      \"history\": [],\n      \"stages\": {}\n    }\n  ],\n  \"blocked\": {},\n  \"capacity\": 3\n}\n",
+    "stderr": "",
+    "exit_status": 0
+  }
+]

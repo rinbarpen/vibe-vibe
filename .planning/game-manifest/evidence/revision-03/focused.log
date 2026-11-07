@@ -1,0 +1,9 @@
+..................................................................... [ 46%]
+..............................................................................                                    [100%]
+=============================== warnings summary ===============================
+manifests/game-design/tests/test_production.py::ProductionTests::test_upgrade_previous_manifest_preserves_project_data
+  /home/rczx/orca/workspaces/vibe-coding/game-manifest/manifests/game-design/tests/test_production.py:175: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    tar.extractall(before)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+147 passed, 1 warning, 106 subtests passed in 23.32s

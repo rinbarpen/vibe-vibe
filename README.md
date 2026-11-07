@@ -164,6 +164,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `office` | DOCX / XLSX / PPTX / PDF：正文写作、原生可编辑交付、全量视觉验收与独立 QA |
 | `social-media` | 社交媒体内容创作与运营 |
 | `ui-testing` | Web、组件、移动端、视觉与无障碍测试 |
+| `game-design` | 游戏设计与制作：32 类玩法 × 23 项引擎/框架、19 领域 94 个细工作包、12 角色并行编排、建模/资产与版本闭环及 [workflow SVG](manifests/game-design/references/workflow.svg) |
 | `unity-game` | Unity 游戏制作全流程，Claude Code/Codex 角色、执行/Reviewer 技能与 [workflow SVG](manifests/unity-game/references/workflow.svg) |
 
 实际可用模板以 `vibe list manifests` 为准。`tutor` 是原 `knowledge-learning` 的新名称，新项目使用 `vibe init tutor [target]`。

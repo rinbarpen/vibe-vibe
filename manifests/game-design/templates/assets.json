@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "assets": [
+    {
+      "id": "ASSET-EXAMPLE",
+      "source": "Art/source/replace.blend",
+      "source_sha256": null,
+      "exports": [
+        {
+          "path": "Art/exports/replace.glb",
+          "sha256": null
+        }
+      ],
+      "license": "",
+      "engine_import": {
+        "status": "not_run",
+        "evidence": []
+      },
+      "review": {
+        "status": "not_run",
+        "evidence": []
+      }
+    }
+  ]
+}
