@@ -1,5 +1,7 @@
 {
   "version": 1,
+  "interaction_contract": "budget-decision-v1",
+  "cost_unit": "not_applicable",
   "seeds": [
     42
   ],

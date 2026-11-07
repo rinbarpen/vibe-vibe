@@ -1,12 +1,12 @@
 # vibe-vibe
 
+[简体中文](README.md) | **English**
+
 A **cross-domain toolkit of skills, project templates, and workflows** for AI agents such as Claude Code, Codex, and Cursor, covering software development, research, learning, writing, design, and office automation.
 
 vibe-vibe brings community Skill libraries, first-party skills, project-level instructions, complete workflows, and standalone CLIs into one repository. Use the `vibe` CLI to install a single Skill or bootstrap a reusable human–AI collaboration environment with a Manifest, adding MCP configuration and Hooks as needed. The repository itself is not a business application.
 
 > Formerly named `vibe-coding`, the project is now `vibe-vibe` to reflect its scope beyond coding. The CLI command remains `vibe`, and the general software engineering Manifest remains `vibe-coding`; existing commands and project names do not need to change.
-
-[中文 README](README.md)
 
 ## What you can do with it
 
@@ -18,6 +18,17 @@ vibe-vibe brings community Skill libraries, first-party skills, project-level in
 | Office automation | DOCX, XLSX, PPTX, PDF, and business communication documents |
 | Content production | Chinese writing, fiction, social media, academic rewriting, and summarization |
 | Agent infrastructure | Skill creation, MCP servers, browser automation, Hooks, and multi-agent workflows |
+
+## Documentation languages
+
+`README.md` is the default Simplified Chinese edition; `README_EN.md` is the separate English edition. Both cover the same features and command examples, with prose maintained in the corresponding language. Use the links at the top to switch editions.
+
+| Document | Simplified Chinese | English |
+| --- | --- | --- |
+| Project overview and usage | [README.md](README.md) | [README_EN.md](README_EN.md) |
+| Skill index | [Chinese index](skills/ANNOTATIONS.md) | [English index](skills/ANNOTATIONS_EN.md) |
+| Visualization scenarios | [Chinese guide](mine/omnidraw/references/visualization-scenarios.md) | [English guide](mine/omnidraw/references/visualization-scenarios_EN.md) |
+| Manifest workflow authoring | [Chinese guide](docs/manifest-workflow.md) | [English guide](docs/manifest-workflow_EN.md) |
 
 ## Quick start
 
@@ -175,6 +186,7 @@ Selected collections include:
 - [Unslop](skills/unslop): review and rewrite ordinary prose to remove formulaic writing; used by z-humanizer for ordinary writing while academic and patent routes remain separate; install with `vibe add skill unslop <target>`
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill): Chinese web-novel planning, chapter outlines, drafting, and completion review
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills): Mermaid diagram generation and rendering
+- [Visual Explainer](skills/visual-explainer/plugins/visual-explainer): turn architectures, workflows, code changes, plans, and comparison tables into standalone HTML explanations; see the installation example below.
 - [Unity Game Development](mine/unity-game-development): end-to-end game production, 3D/DCC modeling, game testing, and executor/Reviewer roles; install a bundle, stage, or individual capability
 - [State Machine Reasoning](mine/state-machine-reasoning): model decisions, debugging, research, and workflow analysis as state machines with Mermaid visualizations
 - [Omnippt](mine/omnippt): on-demand sub-skills for requirements research, narrative outlines, slide planning, visual design, native production, and independent review of editable presentations
@@ -185,8 +197,47 @@ First-party Skills live in [mine/](mine); complete workflow projects live in [wo
 
 Browse the indices:
 
-- [Chinese Skills annotations](skills/ANNOTATIONS.md)
 - [English Skills annotations](skills/ANNOTATIONS_EN.md)
+- [Chinese Skills annotations](skills/ANNOTATIONS.md)
+
+### Choose visualization skills by scenario
+
+Use [Omnidraw](mine/omnidraw/SKILL.md) as the entry point; the [scenario guide](mine/omnidraw/references/visualization-scenarios_EN.md) maintains exact source identifiers and selection rules. Keep the different capabilities rather than forcing every result into HTML or an image:
+
+| Scenario | Skill / capability | Main deliverable |
+| --- | --- | --- |
+| Architecture explanations, comparisons, visual reviews | Visual Explainer | HTML explanations and web presentations |
+| Data charts and exploratory statistics | Matplotlib, Seaborn | Code, SVG/PDF/PNG |
+| Interactive data charts | Plotly through scientific-visualization | Interactive HTML, data, and code |
+| KPIs, coordinated filters, multiple dashboard views | creating-dashboards | Runnable data interface |
+| Scientific statistics and multi-panel paper figures | scientific-visualization | Required static formats and provenance |
+| Scientific methods, mechanisms, graphical abstracts | CCFA / scientific schematic workflows | Scientific figures and requested editable reconstruction |
+| Flows, sequences, ER, state machines, small concept maps | Mermaid / PlantUML | Text sources and previews |
+| Knowledge networks with real edge data and graph analysis | NetworkX | Graph data, analysis code, and visualization |
+| Geographic distributions and spatial analysis | GeoPandas | Maps, spatial data, and code |
+
+```bash
+# Includes local Mermaid and Matplotlib sub-skills; add optional routes as needed
+vibe add skill omnidraw ../my-project
+```
+
+The entry point does not automatically install every optional source or runtime. There is no standalone `plotly` Skill in the current catalog; use its workflow in scientific-visualization via the scenario guide. Explicit tool/format requests and the existing project stack take precedence.
+
+### Visual explanations: Visual Explainer
+
+The [upstream project](https://github.com/nicobailon/visual-explainer) is tracked as the `skills/visual-explainer/` Git submodule; its installable payload is `plugins/visual-explainer/`. Use it for architecture and data-flow explanations, visual diff reviews, plan comparisons, project recaps, and HTML slides. Keep using Matplotlib, Plotly, scientific-visualization, and related skills for their existing statistical and research plotting workflows.
+
+```bash
+vibe add skill visual-explainer ../my-project
+```
+
+This installs the complete payload into `.agents/skills/visual-explainer/` in the target project, including `references/`, `templates/`, `commands/`, `kit/`, and optional export tools, rather than copying only `SKILL.md`. Example request:
+
+```text
+Use visual-explainer to explain this project's module relationships and data flow as HTML. Save it to docs/architecture.html.
+```
+
+Viewing the result requires a browser; the bundled `kit/render.mjs` renderer requires Node.js. Follow upstream setup for optional browser checks, MCP, PPTX, or video export dependencies. `vibe add skill` neither installs global tools nor automatically registers command templates as host slash commands.
 
 ### Manifests
 
@@ -349,7 +400,7 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src python -m pytest tools/
 
 A new Manifest must contain at least `CLAUDE.md` to be discovered by `vibe list manifests`. A new Skill must provide `SKILL.md` in its Skill directory.
 
-Creating a Manifest or changing its workflow also requires a **workflow SVG, editable source, reproducible rendering command, and read-only drift check**, linked from its README or main instructions. Distinguish autonomous AI execution, AI validation, and human decisions; show branches, rework, and where AI resumes after human confirmation. See the [Manifest workflow authoring requirements](docs/manifest-workflow.md) and the [rendered SVG example](docs/examples/manifest-workflow/workflow.svg). Reuse Unity's existing source and renderer; this convention does not change template installation behavior.
+Creating a Manifest or changing its workflow also requires a **workflow SVG, editable source, reproducible rendering command, and read-only drift check**, linked from its README or main instructions. Distinguish autonomous AI execution, AI validation, and human decisions; show branches, rework, and where AI resumes after human confirmation. See the [Manifest workflow authoring requirements](docs/manifest-workflow_EN.md) and the [rendered SVG example](docs/examples/manifest-workflow/workflow.svg). Reuse Unity's existing source and renderer; this convention does not change template installation behavior.
 
 ```bash
 # Check the generic example against its editable source

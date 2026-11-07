@@ -260,6 +260,7 @@ def test_end_to_end_all_stages_submission_revision_acceptance(project):
 
 def experiment_plan():
     p=rw.read(ROOT/'templates/EXPERIMENT_SETUP.json.example')
+    p.pop('interaction_contract', None)  # Legacy projects retain their existing approval semantics.
     p['baseline_search']['searched_at']=dt.date.today().isoformat()
     for c in p['baseline_search']['candidates']:
         c['paper_url']='https://example.test/paper';c['code_url']='https://example.test/code'

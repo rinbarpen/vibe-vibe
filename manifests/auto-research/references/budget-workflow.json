@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "title": "Auto-Research：既有实验预算门的宿主人机交互",
+  "description": "流程规范，不是审批记录或运行状态。复用原阶段、审批文件与执行器；无答复等待，调整返回材料，当前有效决定通过复核后恢复。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "进入既有实验预算门",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "复用 execution/runs/approval；不是新增科研阶段。"
+    },
+    {
+      "id": "prepare",
+      "label": "AI：冻结决策对象",
+      "kind": "ai",
+      "row": 1,
+      "detail": "计划与矩阵、成本单位、资源上限、审查证据齐备。"
+    },
+    {
+      "id": "checks",
+      "label": "AI：前置检查",
+      "kind": "check",
+      "row": 2,
+      "detail": "正式实验核对审查/sanity；付费 sanity 先批预算，不循环等待。"
+    },
+    {
+      "id": "packet",
+      "label": "AI：准备决策材料",
+      "kind": "ai",
+      "row": 3,
+      "detail": "decision-request 生成内容绑定的 ID/hash；不生成批准。"
+    },
+    {
+      "id": "human",
+      "label": "用户：决定本次范围",
+      "kind": "human",
+      "row": 4,
+      "detail": "宿主呈现矩阵、上限、单位与风险，记录真实回答来源。",
+      "trigger": "付费操作或正式实验需要当前范围的明确决定。",
+      "resume": "同意登记回执并复核；调整返回材料；取消结束请求；未答复保持等待。"
+    },
+    {
+      "id": "wait",
+      "label": "等待用户真实回答",
+      "kind": "human",
+      "row": 5,
+      "detail": "宿主保存 paused；受门影响动作暂停，独立任务可继续。",
+      "trigger": "问题尚未答复、超时或关闭；这些都不是批准。",
+      "resume": "真实回答到达后回到当前决定；上下文已变则重新准备材料。"
+    },
+    {
+      "id": "receipt",
+      "label": "AI：登记真实回执",
+      "kind": "ai",
+      "row": 6,
+      "detail": "复用 BUDGET_APPROVAL.json 与 checkpoint；保留来源和范围。"
+    },
+    {
+      "id": "gate",
+      "label": "AI：复核当前门",
+      "kind": "check",
+      "row": 7,
+      "detail": "核对决定、来源字段、hash、预算、审查与依赖。"
+    },
+    {
+      "id": "resume",
+      "label": "AI：核对实际运行状态",
+      "kind": "ai",
+      "row": 8,
+      "detail": "成功复用、活动重连；必要任务交现有执行器，避免重复提交。"
+    },
+    {
+      "id": "done",
+      "label": "结束本次门处理",
+      "kind": "terminal",
+      "row": 9,
+      "detail": "取消则保留已有状态；通过则交接原 run/queue，检查不等于运行。"
+    }
+  ],
+  "edges": [
+    {
+      "to": "prepare",
+      "label": "恢复既有材料",
+      "kind": "normal",
+      "from": "start"
+    },
+    {
+      "to": "checks",
+      "label": "冻结计划和矩阵",
+      "kind": "normal",
+      "from": "prepare"
+    },
+    {
+      "to": "prepare",
+      "label": "缺项：AI 修复",
+      "kind": "rework",
+      "from": "checks"
+    },
+    {
+      "to": "packet",
+      "label": "前置证据齐备",
+      "kind": "normal",
+      "from": "checks"
+    },
+    {
+      "to": "human",
+      "label": "展示具体对象与后果",
+      "kind": "normal",
+      "from": "packet"
+    },
+    {
+      "to": "wait",
+      "label": "未答复/超时/关闭",
+      "kind": "normal",
+      "from": "human"
+    },
+    {
+      "to": "human",
+      "label": "真实回答到达",
+      "kind": "rework",
+      "from": "wait"
+    },
+    {
+      "to": "prepare",
+      "label": "调整：修订材料",
+      "kind": "rework",
+      "from": "human"
+    },
+    {
+      "to": "done",
+      "label": "取消：结束该请求",
+      "kind": "normal",
+      "from": "human"
+    },
+    {
+      "to": "receipt",
+      "label": "明确同意",
+      "kind": "normal",
+      "from": "human"
+    },
+    {
+      "to": "gate",
+      "label": "仅登记当前回答",
+      "kind": "normal",
+      "from": "receipt"
+    },
+    {
+      "to": "prepare",
+      "label": "过期或校验失败：修订/补证据",
+      "kind": "rework",
+      "from": "gate"
+    },
+    {
+      "to": "resume",
+      "label": "所有门检查通过",
+      "kind": "normal",
+      "from": "gate"
+    },
+    {
+      "to": "done",
+      "label": "复用/重连/交接必要任务",
+      "kind": "normal",
+      "from": "resume"
+    }
+  ]
+}

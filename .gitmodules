@@ -171,3 +171,7 @@
 	path = skills/intuit-to-idea
 	url = https://github.com/ShawnL1N/intuit-to-idea.git
 	branch = main
+[submodule "skills/visual-explainer"]
+	path = skills/visual-explainer
+	url = https://github.com/nicobailon/visual-explainer.git
+	branch = main

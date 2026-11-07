@@ -16,6 +16,9 @@ import sys
 from research_workflow import Invalid, read, save, atomic, relative
 
 
+INTERACTION_CONTRACT = "budget-decision-v1"
+
+
 def digest(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
@@ -26,6 +29,8 @@ def seeds(value):
 
 def validate(plan):
     if plan.get('version')!=1: raise Invalid('Unknown experiment version')
+    if plan.get('interaction_contract') not in (None, INTERACTION_CONTRACT):
+        raise Invalid('Unknown budget interaction contract')
     seeds(plan.get('seeds',[42]))
     if type(plan.get('max_parallel',4)) is not int or plan.get('max_parallel',4)<1: raise Invalid('max_parallel must be positive')
     metrics=plan.get('metrics',{})
@@ -82,9 +87,12 @@ def expand(plan):
     if len({r['run_id'] for r in runs})!=len(runs): raise Invalid('Duplicate matrix cells')
     provider=plan.get('provider','local')
     queue=provider=='ssh' and (len(runs)>=10 or any(r['depends_on'] for r in runs))
-    return {'version':1,'plan_hash':digest(plan),'provider':provider,'route':'experiment-queue' if queue else 'run-experiment',
+    matrix = {'version':1,'plan_hash':digest(plan),'provider':provider,'route':'experiment-queue' if queue else 'run-experiment',
             'max_parallel':plan.get('max_parallel',4),'metrics':plan['metrics'],'runs':runs,
             'estimated_cost':sum(r['estimated_cost'] for r in runs),'estimated_gpu_hours':sum(r['estimated_gpu_hours'] for r in runs)}
+    if plan.get('interaction_contract'):
+        matrix.update(interaction_contract=INTERACTION_CONTRACT, cost_unit=plan.get('cost_unit', 'not_applicable'))
+    return matrix
 
 
 def design_review(plan, today=None):
@@ -124,10 +132,83 @@ def design_review(plan, today=None):
     return {'valid':not issues,'issues':issues,'note':'Structural checks only; freshness and scientific coverage require source-grounded researcher review.'}
 
 
+def decision_request(matrix, state, paid=False, full_suite=True, max_cost=None, max_gpu_hours=None):
+    """Prepare reviewable input, never an approval. Response provenance belongs to the host."""
+    if matrix.get('interaction_contract') not in (None, INTERACTION_CONTRACT):
+        raise Invalid('Unknown budget interaction contract')
+    limits = {}
+    for metric, limit, supplied, spent_key in (
+        ('estimated_cost', 'max_cost', max_cost, 'spent_cost'),
+        ('estimated_gpu_hours', 'max_gpu_hours', max_gpu_hours, 'spent_gpu_hours'),
+    ):
+        remaining = state.get('remaining_' + metric, matrix[metric])
+        spent = state.get(spent_key, 0)
+        if not numeric(remaining) or remaining < 0 or not numeric(spent) or spent < 0:
+            raise Invalid('Invalid measured/remaining budget')
+        value = spent + remaining if supplied is None else supplied
+        if not numeric(value) or value < 0:
+            raise Invalid('finite nonnegative ' + limit + ' required')
+        limits[limit] = float(value)
+    unit = matrix.get('cost_unit', 'not_applicable')
+    if not isinstance(unit, str) or not unit.strip() or (limits['max_cost'] > 0 and unit == 'not_applicable'):
+        raise Invalid('Declare cost_unit before requesting a nonzero cost budget')
+    subject = {
+        'plan_hash': matrix['plan_hash'], 'matrix_hash': digest(matrix), **limits,
+        'cost_unit': unit, 'code_review': state.get('code_review', 'not_run'),
+        'paid': bool(paid), 'full_suite': bool(full_suite),
+        'review_unavailable_acknowledged': state.get('code_review') == 'REVIEW_UNAVAILABLE',
+    }
+    subject_hash = digest(subject)
+    return {
+        'interaction_contract': INTERACTION_CONTRACT,
+        'decision_id': 'budget-' + subject_hash[:20], 'subject_hash': subject_hash,
+        'subject': subject, 'status': 'awaiting_decision',
+        'question': '是否批准这份冻结矩阵、资源上限，以及所列审查状态与风险？',
+        'choices': ['approve', 'revise', 'cancel'], 'on_no_response': 'wait',
+        'resume': 'execution/runs/approval: recheck gate and actual run state before existing run/queue',
+    }
+
+
+def decision_check(matrix, approval, state, paid, full_suite):
+    """Check receipt consistency, not human identity or authenticity of its source reference."""
+    if matrix.get('interaction_contract', INTERACTION_CONTRACT) != INTERACTION_CONTRACT:
+        return 'invalid', ['unknown budget interaction contract']
+    choice = approval.get('decision')
+    if choice != 'approve':
+        status = choice if choice in ('revise', 'cancel') else 'awaiting_decision'
+        return status, ['explicit approve response required; no response keeps this gate waiting']
+    if approval.get('interaction_contract') != INTERACTION_CONTRACT:
+        return 'invalid', ['versioned decision receipt required']
+    try:
+        request = decision_request(matrix, state, paid, full_suite,
+                                   approval.get('max_cost'), approval.get('max_gpu_hours'))
+    except (Invalid, KeyError, TypeError) as exc:
+        return 'invalid', [str(exc)]
+    if (approval.get('subject_hash') != request['subject_hash'] or
+            approval.get('decision_id') != request['decision_id']):
+        return 'stale', ['decision subject changed; request a new response']
+    if request['subject']['review_unavailable_acknowledged'] and approval.get('review_unavailable_acknowledged') is not True:
+        return 'invalid', ['explicit review unavailability acknowledgement required']
+    source = approval.get('response_source')
+    if (not isinstance(source, dict) or source.get('kind') not in
+            ('structured_input', 'chat_message', 'external_approval') or
+            any(not isinstance(source.get(key), str) or not source[key].strip()
+                for key in ('reference', 'response_id'))):
+        return 'invalid', ['host response source reference and response_id required']
+    if any(not isinstance(approval.get(key), str) or not approval[key].strip()
+           for key in ('approved_by', 'approved_at')):
+        return 'invalid', ['human response identity and date required']
+    return 'approved', []
+
+
 def gate(matrix, approval, state, paid=False, full_suite=True):
     issues=[]
+    decision_status = None
     if full_suite and not state.get('sanity_passed'): issues.append('sanity not passed')
     if full_suite or paid:
+        if matrix.get('interaction_contract') or approval.get('interaction_contract'):
+            decision_status, decision_issues = decision_check(matrix, approval, state, paid, full_suite)
+            issues.extend(decision_issues)
         if approval.get('plan_hash')!=matrix['plan_hash'] or not approval.get('approved_by') or not approval.get('approved_at'):
             issues.append('explicit approval for current plan required')
         if state.get('code_review')=='REVIEW_UNAVAILABLE' and not approval.get('review_unavailable_acknowledged'):
@@ -147,7 +228,10 @@ def gate(matrix, approval, state, paid=False, full_suite=True):
         dependencies={d for r in matrix['runs'] if r['experiment_id']==selected for d in r['depends_on']}
         for dep in dependencies:
             if state.get('experiments',{}).get(dep)!='completed': issues.append('dependency not successful: '+dep)
-    return {'allowed':not issues,'issues':issues,'launch_performed':False}
+    result = {'allowed':not issues,'issues':issues,'launch_performed':False}
+    if decision_status is not None:
+        result['decision_status'] = decision_status
+    return result
 
 
 def numeric(v):
@@ -258,11 +342,14 @@ def main(argv=None):
     for name in ['expand','design-review']:
         s=sub.add_parser(name); s.add_argument('plan',type=Path); s.add_argument('--output',type=Path,required=True)
     g=sub.add_parser('gate'); g.add_argument('matrix',type=Path); g.add_argument('--approval',type=Path,required=True); g.add_argument('--state',type=Path,required=True); g.add_argument('--paid',action='store_true'); g.add_argument('--sanity-only',action='store_true')
+    d=sub.add_parser('decision-request'); d.add_argument('matrix',type=Path); d.add_argument('--state',type=Path,required=True); d.add_argument('--output',type=Path,required=True); d.add_argument('--paid',action='store_true'); d.add_argument('--sanity-only',action='store_true'); d.add_argument('--max-cost',type=float); d.add_argument('--max-gpu-hours',type=float)
     s=sub.add_parser('summarize'); s.add_argument('matrix',type=Path); s.add_argument('--records',type=Path,required=True); s.add_argument('--content-root',type=Path,default=Path('.')); s.add_argument('--output',type=Path,required=True)
     a=p.parse_args(argv)
     try:
         if a.action=='expand': result=expand(read(a.plan)); save(a.output,result)
         elif a.action=='design-review': result=design_review(read(a.plan)); save(a.output,result)
+        elif a.action=='decision-request':
+            result=decision_request(read(a.matrix),read(a.state),a.paid,not a.sanity_only,a.max_cost,a.max_gpu_hours); save(a.output,result)
         elif a.action=='gate': result=gate(read(a.matrix),read(a.approval),read(a.state),a.paid,not a.sanity_only)
         else: result=aggregate(read(a.matrix),read(a.records),a.content_root.resolve()); write_report(result,a.output)
         print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False))

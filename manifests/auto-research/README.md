@@ -101,3 +101,16 @@ git submodule update --init -- skills/anti-defensive-writing
 数字、引用 key、LaTeX 命令和术语由 `mine/z-humanizer` 保留，审计器不改模板样式。
 
 内部工具：research_workflow.py 的 init/status/route/checkpoint/resume；experiment_stats.py 的 design-review/expand/gate/summarize。不新增 vibe 公共命令。每个阶段事件 Git 留档，中间规划与日志持续保存；投稿回执、评审、返修、转投及录用记录纳入同一周期。初始化只安装资源，不启动云资源、模型或正式投稿。
+
+
+## Harness 人机交互与预算试点
+
+[交互契约与命令](references/human-interaction.md)说明宿主提问、真实回答来源、预算绑定、等待与恢复。新设置显式启用 `budget-decision-v1`；旧项目保持原语义，迁移需重新冻结矩阵和批准。此机制复用原审批/阶段账本，不增加后台调度器，也不直接运行实验。
+
+- [预算交互 SVG](references/budget-workflow.svg) / [可编辑源](references/budget-workflow.json)
+- 复用已有 `scripts/render_idea_workflow.py`；模板与安装后项目根目录的再生成/检查命令：
+
+```bash
+python3 scripts/render_idea_workflow.py --source references/budget-workflow.json --output references/budget-workflow.svg
+python3 scripts/render_idea_workflow.py --source references/budget-workflow.json --output references/budget-workflow.svg --check
+```

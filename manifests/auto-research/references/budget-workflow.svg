@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1624" height="2402" viewBox="0 0 1624 2402" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Auto-Research：既有实验预算门的宿主人机交互</title>
+  <desc id="workflow-description">流程规范，不是审批记录或运行状态。复用原阶段、审批文件与执行器；无答复等待，调整返回材料，当前有效决定通过复核后恢复。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1624" height="2402" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Auto-Research：既有实验预算门的宿主人机交互</text>
+    <text x="28" y="70" font-size="14" fill="#475569">流程规范，不是审批记录或运行状态。复用原阶段、审批文件与执行器；无答复等待，调整返回材料，当前有效决定通过复核后恢复。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="2208" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="2208" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="2208" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="checks" data-to="packet" d="M 630.0,692 V 735.0 H 220.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="gate" data-to="resume" d="M 630.0,1880 V 1923.0 H 220.0 V 1966" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="human" data-to="done" d="M 1040.0,1186 V 1229.0 H 434 V 2142 H 630.0 V 2166" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="human" data-to="receipt" d="M 1040.0,1186 V 1229.0 H 220.0 V 1566" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="human" data-to="wait" d="M 1040.0,1186 V 1229.0 H 1040.0 V 1272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="packet" data-to="human" d="M 220.0,892 V 935.0 H 1040.0 V 978" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="prepare" data-to="checks" d="M 220.0,492 V 535.0 H 630.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="receipt" data-to="gate" d="M 220.0,1680 V 1723.0 H 630.0 V 1766" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="resume" data-to="done" d="M 220.0,2080 V 2123.0 H 630.0 V 2166" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="prepare" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="checks" data-to="prepare" d="M 810,635.0 H 1270 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="gate" data-to="prepare" d="M 810,1823.0 H 1296 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="human" data-to="prepare" d="M 1220,1082.0 H 1322 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="wait" data-to="human" d="M 1220,1376.0 H 1348 V 955 H 1040.0 V 978" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>进入既有实验预算门 — 复用 execution/runs/approval；不是新增科研阶段。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">进入既有实验预算门</text>
+      <text x="466" y="252" font-size="14" fill="#334155">复用 execution/runs/approval；不是新增科研</text>
+      <text x="466" y="272" font-size="14" fill="#334155">阶段。</text>
+    </g>
+    <g id="node-prepare" data-kind="ai" data-row="1">
+      <title>AI：冻结决策对象 — 计划与矩阵、成本单位、资源上限、审查证据齐备。</title>
+      <rect x="40" y="378" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">AI：冻结决策对象</text>
+      <text x="56" y="452" font-size="14" fill="#334155">计划与矩阵、成本单位、资源上限、审查证据齐</text>
+      <text x="56" y="472" font-size="14" fill="#334155">备。</text>
+    </g>
+    <g id="node-checks" data-kind="check" data-row="2">
+      <title>AI：前置检查 — 正式实验核对审查/sanity；付费 sanity 先批预算，不循环等待。</title>
+      <rect x="450" y="578" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="602" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="628" font-size="18" font-weight="700">AI：前置检查</text>
+      <text x="466" y="652" font-size="14" fill="#334155">正式实验核对审查/sanity；付费 sanity 先批预</text>
+      <text x="466" y="672" font-size="14" fill="#334155">算，不循环等待。</text>
+    </g>
+    <g id="node-packet" data-kind="ai" data-row="3">
+      <title>AI：准备决策材料 — decision-request 生成内容绑定的 ID/hash；不生成批准。</title>
+      <rect x="40" y="778" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="802" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="828" font-size="18" font-weight="700">AI：准备决策材料</text>
+      <text x="56" y="852" font-size="14" fill="#334155">decision-request 生成内容绑定的 ID/hash；不</text>
+      <text x="56" y="872" font-size="14" fill="#334155">生成批准。</text>
+    </g>
+    <g id="node-human" data-kind="human" data-row="4">
+      <title>用户：决定本次范围 — 宿主呈现矩阵、上限、单位与风险，记录真实回答来源。</title>
+      <rect x="860" y="978" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1002" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1028" font-size="18" font-weight="700">用户：决定本次范围</text>
+      <text x="876" y="1052" font-size="14" fill="#334155">宿主呈现矩阵、上限、单位与风险，记录真实回</text>
+      <text x="876" y="1072" font-size="14" fill="#334155">答来源。</text>
+      <text x="876" y="1104" font-size="14" fill="#9a3412">介入条件：付费操作或正式实验需要当前范围的</text>
+      <text x="876" y="1124" font-size="14" fill="#9a3412">明确决定。</text>
+      <text x="876" y="1144" font-size="14" fill="#9a3412">恢复执行：同意登记回执并复核；调整返回材料</text>
+      <text x="876" y="1164" font-size="14" fill="#9a3412">；取消结束请求；未答复保持等待。</text>
+    </g>
+    <g id="node-wait" data-kind="human" data-row="5">
+      <title>等待用户真实回答 — 宿主保存 paused；受门影响动作暂停，独立任务可继续。</title>
+      <rect x="860" y="1272" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1296" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1322" font-size="18" font-weight="700">等待用户真实回答</text>
+      <text x="876" y="1346" font-size="14" fill="#334155">宿主保存 paused；受门影响动作暂停，独立任务</text>
+      <text x="876" y="1366" font-size="14" fill="#334155">可继续。</text>
+      <text x="876" y="1398" font-size="14" fill="#9a3412">介入条件：问题尚未答复、超时或关闭；这些都</text>
+      <text x="876" y="1418" font-size="14" fill="#9a3412">不是批准。</text>
+      <text x="876" y="1438" font-size="14" fill="#9a3412">恢复执行：真实回答到达后回到当前决定；上下</text>
+      <text x="876" y="1458" font-size="14" fill="#9a3412">文已变则重新准备材料。</text>
+    </g>
+    <g id="node-receipt" data-kind="ai" data-row="6">
+      <title>AI：登记真实回执 — 复用 BUDGET_APPROVAL.json 与 checkpoint；保留来源和范围。</title>
+      <rect x="40" y="1566" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1590" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1616" font-size="18" font-weight="700">AI：登记真实回执</text>
+      <text x="56" y="1640" font-size="14" fill="#334155">复用 BUDGET_APPROVAL.json 与 checkpoint；保</text>
+      <text x="56" y="1660" font-size="14" fill="#334155">留来源和范围。</text>
+    </g>
+    <g id="node-gate" data-kind="check" data-row="7">
+      <title>AI：复核当前门 — 核对决定、来源字段、hash、预算、审查与依赖。</title>
+      <rect x="450" y="1766" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1790" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1816" font-size="18" font-weight="700">AI：复核当前门</text>
+      <text x="466" y="1840" font-size="14" fill="#334155">核对决定、来源字段、hash、预算、审查与依赖</text>
+      <text x="466" y="1860" font-size="14" fill="#334155">。</text>
+    </g>
+    <g id="node-resume" data-kind="ai" data-row="8">
+      <title>AI：核对实际运行状态 — 成功复用、活动重连；必要任务交现有执行器，避免重复提交。</title>
+      <rect x="40" y="1966" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1990" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2016" font-size="18" font-weight="700">AI：核对实际运行状态</text>
+      <text x="56" y="2040" font-size="14" fill="#334155">成功复用、活动重连；必要任务交现有执行器，</text>
+      <text x="56" y="2060" font-size="14" fill="#334155">避免重复提交。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="9">
+      <title>结束本次门处理 — 取消则保留已有状态；通过则交接原 run/queue，检查不等于运行。</title>
+      <rect x="450" y="2166" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2190" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2216" font-size="18" font-weight="700">结束本次门处理</text>
+      <text x="466" y="2240" font-size="14" fill="#334155">取消则保留已有状态；通过则交接原 run/queue</text>
+      <text x="466" y="2260" font-size="14" fill="#334155">，检查不等于运行。</text>
+    </g>
+    <rect x="381.0" y="713.0" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b">前置证据齐备</text>
+    <rect x="374.5" y="1901.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1914.0" text-anchor="middle" font-size="12" fill="#64748b">所有门检查通过</text>
+    <rect x="778.0" y="1207.0" width="114.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="835.0" y="1220.0" text-anchor="middle" font-size="12" fill="#64748b">取消：结束该请求</text>
+    <rect x="599.0" y="1207.0" width="62.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="1220.0" text-anchor="middle" font-size="12" fill="#64748b">明确同意</text>
+    <rect x="1047.0" y="1207.0" width="114.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1052.0" y="1220.0" text-anchor="start" font-size="12" fill="#64748b">未答复/超时/关闭</text>
+    <rect x="566.5" y="913.0" width="127.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="926.0" text-anchor="middle" font-size="12" fill="#64748b">展示具体对象与后果</text>
+    <rect x="374.5" y="513.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b">冻结计划和矩阵</text>
+    <rect x="374.5" y="1701.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1714.0" text-anchor="middle" font-size="12" fill="#64748b">仅登记当前回答</text>
+    <rect x="348.5" y="2101.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="2114.0" text-anchor="middle" font-size="12" fill="#64748b">复用/重连/交接必要任务</text>
+    <rect x="381.0" y="313.0" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b">恢复既有材料</text>
+    <rect x="1275" y="482.0" width="94.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1280" y="495.0" text-anchor="start" font-size="12" fill="#c2410c">缺项：AI 修复</text>
+    <rect x="1301" y="1076.0" width="159.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1306" y="1089.0" text-anchor="start" font-size="12" fill="#c2410c">过期或校验失败：修订/补</text>
+    <rect x="1301" y="1093.0" width="36.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1306" y="1106.0" text-anchor="start" font-size="12" fill="#c2410c">证据</text>
+    <rect x="1327" y="705.5" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1332" y="718.5" text-anchor="start" font-size="12" fill="#c2410c">调整：修订材料</text>
+    <rect x="1353" y="1152.5" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1358" y="1165.5" text-anchor="start" font-size="12" fill="#c2410c">真实回答到达</text>
+    <text x="28" y="2376" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

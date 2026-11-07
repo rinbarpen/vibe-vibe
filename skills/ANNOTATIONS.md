@@ -550,7 +550,7 @@
 - **使用场景**: 照片定位、拍摄时间推断、地理线索分析；使用 `vibe add skill geo-sleuth <target>` 安装。
 
 ### geopandas
-- **路径**: `skills/claude-scientific-skills/scientific-skills/geopandas`
+- **路径**: `skills/claude-scientific-skills/skills/geopandas`
 - **简介**: Python library for working with geospatial vector data including shapefiles, GeoJSON, and GeoPackage files. Use when working with geographic data for spatial analysis, geometric operations, coordinate transformations, spatial joins, overlay operations, choropleth mapping, or any task involving reading/writing/analyzing vector geographic data. Supports PostGIS databases, interactive maps, and integration with matplotlib/folium/cartopy. Use for tasks like buffer analysis, spatial joins between datasets, dissolving boundaries, clipping data, calculating areas/distances, reprojecting coordinate systems, creating maps, or converting between spatial file formats.
 - **使用场景**: Python library for working with geospatial vector data including shapefiles, GeoJSON, and GeoPackage files. Use when working with geographic data for spatial analysis, geometric operations, coordinate transformations, spatial joins, overlay operations, choropleth mapping, or any task involving reading/writing/analyzing vector geographic data. Supports PostGIS databases, interactive maps, and integration with matplotlib/folium/cartopy. Use for tasks like buffer analysis, spatial joins between datasets, dissolving boundaries, clipping data, calculating areas/distances, reprojecting coordinate systems, creating maps, or converting between spatial file formats.
 
@@ -857,7 +857,7 @@
 - **使用场景**: MATLAB and GNU Octave numerical computing for matrix operations, data analysis, visualization, and scientific computing. Use when writing MATLAB/Octave scripts for linear algebra, signal processing, image processing, differential equations, optimization, statistics, or creating scientific visualizations. Also use when the user needs help with MATLAB syntax, functions, or wants to convert between MATLAB and Python code. Scripts can be executed with MATLAB or the open-source GNU Octave interpreter.
 
 ### matplotlib
-- **路径**: `skills/claude-scientific-skills/scientific-skills/matplotlib`
+- **路径**: `skills/claude-scientific-skills/skills/matplotlib`
 - **简介**: Low-level plotting library for full customization. Use when you need fine-grained control over every plot element, creating novel plot types, or integrating with specific scientific workflows. Export to PNG/PDF/SVG for publication. For quick statistical plots use seaborn; for interactive plots use plotly; for publication-ready multi-panel figures with journal styling, use scientific-visualization.
 - **使用场景**: Low-level plotting library for full customization. Use when you need fine-grained control over every plot element, creating novel plot types, or integrating with specific scientific workflows. Export to PNG/PDF/SVG for publication. For quick statistical plots use seaborn; for interactive plots use plotly; for publication-ready multi-panel figures with journal styling, use scientific-visualization.
 
@@ -962,7 +962,7 @@
 - **使用场景**: NVIDIA's runtime safety framework for LLM applications. Features jailbreak detection, input/output validation, fact-checking, hallucination detection, PII filtering, toxicity detection. Uses Colang 2.0 DSL for programmable rails. Production-ready, runs on T4 GPU.
 
 ### networkx
-- **路径**: `skills/claude-scientific-skills/scientific-skills/networkx`
+- **路径**: `skills/claude-scientific-skills/skills/networkx`
 - **简介**: Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python. Use when working with network/graph data structures, analyzing relationships between entities, computing graph algorithms (shortest paths, centrality, clustering), detecting communities, generating synthetic networks, or visualizing network topologies. Applicable to social networks, biological networks, transportation systems, citation networks, and any domain involving pairwise relationships.
 - **使用场景**: Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python. Use when working with network/graph data structures, analyzing relationships between entities, computing graph algorithms (shortest paths, centrality, clustering), detecting communities, generating synthetic networks, or visualizing network topologies. Applicable to social networks, biological networks, transportation systems, citation networks, and any domain involving pairwise relationships.
 
@@ -1432,7 +1432,7 @@
 - **使用场景**: Build slide decks and presentations for research talks. Use this for making PowerPoint slides, conference presentations, seminar talks, research presentations, thesis defense slides, or any scientific talk. Provides slide structure, design templates, timing guidance, and visual validation. Works with PowerPoint and LaTeX Beamer.
 
 ### scientific-visualization
-- **路径**: `skills/claude-scientific-skills/scientific-skills/scientific-visualization`
+- **路径**: `skills/claude-scientific-skills/skills/scientific-visualization`
 - **简介**: Meta-skill for publication-ready figures. Use when creating journal submission figures requiring multi-panel layouts, significance annotations, error bars, colorblind-safe palettes, and specific journal formatting (Nature, Science, Cell). Orchestrates matplotlib/seaborn/plotly with publication styles. For quick exploration use seaborn or plotly directly.
 - **使用场景**: Meta-skill for publication-ready figures. Use when creating journal submission figures requiring multi-panel layouts, significance annotations, error bars, colorblind-safe palettes, and specific journal formatting (Nature, Science, Cell). Orchestrates matplotlib/seaborn/plotly with publication styles. For quick exploration use seaborn or plotly directly.
 
@@ -1469,7 +1469,7 @@
 - **安装**: `vibe add skill Scrapling-Skill`（上游元数据名为 `scrapling-official`；vibe 使用目录名 `Scrapling-Skill`）。
 
 ### seaborn
-- **路径**: `skills/claude-scientific-skills/scientific-skills/seaborn`
+- **路径**: `skills/claude-scientific-skills/skills/seaborn`
 - **简介**: Statistical visualization with pandas integration. Use for quick exploration of distributions, relationships, and categorical comparisons with attractive defaults. Best for box plots, violin plots, pair plots, heatmaps. Built on matplotlib. For interactive plots use plotly; for publication styling use scientific-visualization.
 - **使用场景**: Statistical visualization with pandas integration. Use for quick exploration of distributions, relationships, and categorical comparisons with attractive defaults. Best for box plots, violin plots, pair plots, heatmaps. Built on matplotlib. For interactive plots use plotly; for publication styling use scientific-visualization.
 
@@ -1785,6 +1785,11 @@
 - **简介**: Use this skill for processing and analyzing large tabular datasets (billions of rows) that exceed available RAM. Vaex excels at out-of-core DataFrame operations, lazy evaluation, fast aggregations, efficient visualization of big data, and machine learning on large datasets. Apply when users need to work with large CSV/HDF5/Arrow/Parquet files, perform fast statistics on massive datasets, create visualizations of big data, or build ML pipelines that do not fit in memory.
 - **使用场景**: Use this skill for processing and analyzing large tabular datasets (billions of rows) that exceed available RAM. Vaex excels at out-of-core DataFrame operations, lazy evaluation, fast aggregations, efficient visualization of big data, and machine learning on large datasets. Apply when users need to work with large CSV/HDF5/Arrow/Parquet files, perform fast statistics on massive datasets, create visualizations of big data, or build ML pipelines that do not fit in memory.
 
+### visual-explainer
+- **路径**: `skills/visual-explainer/plugins/visual-explainer`
+- **简介**: 将架构、流程、代码变更、方案、对比表和概念制作成独立 HTML 图解，包含图形、交互、HTML 幻灯片及按需导出能力；保留完整参考、模板、命令与渲染工具。
+- **使用场景**: 可视化架构说明、代码/方案评审、项目回顾及复杂表格；`vibe add skill visual-explainer <target>`。查看页面用浏览器，随包渲染器需 Node.js；可选浏览器检查和导出依赖按上游说明准备。
+
 ### venue-templates
 - **路径**: `skills/claude-scientific-skills/scientific-skills/venue-templates`
 - **简介**: Access comprehensive LaTeX templates, formatting requirements, and submission guidelines for major scientific publication venues (Nature, Science, PLOS, IEEE, ACM), academic conferences (NeurIPS, ICML, CVPR, CHI), research posters, and grant proposals (NSF, NIH, DOE, DARPA). This skill should be used when preparing manuscripts for journal submission, conference papers, research posters, or grant proposals and need venue-specific formatting requirements and templates.
@@ -2085,6 +2090,16 @@
 - **路径**: `mine/z-humanizer`
 - **简介**: 中英文 humanizer 编排器：普通文案、博客、知识库/文档及教程委派至随包安装的 unslop；论文、期刊、会议和专利保留专用模式库及审计流程。
 - **使用场景**: 需要去AI味但不清楚该用哪个humanizer工具时；需要审计+改写的完整流程时。
+
+### creating-dashboards
+- **路径**: `skills/ai-design-components/skills/creating-dashboards`
+- **简介**: KPI、多图表、筛选与多视图联动的数据仪表盘界面；按实际项目栈、指标与数据来源实现。
+- **使用场景**: 完整仪表盘应用，而不是单张交互图或通用 HTML 图解；来源安装标识 `ai-design-components/skills/creating-dashboards`。
+
+### omnidraw
+- **路径**: `mine/omnidraw`
+- **简介**: 按场景选择 HTML 图解、数据/交互图表、仪表盘、科研图、流程与知识网络、地图及创意绘图；复用已安装能力，不强制统一输出格式。
+- **使用场景**: 不确定应选哪类可视化时使用统一入口；`vibe add skill omnidraw <target>`，额外来源按随包场景指南安装。
 
 ### state-machine-reasoning
 - **路径**: `mine/state-machine-reasoning`

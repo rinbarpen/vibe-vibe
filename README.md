@@ -1,12 +1,12 @@
 # vibe-vibe
 
+**简体中文** | [English](README_EN.md)
+
 一个面向 Claude Code、Codex、Cursor 等 AI Agent 的**跨领域技能、项目模板与工作流工具箱**，覆盖软件开发、科研、学习、写作、设计和办公自动化。
 
 vibe-vibe 把社区 Skill 库、第一方技能、项目级指令、完整工作流与独立 CLI 集中维护，通过 `vibe` CLI 将所需能力安装到目标项目。它本身不是业务应用：你可以只装一个 Skill，也可以用 Manifest 搭建一套可持续迭代的人机协作环境，并按需接入 MCP 与 Hooks。
 
 > 项目原名 `vibe-coding`，现更名为 `vibe-vibe`，不再只以编程场景为入口。CLI 命令仍为 `vibe`；通用软件工程模板仍叫 `vibe-coding`，现有命令与项目无需因此改名。
-
-[English README](README_EN.md)
 
 ## 你可以用它做什么
 
@@ -18,6 +18,17 @@ vibe-vibe 把社区 Skill 库、第一方技能、项目级指令、完整工作
 | 办公自动化 | DOCX、XLSX、PPTX、PDF 与企业沟通文档 |
 | 内容生产 | 中文写作、小说、社交媒体、学术改写、文本总结 |
 | Agent 基础设施 | Skill 创建、MCP 服务、浏览器自动化、Hook 与多智能体工作流 |
+
+## 文档语言与入口
+
+`README.md` 是默认中文版，`README_EN.md` 是独立英文版。两版保持相同的功能范围和命令示例，说明文字分别维护；通过页首链接切换语言。
+
+| 文档 | 中文版 | 英文版 |
+| --- | --- | --- |
+| 项目介绍与使用 | [README.md](README.md) | [README_EN.md](README_EN.md) |
+| 技能索引 | [中文技能索引](skills/ANNOTATIONS.md) | [英文技能索引](skills/ANNOTATIONS_EN.md) |
+| 可视化场景指南 | [中文指南](mine/omnidraw/references/visualization-scenarios.md) | [英文指南](mine/omnidraw/references/visualization-scenarios_EN.md) |
+| 项目模板工作流规范 | [中文规范](docs/manifest-workflow.md) | [英文规范](docs/manifest-workflow_EN.md) |
 
 ## 30 秒开始
 
@@ -158,7 +169,7 @@ vibe-vibe/
 
 ## 仓库内容
 
-### Skills
+### 技能（Skills）
 
 `skills/` 包含来自多个社区和维护者的 Git 子模块，`mine/` 存放第一方 Skill。CLI 会递归扫描这两个目录中的 `SKILL.md`；同名 Skill 使用带相对路径的标识自动消歧，安装时以 `vibe list skills` 显示的名称为准。
 
@@ -175,6 +186,7 @@ vibe-vibe/
 - [Unslop](skills/unslop)：普通文案去模板感、审查与改写；`z-humanizer` 的普通写作路由采用它，学术和专利路由保持独立；安装：`vibe add skill unslop <target>`
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill)：中文网文选材、构思、章纲、写作与完稿审查
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills)：Mermaid 图表生成与渲染
+- [Visual Explainer](skills/visual-explainer/plugins/visual-explainer)：将架构、流程、代码变更、方案和对比表制作成独立 HTML 可视化图解；完整安装命令见下方。
 - [Unity Game Development](mine/unity-game-development)：覆盖游戏制作全流程、3D/DCC 建模、游戏测试与执行/Reviewer 角色，可整包、阶段或单项安装。
 - [State Machine Reasoning](mine/state-machine-reasoning)：将决策、排障、研究和工作流分析建模为状态机，并生成 Mermaid 可视化图。
 - [Omnippt](mine/omnippt)：按需加载需求调研、叙事大纲、逐页策划、视觉设计、原生制作和独立审查子技能，支持可编辑演示文稿交付。
@@ -186,9 +198,48 @@ vibe-vibe/
 浏览索引：
 
 - [中文 Skills 标注索引](skills/ANNOTATIONS.md)
-- [English Skills Annotations](skills/ANNOTATIONS_EN.md)
+- [英文技能索引](skills/ANNOTATIONS_EN.md)
 
-### Manifests
+### 按场景使用可视化技能
+
+统一入口是 [Omnidraw](mine/omnidraw/SKILL.md)，完整选择规则与准确安装标识见 [场景指南](mine/omnidraw/references/visualization-scenarios.md)。保留各类能力，不把所有任务统一成 HTML 或图片：
+
+| 场景 | 采用的技能 / 能力 | 主要输出 |
+| --- | --- | --- |
+| 架构讲解、方案对比、可视化评审 | Visual Explainer | HTML 图解、网页演示 |
+| 数据图表、探索性统计 | Matplotlib、Seaborn | 代码、SVG/PDF/PNG |
+| 交互式数据图 | scientific-visualization 的 Plotly 路线 | 交互 HTML、数据与代码 |
+| KPI、联动筛选、多视图仪表盘 | creating-dashboards | 可运行的数据界面 |
+| 科研统计图、论文多面板 | scientific-visualization | 投稿所需静态格式与来源记录 |
+| 科研方法架构、机制、图形摘要 | CCFA / 科学示意图路线 | 科学图与按需可编辑重建 |
+| 流程、时序、ER、状态机、小型概念图 | Mermaid / PlantUML | 文本图源与预览 |
+| 带真实边表与图计算的知识网络 | NetworkX | 图数据、分析代码与可视化 |
+| 地理分布与空间分析 | GeoPandas | 地图、空间数据与代码 |
+
+```bash
+# 统一入口内含 Mermaid 与 Matplotlib 子技能；额外路线按需安装
+vibe add skill omnidraw ../my-project
+```
+
+可选来源不随入口自动全部安装，运行时也按所选场景准备。当前没有独立 `plotly` Skill，应通过场景指南中的 scientific-visualization 来源使用其 Plotly 工作流。用户指定工具、格式与已有项目栈优先。
+
+### 可视化图解：Visual Explainer
+
+[上游项目](https://github.com/nicobailon/visual-explainer) 以 Git 子模块保留在 `skills/visual-explainer/`，可安装入口是其中的 `plugins/visual-explainer/`。适合架构与数据流说明、代码变更评审、方案对比、项目回顾及 HTML 幻灯片；已有统计绘图与科研图表继续使用 Matplotlib、Plotly、scientific-visualization 等技能。
+
+```bash
+vibe add skill visual-explainer ../my-project
+```
+
+命令将完整技能安装到目标项目的 `.agents/skills/visual-explainer/`，保留 `references/`、`templates/`、`commands/`、`kit/` 及可选导出工具，不只复制 `SKILL.md`。示例请求：
+
+```text
+使用 visual-explainer，将这个项目的模块关系和数据流画成 HTML 图解，保存到 docs/architecture.html。
+```
+
+查看生成页面需要浏览器；随包 `kit/render.mjs` 渲染器需要 Node.js。浏览器自动检查、MCP、PPTX 或视频导出按上游说明准备额外依赖。`vibe add skill` 不会全局安装工具，也不会自动注册命令模板为宿主的斜杠命令。
+
+### 项目模板（Manifests）
 
 Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则、命令、场景、agents 和初始化脚本。
 
@@ -231,7 +282,7 @@ vibe mcp add SERVER_NAME ../my-project
 
 安装会合并目标项目的 `mcp.json`，保留无关条目；同名服务默认跳过，只有显式指定 `--force` 才替换。
 
-### Hooks、工作流与独立 CLI
+### 钩子、工作流与独立命令行工具
 
 - [ralph-loop](hooks/ralph-loop)：RFC → DAG 拆解 → 分层验证 → 合并队列的 Hook 工作流
 - [writing-agent](workflows/writing-agent)：从选题、研究到审稿发布的写作系统

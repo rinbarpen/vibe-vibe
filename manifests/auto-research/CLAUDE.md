@@ -200,3 +200,10 @@ Arch/Flow/Pipeline/Algo/Concept 使用 gpt-image 视觉版 + GPT 编排、ppt-ma
 resolved 单节点任务包；外部宿主另行提供核验后的证据、术语和邻接正文摘要。
 生成后运行节点 review，再编译并视觉检查最终尺寸、标签、浮动距离和页数。
 当前工具仅导出任务包和检查源码引用；视觉 warning 不代表投稿验收通过。
+
+
+## 宿主人机交互与预算门
+
+按 [人机交互契约](references/human-interaction.md) 区分共创问答、业务决策、工具权限与执行中干预。新实验设置启用 `budget-decision-v1`：冻结矩阵后用 `experiment_stats.py decision-request` 准备材料，收到真实用户决定后由宿主将来源引用和版本范围写入既有 BUDGET_APPROVAL.json，再经 gate 进入原 run/queue。无答复保持等待，调整返回材料，取消结束该请求；恢复先查真实任务状态，避免重复提交。旧设置不自动迁移。
+
+工作流：[SVG](references/budget-workflow.svg) / [图源](references/budget-workflow.json)。在项目根目录运行 `python3 scripts/render_idea_workflow.py --source references/budget-workflow.json --output references/budget-workflow.svg`，追加 `--check` 作只读检查。图描述规则，不代表批准或执行完成。
