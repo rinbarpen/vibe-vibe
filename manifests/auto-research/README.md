@@ -5,6 +5,7 @@
 ## 场景
 
 整合研究编排、证据审查、图表生成与中英文论文写作规则，并用版本化 Writing Plan 连接研究结果与节点级写作：
+- **intuit-to-idea** — 直觉成题：AI 一次提出一个具体问题，沿用户真实判断形成研究机制，再核对相关工作与可行性；按需调用，不替换自主发现
 - **aris** — 研究编排框架（文献调研、想法发现、实验规划、论文写作）
 - **paper-review** — 证据驱动的 ML/AI 论文评审与投稿前自审（由根目录 `skills/paper-review` Git 子模块管理）
 - **paperreview** — 自动论文评审（4 轮自主评审循环、数值声明校验、引用校验）
@@ -19,6 +20,30 @@
 # 初始化到目标研究项目
 ./scripts/init-auto-research.sh /path/to/your/research-project
 ```
+
+## 直觉成题与 Idea 工作流
+
+通过 `vibe init auto-research <target>` 或 `vibe add manifest auto-research <target>` 安装时，`skills.txt` 会将完整的 `intuit-to-idea` skill 安装到目标项目的 `.agents/skills/`。直接运行 shell 初始化器只复制 manifest 资源，依赖 skills 应由 vibe 安装。
+
+仅有研究方向、希望通过问答发展直觉时，可以这样开始：
+
+```text
+$intuit-to-idea 我想研究程序分析，但还没有具体想法。请给出具体情境，每次问一个关键问题，并沿我的回答继续。
+```
+
+需要自主发现或批量候选时仍使用 `aris/idea-discovery`。既有假设直接延续；两条路线均需完成文献、机制与可行性核验，并经过现有方案确认门。完整交接见 [接入说明](references/intuit-to-idea.md)。
+
+- [Idea 工作流 SVG](references/idea-workflow.svg) / [可编辑 JSON 源](references/idea-workflow.json)
+- [随包渲染器](scripts/render_idea_workflow.py)：复用仓库标准库渲染器，不依赖模型、网络或额外 Python 包。
+
+从本 manifest 根目录或安装后的研究项目根目录运行：
+
+```bash
+python3 scripts/render_idea_workflow.py --source references/idea-workflow.json --output references/idea-workflow.svg
+python3 scripts/render_idea_workflow.py --source references/idea-workflow.json --output references/idea-workflow.svg --check
+```
+
+此图仅描述 Idea 子流程规则，不表示科研阶段已完成、文献已核验或用户已批准。完整生命周期仍以 `lifecycle/defaults.json` 为准。
 
 ## 快速开始
 

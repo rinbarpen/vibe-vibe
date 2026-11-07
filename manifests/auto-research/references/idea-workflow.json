@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "title": "Auto-Research：直觉成题与自主发现的 Idea 子流程",
+  "description": "流程规范，不是运行状态。保持既有生命周期阶段与方案确认门；按用户请求选择直觉问答或 aris 自主发现，核验证据后交接方法细化。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "进入 Idea 候选生成",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "沿用 idea/hypotheses/candidates；输入方向、已有假设与文献背景。"
+    },
+    {
+      "id": "select",
+      "label": "选择想法形成入口",
+      "kind": "check",
+      "row": 1,
+      "detail": "依据用户请求选择互动或自主发现，不替换已有明确任务。"
+    },
+    {
+      "id": "question",
+      "label": "AI：intuit-to-idea 提问",
+      "kind": "ai",
+      "row": 2,
+      "detail": "提供具体情境；每次一个关键问题，不预设完整方案。"
+    },
+    {
+      "id": "answer",
+      "label": "用户：直觉与方向",
+      "kind": "human",
+      "row": 3,
+      "detail": "只记录真实判断；回答不是方案批准。等待期间不伪造回答。",
+      "trigger": "用户明确希望通过问答形成研究想法。",
+      "resume": "收到回答后发展机制；困惑、纠正或调整方向时由 AI 澄清再问。"
+    },
+    {
+      "id": "autonomous",
+      "label": "AI：aris/idea-discovery",
+      "kind": "ai",
+      "row": 3,
+      "detail": "用户要求自主发现或批量候选时，保留原有路线。"
+    },
+    {
+      "id": "mechanism",
+      "label": "AI：发展机制与预测",
+      "kind": "ai",
+      "row": 4,
+      "detail": "区分用户直觉与 AI 建议，提出反证条件和最小验证。"
+    },
+    {
+      "id": "verify",
+      "label": "AI：相关工作与可行性核验",
+      "kind": "check",
+      "row": 5,
+      "detail": "衔接 research-lit / novelty-check；未验证不等于新颖，机制差异不等于收益。"
+    },
+    {
+      "id": "evidence",
+      "label": "AI：补证据或修正候选",
+      "kind": "ai",
+      "row": 6,
+      "detail": "证据不足回 literature/position；资源取舍回 startup/roadmap。保留未知项。"
+    },
+    {
+      "id": "handoff",
+      "label": "AI：正式候选交接",
+      "kind": "ai",
+      "row": 7,
+      "detail": "正式交接写 HYPOTHESES.md，保留来源、反证与未验证项；不默认存逐轮对话。"
+    },
+    {
+      "id": "comparison",
+      "label": "用户：既有方案确认门",
+      "kind": "human",
+      "row": 8,
+      "detail": "idea/hypotheses/comparison；形成 IDEA_DECISION.md。",
+      "trigger": "沿用 human_confirmation；候选比较完成，需要决定采用或调整方案。",
+      "resume": "同意后进入方法细化；调整则返回候选；未答复保持等待。"
+    },
+    {
+      "id": "done",
+      "label": "交接到方法细化",
+      "kind": "terminal",
+      "row": 9,
+      "detail": "idea/method/mechanism；继续 METHOD_SPEC、组件和 claims，并按原规则 checkpoint。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "select",
+      "label": "检查请求",
+      "kind": "normal"
+    },
+    {
+      "from": "select",
+      "to": "question",
+      "label": "希望直觉问答",
+      "kind": "normal"
+    },
+    {
+      "from": "select",
+      "to": "autonomous",
+      "label": "要求自主发现/批量候选",
+      "kind": "normal"
+    },
+    {
+      "from": "question",
+      "to": "answer",
+      "label": "一次一个问题，等待回答",
+      "kind": "normal"
+    },
+    {
+      "from": "answer",
+      "to": "question",
+      "label": "不知道/纠正：澄清后再问",
+      "kind": "rework"
+    },
+    {
+      "from": "answer",
+      "to": "mechanism",
+      "label": "沿真实回答继续",
+      "kind": "normal"
+    },
+    {
+      "from": "autonomous",
+      "to": "mechanism",
+      "label": "候选假设就绪",
+      "kind": "normal"
+    },
+    {
+      "from": "mechanism",
+      "to": "verify",
+      "label": "核验机制与条件",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "evidence",
+      "label": "缺证据或前提不成立",
+      "kind": "rework"
+    },
+    {
+      "from": "evidence",
+      "to": "mechanism",
+      "label": "补证据/修正后重新核验",
+      "kind": "rework"
+    },
+    {
+      "from": "verify",
+      "to": "handoff",
+      "label": "达到既有候选验收标准",
+      "kind": "normal"
+    },
+    {
+      "from": "handoff",
+      "to": "comparison",
+      "label": "比较方案，请求既有确认",
+      "kind": "normal"
+    },
+    {
+      "from": "comparison",
+      "to": "mechanism",
+      "label": "调整：返回候选生成",
+      "kind": "rework"
+    },
+    {
+      "from": "comparison",
+      "to": "done",
+      "label": "同意：按选择继续",
+      "kind": "normal"
+    }
+  ]
+}

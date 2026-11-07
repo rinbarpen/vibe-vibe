@@ -39,6 +39,10 @@
 
 ## 集成点
 
+### intuit-to-idea + aris
+
+上图保留默认自主发现路线。用户明确要求通过直觉问答探索课题时，在想法形成处按需使用 `intuit-to-idea`；不是自动替换整个 research-pipeline。两种入口共用 novelty-check、候选假设、方案确认及方法细化，见 [交接契约](intuit-to-idea.md) 和 [Idea 工作流](idea-workflow.svg)。
+
 ### Research writing rules
 
 写作节点先解析 venue 官方投稿要求，再锁定官方 LaTeX 模板。正文不直接修改模板的

@@ -155,7 +155,7 @@ mkdir -p "$TARGET_DIR/lifecycle"
 for lifecycle_file in "$MANIFEST_DIR/lifecycle/"*; do
   install_file "$lifecycle_file" "$TARGET_DIR/lifecycle/$(basename "$lifecycle_file")"
 done
-for script in research_workflow.py stage_contract.py table_plan.py table_ablation.py experiment_stats.py figure_smoke.py latex_template_gate.py; do
+for script in research_workflow.py stage_contract.py table_plan.py table_ablation.py experiment_stats.py figure_smoke.py latex_template_gate.py render_idea_workflow.py; do
   install_file "$MANIFEST_DIR/scripts/$script" "$TARGET_DIR/scripts/$script"
 done
 

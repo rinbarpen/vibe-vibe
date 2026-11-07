@@ -1,0 +1,4 @@
+interface:
+  display_name: "Intuit to Idea"
+  short_description: "Turn intuitive answers into testable research ideas"
+  default_prompt: "Use $intuit-to-idea to explore my broad research direction: ask one concrete question at a time, let me answer intuitively, and build on my answers rather than presenting a complete proposal upfront."

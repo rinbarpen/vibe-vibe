@@ -23,9 +23,10 @@
 
 0. 调用 `grill-me`，明确研究计划后再开始本阶段
 1. 使用 `aris/research-lit "query"` 进行文献检索和综述
-2. 使用 `aris/idea-discovery "brief"` 生成研究想法
+2. 用户希望从方向或直觉通过问答发展课题时，在 `idea/hypotheses/candidates` 使用 `$intuit-to-idea`：由 AI 提供具体情境，每次一个关键问题，等待用户真实回答，逐步明确机制、意义和最小验证；要求自主发现或批量候选时，继续使用 `aris/idea-discovery "brief"`。已有假设直接延续，不重新索要选题。详见 [接入与交接](references/intuit-to-idea.md) 和 [工作流图](references/idea-workflow.svg)。
 3. 使用 `aris/novelty-check` 进行新颖性验证
-4. 产出：研究纲要 + 新颖性报告
+4. 正式交接时将候选、可测预测、反证条件与未验证项写入 `refine-logs/contracts/HYPOTHESES.md`；在既有 `idea/hypotheses/comparison` 人工确认后记录 `IDEA_DECISION.md`，再进入方法细化。按现有 checkpoint 规则归档正式产物，不默认保存逐轮对话。
+5. 产出：研究纲要 + 新颖性报告；问答路线可附研究想法卡，明确用户直觉、AI 建议和文献事实，证据不足时保留未验证状态。
 
 ### Phase 2: Design, Execute and Analyze
 
@@ -96,7 +97,7 @@
 | Agent | When | Responsibility |
 |-------|------|----------------|
 | lit-reviewer | Phase 1 | 文献调研和综述 |
-| idea-generator | Phase 1 | 研究想法生成 |
+| idea-generator | Phase 1 | 按用户意图选择 intuit-to-idea 直觉问答或 aris/idea-discovery 自主候选生成；两者共用后续核验和确认门 |
 | experiment-designer | Phase 2 | 实验方案设计 |
 | paper-reviewer-paper-review | Phase 3 | 独立调用 `paper-review` 技能，从论文原件审查贡献、证据链、baseline、消融与引用 |
 | paper-reviewer-academic | Phase 3 | 独立调用 `academic-paper-reviewer`，执行完整学术评审 |

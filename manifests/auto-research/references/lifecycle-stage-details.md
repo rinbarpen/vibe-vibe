@@ -23,6 +23,8 @@
 - **门禁**：每个 claim 有证伪路径，创新点不只是规模/调参，负结果解释预先登记。
 - **回退**：新颖性问题回到 `literature/position`，可行性问题回到 `startup/roadmap`。
 
+想法生成可按需使用 `intuit-to-idea`，一次一个问题发展用户直觉；自主发现继续走 aris。两条入口落到既有 `idea/hypotheses/candidates`，再由 `idea/hypotheses/comparison` 确认方案，见 [接入说明](intuit-to-idea.md)。不新增阶段 ID 或改变既有审批语义。
+
 ## 04 design — 对比与消融实验设计
 
 - **目标**：把 claim 转成公平、完备、预算可执行的实验矩阵。

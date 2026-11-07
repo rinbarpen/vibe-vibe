@@ -5,6 +5,8 @@
 # aris research workflow (skills/aris, skills/ACRS, ...)
 grill-me
 research-lit
+# Human-intuition-led idea exploration (optional invocation, installed by default).
+intuit-to-idea
 idea-discovery
 novelty-check
 research-refine

@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1624" height="2402" viewBox="0 0 1624 2402" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Auto-Research：直觉成题与自主发现的 Idea 子流程</title>
+  <desc id="workflow-description">流程规范，不是运行状态。保持既有生命周期阶段与方案确认门；按用户请求选择直觉问答或 aris 自主发现，核验证据后交接方法细化。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1624" height="2402" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Auto-Research：直觉成题与自主发现的 Idea 子流程</text>
+    <text x="28" y="70" font-size="14" fill="#475569">流程规范，不是运行状态。保持既有生命周期阶段与方案确认门；按用户请求选择直觉问答或 aris 自主发现，核验证据后交接方法细化。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="2208" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="2208" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="2208" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="answer" data-to="mechanism" d="M 1040.0,986 V 1029.0 H 220.0 V 1072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="autonomous" data-to="mechanism" d="M 220.0,986 V 1029.0 H 220.0 V 1072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="comparison" data-to="done" d="M 1040.0,2080 V 2123.0 H 630.0 V 2166" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="handoff" data-to="comparison" d="M 220.0,1786 V 1829.0 H 1040.0 V 1872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="mechanism" data-to="verify" d="M 220.0,1186 V 1229.0 H 630.0 V 1272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="question" data-to="answer" d="M 220.0,692 V 735.0 H 1040.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="select" data-to="autonomous" d="M 630.0,492 V 535.0 H 24 V 754 H 220.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="select" data-to="question" d="M 630.0,492 V 535.0 H 220.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="select" d="M 630.0,292 V 335.0 H 630.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="handoff" d="M 630.0,1386 V 1429.0 H 24 V 1648 H 220.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="answer" data-to="question" d="M 1220,882.0 H 1270 V 555 H 220.0 V 578" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="comparison" data-to="mechanism" d="M 1220,1976.0 H 1296 V 1049 H 220.0 V 1072" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="evidence" data-to="mechanism" d="M 400,1529.0 H 1322 V 1049 H 220.0 V 1072" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="verify" data-to="evidence" d="M 810,1329.0 H 1348 V 1449 H 220.0 V 1472" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>进入 Idea 候选生成 — 沿用 idea/hypotheses/candidates；输入方向、已有假设与文献背景。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">进入 Idea 候选生成</text>
+      <text x="466" y="252" font-size="14" fill="#334155">沿用 idea/hypotheses/candidates；输入方向、</text>
+      <text x="466" y="272" font-size="14" fill="#334155">已有假设与文献背景。</text>
+    </g>
+    <g id="node-select" data-kind="check" data-row="1">
+      <title>选择想法形成入口 — 依据用户请求选择互动或自主发现，不替换已有明确任务。</title>
+      <rect x="450" y="378" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="402" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="428" font-size="18" font-weight="700">选择想法形成入口</text>
+      <text x="466" y="452" font-size="14" fill="#334155">依据用户请求选择互动或自主发现，不替换已有</text>
+      <text x="466" y="472" font-size="14" fill="#334155">明确任务。</text>
+    </g>
+    <g id="node-question" data-kind="ai" data-row="2">
+      <title>AI：intuit-to-idea 提问 — 提供具体情境；每次一个关键问题，不预设完整方案。</title>
+      <rect x="40" y="578" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="602" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="628" font-size="18" font-weight="700">AI：intuit-to-idea 提问</text>
+      <text x="56" y="652" font-size="14" fill="#334155">提供具体情境；每次一个关键问题，不预设完整</text>
+      <text x="56" y="672" font-size="14" fill="#334155">方案。</text>
+    </g>
+    <g id="node-autonomous" data-kind="ai" data-row="3">
+      <title>AI：aris/idea-discovery — 用户要求自主发现或批量候选时，保留原有路线。</title>
+      <rect x="40" y="778" width="360" height="208" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="802" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="828" font-size="18" font-weight="700">AI：aris/idea-discovery</text>
+      <text x="56" y="852" font-size="14" fill="#334155">用户要求自主发现或批量候选时，保留原有路线</text>
+      <text x="56" y="872" font-size="14" fill="#334155">。</text>
+    </g>
+    <g id="node-answer" data-kind="human" data-row="3">
+      <title>用户：直觉与方向 — 只记录真实判断；回答不是方案批准。等待期间不伪造回答。</title>
+      <rect x="860" y="778" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="802" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="828" font-size="18" font-weight="700">用户：直觉与方向</text>
+      <text x="876" y="852" font-size="14" fill="#334155">只记录真实判断；回答不是方案批准。等待期间</text>
+      <text x="876" y="872" font-size="14" fill="#334155">不伪造回答。</text>
+      <text x="876" y="904" font-size="14" fill="#9a3412">介入条件：用户明确希望通过问答形成研究想法</text>
+      <text x="876" y="924" font-size="14" fill="#9a3412">。</text>
+      <text x="876" y="944" font-size="14" fill="#9a3412">恢复执行：收到回答后发展机制；困惑、纠正或</text>
+      <text x="876" y="964" font-size="14" fill="#9a3412">调整方向时由 AI 澄清再问。</text>
+    </g>
+    <g id="node-mechanism" data-kind="ai" data-row="4">
+      <title>AI：发展机制与预测 — 区分用户直觉与 AI 建议，提出反证条件和最小验证。</title>
+      <rect x="40" y="1072" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1096" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1122" font-size="18" font-weight="700">AI：发展机制与预测</text>
+      <text x="56" y="1146" font-size="14" fill="#334155">区分用户直觉与 AI 建议，提出反证条件和最小</text>
+      <text x="56" y="1166" font-size="14" fill="#334155">验证。</text>
+    </g>
+    <g id="node-verify" data-kind="check" data-row="5">
+      <title>AI：相关工作与可行性核验 — 衔接 research-lit / novelty-check；未验证不等于新颖，机制差异不等于收益。</title>
+      <rect x="450" y="1272" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1296" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1322" font-size="18" font-weight="700">AI：相关工作与可行性核验</text>
+      <text x="466" y="1346" font-size="14" fill="#334155">衔接 research-lit / novelty-check；未验证不</text>
+      <text x="466" y="1366" font-size="14" fill="#334155">等于新颖，机制差异不等于收益。</text>
+    </g>
+    <g id="node-evidence" data-kind="ai" data-row="6">
+      <title>AI：补证据或修正候选 — 证据不足回 literature/position；资源取舍回 startup/roadmap。保留未知项。</title>
+      <rect x="40" y="1472" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1496" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1522" font-size="18" font-weight="700">AI：补证据或修正候选</text>
+      <text x="56" y="1546" font-size="14" fill="#334155">证据不足回 literature/position；资源取舍回</text>
+      <text x="56" y="1566" font-size="14" fill="#334155">startup/roadmap。保留未知项。</text>
+    </g>
+    <g id="node-handoff" data-kind="ai" data-row="7">
+      <title>AI：正式候选交接 — 正式交接写 HYPOTHESES.md，保留来源、反证与未验证项；不默认存逐轮对话。</title>
+      <rect x="40" y="1672" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1696" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1722" font-size="18" font-weight="700">AI：正式候选交接</text>
+      <text x="56" y="1746" font-size="14" fill="#334155">正式交接写 HYPOTHESES.md，保留来源、反证与</text>
+      <text x="56" y="1766" font-size="14" fill="#334155">未验证项；不默认存逐轮对话。</text>
+    </g>
+    <g id="node-comparison" data-kind="human" data-row="8">
+      <title>用户：既有方案确认门 — idea/hypotheses/comparison；形成 IDEA_DECISION.md。</title>
+      <rect x="860" y="1872" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1896" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1922" font-size="18" font-weight="700">用户：既有方案确认门</text>
+      <text x="876" y="1946" font-size="14" fill="#334155">idea/hypotheses/comparison；形成 IDEA_DECIS</text>
+      <text x="876" y="1966" font-size="14" fill="#334155">ION.md。</text>
+      <text x="876" y="1998" font-size="14" fill="#9a3412">介入条件：沿用 human_confirmation；候选比较</text>
+      <text x="876" y="2018" font-size="14" fill="#9a3412">完成，需要决定采用或调整方案。</text>
+      <text x="876" y="2038" font-size="14" fill="#9a3412">恢复执行：同意后进入方法细化；调整则返回候</text>
+      <text x="876" y="2058" font-size="14" fill="#9a3412">选；未答复保持等待。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="9">
+      <title>交接到方法细化 — idea/method/mechanism；继续 METHOD_SPEC、组件和 claims，并按原规则 checkpoint。</title>
+      <rect x="450" y="2166" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2190" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2216" font-size="18" font-weight="700">交接到方法细化</text>
+      <text x="466" y="2240" font-size="14" fill="#334155">idea/method/mechanism；继续 METHOD_SPEC、组</text>
+      <text x="466" y="2260" font-size="14" fill="#334155">件和 claims，并按原规则 checkpoint。</text>
+    </g>
+    <rect x="579.5" y="1007.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b">沿真实回答继续</text>
+    <rect x="227.0" y="1007.0" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="232.0" y="1020.0" text-anchor="start" font-size="12" fill="#64748b">候选假设就绪</text>
+    <rect x="778.0" y="2101.0" width="114.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="835.0" y="2114.0" text-anchor="middle" font-size="12" fill="#64748b">同意：按选择继续</text>
+    <rect x="553.5" y="1807.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="1820.0" text-anchor="middle" font-size="12" fill="#64748b">比较方案，请求既有确认</text>
+    <rect x="374.5" y="1207.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1220.0" text-anchor="middle" font-size="12" fill="#64748b">核验机制与条件</text>
+    <rect x="553.5" y="713.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b">一次一个问题，等待回答</text>
+    <rect x="351.75" y="513.0" width="146.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b">要求自主发现/批量候选</text>
+    <rect x="381.0" y="513.0" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b">希望直觉问答</text>
+    <rect x="637.0" y="313.0" width="62.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="642.0" y="326.0" text-anchor="start" font-size="12" fill="#64748b">检查请求</text>
+    <rect x="355.0" y="1407.0" width="140.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1420.0" text-anchor="middle" font-size="12" fill="#64748b">达到既有候选验收标准</text>
+    <rect x="1275" y="705.5" width="159.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1280" y="718.5" text-anchor="start" font-size="12" fill="#c2410c">不知道/纠正：澄清后再问</text>
+    <rect x="1301" y="1499.5" width="127.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1306" y="1512.5" text-anchor="start" font-size="12" fill="#c2410c">调整：返回候选生成</text>
+    <rect x="1327" y="1276.0" width="146.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1332" y="1289.0" text-anchor="start" font-size="12" fill="#c2410c">补证据/修正后重新核验</text>
+    <rect x="1353" y="1376.0" width="127.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1358" y="1389.0" text-anchor="start" font-size="12" fill="#c2410c">缺证据或前提不成立</text>
+    <text x="28" y="2376" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

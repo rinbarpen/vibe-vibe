@@ -1,6 +1,6 @@
 # Auto-Research Manifest
 
-面向自动化学术研究的 manifest 包。整合 aris（研究编排框架）、paper-review（证据驱动论文评审）、paperreview（外部自动论文评审）、autofigure（自动图表生成）、anti-defensive-writing（中英文写作原则）与 `mine/z-humanizer`（中英文 humanization）能力线。
+面向自动化学术研究的 manifest 包。整合 intuit-to-idea（直觉问答式课题形成）、aris（研究编排框架）、paper-review（证据驱动论文评审）、paperreview（外部自动论文评审）、autofigure（自动图表生成）、anti-defensive-writing（中英文写作原则）与 `mine/z-humanizer`（中英文 humanization）能力线。
 
 ## Commands
 
@@ -17,6 +17,7 @@
 | `grill-me` | 所有计划类步骤前的逐项追问与方案压力测试；也可随时直接调用 |
 | `mine/paperreview-ai-review "paper.pdf"` | paperreview.ai 自动论文评审 |
 | `aris/research-lit "query"` | 文献调研与综述 |
+| `$intuit-to-idea` | 以具体情境和单问题问答，将用户直觉发展为可验证研究假设 |
 | `aris/citation-audit` | 引用校验 (DBLP/arXiv) |
 | `aris/paper-claim-audit` | 数值声明校验 |
 | `aris/experiment-bridge` | 实验桥接 |
@@ -90,6 +91,8 @@ auto-research/
 
 ### 1. Research Pipeline
 aris/research-pipeline 端到端：文献调研 → 想法生成 → 新颖性检查 → 实验计划 → 论文写作
+
+想法形成提供两个入口：用户明确希望从宽泛方向或已有直觉通过问答发展课题时，使用 `$intuit-to-idea`，一次提出一个具体问题并等待真实回答；要求自主发现或批量候选时保留 `aris/idea-discovery`。两条路线都衔接文献核验、候选假设和既有方案确认门，不以问答替代新颖性或实验证据。交接与图示见 [直觉成题接入](references/intuit-to-idea.md) 和 [Idea 工作流](references/idea-workflow.svg)。
 
 ### 2. Planned Writing and Auto Review Loop
 
