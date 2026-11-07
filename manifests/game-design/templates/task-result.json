@@ -1,0 +1,18 @@
+{
+  "task_id": "TASK_ID",
+  "claim_token": "CLAIM_TOKEN",
+  "status": "blocked",
+  "summary": "模板：替换任务与认领token，记录真实工作和阻断原因；完成实际产物后再改为submitted。",
+  "artifacts": [],
+  "evidence": [
+    "Evidence/TASK_ID/blocked.txt"
+  ],
+  "tests": [
+    {
+      "name": "按工作单替换为真实验收项",
+      "status": "not_run",
+      "command": "尚未执行：用真实工作单中的命令或操作说明替换",
+      "exit_status": null
+    }
+  ]
+}

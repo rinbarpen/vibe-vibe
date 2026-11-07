@@ -1,0 +1,336 @@
+{
+  "schema_version": 1,
+  "title": "多引擎游戏设计与制作工作流",
+  "description": "默认设计交付；明确约定后进入实现。AI 执行与验证，人负责新增取舍、切片和发布；图为流程规范而非实际状态。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "进入 / 恢复现状",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "读取状态、设计与实际工程"
+    },
+    {
+      "id": "discover",
+      "label": "AI 设计负责人：立项",
+      "kind": "ai",
+      "row": 1,
+      "detail": "brief / 体验支柱 / 约束 / 风险"
+    },
+    {
+      "id": "engine",
+      "label": "AI 引擎实现者：适配",
+      "kind": "ai",
+      "row": 2,
+      "detail": "现有引擎沿用；新项目比较候选"
+    },
+    {
+      "id": "design",
+      "label": "AI 设计与内容：设计包",
+      "kind": "ai",
+      "row": 3,
+      "detail": "GDD / 数值 / 关卡叙事 / 视听 / TDD"
+    },
+    {
+      "id": "designqa",
+      "label": "AI 审查：设计一致性",
+      "kind": "check",
+      "row": 4,
+      "detail": "需求→用例；范围与引擎能力映射"
+    },
+    {
+      "id": "direction",
+      "label": "人：方向与模式决策",
+      "kind": "human",
+      "row": 5,
+      "detail": "确认体验 / 引擎 / 平台 / 预算",
+      "trigger": "新项目设计包齐备或方向发生冲突",
+      "resume": "同意：设计交付或原型；调整：设计"
+    },
+    {
+      "id": "prototype",
+      "label": "AI 实现：可玩原型",
+      "kind": "ai",
+      "row": 6,
+      "detail": "占位资源闭环与关键风险实验"
+    },
+    {
+      "id": "playtest",
+      "label": "AI QA：真实输入与试玩",
+      "kind": "check",
+      "row": 7,
+      "detail": "启动/操作/反馈；真人反馈分记"
+    },
+    {
+      "id": "slice",
+      "label": "AI 内容与实现：垂直切片",
+      "kind": "ai",
+      "row": 8,
+      "detail": "代表关卡、品质链路与可复现包"
+    },
+    {
+      "id": "sliceqa",
+      "label": "AI QA：切片验收",
+      "kind": "check",
+      "row": 9,
+      "detail": "设备预算 / 资产链 / 风险 / 工期"
+    },
+    {
+      "id": "slicegate",
+      "label": "人：制作放行",
+      "kind": "human",
+      "row": 10,
+      "detail": "扩量 / 缩减 / 调整 / 等待",
+      "trigger": "切片证据齐备，需要承诺制作范围",
+      "resume": "同意进入制作，调整返回原型"
+    },
+    {
+      "id": "production",
+      "label": "AI 制作：功能与内容批次",
+      "kind": "ai",
+      "row": 11,
+      "detail": "单写者 / 资产许可 / 版本化存档"
+    },
+    {
+      "id": "qa",
+      "label": "AI QA：Alpha / Beta",
+      "kind": "check",
+      "row": 12,
+      "detail": "原用例与回归 / 设备 / 候选包 hash"
+    },
+    {
+      "id": "dependency",
+      "label": "AI：等待环境依赖",
+      "kind": "check",
+      "row": 13,
+      "detail": "记 not_run；工具就绪后续跑原用例"
+    },
+    {
+      "id": "change",
+      "label": "人：高影响变更决策",
+      "kind": "human",
+      "row": 13,
+      "detail": "新预算 / 迁移 / 付费依赖 / 新目标",
+      "trigger": "需改变已有约定或三轮修复需新取舍",
+      "resume": "同意回设计适配；调整沿原约定制作"
+    },
+    {
+      "id": "releasegate",
+      "label": "人：对外发布决定",
+      "kind": "human",
+      "row": 14,
+      "detail": "批准绑定平台、受众与候选包 hash",
+      "trigger": "候选包和 QA、许可、回退证据齐备",
+      "resume": "同意发布；退回制作；未答复等待"
+    },
+    {
+      "id": "live",
+      "label": "AI 发布与运营",
+      "kind": "ai",
+      "row": 15,
+      "detail": "按批准范围执行，监测指标与反馈"
+    },
+    {
+      "id": "rollback",
+      "label": "AI 回退：恢复已验证版本",
+      "kind": "ai",
+      "row": 16,
+      "detail": "保留代码/资产/配置/存档恢复证据"
+    },
+    {
+      "id": "done",
+      "label": "交付 / 约定迭代完成",
+      "kind": "terminal",
+      "row": 17,
+      "detail": "设计包或已批准发布与运营记录"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "discover",
+      "label": "读取首个未完成项",
+      "kind": "normal"
+    },
+    {
+      "from": "discover",
+      "to": "engine",
+      "label": "简报齐备",
+      "kind": "normal"
+    },
+    {
+      "from": "engine",
+      "to": "design",
+      "label": "技术映射",
+      "kind": "normal"
+    },
+    {
+      "from": "design",
+      "to": "designqa",
+      "label": "提交审查",
+      "kind": "normal"
+    },
+    {
+      "from": "designqa",
+      "to": "direction",
+      "label": "通过",
+      "kind": "normal"
+    },
+    {
+      "from": "direction",
+      "to": "done",
+      "label": "同意：design-only",
+      "kind": "normal"
+    },
+    {
+      "from": "direction",
+      "to": "prototype",
+      "label": "同意：implementation",
+      "kind": "normal"
+    },
+    {
+      "from": "prototype",
+      "to": "playtest",
+      "label": "提交可玩包",
+      "kind": "normal"
+    },
+    {
+      "from": "playtest",
+      "to": "slice",
+      "label": "闭环与假设通过",
+      "kind": "normal"
+    },
+    {
+      "from": "slice",
+      "to": "sliceqa",
+      "label": "提交切片",
+      "kind": "normal"
+    },
+    {
+      "from": "sliceqa",
+      "to": "slicegate",
+      "label": "通过",
+      "kind": "normal"
+    },
+    {
+      "from": "slicegate",
+      "to": "production",
+      "label": "放行制作",
+      "kind": "normal"
+    },
+    {
+      "from": "production",
+      "to": "qa",
+      "label": "提交批次/候选包",
+      "kind": "normal"
+    },
+    {
+      "from": "qa",
+      "to": "releasegate",
+      "label": "通过",
+      "kind": "normal"
+    },
+    {
+      "from": "releasegate",
+      "to": "live",
+      "label": "同意发布",
+      "kind": "normal"
+    },
+    {
+      "from": "live",
+      "to": "done",
+      "label": "完成约定迭代",
+      "kind": "normal"
+    },
+    {
+      "from": "designqa",
+      "to": "design",
+      "label": "缺漏返工",
+      "kind": "rework"
+    },
+    {
+      "from": "direction",
+      "to": "design",
+      "label": "调整；未答复留本节点",
+      "kind": "rework"
+    },
+    {
+      "from": "playtest",
+      "to": "prototype",
+      "label": "修复并复测",
+      "kind": "rework"
+    },
+    {
+      "from": "sliceqa",
+      "to": "slice",
+      "label": "品质或性能未达标",
+      "kind": "rework"
+    },
+    {
+      "from": "slicegate",
+      "to": "prototype",
+      "label": "调整；未答复留本节点",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "production",
+      "label": "缺陷返回 owner",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "dependency",
+      "label": "缺工具/设备",
+      "kind": "rework"
+    },
+    {
+      "from": "dependency",
+      "to": "qa",
+      "label": "就绪后恢复原验收",
+      "kind": "rework"
+    },
+    {
+      "from": "dependency",
+      "to": "change",
+      "label": "依赖需新增取舍",
+      "kind": "rework"
+    },
+    {
+      "from": "production",
+      "to": "change",
+      "label": "高影响变更",
+      "kind": "rework"
+    },
+    {
+      "from": "change",
+      "to": "design",
+      "label": "同意变更，重新适配",
+      "kind": "rework"
+    },
+    {
+      "from": "change",
+      "to": "production",
+      "label": "调整按原约定；未答复等待",
+      "kind": "rework"
+    },
+    {
+      "from": "releasegate",
+      "to": "production",
+      "label": "退回；未答复留本节点",
+      "kind": "rework"
+    },
+    {
+      "from": "live",
+      "to": "rollback",
+      "label": "发布异常，按约定回退",
+      "kind": "rework"
+    },
+    {
+      "from": "rollback",
+      "to": "qa",
+      "label": "恢复后再验证",
+      "kind": "rework"
+    }
+  ]
+}

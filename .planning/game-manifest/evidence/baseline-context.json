@@ -1,0 +1,5 @@
+{
+  "git_head": "77f56188e57cc2c3200f851d748b6aa494dad78d",
+  "baseline_root": "/tmp/game-manifest-baseline-vyNpfH",
+  "method": "git archive HEAD extracted into separate directory; unchanged external skills linked to current checkout; no game-design added"
+}

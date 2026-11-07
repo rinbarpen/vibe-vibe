@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "mode": "design-only",
+  "engine": null,
+  "engine_version": "",
+  "targets": [],
+  "budgets": {
+    "frame_time_ms": null,
+    "memory_mb": null,
+    "download_mb": null
+  },
+  "genres": [],
+  "dimension": null,
+  "multiplayer": null,
+  "content_pipeline": []
+}
