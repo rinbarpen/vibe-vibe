@@ -1,8 +1,10 @@
-# vibe-coding
+# vibe-vibe
 
-A **Skills aggregation and project scaffolding repository** for AI coding agents such as Claude Code, Codex, and Cursor.
+A **cross-domain toolkit of skills, project templates, and workflows** for AI agents such as Claude Code, Codex, and Cursor, covering software development, research, learning, writing, design, and office automation.
 
-This is not a business application. It is reusable AI workflow infrastructure: skill libraries, project-level context, optional MCP configuration, Hook workflows, and initialization scripts, installed into target projects through the `vibe` CLI.
+vibe-vibe brings community Skill libraries, first-party skills, project-level instructions, complete workflows, and standalone CLIs into one repository. Use the `vibe` CLI to install a single Skill or bootstrap a reusable human–AI collaboration environment with a Manifest, adding MCP configuration and Hooks as needed. The repository itself is not a business application.
+
+> Formerly named `vibe-coding`, the project is now `vibe-vibe` to reflect its scope beyond coding. The CLI command remains `vibe`, and the general software engineering Manifest remains `vibe-coding`; existing commands and project names do not need to change.
 
 [中文 README](README.md)
 
@@ -24,8 +26,8 @@ This is not a business application. It is reusable AI workflow infrastructure: s
 Initialize the Skill submodules when cloning:
 
 ```bash
-git clone --recurse-submodules https://github.com/rinbarpen/vibe-coding
-cd vibe-coding
+git clone --recurse-submodules https://github.com/rinbarpen/vibe-vibe
+cd vibe-vibe
 ```
 
 For an existing clone:
@@ -36,7 +38,7 @@ git submodule update --init --recursive
 
 ### 2. Install the `vibe` CLI
 
-Requires Python 3.10+ and [uv](https://docs.astral.sh/uv/).
+Requires Python 3.10+ and [uv](https://docs.astral.sh/uv/). To update an existing project, you can also skip CLI installation; see [Update without installing the CLI](#update-without-installing-the-cli).
 
 ```bash
 ./tools/vibe_tool/install.sh
@@ -80,7 +82,7 @@ my-project/
 
 ## `vibe` CLI
 
-Repository discovery uses this priority: the `$VIBE_HOME` environment variable → a walk up from the current directory looking for both `manifests/` and `skills/` → `~/.config/vibe-tool/config.json`. To use the CLI outside the repository, you can first save its location with `vibe config set-repo /path/to/vibe-coding`.
+Repository discovery uses this priority: the `$VIBE_HOME` environment variable → a walk up from the current directory looking for both `manifests/` and `skills/` → `~/.config/vibe-tool/config.json`. To use the CLI outside the repository, you can first save its location with `vibe config set-repo /path/to/vibe-vibe`.
 
 Project installation and direct-update commands support `-n/--dry-run` previews. Use `-f/--force` with `init/add` to explicitly overwrite existing files; `update skill/manifest` overwrite the selected resources with automatic backups. The `target` defaults to the current directory. Scenario and generation options such as `--provider`, `--owner`, `--org`, `--repo`, and `--email` apply according to the Manifest; see the relevant command's `--help`.
 
@@ -116,6 +118,44 @@ vibe mcp list
 vibe hook add ralph-loop demo
 ```
 
+## Project structure
+
+```text
+vibe-vibe/
+├── .agents/skills/              # Agent skills used to maintain this repository
+├── skills/                      # Community libraries: submodules and nested repos
+│   ├── ANNOTATIONS.md           # Chinese skill index
+│   └── ANNOTATIONS_EN.md        # English index; other directories hold skill sources
+├── mine/                        # First-party drawing, presentation, office, research skills
+├── manifests/                   # Project templates and human–AI collaboration contracts
+│   ├── vibe-coding/             # Software lifecycle; the Manifest name is unchanged
+│   ├── auto-research/           # Research, experiments, and papers
+│   ├── tutor/                   # Conversational learning and learning records
+│   ├── office/                  # Native office deliverables and quality checks
+│   └── ...                     # See the template list below
+├── workflows/writing-agent/     # Complete multi-stage writing workflow project
+├── tools/vibe_tool/             # Python implementation and tests for the vibe CLI
+│   ├── src/vibe_tool/           # Discovery, install, update, backup, and configuration
+│   └── tests/                  # CLI regression tests
+├── cli/                         # Standalone tools with their own build and usage docs
+│   ├── agent-browser/
+│   ├── anything-cli/
+│   ├── craft-anything/
+│   └── office-cli/
+├── hooks/ralph-loop/            # RFC, decomposition, validation, and merge queue rules
+├── docs/                        # Maintenance conventions and workflow diagram examples
+├── scripts/                     # Maintenance, compatibility checks, and diagram rendering
+├── tests/                       # Repository-level regression tests
+├── AGENTS.md                    # Repository Agent collaboration instructions
+├── CLAUDE.md                    # Repository guidance for Claude Code
+└── README.md / README_EN.md     # Chinese and English documentation
+```
+
+- A **Skill** is an installable capability, discovered from `skills/` and `mine/` by default.
+- A **Manifest** is a project-level collaboration package combining instructions, rules, scenarios, agents, required Skills, and initialization scripts; it is not a single Skill.
+- **Workflows and standalone CLIs** keep their own usage paths; inclusion here does not automatically make them installable Skills.
+- Root-level `mcp.json` is an optional configuration source. `.vibe-tool/` holds local installation records, backups, and statistics, and is Git-ignored.
+
 ## Repository contents
 
 ### Skills
@@ -127,9 +167,12 @@ Selected collections include:
 - [Anthropic Skills](skills/anthropics): official document, spreadsheet, presentation, PDF, frontend, and other skills
 - [Claude Scientific Skills](skills/claude-scientific-skills): research, life sciences, chemistry, medical imaging, and more
 - [UI/UX Pro Max](skills/ui-ux-pro-max-skill): design systems and UI styles
+- [Impeccable](skills/impeccable): frontend design direction, interface critique, and visual polish; install with `vibe add skill impeccable <target>`
+- [Intuit to Idea](skills/intuit-to-idea): develop a research direction into a testable hypothesis through focused AI questions and human intuition; integrated as an optional Idea route in `auto-research`; install with `vibe add skill intuit-to-idea <target>`
 - [AI Research Skills](skills/AI-Research-SKILLs): AI/ML research, training, evaluation, and paper workflows
 - [Agent Skills for Context Engineering](skills/Agent-Skills-for-Context-Engineering): context engineering methods
 - [Humanizer-zh](skills/Humanizer-zh) and [shuorenhua](skills/shuorenhua): Chinese rewriting and expression improvement
+- [Unslop](skills/unslop): review and rewrite ordinary prose to remove formulaic writing; used by z-humanizer for ordinary writing while academic and patent routes remain separate; install with `vibe add skill unslop <target>`
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill): Chinese web-novel planning, chapter outlines, drafting, and completion review
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills): Mermaid diagram generation and rendering
 - [Unity Game Development](mine/unity-game-development): end-to-end game production, 3D/DCC modeling, game testing, and executor/Reviewer roles; install a bundle, stage, or individual capability
@@ -193,11 +236,20 @@ Installation merges into the target project's `mcp.json` and preserves unrelated
 - [ralph-loop](hooks/ralph-loop): RFC intake → DAG decomposition → tiered validation → merge-queue Hook workflow
 - [writing-agent](workflows/writing-agent): writing system from topic selection and research to review and publication
 - [cli/agent-browser](cli/agent-browser), [cli/anything-cli](cli/anything-cli), and [cli/office-cli](cli/office-cli): standalone CLI projects
+- [cli/craft-anything](cli/craft-anything): upstream source for a Rust desktop app, CLI, and MCP server for evidence-backed software analysis and rebuilding; build and use following its upstream instructions, rather than installing it as a Skill.
 - `paseo.json`: optional local Paseo workspace configuration; Git-ignored and not a required repository file
 
 ## Updates and maintenance
 
 ### Sync installed Skills and Manifests
+
+Initialized projects support **in-place updates without running `vibe init` again**. Installed resources are copies, so source repository changes require an explicit sync to each target project. Projects keep their installed versions until you choose to update them.
+
+Before updating:
+
+- Ensure the local source repository contains the version you need; fetch changes to the main repository or the relevant Skill source first when a newer remote version is needed.
+- Identify an existing target project directory and the Skill or Manifest name to update.
+- Ensure the resource is already installed. Installation records let updates reuse sources and generation options; legacy project requirements are described below.
 
 Direct updates use the current local repository contents and **do not implicitly fetch from remotes**. The `target` defaults to the current directory. Specify one name per command; `--all` is not supported for these direct updates.
 
@@ -206,7 +258,8 @@ Direct updates use the current local repository contents and **do not implicitly
 vibe update skill taste-skill ../my-project --dry-run
 vibe update skill taste-skill ../my-project
 
-# Sync configuration, reusing recorded generation options by default
+# Preview, then sync configuration, reusing recorded generation options by default
+vibe update manifest vibe-coding ../my-project --dry-run
 vibe update manifest vibe-coding ../my-project
 
 # Override options when needed; add manifest also supports --scenario
@@ -233,9 +286,35 @@ python /path/to/project/.vibe-tool/backups/BACKUP_ID/restore.py
 
 Replace `BACKUP_ID` with that backup directory's name, or use the restore command printed by the update. The restore script runs independently without installing `vibe`. Configuration, dependency Skills, and installation records are updated in one transaction; application failures automatically restore touched resources. No backup is created when both content and installation records are unchanged.
 
+### Update without installing the CLI
+
+You only need Python 3.10+ and a local source repository, with no `uv`, global `vibe` installation, or third-party Python dependencies. Prepare the installed resources and existing project as described above, then run the Python entry point directly from the source tree:
+
+```bash
+REPO=/path/to/vibe-vibe
+PROJECT=/path/to/existing-project
+
+# Temporary function, available only in the current terminal session
+vibe_local() {
+  VIBE_HOME="$REPO" \
+  PYTHONPATH="$REPO/tools/vibe_tool/src" \
+  python3 -B -m vibe_tool "$@"
+}
+
+# Preview the updates you need
+vibe_local update skill taste-skill "$PROJECT" --dry-run
+vibe_local update manifest ui-testing "$PROJECT" --dry-run
+
+# After reviewing the previews, run the relevant update commands
+vibe_local update skill taste-skill "$PROJECT"
+vibe_local update manifest ui-testing "$PROJECT"
+```
+
+Replace the paths and resource names with your actual values. These commands use the same update prerequisites, overwrite boundaries, automatic backups, and standalone rollback rules.
+
 ### Update Skill source repositories
 
-The bare command updates managed Skill submodules:
+Bare `vibe update` only updates managed Skill source submodules. Fetch Manifest changes through the main repository separately; existing projects still require an explicit sync using the `update skill/manifest` commands above:
 
 ```bash
 vibe update

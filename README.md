@@ -1,8 +1,10 @@
-# vibe-coding
+# vibe-vibe
 
-一个面向 Claude Code、Codex、Cursor 等 AI coding agent 的 **Skills 聚合与项目脚手架仓库**。
+一个面向 Claude Code、Codex、Cursor 等 AI Agent 的**跨领域技能、项目模板与工作流工具箱**，覆盖软件开发、科研、学习、写作、设计和办公自动化。
 
-它本身不是一个业务应用，而是一层可复用的 AI 工作流基础设施：把分散的技能库、项目级上下文、MCP 配置、Hook 工作流和初始化脚本集中到一个仓库，并通过 `vibe` CLI 安装到目标项目。
+vibe-vibe 把社区 Skill 库、第一方技能、项目级指令、完整工作流与独立 CLI 集中维护，通过 `vibe` CLI 将所需能力安装到目标项目。它本身不是业务应用：你可以只装一个 Skill，也可以用 Manifest 搭建一套可持续迭代的人机协作环境，并按需接入 MCP 与 Hooks。
+
+> 项目原名 `vibe-coding`，现更名为 `vibe-vibe`，不再只以编程场景为入口。CLI 命令仍为 `vibe`；通用软件工程模板仍叫 `vibe-coding`，现有命令与项目无需因此改名。
 
 [English README](README_EN.md)
 
@@ -24,8 +26,8 @@
 建议同时初始化 Skill 子模块：
 
 ```bash
-git clone --recurse-submodules https://github.com/rinbarpen/vibe-coding
-cd vibe-coding
+git clone --recurse-submodules https://github.com/rinbarpen/vibe-vibe
+cd vibe-vibe
 ```
 
 如果仓库已经克隆完成：
@@ -36,7 +38,7 @@ git submodule update --init --recursive
 
 ### 2. 安装 `vibe` CLI
 
-需要 Python 3.10+ 和 [uv](https://docs.astral.sh/uv/)。
+需要 Python 3.10+ 和 [uv](https://docs.astral.sh/uv/)。仅更新已有项目时，也可跳过 CLI 安装，参见[无需安装 CLI 即可更新](#无需安装-cli-即可更新)。
 
 ```bash
 ./tools/vibe_tool/install.sh
@@ -80,7 +82,7 @@ my-project/
 
 ## `vibe` CLI
 
-仓库定位优先级为 `$VIBE_HOME` 环境变量 → 从当前目录向上查找同时包含 `manifests/` 和 `skills/` 的目录 → `~/.config/vibe-tool/config.json`。在仓库外使用时，可以先通过 `vibe config set-repo /path/to/vibe-coding` 固定仓库路径。
+仓库定位优先级为 `$VIBE_HOME` 环境变量 → 从当前目录向上查找同时包含 `manifests/` 和 `skills/` 的目录 → `~/.config/vibe-tool/config.json`。在仓库外使用时，可以先通过 `vibe config set-repo /path/to/vibe-vibe` 固定仓库路径。
 
 项目安装与直接更新命令支持 `-n/--dry-run` 预览；`init/add` 使用 `-f/--force` 显式覆盖已有文件，`update skill/manifest` 则覆盖选定资源并自动备份。`target` 默认为当前目录；场景与 `--provider`、`--owner`、`--org`、`--repo`、`--email` 等生成参数按模板适用，详情见相应命令的 `--help`。
 
@@ -116,6 +118,44 @@ vibe mcp list
 vibe hook add ralph-loop demo
 ```
 
+## 项目结构
+
+```text
+vibe-vibe/
+├── .agents/skills/              # 本仓库维护时使用的 Agent 技能
+├── skills/                      # 社区技能库：Git 子模块及独立嵌套仓库
+│   ├── ANNOTATIONS.md           # 中文技能索引
+│   └── ANNOTATIONS_EN.md        # 英文技能索引（其余目录为技能来源）
+├── mine/                        # 第一方技能：绘图、演示、办公、研究等
+├── manifests/                   # 项目模板与人机协作契约
+│   ├── vibe-coding/             # 软件工程全生命周期（模板名保持不变）
+│   ├── auto-research/           # 科研、实验与论文
+│   ├── tutor/                   # 对话式学习与学习记录
+│   ├── office/                  # 原生办公文档交付与验收
+│   └── ...                     # 其他模板见下方清单
+├── workflows/writing-agent/     # 完整的多阶段写作工作流项目
+├── tools/vibe_tool/             # vibe CLI 的 Python 实现与测试
+│   ├── src/vibe_tool/           # 发现、安装、更新、备份及配置
+│   └── tests/                  # CLI 回归测试
+├── cli/                         # 独立工具，按各自文档构建和使用
+│   ├── agent-browser/
+│   ├── anything-cli/
+│   ├── craft-anything/
+│   └── office-cli/
+├── hooks/ralph-loop/            # RFC、任务拆解、验证与合并队列规则
+├── docs/                        # 维护规范与工作流图示例
+├── scripts/                     # 仓库维护、兼容性校验与图渲染脚本
+├── tests/                       # 仓库级回归测试
+├── AGENTS.md                    # 本仓库的 Agent 协作约定
+├── CLAUDE.md                    # Claude Code 仓库指引
+└── README.md / README_EN.md     # 中英文使用说明
+```
+
+- **Skill** 是可按需安装的能力单元，默认从 `skills/` 与 `mine/` 发现。
+- **Manifest** 是项目级协作配置包，可组合指令、规则、场景、agents、必需 Skills 与初始化脚本；它不等同于单个 Skill。
+- **Workflow 与独立 CLI** 保留各自的运行方式，不会因为放进仓库就自动成为可安装 Skill。
+- 根目录 `mcp.json` 是可选来源配置；`.vibe-tool/` 是本地安装记录、备份与统计目录，已被 Git 忽略。
+
 ## 仓库内容
 
 ### Skills
@@ -127,9 +167,12 @@ vibe hook add ralph-loop demo
 - [Anthropic Skills](skills/anthropics)：文档、表格、演示文稿、PDF、前端等官方技能
 - [Claude Scientific Skills](skills/claude-scientific-skills)：科研、生命科学、化学、医学影像等
 - [UI/UX Pro Max](skills/ui-ux-pro-max-skill)：设计系统与 UI 风格库
+- [Impeccable](skills/impeccable)：前端设计与审美、界面评审和视觉打磨；安装：`vibe add skill impeccable <target>`
+- [Intuit to Idea](skills/intuit-to-idea)：通过 AI 具体提问与用户直觉，将研究方向发展为可验证假设；已接入 `auto-research` 的按需 Idea 路线；安装：`vibe add skill intuit-to-idea <target>`
 - [AI Research Skills](skills/AI-Research-SKILLs)：AI/ML 研究、训练、评估和论文工作流
 - [Agent Skills for Context Engineering](skills/Agent-Skills-for-Context-Engineering)：上下文工程方法
 - [Humanizer-zh](skills/Humanizer-zh)、[shuorenhua](skills/shuorenhua)：中文文本改写与表达优化
+- [Unslop](skills/unslop)：普通文案去模板感、审查与改写；`z-humanizer` 的普通写作路由采用它，学术和专利路由保持独立；安装：`vibe add skill unslop <target>`
 - [Chinese-WebNovel-Skill](skills/chinese-webnovel-skill)：中文网文选材、构思、章纲、写作与完稿审查
 - [Pretty Mermaid Skills](skills/Pretty-mermaid-skills)：Mermaid 图表生成与渲染
 - [Unity Game Development](mine/unity-game-development)：覆盖游戏制作全流程、3D/DCC 建模、游戏测试与执行/Reviewer 角色，可整包、阶段或单项安装。
@@ -193,11 +236,20 @@ vibe mcp add SERVER_NAME ../my-project
 - [ralph-loop](hooks/ralph-loop)：RFC → DAG 拆解 → 分层验证 → 合并队列的 Hook 工作流
 - [writing-agent](workflows/writing-agent)：从选题、研究到审稿发布的写作系统
 - [cli/agent-browser](cli/agent-browser)、[cli/anything-cli](cli/anything-cli)、[cli/office-cli](cli/office-cli)：独立 CLI 项目
+- [cli/craft-anything](cli/craft-anything)：Rust 桌面应用、CLI 与 MCP 服务的上游源码，提供基于证据的软件分析与重建工作流；按上游说明构建和使用，不作为 Skill 安装。
 - `paseo.json`：按需创建的本地 Paseo 工作区配置，已被 Git 忽略，不是仓库必备文件
 
 ## 更新与维护
 
 ### 同步项目中已安装的 Skill / Manifest
+
+已初始化项目支持**原地更新，无需重新运行 `vibe init`**。安装到项目的资源是副本，源仓库更新后需要显式同步目标项目；暂不更新时，项目继续使用已安装的版本。
+
+更新前准备：
+
+- 本地源仓库已包含所需版本；需要远程新版时，先同步主仓库或对应的 Skill 来源。
+- 目标项目目录已存在，并确定要更新的 Skill / Manifest 名称。
+- 对应资源已经安装；安装记录用于复用来源及生成参数，旧项目的接入条件见下文。
 
 直接更新使用当前本地仓库内容，**不隐式拉取远程**。`target` 默认为当前目录；每次指定一个名称，不支持 `--all`。
 
@@ -206,7 +258,8 @@ vibe mcp add SERVER_NAME ../my-project
 vibe update skill taste-skill ../my-project --dry-run
 vibe update skill taste-skill ../my-project
 
-# 同步配置，默认复用安装时记录的生成参数
+# 先预览，再同步配置；默认复用安装时记录的生成参数
+vibe update manifest vibe-coding ../my-project --dry-run
 vibe update manifest vibe-coding ../my-project
 
 # 需要时显式覆盖参数；add manifest 同样支持 --scenario
@@ -233,9 +286,35 @@ python /path/to/project/.vibe-tool/backups/BACKUP_ID/restore.py
 
 将 `BACKUP_ID` 替换为本次备份目录名，或直接使用更新命令打印的恢复命令。恢复脚本独立运行，无需安装 `vibe`。配置、依赖 Skill 与安装记录在同一事务中更新，应用失败自动恢复已触及内容；内容及记录均未变化时不创建备份。
 
+### 无需安装 CLI 即可更新
+
+只需 Python 3.10+ 和本地源仓库，无需安装 `uv`、全局 `vibe` 或第三方 Python 依赖。按上述条件准备资源与已有项目，然后直接运行仓库内的 Python 入口：
+
+```bash
+REPO=/path/to/vibe-vibe
+PROJECT=/path/to/existing-project
+
+# 临时函数，仅在当前终端会话中生效
+vibe_local() {
+  VIBE_HOME="$REPO" \
+  PYTHONPATH="$REPO/tools/vibe_tool/src" \
+  python3 -B -m vibe_tool "$@"
+}
+
+# 先预览需要的更新
+vibe_local update skill taste-skill "$PROJECT" --dry-run
+vibe_local update manifest ui-testing "$PROJECT" --dry-run
+
+# 确认预览后，按需运行对应更新
+vibe_local update skill taste-skill "$PROJECT"
+vibe_local update manifest ui-testing "$PROJECT"
+```
+
+将路径与资源名称替换为实际值。以上命令沿用相同的更新条件、覆盖范围、自动备份与独立回滚规则。
+
 ### 更新仓库中的 Skill 来源
 
-裸命令仍更新受管理的 Skill 子模块：
+裸 `vibe update` 只更新受管理的 Skill 源子模块。主仓库中的 Manifest 变更需先同步主仓库；已有项目仍需使用上面的 `update skill/manifest` 命令显式同步：
 
 ```bash
 vibe update
