@@ -55,6 +55,16 @@ def _copy_skill(source: Path, destination: Path) -> None:
     def ignore(directory: str, names: list[str]) -> list[str]:
         return [name for name in names if _is_excluded(Path(directory) / name)]
     shutil.copytree(source, destination, symlinks=True, ignore=ignore)
+    # Materialize this first-party dependency just as add_skill does, without
+    # changing the update policy for unrelated symbolic links.
+    bundle = source / "references" / "unslop"
+    if source.name == "z-humanizer" and source.parent.name == "mine" and bundle.is_symlink():
+        canonical = source.parent.parent / "skills" / "unslop"
+        if bundle.resolve() != canonical.resolve():
+            raise ValueError("z-humanizer's unslop bundle must reference skills/unslop")
+        installed_bundle = destination / "references" / "unslop"
+        installed_bundle.unlink()
+        shutil.copytree(bundle, installed_bundle, ignore=ignore)
 
 
 def _stage_skill(root: Path, info: SkillInfo, target: Path, staging: Path,

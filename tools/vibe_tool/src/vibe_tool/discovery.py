@@ -73,11 +73,21 @@ def discover_skills(*roots: Path) -> list[SkillInfo]:
     """
     by_name: dict[str, list[tuple[Path, str]]] = defaultdict(list)
     for root in roots:
+        # Impeccable ships the same skill for many providers, plus oracle
+        # fixtures. Expose its self-contained Codex payload, not those copies.
+        impeccable_source = root / "impeccable" / ".agents" / "skills"
+        has_impeccable_source = (impeccable_source / "impeccable" / "SKILL.md").is_file()
         for skill_md in sorted(root.rglob("SKILL.md")):
             skill_dir = skill_md.parent
             try:
                 rel = skill_dir.relative_to(root)
             except ValueError:
+                continue
+            if (
+                has_impeccable_source
+                and rel.parts[:1] == ("impeccable",)
+                and not skill_md.is_relative_to(impeccable_source)
+            ):
                 continue
             by_name[skill_dir.name].append((skill_dir, str(rel)))
 

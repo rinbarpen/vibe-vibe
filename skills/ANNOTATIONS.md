@@ -509,6 +509,16 @@
 - **简介**: When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness. Also use when the user mentions "engineering as marketing," "free tool," "marketing tool," "calculator," "generator," "interactive tool," "lead gen tool," "build a tool for leads," or "free resource." This skill bridges engineering and marketing — useful for founders and technical marketers.
 - **使用场景**: 见简介
 
+### impeccable
+- **路径**: `skills/impeccable/.agents/skills/impeccable`
+- **简介**: 前端设计与审美技能，覆盖布局、字体、色彩、动效、界面评审、可访问性及视觉打磨；使用上游完整的 Codex Skill 载荷，过滤其他供应商副本和测试夹具。
+- **使用场景**: 前端页面、组件和产品界面的设计、评审与改进；`vibe add skill impeccable <target>`。
+
+### intuit-to-idea
+- **路径**: `skills/intuit-to-idea`
+- **简介**: 直觉成题：通过 AI 提供具体情境、一次一个问题和用户真实回答，形成研究机制、相关工作对比与最小验证方案。
+- **使用场景**: 从宽泛研究方向或已有假设开始互动探索；`vibe add skill intuit-to-idea <target>`。已加入 auto-research 必需安装清单，按需调用，不替代自主候选生成。
+
 ### frontend-design
 - **路径**: `skills/anthropics/skills/frontend-design`
 - **简介**: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
@@ -2066,9 +2076,14 @@
 - **简介**: 说人话 — 中文优先的去AI味改写skill。保事实、分场景、改完可直接发。覆盖聊天、技术同步、README、论坛帖等场景。
 - **使用场景**: 日常文案、技术状态同步、发布说明、论坛帖等需要去模板感的场景。
 
+### unslop
+- **路径**: `skills/unslop`
+- **简介**: 普通文案去模板感与自然表达技能，支持 cleanup 审查、rewrite 改写以及 teach/mimic 声音学习，保留事实、原意和作者语气。
+- **使用场景**: 普通文案、博客、文档和教程的审查与改写；`vibe add skill unslop <target>`。同时作为 z-humanizer 普通写作分支的自包含依赖。
+
 ### z-humanizer
 - **路径**: `mine/z-humanizer`
-- **简介**: 统一humanizer编排器，覆盖论文/专利/期刊/会议/博客/知识库/文档/教程8个领域。自动路由到最合适的模式库，输出审计报告+改写。中英双语。
+- **简介**: 中英文 humanizer 编排器：普通文案、博客、知识库/文档及教程委派至随包安装的 unslop；论文、期刊、会议和专利保留专用模式库及审计流程。
 - **使用场景**: 需要去AI味但不清楚该用哪个humanizer工具时；需要审计+改写的完整流程时。
 
 ### state-machine-reasoning

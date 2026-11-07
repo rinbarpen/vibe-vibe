@@ -1,21 +1,10 @@
 ---
 name: z-humanizer
 description: >
-  Unified humanizer for removing AI writing traces across 8 domains:
-  papers, patents, journals, conferences, blogs, knowledge base, docs,
-  and tutorials. Supports Chinese and English.
-
-  Detects 30+ AI writing patterns, produces an audit report, then rewrites
-  while preserving facts, terminology, citations, and code.
-
-  Can also be invoked reactively: when the AI detects 3+ AI writing patterns
-  in user-provided text, it offers to humanize before responding.
-triggers:
-  - 去AI味 / 说人话 / 润色 / 降重 / humanize / 降低AIGC
-  - 去AI痕迹 / 人工润色 / 学术写作润色 / 论文降重
-  - "帮我把这篇{论文/专利/博客/文档}改得更像人写的"
-  - "humanize this" / "make this sound less AI-generated"
-  - Auto-trigger: 3+ AI writing patterns detected in user's text
+  Humanize Chinese and English prose (去AI味、润色、说人话). Route general,
+  blog, documentation, and tutorial writing through bundled unslop; retain
+  specialized academic, journal, conference, and patent workflows while
+  preserving facts, terminology, citations, and code.
 ---
 
 # z-humanizer: Unified Humanizer Orchestrator
@@ -23,8 +12,11 @@ triggers:
 ## How to Use
 
 **User invokes:**
-- `/humanize <text>` — full pipeline: audit → confirm → rewrite
-- `/humanize --quick <text>` — rewrite only, no audit
+Use `/humanize`, "去AI味", "说人话", "humanize this", or "make this sound less AI-generated".
+An explicit `--domain` takes priority; `paper` is an alias for `academic`.
+
+- `/humanize <text>` — ordinary prose uses unslop rewrite; specialized domains keep audit → confirm → rewrite
+- `/humanize --quick <text>` — compact rewrite output; retain unslop diagnosis and preservation checks for ordinary prose
 - `/humanize --domain paper <text>` — force a specific domain
 - `/humanize --list` — list available domains and patterns
 
@@ -58,6 +50,19 @@ Scan for domain signals in order:
 
 If domain is ambiguous (no strong signals), list top 2 candidates and ask.
 
+### Ordinary Prose: Delegate to Unslop
+
+For `general`, `blog`, `kb-doc`, and `tutorial`, read
+[references/general.md](references/general.md), then the bundled
+[unslop entrypoint](references/unslop/SKILL.md). Follow its command and core
+contract, and return the result. Keep the paragraph language, including Chinese
+and mixed-language text. The legacy severity score, punctuation quotas, noise
+budget, and specialized workflow below do not apply to this branch.
+
+For `academic`, `journal`, `conference`, and `patent`, continue with Steps 3–4
+and the specialized workflow below. Preserve their existing domain patterns,
+terminology, evidence, numbers, citation keys, and LaTeX commands.
+
 ### Step 3: Severity Assessment
 
 Quick AI-trace density check on the first 500 characters:
@@ -77,19 +82,13 @@ Quick AI-trace density check on the first 500 characters:
 Load the relevant patterns file(s) from `patterns/`:
 - `patterns/patent.md` — when domain=patent
 - `patterns/conference.md` — when domain=conference
-- `patterns/kb-doc.md` — when domain=kb-doc
-- `patterns/blog.md` — when domain=blog
-- `patterns/tutorial.md` — when domain=tutorial
 - Plus always apply cross-cutting rules below
 
 For deep pattern reference, load the corresponding sub-skill's SKILL.md:
 - `skills/humanizer-zh-academic/SKILL.md` — Chinese academic full pattern set
 - `skills/academic-humanizer/SKILL.md` — English academic full pattern set
-- `skills/shuorenhua/SKILL.md` — scene-based bilingual patterns
-- `skills/Humanizer-zh/SKILL.md` — Chinese general patterns
-- `skills/humanizer/SKILL.md` — English general patterns
 
-## Standard Operating Procedure
+## Specialized Operating Procedure
 
 ### Phase 1: Analyze
 
@@ -145,9 +144,9 @@ Self-verify against domain's quality metrics. Score the output.
 If score is below threshold (42/60 for academic, varies per domain),
 do another pass focusing on the lowest-scoring dimension.
 
-## Cross-Cutting Rules
+## Specialized Cross-Cutting Rules
 
-These apply to ALL domains regardless of routing.
+These apply to academic, journal, conference, and patent routes only.
 
 ### Em-Dash Rule
 
@@ -232,7 +231,7 @@ Base 0-60 scale, adapt per domain:
 | Situation | Response |
 |-----------|----------|
 | Domain unclear | List top 2 candidates, ask user |
-| Pattern file missing | Fall back to cross-cutting rules + general humanizer |
+| Specialized pattern file missing | Keep the specialized cross-cutting rules; report the missing resource before using another domain |
 | User rejects all changes | Output original text, no changes |
 | Very short text (<50 chars) | Skip audit, check: is it even AI-generated? |
 | Text is code/config | Return as-is, humanizer is for prose |

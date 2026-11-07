@@ -509,6 +509,16 @@
 - **Description**: When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness. Also use when the user mentions "engineering as marketing," "free tool," "marketing tool," "calculator," "generator," "interactive tool," "lead gen tool," "build a tool for leads," or "free resource." This skill bridges engineering and marketing — useful for founders and technical marketers.
 - **Usage**: See description
 
+### impeccable
+- **Path**: `skills/impeccable/.agents/skills/impeccable`
+- **Description**: Frontend design direction, typography, color, motion, interface critique, accessibility, and visual polish. Uses the complete upstream Codex skill payload, excluding provider duplicates and test fixtures.
+- **Usage**: Design, review, and improve frontend pages, components, and product interfaces; `vibe add skill impeccable <target>`.
+
+### intuit-to-idea
+- **Path**: `skills/intuit-to-idea`
+- **Description**: Develop research intuitions into testable ideas through concrete situations, one focused question at a time, mechanism-level literature checks, and a minimal validation plan.
+- **Usage**: Conversational exploration from a broad direction or an existing hypothesis; `vibe add skill intuit-to-idea <target>`. Installed with auto-research and invoked on demand, without replacing autonomous idea discovery.
+
 ### frontend-design
 - **Path**: `skills/anthropics/skills/frontend-design`
 - **Description**: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.
@@ -2066,9 +2076,14 @@
 - **Description**: Chinese-first rewrite skill that reduces boilerplate and AI tone while preserving facts, terminology, and technical context. Covers chat, status sync, README, forum posts.
 - **Usage**: Daily copy, technical status updates, release notes, forum posts where a template-like feel needs removal.
 
+### unslop
+- **Path**: `skills/unslop`
+- **Description**: Review and rewrite ordinary prose with cleanup/rewrite and voice teaching/mimicry, preserving facts, meaning, and the author's voice.
+- **Usage**: Ordinary prose, blogs, documentation, and tutorials; `vibe add skill unslop <target>`. Also bundled with z-humanizer for its ordinary-writing branch.
+
 ### z-humanizer
 - **Path**: `mine/z-humanizer`
-- **Description**: Unified humanizer orchestrator covering 8 domains: papers, patents, journals, conferences, blogs, knowledge base, docs, tutorials. Auto-routes to the right pattern library, outputs audit + rewrite. Bilingual (zh/en).
+- **Description**: Bilingual humanizer orchestrator: delegates ordinary prose, blogs, documentation, and tutorials to bundled unslop; preserves specialized academic, journal, conference, and patent patterns and audit workflows.
 - **Usage**: When you need AI-trace removal but aren't sure which humanizer tool to use; when you want the full audit → rewrite workflow.
 
 ### state-machine-reasoning

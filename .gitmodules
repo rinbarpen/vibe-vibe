@@ -155,3 +155,19 @@
 	path = skills/geo-sleuth
 	url = https://github.com/Oldcircle/geo-sleuth.git
 	branch = main
+[submodule "cli/craft-anything"]
+	path = cli/craft-anything
+	url = https://github.com/storytold/craft-anything.git
+	branch = main
+[submodule "skills/unslop"]
+	path = skills/unslop
+	url = https://github.com/theclaymethod/unslop.git
+	branch = main
+[submodule "skills/impeccable"]
+	path = skills/impeccable
+	url = https://github.com/pbakaus/impeccable.git
+	branch = main
+[submodule "skills/intuit-to-idea"]
+	path = skills/intuit-to-idea
+	url = https://github.com/ShawnL1N/intuit-to-idea.git
+	branch = main
