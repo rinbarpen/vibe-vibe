@@ -13,6 +13,12 @@
 
 只上传教材时轻量索引并简要展示 `MATERIAL_INDEX.md`，再问一个方向问题；明确要求规划才生成 `LEARNING_PATH.md` 并停止。详见 `references/tutor-interaction.md` 和 `AGENTS.md`。
 
+## Learning Foundation
+
+以 [记忆—监测—控制](references/metacognitive-framework.md) 为共同底层框架：问题拆解与重要性判断 → 激活相关旧知识 → 可选 JOL/FOK 与真实表现检查 → 对照同范围预期 → 按 EOL、完成信心与具体错因调整策略/投入 → 回溯效果或切换任务。关于自我、任务和策略的知识作为调整依据。
+
+主观判断和作答证据分开；未评估不当作低于预期，信心低不当作能力低。直接讲解不强制检查；暂停保留断点，不写成达标。规则、人工决策与回退见上述契约；[工作流 SVG](references/workflow.svg) / [可编辑源](references/workflow.json) / [渲染器](scripts/render_workflow.py) 随模板安装。
+
 ## Nine Optional Commands
 
 | Command | Description |

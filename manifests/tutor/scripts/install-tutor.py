@@ -194,7 +194,8 @@ def install(target, scenario, force):
         for path in sorted((source / src).rglob("*")):
             if path.is_file():
                 copies[str(Path(dst) / path.relative_to(source / src))] = path
-    copies["scripts/export-notes.py"] = source / "scripts/export-notes.py"
+    for name in ("export-notes.py", "render_workflow.py"):
+        copies["scripts/" + name] = source / "scripts" / name
     if scenario:
         folder = source / "scenarios" / scenario
         copies[".cursor/scenario.md"] = folder / "CLAUDE.md"

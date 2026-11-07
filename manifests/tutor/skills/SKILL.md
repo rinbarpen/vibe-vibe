@@ -16,6 +16,8 @@ triggers:
 
 这是随 manifest 安装到项目根 `skills/` 的内置资源，不是平台注册要求。
 
+底层共用 `references/metacognitive-framework.md` 的记忆—监测—控制框架：拆解与重要性、STM/LTM 外部辅助、JOL/FOK/EOL、完成信心、预期/实际对照、控制调整与回溯。自评与真实作答分开；未评估不当成低于预期，不把框架变成每轮强制测验。
+
 先读 `references/tutor-interaction.md`，按当前意图使用能力，而非固定“上传→规划→开课”。无教材直接辅导；上传有具体任务时直接定位；只上传则简要地图加一个方向问题；`/learn --plan` 或明确规划交付后停止。
 
 - 材料：`skills/material-processor/SKILL.md` 按需索引 `MATERIAL_INDEX.md`；路线见 `references/learning-path-design.md`，保存 `LEARNING_PATH.md`。无教材不造地图或章号。

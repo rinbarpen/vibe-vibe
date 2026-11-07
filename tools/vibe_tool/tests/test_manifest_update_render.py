@@ -110,7 +110,9 @@ def test_tutor_scenarios_render_without_touching_project(tmp_path: Path, scenari
     ).read_bytes()
     assert Path("notes/_index.md") not in paths
     for relative in ("skills/SKILL.md", "references/tutor-interaction.md",
-                     "agents/tutor-agents.md", "scripts/export-notes.py"):
+                     "agents/tutor-agents.md", "scripts/export-notes.py",
+                     "references/metacognitive-framework.md", "references/workflow.json",
+                     "references/workflow.svg", "scripts/render_workflow.py"):
         assert Path(relative) in paths
     for source in (manifest.path / "scenarios" / scenario / "rules").glob("*.mdc"):
         assert Path(".cursor/rules", source.name) in paths

@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "title": "Tutor：记忆—监测—控制学习框架",
+  "description": "以当前问题与子任务重要性为起点，关联 STM/LTM 外部记录；按需整理 JOL/FOK/EOL 与完成信心，用真实证据校准预期，通过策略、投入、指导与任务切换闭环。三类知识提供依据；主观判断始终与实际作答分开。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "问题 / 当前学习请求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "图是协作规则，不是学习状态。仅导入、规划、查看和导出按原意图交付。"
+    },
+    {
+      "id": "select",
+      "label": "拆解任务 · 判断重要性",
+      "kind": "ai",
+      "row": 1,
+      "detail": "按目标、先修、薄弱证据与用户约束选当前子任务，说明同范围完成标准。"
+    },
+    {
+      "id": "memory",
+      "label": "记忆与断点 · STM / LTM",
+      "kind": "ai",
+      "row": 2,
+      "detail": "关联当前任务与历史笔记/证据；自我、任务、策略三类知识是依据，文件不等于脑内记忆。"
+    },
+    {
+      "id": "retrieval",
+      "label": "监测：任务相关知识能否提取？",
+      "kind": "check",
+      "row": 3,
+      "detail": "仅在符合当前意图时观察。用户直接要讲解则跳过提取和自评，不代替用户回答。"
+    },
+    {
+      "id": "jol",
+      "label": "JOL · 学习判断",
+      "kind": "check",
+      "row": 4,
+      "detail": "成功提取后可记录对保持/运用的预期。用户自评与真实证据分开，未表达就省略。"
+    },
+    {
+      "id": "fok",
+      "label": "FOK · 知晓感判断",
+      "kind": "check",
+      "row": 5,
+      "detail": "提取受阻时可记录是否眼熟/有提示能否找回的感觉；失败一次不直接判断完全不懂。"
+    },
+    {
+      "id": "learn",
+      "label": "当前任务辅导 / 真实作答",
+      "kind": "ai",
+      "row": 6,
+      "detail": "按意图讲解、提示、图解或练习；有待答题则等真实回答，助手示范不算学习者作答。"
+    },
+    {
+      "id": "compare",
+      "label": "校验：实际是否低于预期？",
+      "kind": "check",
+      "row": 7,
+      "detail": "按同范围标准验证真实作答，个人预测另行校准；无自评仍可评作答。缺实际证据保持未评估，不当成低于预期。"
+    },
+    {
+      "id": "eol",
+      "label": "EOL · 难易度与完成信心",
+      "kind": "check",
+      "row": 8,
+      "detail": "分开整理实际表达的难度预估、完成信心及具体错因；不推断能力分，不强索自评。"
+    },
+    {
+      "id": "control",
+      "label": "控制：指导 · 投入 · 策略",
+      "kind": "ai",
+      "row": 9,
+      "detail": "选提示、补先修、查阅/指导、相对时间投入与策略。无预算不编分钟，不擅自外联。"
+    },
+    {
+      "id": "retry",
+      "label": "实施调整 · 等待真实反馈",
+      "kind": "ai",
+      "row": 10,
+      "detail": "保存已实施动作和待答题，收到真实回答/操作再回溯；沉默或继续不算效果证据。"
+    },
+    {
+      "id": "retrospect",
+      "label": "回溯性监测：进展是否受阻？",
+      "kind": "check",
+      "row": 11,
+      "detail": "比较真实前后证据；有效回到同范围检查，受阻则换策略/重排，缺反馈保留等待。"
+    },
+    {
+      "id": "switch",
+      "label": "任务切换 / 策略回退",
+      "kind": "ai",
+      "row": 12,
+      "detail": "保留原题、尝试日志与恢复点；预算内重排重要性，无效策略恢复最近有效快照。"
+    },
+    {
+      "id": "decision",
+      "label": "变更决策 · 等待用户选择",
+      "kind": "human",
+      "row": 13,
+      "detail": "常规错题由 AI 调整辅导，不新增审批。未回复保持等待，不默认同意。",
+      "trigger": "改变目标/扩大范围/突破预算/付费或外发资料。",
+      "resume": "继续→当前任务；调整→拆解与重要性；暂停/结束→保存断点后交付。"
+    },
+    {
+      "id": "finish",
+      "label": "本次交付 / 当前任务结束",
+      "kind": "terminal",
+      "row": 14,
+      "detail": "达标仅限已检查范围；用户暂停/结束保留断点，不写成掌握。仅讲解无检查则未评估。"
+    },
+    {
+      "id": "calibrate",
+      "label": "反馈证据 · 校准自评",
+      "kind": "ai",
+      "row": 8,
+      "detail": "同范围表现已达标但信心低时，指出实际做到的部分；不因低信心自动增加练习或时长。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "select",
+      "label": "进入当前学习任务",
+      "kind": "normal"
+    },
+    {
+      "from": "select",
+      "to": "finish",
+      "label": "仅导入/规划/查看/导出",
+      "kind": "normal"
+    },
+    {
+      "from": "select",
+      "to": "memory",
+      "label": "选定子任务",
+      "kind": "normal"
+    },
+    {
+      "from": "memory",
+      "to": "retrieval",
+      "label": "按需观察相关提取",
+      "kind": "normal"
+    },
+    {
+      "from": "retrieval",
+      "to": "jol",
+      "label": "提取成功",
+      "kind": "normal"
+    },
+    {
+      "from": "retrieval",
+      "to": "fok",
+      "label": "提取受阻",
+      "kind": "normal"
+    },
+    {
+      "from": "retrieval",
+      "to": "learn",
+      "label": "直接讲解 / 跳过提取",
+      "kind": "normal"
+    },
+    {
+      "from": "jol",
+      "to": "learn",
+      "label": "可选预期 / 无则跳过",
+      "kind": "normal"
+    },
+    {
+      "from": "fok",
+      "to": "learn",
+      "label": "按意图提示或讲解",
+      "kind": "normal"
+    },
+    {
+      "from": "learn",
+      "to": "compare",
+      "label": "真实反馈 / 无证据未评估",
+      "kind": "normal"
+    },
+    {
+      "from": "compare",
+      "to": "finish",
+      "label": "达标，或本轮交付未评估",
+      "kind": "normal"
+    },
+    {
+      "from": "compare",
+      "to": "eol",
+      "label": "低于预期 / 明确继续调整",
+      "kind": "normal"
+    },
+    {
+      "from": "eol",
+      "to": "control",
+      "label": "按错因与约束选择动作",
+      "kind": "normal"
+    },
+    {
+      "from": "control",
+      "to": "retry",
+      "label": "实施约定范围内调整",
+      "kind": "normal"
+    },
+    {
+      "from": "retry",
+      "to": "retrospect",
+      "label": "收到真实反馈后",
+      "kind": "normal"
+    },
+    {
+      "from": "retrospect",
+      "to": "compare",
+      "label": "有效：回到同范围检查",
+      "kind": "rework"
+    },
+    {
+      "from": "retrospect",
+      "to": "switch",
+      "label": "受阻：重排或回退",
+      "kind": "normal"
+    },
+    {
+      "from": "switch",
+      "to": "select",
+      "label": "约定范围内重排重要性",
+      "kind": "rework"
+    },
+    {
+      "from": "switch",
+      "to": "memory",
+      "label": "回退到有效任务/策略断点",
+      "kind": "rework"
+    },
+    {
+      "from": "switch",
+      "to": "decision",
+      "label": "需要目标/范围/预算等新决定",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "learn",
+      "label": "同意继续：恢复当前任务",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "select",
+      "label": "同意调整：重新拆解",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "finish",
+      "label": "暂停/结束：保存断点",
+      "kind": "normal"
+    },
+    {
+      "from": "compare",
+      "to": "calibrate",
+      "label": "已达标但信心低",
+      "kind": "normal"
+    },
+    {
+      "from": "calibrate",
+      "to": "finish",
+      "label": "反馈证据后交付；不自动加练",
+      "kind": "normal"
+    }
+  ]
+}

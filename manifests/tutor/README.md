@@ -9,7 +9,11 @@ vibe init tutor "my learning project"
 vibe init tutor "my course" --scenario course-learning
 vibe add manifest tutor "/path/to/existing project" --force
 vibe add manifest tutor "/path/to/existing project" --force --dry-run
+vibe update manifest tutor "/path/to/installed tutor project" --dry-run
+vibe update manifest tutor "/path/to/installed tutor project"
 ```
+
+已安装 Tutor 的项目可用 `update` 同步本地模板配置、框架文档、图源、SVG 和渲染器；保留项目 README、教材、笔记和学习记录，变更备份及独立恢复命令由 CLI 输出。旧 `knowledge-learning` 项目仍按下述显式升级流程处理。
 
 旧名称 `knowledge-learning` 已停用，只提示新入口，不作为别名执行。已识别的旧项目不带 `--force` 时保持原样；显式升级先备份将覆盖的模板及将停用的旧规则，再安装 Tutor。教材、笔记、图源、PDF、`LEARNING_RECORD.md` 和自定义文件留在原位。备份在 `.vibe-tool/backups/tutor/<唯一ID>/`，安装输出可直接运行的 `python -B <备份目录>/restore.py`；恢复前核验备份和变更，升级后自行修改过的模板默认保留并提示，不静默覆盖。
 
@@ -30,6 +34,37 @@ vibe add manifest tutor "/path/to/existing project" --force --dry-run
 | 导出 PDF | 转换选定笔记，保留原件，不附带个人日志 |
 
 入口详见 `CLAUDE.md`。九个可选指令见安装后的 `.cursor/commands/COMMANDS.md`；普通对话无需记命令。`/learn --plan`、`/exam --paper`、`--export pdf` 是助手参数，不是 vibe CLI 参数。
+
+## 底层学习框架
+
+采用用户给定的“记忆—监测—控制”闭环，而不是固定的“讲解→考试”流水线：
+
+1. 拆分当前问题、判断子任务重要性；将当前任务/断点与历史笔记/证据关联（STM / LTM 的外部辅助）。
+2. 按需观察提取情况：成功后可作 JOL 学习判断，受阻时可作 FOK 知晓感判断；自评始终与真实作答分开。
+3. 对照同范围预期和实际证据；结合 EOL 难易度判断、完成信心选择策略、相对投入或外部指导。
+4. 实施后回溯；有效则继续检查，受阻则调整策略或重排任务。暂停保留断点，改变目标/范围/预算时等待用户决定再恢复。
+
+“关于自我、关于任务、关于策略的知识”是三类依据，不是三份新档案。框架不强制每轮提问或收集自评；证据不足保持未评估，不用低信心代替低掌握，不默认排每日课表。
+
+- [完整契约与记录规则](references/metacognitive-framework.md)
+- [工作流 SVG](references/workflow.svg) · [可编辑 JSON](references/workflow.json) · [会话验收用例（待执行）](references/metacognition-cases.md)
+- [独立渲染器](scripts/render_workflow.py)：仅 Python 标准库，图表示规则，不表示实际运行状态。
+
+从模板仓库根目录生成、只读检查：
+
+```bash
+python3 manifests/tutor/scripts/render_workflow.py --source manifests/tutor/references/workflow.json --output manifests/tutor/references/workflow.svg
+python3 manifests/tutor/scripts/render_workflow.py --source manifests/tutor/references/workflow.json --output manifests/tutor/references/workflow.svg --check
+```
+
+安装后的项目根目录：
+
+```bash
+python3 scripts/render_workflow.py --source references/workflow.json --output references/workflow.svg
+python3 scripts/render_workflow.py --source references/workflow.json --output references/workflow.svg --check
+```
+
+缺图或漂移时检查退出 1，图源或节点引用无效时退出 2；检查模式保持文件不变。源、图和渲染脚本由 Tutor 安装器一并分发。
 
 ## 自动记录与图文笔记
 
