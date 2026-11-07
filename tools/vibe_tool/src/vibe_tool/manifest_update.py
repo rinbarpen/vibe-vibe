@@ -200,7 +200,7 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
     if name == "tutor":
         return (
             relative == Path(".cursor/scenario.md")
-            or relative == Path("scripts/export-notes.py")
+            or relative in {Path("scripts/export-notes.py"), Path("scripts/render_workflow.py")}
             or any(_under(relative, Path(root)) for root in ("skills", "references", "agents"))
         )
     if name == "ui-testing" and relative == Path("CLAUDE.ui-testing.md"):

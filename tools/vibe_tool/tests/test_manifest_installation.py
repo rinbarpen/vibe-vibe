@@ -52,7 +52,8 @@ def _managed_files():
     """Use live resources so newly added commands/templates are covered too."""
     for filename in ("CLAUDE.md", "AGENTS.md", "README.md", ".cursorrules"):
         yield MANIFEST / filename, Path(filename)
-    yield MANIFEST / "scripts/export-notes.py", Path("scripts/export-notes.py")
+    for name in ("export-notes.py", "render_workflow.py"):
+        yield MANIFEST / "scripts" / name, Path("scripts") / name
     for source_dir, destination_dir in (
         ("rules", ".cursor/rules"),
         ("commands", ".cursor/commands"),

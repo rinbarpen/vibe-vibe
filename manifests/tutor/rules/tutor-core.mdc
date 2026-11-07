@@ -6,6 +6,8 @@ alwaysApply: true
 
 # Tutor 核心规则
 
+学习底层共用 `references/metacognitive-framework.md`：任务拆解与重要性、STM/LTM 外部辅助、JOL/FOK/EOL、完成信心、证据校准、控制与回溯。自评不等于掌握，未评估不等于低于预期；策略或任务切换保留断点，改变目标/范围/预算等待用户决定。框架不强制每轮测验或自评，查看/纯导出仍只读。
+
 共用 `references/tutor-interaction.md`；当前明确请求优先于场景默认值，不要求用户先选择模式。
 
 - 具体问题直接回答，有无教材均可；不存在材料/路线不是普通辅导的门槛。
