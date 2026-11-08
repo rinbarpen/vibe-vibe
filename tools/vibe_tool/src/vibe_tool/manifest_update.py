@@ -210,6 +210,8 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
             "MANIFEST.md", ".editorconfig", ".gitignore", "scripts/version_guard.py",
             "references/codegraph-workflow.json", "references/codegraph-workflow.svg",
             "scripts/render_codegraph_workflow.py",
+            "references/ui-usability.md", "references/ui-usability-workflow.json",
+            "references/ui-usability-workflow.svg",
         }:
             return True
         provider = options.get("provider") or "github"

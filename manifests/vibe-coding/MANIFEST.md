@@ -88,6 +88,34 @@ python3 scripts/render_codegraph_workflow.py --source references/codegraph-workf
 - Dispatch language-specific build-resolver if build fails.
 - **Exit criteria**: Relevant checks pass; when `implement` is used, its review findings are addressed.
 
+### UI Work: Information Priority and Task Acceptance
+
+**UI/UX copy restraint:** "Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining."
+Use grouping, alignment, hierarchy and clear controls instead of decorative
+slogans or descriptions that repeat the obvious. Keep necessary form labels,
+accessible names, validation errors, risk warnings, units and essential help.
+
+For changes to UI hierarchy, settings or user workflows, apply the
+[UI usability contract](references/ui-usability.md): keep essential information and
+next actions visible, disclose advanced detail on demand, and verify real task
+outcomes rather than just successful clicks. Use `/frontend-check usability` and
+`/frontend-check interaction` proportionally; `/frontend-check all` covers all six
+frontend modes. Investigate technical uncertainty and rework within agreed scope;
+ask people only for new goals/constraints or predefined high-impact decisions.
+
+[Workflow SVG](references/ui-usability-workflow.svg) ·
+[Editable source](references/ui-usability-workflow.json). The diagram describes
+rules, not execution status. Reuse the existing dependency-free renderer from this
+manifest directory or an initialized project root:
+
+```bash
+python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg --check
+```
+
+Record scoped baseline/changed evidence and any unrun checks in the project's
+existing test/PR record; do not introduce a mandatory extra project ledger.
+
 ### Phase 5: Quality Gate
 - Run `/quality-gate` at the appropriate commit/release boundary; apply checks proportional to the change and repository requirements.
 - Security scan via CodeQL and dependency review workflows where configured.
@@ -279,7 +307,7 @@ Unified Development Manifest — full lifecycle engineering from idea to product
 | `/update-examples` | Sync examples with current implementation |
 | `/update-scripts` | Sync utility scripts |
 | `/agent-eval <mode>` | Run agent performance evaluation suite |
-| `/frontend-check <mode>` | Frontend quality check (a11y, perf, bundle, visual) |
+| `/frontend-check <mode>` | Frontend quality check (usability, interaction, a11y, perf, bundle, visual) |
 | `/desktop-build <framework> <platform>` | Build, package, sign desktop application |
 | `gh pr create --fill` | Create PR from current branch |
 | `gh pr checks` | Monitor CI status |

@@ -51,6 +51,59 @@ project, before using the engineering skills. It guides you through issue tracke
 triage labels, and domain documentation configuration. Initialization copies the
 skills only; it does not run setup or choose those settings for you.
 
+### UI Simplification and Real Interaction Checks
+
+The manifest guides agents editing Web App and desktop/webview UI; it is not a
+visual drag-and-drop editor. UI work prioritizes the user's task over decorative
+style: essential information first, clear next actions, advanced settings on demand,
+explicit save/error states and fewer unnecessary navigation/input steps.
+
+UI/UX copy rule: **Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.**
+Avoid decorative slogans and repeated explanations; keep necessary labels,
+accessibility information, errors, risk warnings, units and essential help.
+
+Use the [UI usability contract](references/ui-usability.md) and select the checks
+that match the change:
+
+```text
+/frontend-check usability
+/frontend-check interaction
+/frontend-check all
+```
+
+`all` includes usability, interaction, accessibility, performance, bundle and visual
+checks. These are agent instructions that use actual project tooling, not an
+installed browser runner. Missing prerequisites and unrun checks remain explicit;
+AI walkthroughs do not replace user research. Existing design skills are optional
+resources; the scenario's catalog does not automatically install every listed skill.
+No new design-skill dependencies are required for this workflow.
+
+![UI usability and interaction workflow](references/ui-usability-workflow.svg)
+
+[Editable JSON](references/ui-usability-workflow.json) ·
+[Shared standalone renderer](scripts/render_codegraph_workflow.py).
+The existing renderer accepts any validated workflow source; its historical filename
+is retained to avoid duplicating a renderer. The diagram describes rules, not status.
+From this manifest directory or an initialized project root:
+
+```bash
+python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg --check
+```
+
+Init/add distribute the contract, JSON, SVG and shared renderer. Direct manifest
+update includes these exact resources in its backup/restore transaction while
+preserving the project's README and data. To update an already installed manifest:
+
+```bash
+vibe update manifest vibe-coding /path/to/project --dry-run
+vibe update manifest vibe-coding /path/to/project
+```
+
+Recorded generation options are reused; legacy projects may need the explicit
+provider/scenario/owner/org/repo/email options described in the repository's update
+contract. Follow the printed restore command if rolling back a project update.
+
 ### Optional CodeGraph Navigation
 
 [CodeGraph](https://github.com/colbymchenry/codegraph) gives coding agents indexed symbol source and call relationships. The manifest uses its CLI first when the project root already contains `.codegraph/`: start with `codegraph explore "<question, symbol, or file>"` before broad search or code reads. `node`, `impact`, and `affected` help with targeted reading, change-impact analysis, and candidate test discovery; see the [canonical instructions](MANIFEST.md#code-navigation-cli-first-codegraph) for examples.

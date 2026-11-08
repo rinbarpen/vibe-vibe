@@ -31,7 +31,19 @@ Pure frontend application without backend dependency.
 | `pnpm lint` | Lint + type check |
 | `pnpm test` | Unit + component tests |
 | `pnpm e2e` | Playwright E2E tests |
-| `/frontend-check` | Frontend quality gate (a11y, perf, bundle, visual) |
+| `/frontend-check usability` | Information priority, settings clarity, before/after task walkthrough |
+| `/frontend-check interaction` | Real task outcomes, persistence and failure paths |
+| `/frontend-check all` | All six checks: usability, interaction, a11y, perf, bundle, visual |
+
+## UI Acceptance
+
+For hierarchy, settings or workflow changes, apply the project-root contract
+`references/ui-usability.md`: primary information visible, advanced details
+progressively disclosed, real tasks completed and outcomes verified. Use the
+project's actual startup/test commands; examples above are not generated scripts.
+Select existing installed design skills as needed; the design-skill table is a
+catalog, not a guarantee that every listed skill is installed. Browser checks do
+not replace native desktop/mobile verification when those behaviors are affected.
 
 ## Development Standards
 

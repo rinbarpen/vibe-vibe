@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1702" height="3108" viewBox="0 0 1702 3108" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">UI 易用性与真实操作验收工作流</title>
+  <desc id="workflow-description">面向任务的信息优先级与设置简化；AI 在约定内设计、实现、验证与返工。只有新增业务决策才等待人；缺测试前置不视为通过。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1702" height="3108" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">UI 易用性与真实操作验收工作流</text>
+    <text x="28" y="70" font-size="14" fill="#475569">面向任务的信息优先级与设置简化；AI 在约定内设计、实现、验证与返工。只有新增业务决策才等待人；缺测试前置不视为通过。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="2914" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="2914" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="2914" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="baseline" data-to="scope" d="M 220.0,492 V 535.0 H 630.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="rollback" d="M 1040.0,986 V 1029.0 H 24 V 2448 H 220.0 V 2472" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="wait" d="M 1040.0,986 V 1029.0 H 630.0 V 1072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="design" data-to="implement" d="M 220.0,1386 V 1429.0 H 220.0 V 1472" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="evidence" data-to="done" d="M 220.0,2386 V 2429.0 H 434 V 2848 H 630.0 V 2872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="implement" data-to="interaction" d="M 220.0,1586 V 1629.0 H 630.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="interaction" data-to="dependency" d="M 630.0,1786 V 1829.0 H 220.0 V 1872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="interaction" data-to="usability" d="M 630.0,1786 V 1829.0 H 630.0 V 2072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="restore" data-to="done" d="M 630.0,2786 V 2829.0 H 630.0 V 2872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="rollback" data-to="restore" d="M 220.0,2586 V 2629.0 H 630.0 V 2672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="scope" data-to="decision" d="M 630.0,692 V 735.0 H 1040.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="scope" data-to="design" d="M 630.0,692 V 735.0 H 220.0 V 1272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="baseline" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="usability" data-to="evidence" d="M 630.0,2186 V 2229.0 H 220.0 V 2272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="baseline" d="M 1220,882.0 H 1270 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dependency" data-to="decision" d="M 400,1929.0 H 1296 V 755 H 1040.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="dependency" data-to="interaction" d="M 400,1929.0 H 1322 V 1649 H 630.0 V 1672" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="interaction" data-to="implement" d="M 810,1729.0 H 1348 V 1449 H 220.0 V 1472" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="restore" data-to="rollback" d="M 810,2729.0 H 1374 V 2449 H 220.0 V 2472" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="usability" data-to="design" d="M 810,2129.0 H 1400 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="wait" data-to="decision" d="M 810,1129.0 H 1426 V 755 H 1040.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>UI 变更请求 — 输入：已确认目标、当前页面与项目约定；图表示规则，不是执行状态。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">UI 变更请求</text>
+      <text x="466" y="252" font-size="14" fill="#334155">输入：已确认目标、当前页面与项目约定；图表</text>
+      <text x="466" y="272" font-size="14" fill="#334155">示规则，不是执行状态。</text>
+    </g>
+    <g id="node-baseline" data-kind="ai" data-row="1">
+      <title>记录基线与验收范围 — 主要任务、信息位置、操作路径、截图；新页面说明无历史基线。</title>
+      <rect x="40" y="378" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">记录基线与验收范围</text>
+      <text x="56" y="452" font-size="14" fill="#334155">主要任务、信息位置、操作路径、截图；新页面</text>
+      <text x="56" y="472" font-size="14" fill="#334155">说明无历史基线。</text>
+    </g>
+    <g id="node-scope" data-kind="check" data-row="2">
+      <title>核对目标与影响边界 — 约定内直接执行；新目标、取舍冲突或预设高影响门交给人决定。</title>
+      <rect x="450" y="578" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="602" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="628" font-size="18" font-weight="700">核对目标与影响边界</text>
+      <text x="466" y="652" font-size="14" fill="#334155">约定内直接执行；新目标、取舍冲突或预设高影</text>
+      <text x="466" y="672" font-size="14" fill="#334155">响门交给人决定。</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="3">
+      <title>处理当前业务决策 — 绑定版本、证据、选项与影响；只暂停依赖此决定的动作。</title>
+      <rect x="860" y="778" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="802" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="828" font-size="18" font-weight="700">处理当前业务决策</text>
+      <text x="876" y="852" font-size="14" fill="#334155">绑定版本、证据、选项与影响；只暂停依赖此决</text>
+      <text x="876" y="872" font-size="14" fill="#334155">定的动作。</text>
+      <text x="876" y="904" font-size="14" fill="#9a3412">介入条件：新目标/约束、取舍冲突或预定义高影</text>
+      <text x="876" y="924" font-size="14" fill="#9a3412">响门。</text>
+      <text x="876" y="944" font-size="14" fill="#9a3412">恢复执行：同意或调整：核对版本后回到基线；</text>
+      <text x="876" y="964" font-size="14" fill="#9a3412">取消：执行并验证回退。</text>
+    </g>
+    <g id="node-wait" data-kind="check" data-row="4">
+      <title>等待有效回答 — 保存当前范围；未回答不推定同意。收到回答后核对版本与真实状态。</title>
+      <rect x="450" y="1072" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1096" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1122" font-size="18" font-weight="700">等待有效回答</text>
+      <text x="466" y="1146" font-size="14" fill="#334155">保存当前范围；未回答不推定同意。收到回答后</text>
+      <text x="466" y="1166" font-size="14" fill="#334155">核对版本与真实状态。</text>
+    </g>
+    <g id="node-design" data-kind="ai" data-row="5">
+      <title>梳理信息与设置层级 — 关键信息优先；按需展开细节。避免冗余副标签和说明，让分组与布局表达意图。</title>
+      <rect x="40" y="1272" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1296" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1322" font-size="18" font-weight="700">梳理信息与设置层级</text>
+      <text x="56" y="1346" font-size="14" fill="#334155">关键信息优先；按需展开细节。避免冗余副标签</text>
+      <text x="56" y="1366" font-size="14" fill="#334155">和说明，让分组与布局表达意图。</text>
+    </g>
+    <g id="node-implement" data-kind="ai" data-row="6">
+      <title>实现并补针对性测试 — 复用现有组件、项目脚本和测试；保留原版本，准备适用回退入口。</title>
+      <rect x="40" y="1472" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1496" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1522" font-size="18" font-weight="700">实现并补针对性测试</text>
+      <text x="56" y="1546" font-size="14" fill="#334155">复用现有组件、项目脚本和测试；保留原版本，</text>
+      <text x="56" y="1566" font-size="14" fill="#334155">准备适用回退入口。</text>
+    </g>
+    <g id="node-interaction" data-kind="check" data-row="7">
+      <title>验证真实操作与结果 — 入口→操作→结果；适用的持久化、异常、取消、重试、小屏和键盘。</title>
+      <rect x="450" y="1672" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1696" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1722" font-size="18" font-weight="700">验证真实操作与结果</text>
+      <text x="466" y="1746" font-size="14" fill="#334155">入口→操作→结果；适用的持久化、异常、取消、</text>
+      <text x="466" y="1766" font-size="14" fill="#334155">重试、小屏和键盘。</text>
+    </g>
+    <g id="node-dependency" data-kind="ai" data-row="8">
+      <title>调查并等待测试前置 — 记录缺失服务、工具或 fixture；技术问题先调查，不伪造通过。</title>
+      <rect x="40" y="1872" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1896" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1922" font-size="18" font-weight="700">调查并等待测试前置</text>
+      <text x="56" y="1946" font-size="14" fill="#334155">记录缺失服务、工具或 fixture；技术问题先调</text>
+      <text x="56" y="1966" font-size="14" fill="#334155">查，不伪造通过。</text>
+    </g>
+    <g id="node-usability" data-kind="check" data-row="9">
+      <title>走查易用性与适用质量项 — 对比信息层级、任务成本与冗余说明；保留必要标签、错误和风险提示，执行所选质量项。</title>
+      <rect x="450" y="2072" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2096" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2122" font-size="18" font-weight="700">走查易用性与适用质量项</text>
+      <text x="466" y="2146" font-size="14" fill="#334155">对比信息层级、任务成本与冗余说明；保留必要</text>
+      <text x="466" y="2166" font-size="14" fill="#334155">标签、错误和风险提示，执行所选质量项。</text>
+    </g>
+    <g id="node-evidence" data-kind="ai" data-row="10">
+      <title>汇总实际证据与限制 — 精确命令/操作、输入、输出、状态、截图或 trace；局部通过不称全量通过。</title>
+      <rect x="40" y="2272" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2296" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2322" font-size="18" font-weight="700">汇总实际证据与限制</text>
+      <text x="56" y="2346" font-size="14" fill="#334155">精确命令/操作、输入、输出、状态、截图或 tra</text>
+      <text x="56" y="2366" font-size="14" fill="#334155">ce；局部通过不称全量通过。</text>
+    </g>
+    <g id="node-rollback" data-kind="ai" data-row="11">
+      <title>执行本次改动回退 — 仅恢复本次拥有的变更；有状态操作走项目回退入口，保留他人修改。</title>
+      <rect x="40" y="2472" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2496" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2522" font-size="18" font-weight="700">执行本次改动回退</text>
+      <text x="56" y="2546" font-size="14" fill="#334155">仅恢复本次拥有的变更；有状态操作走项目回退</text>
+      <text x="56" y="2566" font-size="14" fill="#334155">入口，保留他人修改。</text>
+    </g>
+    <g id="node-restore" data-kind="check" data-row="12">
+      <title>验证恢复结果 — 执行关键任务与必要状态检查；恢复失败继续调查，不报告已成功回退。</title>
+      <rect x="450" y="2672" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2696" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2722" font-size="18" font-weight="700">验证恢复结果</text>
+      <text x="466" y="2746" font-size="14" fill="#334155">执行关键任务与必要状态检查；恢复失败继续调</text>
+      <text x="466" y="2766" font-size="14" fill="#334155">查，不报告已成功回退。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="13">
+      <title>交付或结束 — 功能交付列证据与未验证项；取消则明确已验证回退，不混同功能完成。</title>
+      <rect x="450" y="2872" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2896" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2922" font-size="18" font-weight="700">交付或结束</text>
+      <text x="466" y="2946" font-size="14" fill="#334155">功能交付列证据与未验证项；取消则明确已验证</text>
+      <text x="466" y="2966" font-size="14" fill="#334155">回退，不混同功能完成。</text>
+    </g>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">基线与任务已明确</text>
+    <text x="630.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">取消/决定撤销</text>
+    <text x="835.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">尚未回答</text>
+    <text x="232.0" y="1420.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">层级与验收已明确</text>
+    <text x="425.0" y="2420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">证据完整；如实列限制</text>
+    <text x="425.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">执行针对性操作验证</text>
+    <text x="425.0" y="1820.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">缺环境/服务/工具</text>
+    <text x="642.0" y="1820.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">操作结果符合预期</text>
+    <text x="642.0" y="2820.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复已验证：取消结束</text>
+    <text x="425.0" y="2620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复后实际检查</text>
+    <text x="835.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">需要新的业务决定</text>
+    <text x="425.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">约定内继续</text>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">接收已确认请求</text>
+    <text x="425.0" y="2220.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">所选验收满足要求</text>
+    <text x="1280" y="618.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意/调整：核对后恢复</text>
+    <text x="1306" y="1342.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">需要新的资源/约束决定</text>
+    <text x="1332" y="1789.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">前置条件就绪：恢复验证</text>
+    <text x="1358" y="1589.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">行为失败：修复后重测</text>
+    <text x="1384" y="2589.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复失败：调查与修复</text>
+    <text x="1410" y="1689.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">层级/易用性问题：返工</text>
+    <text x="1436" y="942.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">收到真实有效回答</text>
+    <text x="28" y="3082" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

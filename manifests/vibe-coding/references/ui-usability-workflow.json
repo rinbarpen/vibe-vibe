@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "title": "UI 易用性与真实操作验收工作流",
+  "description": "面向任务的信息优先级与设置简化；AI 在约定内设计、实现、验证与返工。只有新增业务决策才等待人；缺测试前置不视为通过。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "UI 变更请求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "输入：已确认目标、当前页面与项目约定；图表示规则，不是执行状态。"
+    },
+    {
+      "id": "baseline",
+      "label": "记录基线与验收范围",
+      "kind": "ai",
+      "row": 1,
+      "detail": "主要任务、信息位置、操作路径、截图；新页面说明无历史基线。"
+    },
+    {
+      "id": "scope",
+      "label": "核对目标与影响边界",
+      "kind": "check",
+      "row": 2,
+      "detail": "约定内直接执行；新目标、取舍冲突或预设高影响门交给人决定。"
+    },
+    {
+      "id": "decision",
+      "label": "处理当前业务决策",
+      "kind": "human",
+      "row": 3,
+      "detail": "绑定版本、证据、选项与影响；只暂停依赖此决定的动作。",
+      "trigger": "新目标/约束、取舍冲突或预定义高影响门。",
+      "resume": "同意或调整：核对版本后回到基线；取消：执行并验证回退。"
+    },
+    {
+      "id": "wait",
+      "label": "等待有效回答",
+      "kind": "check",
+      "row": 4,
+      "detail": "保存当前范围；未回答不推定同意。收到回答后核对版本与真实状态。"
+    },
+    {
+      "id": "design",
+      "label": "梳理信息与设置层级",
+      "kind": "ai",
+      "row": 5,
+      "detail": "关键信息优先；按需展开细节。避免冗余副标签和说明，让分组与布局表达意图。"
+    },
+    {
+      "id": "implement",
+      "label": "实现并补针对性测试",
+      "kind": "ai",
+      "row": 6,
+      "detail": "复用现有组件、项目脚本和测试；保留原版本，准备适用回退入口。"
+    },
+    {
+      "id": "interaction",
+      "label": "验证真实操作与结果",
+      "kind": "check",
+      "row": 7,
+      "detail": "入口→操作→结果；适用的持久化、异常、取消、重试、小屏和键盘。"
+    },
+    {
+      "id": "dependency",
+      "label": "调查并等待测试前置",
+      "kind": "ai",
+      "row": 8,
+      "detail": "记录缺失服务、工具或 fixture；技术问题先调查，不伪造通过。"
+    },
+    {
+      "id": "usability",
+      "label": "走查易用性与适用质量项",
+      "kind": "check",
+      "row": 9,
+      "detail": "对比信息层级、任务成本与冗余说明；保留必要标签、错误和风险提示，执行所选质量项。"
+    },
+    {
+      "id": "evidence",
+      "label": "汇总实际证据与限制",
+      "kind": "ai",
+      "row": 10,
+      "detail": "精确命令/操作、输入、输出、状态、截图或 trace；局部通过不称全量通过。"
+    },
+    {
+      "id": "rollback",
+      "label": "执行本次改动回退",
+      "kind": "ai",
+      "row": 11,
+      "detail": "仅恢复本次拥有的变更；有状态操作走项目回退入口，保留他人修改。"
+    },
+    {
+      "id": "restore",
+      "label": "验证恢复结果",
+      "kind": "check",
+      "row": 12,
+      "detail": "执行关键任务与必要状态检查；恢复失败继续调查，不报告已成功回退。"
+    },
+    {
+      "id": "done",
+      "label": "交付或结束",
+      "kind": "terminal",
+      "row": 13,
+      "detail": "功能交付列证据与未验证项；取消则明确已验证回退，不混同功能完成。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "baseline",
+      "label": "接收已确认请求",
+      "kind": "normal"
+    },
+    {
+      "from": "baseline",
+      "to": "scope",
+      "label": "基线与任务已明确",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "design",
+      "label": "约定内继续",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "decision",
+      "label": "需要新的业务决定",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "wait",
+      "label": "尚未回答",
+      "kind": "normal"
+    },
+    {
+      "from": "wait",
+      "to": "decision",
+      "label": "收到真实有效回答",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "baseline",
+      "label": "同意/调整：核对后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "rollback",
+      "label": "取消/决定撤销",
+      "kind": "normal"
+    },
+    {
+      "from": "design",
+      "to": "implement",
+      "label": "层级与验收已明确",
+      "kind": "normal"
+    },
+    {
+      "from": "implement",
+      "to": "interaction",
+      "label": "执行针对性操作验证",
+      "kind": "normal"
+    },
+    {
+      "from": "interaction",
+      "to": "implement",
+      "label": "行为失败：修复后重测",
+      "kind": "rework"
+    },
+    {
+      "from": "interaction",
+      "to": "dependency",
+      "label": "缺环境/服务/工具",
+      "kind": "normal"
+    },
+    {
+      "from": "dependency",
+      "to": "interaction",
+      "label": "前置条件就绪：恢复验证",
+      "kind": "rework"
+    },
+    {
+      "from": "dependency",
+      "to": "decision",
+      "label": "需要新的资源/约束决定",
+      "kind": "rework"
+    },
+    {
+      "from": "interaction",
+      "to": "usability",
+      "label": "操作结果符合预期",
+      "kind": "normal"
+    },
+    {
+      "from": "usability",
+      "to": "design",
+      "label": "层级/易用性问题：返工",
+      "kind": "rework"
+    },
+    {
+      "from": "usability",
+      "to": "evidence",
+      "label": "所选验收满足要求",
+      "kind": "normal"
+    },
+    {
+      "from": "evidence",
+      "to": "done",
+      "label": "证据完整；如实列限制",
+      "kind": "normal"
+    },
+    {
+      "from": "rollback",
+      "to": "restore",
+      "label": "恢复后实际检查",
+      "kind": "normal"
+    },
+    {
+      "from": "restore",
+      "to": "rollback",
+      "label": "恢复失败：调查与修复",
+      "kind": "rework"
+    },
+    {
+      "from": "restore",
+      "to": "done",
+      "label": "恢复已验证：取消结束",
+      "kind": "normal"
+    }
+  ]
+}

@@ -74,7 +74,9 @@ Use property-based testing for:
 ## CI Testing
 
 - Run the full test suite on every PR and every push to main
-- Run E2E tests on staging, not locally (unless the developer opts in)
+- During development, run affected interaction/E2E flows against an isolated local app or a dedicated test environment; derive start commands and URLs from project configuration.
+- Before release, run applicable integration/E2E checks on staging. Browser-mocked flows verify client behavior, not real backend persistence; label that boundary and keep the required integration check.
+- Use isolated test data/accounts, deterministic fixtures and semantic selectors; auto-wait for outcomes rather than adding fixed delays. Retain failure screenshots and traces. Never direct test writes at production.
 - Flaky tests must be quarantined immediately (not ignored)
 - Coverage reports generated on every CI run; regression alerts on coverage drops
 

@@ -1,11 +1,40 @@
 ---
-description: UI Design rules — design systems, accessibility, responsive layouts,
-  visual design quality standards
-globs: ["**/*.{tsx,jsx,css,html,svelte,vue}"]
+description: UI Design rules — information priority, settings usability, task acceptance,
+  design systems, accessibility, responsive layouts and visual quality
+globs: ["**/*.{tsx,jsx,css,html,svelte,vue,dart,wxml,wxss}"]
 alwaysApply: false
 ---
 
 # UI Design Rules
+
+## 信息优先级与设置简化
+
+- 先写清页面的主要用户、主要任务与完成结果，再设计布局；优先复用项目现有设计系统。
+- 信息分为「立即可见」「按需查看」「高级配置」：当前任务的关键状态、结果、异常和主要入口直接可见；细节放在清晰可发现的展开区或详情页。
+- 同一任务区的主操作应清晰突出，次操作降低视觉权重；不机械限制整个页面的按钮或信息数量。
+- 不默认把所有指标做成等权卡片，不用装饰性图表、动效或重复摘要争夺注意力。
+- 简化不等于删功能、隐藏失败、缩小字体或制造大面积无效留白。高密度专业场景保留任务所需信息，按语义分组。
+- 设置按用户目标而非内部模块分组：常用项优先，高级项按需展开；提供合理默认值、当前值和必要的影响说明。
+- 明确区分自动保存、待保存、保存成功和失败；刷新或重新进入后验证应持久化的设置，失败不伪装成成功。
+- 条件字段仅在相关时展示；保留合法输入，错误靠近字段，给出可执行的修正提示。恢复默认值和破坏性操作明确影响范围。
+- 主流程覆盖加载、空、错误、成功、禁用及适用的慢响应状态；移动端不能只把桌面布局压缩。
+
+## 文案克制：让布局解释界面
+
+**Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.**
+
+- 避免无必要的副标签、重复标题说明和 slogan 式装饰文案；不要给每张卡片、每个分组都补一句解释。
+- 优先通过分组、位置、对齐、视觉层级和清晰控件表达用途；含糊的交互先改善设计，而不是继续堆说明文字。
+- 保留必要的表单标签、无障碍名称、错误与风险提示、数值单位及必要帮助；文案克制不等于删除用户理解或完成任务所需的信息。
+- 易用性验收时逐项核对副标签和描述是否提供新信息：重复、空泛或仅装饰的内容删除或合并，改后仍应能找到入口、理解状态并完成任务。
+
+## Task-Based Acceptance
+
+- UI 层级、操作流程和设置变更，执行 `/frontend-check usability` 与 `/frontend-check interaction`，按影响范围选择任务，不强制为文案小修跑完整 E2E。
+- 实际走完「找到入口 → 操作 → 确认结果」，并验证适用的数据写入、刷新持久化、取消、重试和重复点击行为。
+- 对比改前/改后的任务步骤、往返跳转、重复输入及截图；阈值来自项目与任务，不设置通用点击数或卡片数。
+- AI 界面走查不是用户研究；记录实际观察，未执行的浏览器操作标记 `NOT RUN` 或 `BLOCKED`，不据代码阅读宣称易用性通过。
+- 详细契约与工作流位于项目根目录的 `references/ui-usability.md`。优先使用现有项目测试与可用宿主工具，不把新增设计技能当作验收前提。
 
 ## Design Tokens as Source of Truth
 

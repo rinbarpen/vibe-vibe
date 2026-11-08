@@ -220,8 +220,9 @@ copy_file "$MANIFEST_DIR/.editorconfig"  "$TARGET/.editorconfig"
 copy_file "$MANIFEST_DIR/.gitignore"     "$TARGET/.gitignore"
 copy_file "$MANIFEST_DIR/scripts/version_guard.py" "$TARGET/scripts/version_guard.py"
 
-# Portable CodeGraph workflow only; do not broaden general reference copying.
-for asset in references/codegraph-workflow.json references/codegraph-workflow.svg scripts/render_codegraph_workflow.py; do
+# Explicit portable workflow resources only; do not copy arbitrary references.
+for asset in references/codegraph-workflow.json references/codegraph-workflow.svg scripts/render_codegraph_workflow.py \
+  references/ui-usability.md references/ui-usability-workflow.json references/ui-usability-workflow.svg; do
   copy_file "$MANIFEST_DIR/$asset" "$TARGET/$asset"
 done
 
