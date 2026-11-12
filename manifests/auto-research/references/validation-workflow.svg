@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1702" height="2788" viewBox="0 0 1702 2788" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Auto-Research：验证、失败积累与上下文保真</title>
+  <desc id="workflow-description">流程规则，不是运行状态。复用既有阶段、预算门、checkpoint 与隔离 attempt；关键词不判重，部分实验不作全局否定，启发仍待验证。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1702" height="2788" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Auto-Research：验证、失败积累与上下文保真</text>
+    <text x="28" y="70" font-size="14" fill="#475569">流程规则，不是运行状态。复用既有阶段、预算门、checkpoint 与隔离 attempt；关键词不判重，部分实验不作全局否定，启发仍待验证。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="2594" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="2594" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="2594" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="archive" data-to="done" d="M 220.0,2466 V 2509.0 H 630.0 V 2552" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="audit" data-to="archive" d="M 630.0,2246 V 2289.0 H 220.0 V 2332" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="context" data-to="novelty" d="M 630.0,492 V 535.0 H 630.0 V 798" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="coverage" data-to="learn" d="M 630.0,1826 V 1869.0 H 220.0 V 1912" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="archive" d="M 1040.0,1406 V 1449.0 H 24 V 2308 H 220.0 V 2332" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="design" d="M 1040.0,1406 V 1449.0 H 220.0 V 1492" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="design" data-to="coverage" d="M 220.0,1606 V 1649.0 H 630.0 V 1692" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="learn" data-to="audit" d="M 220.0,2046 V 2089.0 H 630.0 V 2132" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="novelty" data-to="decision" d="M 630.0,912 V 955.0 H 1040.0 V 1198" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="novelty" data-to="design" d="M 630.0,912 V 955.0 H 24 V 1468 H 220.0 V 1492" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="restore" data-to="novelty" d="M 220.0,712 V 755.0 H 630.0 V 798" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="retrieve" data-to="novelty" d="M 400,1055.0 H 828 V 855.0 H 810" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="context" d="M 630.0,292 V 335.0 H 630.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="archive" data-to="context" d="M 400,2399.0 H 1270 V 355 H 630.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="audit" data-to="learn" d="M 810,2189.0 H 1296 V 1889 H 220.0 V 1912" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="context" data-to="restore" d="M 810,435.0 H 1322 V 555 H 220.0 V 578" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="coverage" data-to="decision" d="M 810,1759.0 H 1348 V 1175 H 1040.0 V 1198" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="coverage" data-to="design" d="M 810,1759.0 H 1374 V 1469 H 220.0 V 1492" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="decision" data-to="retrieve" d="M 1220,1302.0 H 1400 V 975 H 220.0 V 998" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="novelty" data-to="retrieve" d="M 810,855.0 H 1426 V 975 H 220.0 V 998" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>进入或恢复当前研究 — 读取已确认目标、方法/claim、源证据、负结果与可信 checkpoint。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">进入或恢复当前研究</text>
+      <text x="466" y="252" font-size="14" fill="#334155">读取已确认目标、方法/claim、源证据、负结果</text>
+      <text x="466" y="272" font-size="14" fill="#334155">与可信 checkpoint。</text>
+    </g>
+    <g id="node-context" data-kind="check" data-row="1">
+      <title>AI：核对语义与版本基线 — 核对 ID/revision/hash、目标与标准、有效决定及真实进程；每轮和上下文切换均执行。</title>
+      <rect x="450" y="378" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="402" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="428" font-size="18" font-weight="700">AI：核对语义与版本基线</text>
+      <text x="466" y="452" font-size="14" fill="#334155">核对 ID/revision/hash、目标与标准、有效决定</text>
+      <text x="466" y="472" font-size="14" fill="#334155">及真实进程；每轮和上下文切换均执行。</text>
+    </g>
+    <g id="node-restore" data-kind="ai" data-row="2">
+      <title>AI：重建并复核可信上下文 — 冲突时保留 attempt，从可信 checkpoint 与原始证据重建；版本、语义和状态复核一致后再继续。</title>
+      <rect x="40" y="578" width="360" height="134" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="602" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="628" font-size="18" font-weight="700">AI：重建并复核可信上下文</text>
+      <text x="56" y="652" font-size="14" fill="#334155">冲突时保留 attempt，从可信 checkpoint 与原</text>
+      <text x="56" y="672" font-size="14" fill="#334155">始证据重建；版本、语义和状态复核一致后再继</text>
+      <text x="56" y="692" font-size="14" fill="#334155">续。</text>
+    </g>
+    <g id="node-novelty" data-kind="check" data-row="3">
+      <title>AI：思路与关键方法比较 — 原始方法证据逐项核对；high_overlap / distinct / unverified；方法修订后重验。</title>
+      <rect x="450" y="798" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="822" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="848" font-size="18" font-weight="700">AI：思路与关键方法比较</text>
+      <text x="466" y="872" font-size="14" fill="#334155">原始方法证据逐项核对；high_overlap / distin</text>
+      <text x="466" y="892" font-size="14" fill="#334155">ct / unverified；方法修订后重验。</text>
+    </g>
+    <g id="node-retrieve" data-kind="ai" data-row="4">
+      <title>AI：补文献与方法证据 — 缺证据回 literature/position；关键词只召回，不凭相似或未检出作结论。</title>
+      <rect x="40" y="998" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1022" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1048" font-size="18" font-weight="700">AI：补文献与方法证据</text>
+      <text x="56" y="1072" font-size="14" fill="#334155">缺证据回 literature/position；关键词只召回</text>
+      <text x="56" y="1092" font-size="14" fill="#334155">，不凭相似或未检出作结论。</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="5">
+      <title>用户：沿用既有决策门 — 沿用方案选择与目标/预算变更门；不是每轮技术修复都重新审批。</title>
+      <rect x="860" y="1198" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1222" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1248" font-size="18" font-weight="700">用户：沿用既有决策门</text>
+      <text x="876" y="1272" font-size="14" fill="#334155">沿用方案选择与目标/预算变更门；不是每轮技术</text>
+      <text x="876" y="1292" font-size="14" fill="#334155">修复都重新审批。</text>
+      <text x="876" y="1324" font-size="14" fill="#9a3412">介入条件：首次候选方案选择，或需要改变已确</text>
+      <text x="876" y="1344" font-size="14" fill="#9a3412">认目标、约束或预算。</text>
+      <text x="876" y="1364" font-size="14" fill="#9a3412">恢复执行：继续后 AI 从设计/执行恢复；调整返</text>
+      <text x="876" y="1384" font-size="14" fill="#9a3412">回证据与候选；未答复等待；取消归档。</text>
+    </g>
+    <g id="node-design" data-kind="ai" data-row="6">
+      <title>AI：设计或修复并执行 — 预设最低证据、反证/停止条件；先审查/sanity/预算 gate，再按冻结矩阵 run/queue。</title>
+      <rect x="40" y="1492" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1516" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1542" font-size="18" font-weight="700">AI：设计或修复并执行</text>
+      <text x="56" y="1566" font-size="14" fill="#334155">预设最低证据、反证/停止条件；先审查/sanity/</text>
+      <text x="56" y="1586" font-size="14" fill="#334155">预算 gate，再按冻结矩阵 run/queue。</text>
+    </g>
+    <g id="node-coverage" data-kind="check" data-row="7">
+      <title>AI：核对实跑覆盖与有效性 — 逐 claim 对照矩阵和全部 attempts，记录缺失/失败；决定性反证可早停，资源中止不等于无效。</title>
+      <rect x="450" y="1692" width="360" height="134" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1716" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1742" font-size="18" font-weight="700">AI：核对实跑覆盖与有效性</text>
+      <text x="466" y="1766" font-size="14" fill="#334155">逐 claim 对照矩阵和全部 attempts，记录缺失/</text>
+      <text x="466" y="1786" font-size="14" fill="#334155">失败；决定性反证可早停，资源中止不等于无效</text>
+      <text x="466" y="1806" font-size="14" fill="#334155">。</text>
+    </g>
+    <g id="node-learn" data-kind="ai" data-row="8">
+      <title>AI：失败分层与启发留档 — FAILURE_ANALYSIS 保留事实、解释、待验证启发及下一项区分实验；method 失败不等于 idea 无效。</title>
+      <rect x="40" y="1912" width="360" height="134" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1936" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1962" font-size="18" font-weight="700">AI：失败分层与启发留档</text>
+      <text x="56" y="1986" font-size="14" fill="#334155">FAILURE_ANALYSIS 保留事实、解释、待验证启发</text>
+      <text x="56" y="2006" font-size="14" fill="#334155">及下一项区分实验；method 失败不等于 idea 无</text>
+      <text x="56" y="2026" font-size="14" fill="#334155">效。</text>
+    </g>
+    <g id="node-audit" data-kind="check" data-row="9">
+      <title>AI：审查限定范围的结论 — 支持/部分支持/未支持/未定/范围内反证分别记录；审查身份和证据资格沿用原规则。</title>
+      <rect x="450" y="2132" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2156" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2182" font-size="18" font-weight="700">AI：审查限定范围的结论</text>
+      <text x="466" y="2206" font-size="14" fill="#334155">支持/部分支持/未支持/未定/范围内反证分别记</text>
+      <text x="466" y="2226" font-size="14" fill="#334155">录；审查身份和证据资格沿用原规则。</text>
+    </g>
+    <g id="node-archive" data-kind="ai" data-row="10">
+      <title>AI：归档判断与恢复点 — 保存旧新版本、语义 diff、负结果/启发索引及 next；科学配置变化新 cycle，保留失败 attempt。</title>
+      <rect x="40" y="2332" width="360" height="134" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2356" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2382" font-size="18" font-weight="700">AI：归档判断与恢复点</text>
+      <text x="56" y="2406" font-size="14" fill="#334155">保存旧新版本、语义 diff、负结果/启发索引及</text>
+      <text x="56" y="2426" font-size="14" fill="#334155">next；科学配置变化新 cycle，保留失败 attemp</text>
+      <text x="56" y="2446" font-size="14" fill="#334155">t。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="11">
+      <title>交接或暂停：保留证据边界 — 经审查的范围结论交 Writing Plan；暂停/取消归档不等于判定 idea 无效。</title>
+      <rect x="450" y="2552" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2576" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2602" font-size="18" font-weight="700">交接或暂停：保留证据边界</text>
+      <text x="466" y="2626" font-size="14" fill="#334155">经审查的范围结论交 Writing Plan；暂停/取消</text>
+      <text x="466" y="2646" font-size="14" fill="#334155">归档不等于判定 idea 无效。</text>
+    </g>
+    <rect x="355.0" y="2487.0" width="140.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="2500.0" text-anchor="middle" font-size="12" fill="#64748b">交写作或保存暂停状态</text>
+    <rect x="374.5" y="2267.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="2280.0" text-anchor="middle" font-size="12" fill="#64748b">审查后限定结论</text>
+    <rect x="637.0" y="513.0" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="642.0" y="526.0" text-anchor="start" font-size="12" fill="#64748b">基线与状态一致</text>
+    <rect x="348.5" y="1847.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1860.0" text-anchor="middle" font-size="12" fill="#64748b">评估当前证据或停止依据</text>
+    <rect x="566.5" y="1427.0" width="127.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="1440.0" text-anchor="middle" font-size="12" fill="#64748b">取消：归档当前证据</text>
+    <rect x="553.5" y="1427.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="630.0" y="1440.0" text-anchor="middle" font-size="12" fill="#64748b">继续：在有效范围内执行</text>
+    <rect x="355.0" y="1627.0" width="140.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="1640.0" text-anchor="middle" font-size="12" fill="#64748b">保存实际 run/attempt</text>
+    <rect x="368.0" y="2067.0" width="114.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="2080.0" text-anchor="middle" font-size="12" fill="#64748b">负结果与启发分开</text>
+    <rect x="778.0" y="933.0" width="114.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="835.0" y="946.0" text-anchor="middle" font-size="12" fill="#64748b">需要既有人工决定</text>
+    <rect x="348.5" y="933.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="946.0" text-anchor="middle" font-size="12" fill="#64748b">已有有效决定且范围未变</text>
+    <rect x="361.5" y="733.0" width="127.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="425.0" y="746.0" text-anchor="middle" font-size="12" fill="#64748b">重建与基线复核通过</text>
+    <rect x="829" y="935.0" width="88.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="834" y="948.0" text-anchor="start" font-size="12" fill="#64748b">补证据后复核</text>
+    <rect x="637.0" y="313.0" width="159.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="642.0" y="326.0" text-anchor="start" font-size="12" fill="#64748b">读取源契约和 checkpoint</text>
+    <rect x="1275" y="1364.0" width="140.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1280" y="1377.0" text-anchor="start" font-size="12" fill="#c2410c">继续迭代：从基线重建</text>
+    <rect x="1301" y="2026.0" width="133.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1306" y="2039.0" text-anchor="start" font-size="12" fill="#c2410c">结论越界/解释缺证据</text>
+    <rect x="1327" y="482.0" width="159.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1332" y="495.0" text-anchor="start" font-size="12" fill="#c2410c">冲突/来源缺失：暂停晋级</text>
+    <rect x="1353" y="1454.0" width="133.5" height="17" rx="3" fill="#ffffff"/>
+    <text x="1358" y="1467.0" text-anchor="start" font-size="12" fill="#c2410c">补齐需改变目标/预算</text>
+    <rect x="1379" y="1601.0" width="153.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1384" y="1614.0" text-anchor="start" font-size="12" fill="#c2410c">缺关键证据：批准范围内</text>
+    <rect x="1379" y="1618.0" width="36.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1384" y="1631.0" text-anchor="start" font-size="12" fill="#c2410c">补齐</text>
+    <rect x="1405" y="1125.5" width="101.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1410" y="1138.5" text-anchor="start" font-size="12" fill="#c2410c">调整：修订候选</text>
+    <rect x="1431" y="902.0" width="62.0" height="17" rx="3" fill="#ffffff"/>
+    <text x="1436" y="915.0" text-anchor="start" font-size="12" fill="#c2410c">证据不足</text>
+    <text x="28" y="2762" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

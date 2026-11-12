@@ -8,7 +8,7 @@ bundles ~200+ AI skills (as git submodules) and project scaffolds (manifests).
 - `skills/` — 40+ git submodules each containing `SKILL.md` files (discovered recursively by `vibe list skills`).
   Name collisions auto-resolved by hyphenated relative path.
 - `workflows/` — Multi-stage agent workflows and full Claude Code plugin projects (e.g. writing-agent with skills, agents, workflows, and desktop app).
-- `manifests/` — 10 project bootstrap templates. Each needs a `CLAUDE.md` to be discoverable.
+- `manifests/` — 10 project bootstrap templates. Each needs `AGENTS.md`, `PROJECT_RULES.md`, or `CLAUDE.md` to be discoverable.
 - `tools/vibe_tool/` — Python CLI (`vibe`). Entrypoint: `vibe_tool.cli:main`.
 - `cli/` — 3 standalone CLI tool projects (agent-browser, anything-cli, office-cli).
 - `mine/` — First-party custom skills (chinese-patent, export-paper-zip, git-manager, manifest-to-skill, omnidraw, omnisheet, paper-version-manager, paperreview-ai-review).
@@ -16,7 +16,7 @@ bundles ~200+ AI skills (as git submodules) and project scaffolds (manifests).
 - `mcp.json` — 6 MCP servers configured (chrome-devtools, drawio, scientific, pdf-reader, etc.). Install on-demand into projects via `vibe mcp add`.
 
 No root `CLAUDE.md` exists — the repo is a meta-package, not a source project.
-No root-level CI workflows — each sub-project has its own.
+The root CI workflow `.github/workflows/project-setup.yml` checks portable project setup on Windows/macOS/Linux; other checks belong to their sub-projects.
 
 ## vibe CLI (primary tool)
 
@@ -133,7 +133,7 @@ vibe update
 
 ## Manifest structure
 
-Each manifest directory requires `CLAUDE.md` to be discoverable.
+Each manifest directory requires at least one ordinary contract entry: `AGENTS.md`, `PROJECT_RULES.md`, or `CLAUDE.md`. New rules should be plain `.md` with explicit `always`/`paths`/`when` scope. Setup publishes `PROJECT_RULES.md` and `rules/<name>/` for any file-reading harness; named host modes only add imports/skill copies. No Cursor output compatibility is required; legacy MDC is migration input. Existing user directories are retained.
 Optional: `AGENTS.md`, `agents/` (Claude Code + Codex agent definitions),
 `scenarios/` (scenario sub-manifests), `scripts/*init*.sh` (custom init scripts),
 `skills.txt` (required skill names, one per line — installed automatically by
@@ -166,3 +166,18 @@ not implied by this authoring requirement.
 - Local Claude settings at `.claude/settings.local.json` (gitignored).
 - Agent files exist in both `.claude/agents/` (Claude Code) and `.codex/agents/` (Codex TOML format) — validated by `scripts/validate-agent-compat.py`.
 - Skills index: `skills/ANNOTATIONS.md` (Chinese) and `skills/ANNOTATIONS_EN.md` (English).
+
+## Documentation readability
+
+- Write for the reader's task: a README gives purpose, prerequisites, the first action, and its expected result before reference details.
+- Put full catalogs, options, architecture, and change records in linked reference pages; keep them discoverable without making them prerequisites for getting started.
+- Do not impose badges, emoji, fixed chapter templates, or new translations. Preserve existing language pairs and verify facts, commands, paths, and support claims.
+- Follow the [reader-first writing contract](manifests/vibe-coding/references/readme-guide.md). Its read-only checker validates structure, not readability or whether examples were executed.
+
+## One-request project setup
+
+For requests to configure a project from one natural-language goal in any file/command-capable AI harness, read [BOOTSTRAP.md](BOOTSTRAP.md). Use the shell-free `scripts/setup-project.py` / `vibe setup` path for Windows/macOS/Linux, select or author the business manifest, preview/apply/check, and preserve existing project content. This path does not alter legacy init/add/update semantics.
+
+## Multi-project registry
+
+Successful setup/init/add CLI operations index real projects in `~/.config/vibe-tool/projects.json` (`VIBE_PROJECTS_FILE` overrides the location). Use `vibe project list/show`, `add/rename/relocate/remove`, and `vibe project update <name> [--manifest NAME|--skill NAME] [--dry-run]`; `update --all` visits all indexed projects. Project-local installations/setup records remain authoritative. Updates use local sources, skip uninstalled dependencies, apply one backed-up transaction per project, and keep setup host copies/hashes coherent. Registry removal never deletes project files. See the CLI reference for compatibility and failure semantics.

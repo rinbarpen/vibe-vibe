@@ -6,7 +6,7 @@
 
 `tools/vibe_tool/src/vibe_tool/discovery.py`：
 
-- `discover_manifests` 扫描 `manifests/` 的非隐藏直接子目录，并要求 `CLAUDE.md`；仅有 `AGENTS.md` 或 `SKILL.md` 不构成可发现的 manifest。注意当前黑名单约束。
+- `discover_manifests` 扫描 `manifests/` 的非隐藏直接子目录，并接受 `AGENTS.md`、`PROJECT_RULES.md` 或 `CLAUDE.md` 任一入口；只有 `SKILL.md` 不构成 manifest。注意当前黑名单约束。
 - `scripts/*init*.sh` 按名称排序后只取第一个作为入口，避免多个候选产生歧义；shell 入口应有 shebang 和可执行权限。
 - `scenarios/` 的非隐藏子目录用于场景发现；“列出场景”不等于安装器已经实现了场景选择与合并。
 - `skills.txt` 支持空行与 `#` 注释。依赖由 `skills/` 和 `mine/` 共同解析，名字冲突可能由相对路径消歧。
@@ -17,8 +17,9 @@
 
 检查 `tools/vibe_tool/src/vibe_tool/manifest.py` 以及该模板自己的安装脚本：
 
-- 无自定义脚本时走通用复制：约定的根文件、Cursor 规则/命令，以及原生 `.claude/agents/`、`.codex/agents/` 等特定资源。它不是模板整目录镜像。
-- 通用复制不会自动分发任意 `references/`、`scripts/` 或场景目录。若 README 的链接将在项目中使用，必须有显式安装路径，或明确那些链接只在模板仓库内使用。
+- 推荐跨平台 `vibe setup --harness generic`：编译普通规则包和共享 PROJECT_RULES.md，保留原作用域与来源；不输出 Cursor 目录、不模拟宿主插件。命名宿主模式只增加入口/技能副本。
+- 历史 init/add 无自定义脚本时走旧复制布局；保留原生 `.claude/agents/`、`.codex/agents/` 等特定资源。它不是模板整目录镜像。
+- 历史根布局不会自动分发任意目录；中立规则包显式分发 references/commands/templates/scripts 支持文件，不代表所有支持脚本无需依赖即可执行。若 README 的链接将在项目中使用，必须有显式安装路径，或明确那些链接只在模板仓库内使用。
 - 若承诺目标项目拥有 workflow 图和再生成能力，显式分发 SVG、可编辑源、渲染入口及其真实依赖；测试目标项目内的命令，不只测试仓库里的副本。
 - 有自定义脚本时，CLI 把解析后的目标目录作为首个位置参数，并提供 `VIBE_MANIFEST` 环境变量。脚本仍应根据自身位置可靠定位源文件，避免依赖调用者的当前目录。
 - 自定义选项透传由 `_SCRIPT_FLAG_MAP` 控制。新脚本自己接受 `--scenario`，不代表 `vibe init --scenario` 会自动传入；需要检查映射和端到端测试。不要为未请求的选项扩展公共 CLI。

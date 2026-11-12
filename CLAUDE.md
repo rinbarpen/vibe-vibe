@@ -82,7 +82,7 @@ This is a **vibe-coding** toolkit that aggregates ~200+ AI skills (as git submod
 
 ### Skills vs Manifests
 - **Skills** (`skills/`, `mine/`): SKILL.md files loaded into AI context to grant domain expertise. 200+ total across 33+ submodules and 4 custom packages.
-- **Manifests** (`manifests/`): Project bootstrapping templates with CLAUDE.md, AGENTS.md, and Cursor rules. Use `vibe init <manifest>` to scaffold a new project.
+- **Manifests** (`manifests/`): Harness-independent business contracts: discovery accepts AGENTS.md, PROJECT_RULES.md, or CLAUDE.md. Prefer plain rules/*.md with always/paths/when scope. Use `vibe setup <manifest> <target> --harness generic` for PROJECT_RULES.md plus a neutral rules/<name>/ bundle. Named host modes only add entries/copies; no Cursor output compatibility is required. Legacy MDC is source migration input and existing user folders remain intact.
 - **Mine skills** (`mine/`): First-party, not submodules. Developed directly in this repo.
 
 ### How skills are discovered
@@ -132,3 +132,18 @@ The `mcp.json` at repo root configures MCP servers available to Claude. Key tool
 - **drawio**: Draw.io diagram creation
 - **pdf-reader-mcp**: PDF document reading
 - **claude-scientific-skills**: Remote scientific computation MCP
+
+## Documentation readability
+
+- Write for the reader's task: a README gives purpose, prerequisites, the first action, and its expected result before reference details.
+- Put full catalogs, options, architecture, and change records in linked reference pages; keep them discoverable without making them prerequisites for getting started.
+- Do not impose badges, emoji, fixed chapter templates, or new translations. Preserve existing language pairs and verify facts, commands, paths, and support claims.
+- Follow the [reader-first writing contract](manifests/vibe-coding/references/readme-guide.md). Its read-only checker validates structure, not readability or whether examples were executed.
+
+## One-request project setup
+
+For requests to configure a project from one natural-language goal in any file/command-capable AI harness, read [BOOTSTRAP.md](BOOTSTRAP.md). Use the shell-free `scripts/setup-project.py` / `vibe setup` path for Windows/macOS/Linux, select or author the business manifest, preview/apply/check, and preserve existing project content. This path does not alter legacy init/add/update semantics.
+
+## Multi-project registry
+
+Successful setup/init/add CLI operations index real projects in `~/.config/vibe-tool/projects.json` (`VIBE_PROJECTS_FILE` overrides the location). Use `vibe project list/show`, `add/rename/relocate/remove`, and `vibe project update <name> [--manifest NAME|--skill NAME] [--dry-run]`; `update --all` visits all indexed projects. Project-local installations/setup records remain authoritative. Updates use local sources, skip uninstalled dependencies, apply one backed-up transaction per project, and keep setup host copies/hashes coherent. Registry removal never deletes project files. See the CLI reference for compatibility and failure semantics.

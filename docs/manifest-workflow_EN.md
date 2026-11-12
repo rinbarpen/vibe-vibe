@@ -12,7 +12,7 @@ Suggested layout:
 
 ```text
 manifests/<name>/
-├── CLAUDE.md
+├── PROJECT_RULES.md             # Plain Markdown contract; AGENTS.md / CLAUDE.md also work
 ├── AGENTS.md                     # Keep both agent contracts aligned when provided
 ├── README.md                     # Link the SVG, source, and reproduction command
 ├── references/
@@ -29,6 +29,8 @@ manifests/<name>/
 - **Consistency check:** provide a read-only drift check that returns nonzero for a missing diagram, source/output mismatch, or invalid reference.
 
 Unrelated wording edits do not require redrawing. New or changed workflows need these deliverables. Keep existing valid names and renderers rather than migrating all templates to uniform filenames.
+
+Contracts and rules are host-independent: discovery accepts `AGENTS.md`, `PROJECT_RULES.md`, or `CLAUDE.md`. Prefer plain `.md` rules with `always`, `paths`, and `when` scope fields. `vibe setup --harness generic` publishes the portable bundle, with no Cursor output compatibility requirement. Named host entries only import the same business contract; do not invent tools, agents, or approval. See [CLI rule distribution](cli-reference_EN.md#harness-independent-rules) for layout and scope semantics.
 
 ## 2. What the diagram must express
 
@@ -106,7 +108,7 @@ These checks validate structure and generation consistency. Whether the diagram 
 
 This specification covers **Manifest authoring deliverables**. It does not assert that all legacy templates already include diagrams, and it does not change `vibe init/add/update` installation policy.
 
-If a template promises diagrams and regeneration in the target project, its installer must explicitly distribute the SVG, source data, and renderer, and test installed links and regeneration commands. The generic installer does not automatically copy arbitrary `references/` directories; each template defines distribution locations.
+If a template promises diagrams and regeneration in the target project, its installer must explicitly distribute the SVG, source data, and renderer, and test installed links and regeneration commands. Historical init/add root layouts remain template-specific. Setup explicitly distributes supporting resources in the neutral bundle; promised execution paths must still be tested in the installed project.
 
 When converting a Manifest to a Skill, retain the diagram, source, and rendering dependencies, and update relative links. Avoid a package containing only SVG without its source. If source data lives in another Skill package, record the dependency and validate installed paths.
 

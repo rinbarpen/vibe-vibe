@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1280" viewBox="0 0 1440 1280" role="img" aria-labelledby="title desc">
+<title id="title">从文献积累到研究记忆</title>
+<desc id="desc">四阶段能力递进、四类实体反馈、默认主线与可选领域、四项补强方向；保留当前状态、证据限制及默认安装边界。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#48535B"/></marker></defs>
+<style>text{font-family:&quot;Noto Sans CJK SC&quot;, &quot;Microsoft YaHei&quot;, &quot;PingFang SC&quot;, sans-serif}</style>
+<rect width="1440" height="1280" fill="#FFFFFF"/>
+<text x="56" y="49" font-size="20" fill="#48535B" font-weight="400" text-anchor="start">ARIS / auto-research</text>
+<text x="56" y="112" font-size="44" fill="#1B2429" font-weight="600" text-anchor="start">从文献积累到研究记忆</text>
+<text x="56" y="153" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">能力递进，非历史时间线；当前能力与目标分开标注。</text>
+<path d="M 56 182 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<path d="M 56 221 H 364" fill="none" stroke="#265FC7" stroke-width="1.5"/>
+<text x="56" y="212" font-size="18" fill="#265FC7" font-weight="500" text-anchor="start">01</text>
+<text x="101" y="212" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">基础工具已实现</text>
+<text x="56" y="271" font-size="28" fill="#1B2429" font-weight="600" text-anchor="start">文献积累</text>
+<text x="56" y="316" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">论文元数据、摘要与标签</text>
+<text x="56" y="349" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">去重、批量补录、阅读笔记</text>
+<text x="56" y="392" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">内容补全需另行调用 wiki-enrich</text>
+<path d="M 368 263 H 390" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M 396 221 H 704" fill="none" stroke="#265FC7" stroke-width="1.5"/>
+<text x="396" y="212" font-size="18" fill="#265FC7" font-weight="500" text-anchor="start">02</text>
+<text x="441" y="212" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">基础结构已实现</text>
+<text x="396" y="271" font-size="28" fill="#1B2429" font-weight="600" text-anchor="start">关系化知识</text>
+<text x="396" y="316" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">论文 / 想法 / 实验 / Claim</text>
+<text x="396" y="349" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">启发、继承、支持与反驳关系</text>
+<text x="396" y="392" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">关系识别与一致性仍需维护</text>
+<path d="M 708 263 H 730" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M 736 221 H 1044" fill="none" stroke="#C8CDD0" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="736" y="212" font-size="18" fill="#265FC7" font-weight="500" text-anchor="start">03</text>
+<text x="781" y="212" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">流程部分接通</text>
+<text x="736" y="271" font-size="28" fill="#1B2429" font-weight="600" text-anchor="start">证据化研究</text>
+<text x="736" y="316" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">证明状态与实验证据分离</text>
+<text x="736" y="349" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">保留来源、运行记录和负结果</text>
+<text x="736" y="392" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">默认生命周期回写尚未接全</text>
+<path d="M 1048 263 H 1070" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M 1076 221 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="1076" y="212" font-size="18" fill="#265FC7" font-weight="500" text-anchor="start">04</text>
+<text x="1121" y="212" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">目标能力待补强</text>
+<text x="1076" y="271" font-size="28" fill="#1B2429" font-weight="600" text-anchor="start">持续研究记忆</text>
+<text x="1076" y="316" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">已有 query_pack 跨会话摘要</text>
+<text x="1076" y="349" font-size="20" fill="#1B2429" font-weight="400" text-anchor="start">面向新选题复用既有知识</text>
+<text x="1076" y="392" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">需补问题检索、失败范围与保留策略</text>
+<path d="M 56 454 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="56" y="495" font-size="26" fill="#1B2429" font-weight="600" text-anchor="start">研究反馈</text>
+<text x="150" y="548" font-size="26" fill="#1B2429" font-weight="500" text-anchor="middle">论文</text>
+<path d="M 250 539 H 430" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="340.0" y="522" font-size="18" fill="#48535B" font-weight="400" text-anchor="middle">启发</text>
+<text x="530" y="548" font-size="26" fill="#1B2429" font-weight="500" text-anchor="middle">想法</text>
+<path d="M 630 539 H 810" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="720.0" y="522" font-size="18" fill="#48535B" font-weight="400" text-anchor="middle">检验</text>
+<text x="910" y="548" font-size="26" fill="#1B2429" font-weight="500" text-anchor="middle">实验</text>
+<path d="M 1010 539 H 1190" fill="none" stroke="#48535B" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text x="1100.0" y="522" font-size="18" fill="#48535B" font-weight="400" text-anchor="middle">支持 / 反驳</text>
+<text x="1290" y="548" font-size="26" fill="#1B2429" font-weight="500" text-anchor="middle">主张（Claim）</text>
+<path d="M 1290 563 V 594 H 150 V 564" fill="none" stroke="#48535B" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<rect x="466" y="578" width="508" height="31" fill="#FFFFFF"/>
+<text x="720" y="600" font-size="20" fill="#48535B" font-weight="400" text-anchor="middle">新问题 / 限定范围的失败启发 → 再研究</text>
+<path d="M 56 634 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="56" y="675" font-size="26" fill="#1B2429" font-weight="600" text-anchor="start">支持领域</text>
+<text x="56" y="720" font-size="18" fill="#265FC7" font-weight="500" text-anchor="start">默认研究主线</text>
+<text x="56" y="764" font-size="28" fill="#1B2429" font-weight="600" text-anchor="start">AI / 机器学习</text>
+<text x="56" y="809" font-size="20" fill="#48535B" font-weight="400" text-anchor="start">LLM · 多模态 · Diffusion · RL</text>
+<text x="448" y="720" font-size="18" fill="#48535B" font-weight="500" text-anchor="start">ARIS 专项 · 按需安装</text>
+<text x="448" y="762" font-size="21" fill="#1B2429" font-weight="500" text-anchor="start">机器人 / 具身智能</text>
+<text x="1384" y="762" font-size="18" fill="#48535B" font-weight="400" text-anchor="end">选题与可行性</text>
+<text x="448" y="794" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">操作 · 导航 · 仿真优先 · sim2real</text>
+<path d="M 448 806 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="448" y="824" font-size="21" fill="#1B2429" font-weight="500" text-anchor="start">系统 / 架构 / EDA</text>
+<text x="1384" y="824" font-size="18" fill="#48535B" font-weight="400" text-anchor="end">工具与写作</text>
+<text x="448" y="856" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">性能剖析 · 设计空间探索 · 系统写作</text>
+<path d="M 448 868 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="448" y="886" font-size="21" fill="#1B2429" font-weight="500" text-anchor="start">通信 / 网络</text>
+<text x="1384" y="886" font-size="18" fill="#48535B" font-weight="400" text-anchor="end">文献调研</text>
+<text x="448" y="918" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">无线 · 卫星 / NTN · 路由 · 拥塞控制</text>
+<path d="M 448 930 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="448" y="948" font-size="21" fill="#1B2429" font-weight="500" text-anchor="start">数学 / ML 理论</text>
+<text x="1384" y="948" font-size="18" fill="#48535B" font-weight="400" text-anchor="end">理论与证明</text>
+<text x="448" y="980" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">公式推导 · 证明检查 · Lean 路线</text>
+<path d="M 448 992 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="448" y="1010" font-size="21" fill="#1B2429" font-weight="500" text-anchor="start">技术发明 / 专利材料</text>
+<text x="1384" y="1010" font-size="18" fill="#48535B" font-weight="400" text-anchor="end">可选扩展</text>
+<text x="448" y="1042" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">现有技术 · 新颖性 · 权利要求 · 实施例</text>
+<text x="56" y="1084" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">专项技能不等于默认安装或端到端实测；其他学科可迁移通用文献与写作能力。</text>
+<path d="M 56 1108 H 1384" fill="none" stroke="#C8CDD0" stroke-width="1.5"/>
+<text x="56" y="1150" font-size="26" fill="#1B2429" font-weight="600" text-anchor="start">补强顺序</text>
+<text x="56" y="1200" font-size="22" fill="#265FC7" font-weight="500" text-anchor="start">1</text>
+<text x="88" y="1200" font-size="22" fill="#1B2429" font-weight="500" text-anchor="start">接通默认闭环</text>
+<text x="396" y="1200" font-size="22" fill="#265FC7" font-weight="500" text-anchor="start">2</text>
+<text x="428" y="1200" font-size="22" fill="#1B2429" font-weight="500" text-anchor="start">提升知识质量</text>
+<text x="736" y="1200" font-size="22" fill="#265FC7" font-weight="500" text-anchor="start">3</text>
+<text x="768" y="1200" font-size="22" fill="#1B2429" font-weight="500" text-anchor="start">守住记忆边界</text>
+<text x="1076" y="1200" font-size="22" fill="#265FC7" font-weight="500" text-anchor="start">4</text>
+<text x="1108" y="1200" font-size="22" fill="#1B2429" font-weight="500" text-anchor="start">补齐检索与校验</text>
+<text x="56" y="1245" font-size="18" fill="#48535B" font-weight="400" text-anchor="start">证明状态与实验证据分开；方法或部分实验失败，不自动否定整个想法。</text>
+</svg>

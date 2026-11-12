@@ -132,6 +132,8 @@ existing test/PR record; do not introduce a mandatory extra project ledger.
 - **Exit criteria**: Deployment verified, monitoring confirms health.
 
 ### Phase 8: Maintain
+- Documentation changes follow the [reader-first writing contract](references/readme-guide.md): put the first task and expected result before reference details; preserve project facts and avoid mandatory badges, slogans, or fixed chapter templates.
+- `/update-docs <target>` performs scoped writing and a real read-only structure/link check; it does not require a human gate for routine prose or pretend source scanning proves correctness. [Documentation workflow](references/docs-readability-workflow.svg) · [Editable source](references/docs-readability-workflow.json). Reproduce/check it with the renderer commands in the writing contract.
 - Keep CLAUDE.md and README.md updated.
 - Process Dependabot PRs, monitor stale issues.
 - Schedule periodic `/quality-gate` on the full codebase.

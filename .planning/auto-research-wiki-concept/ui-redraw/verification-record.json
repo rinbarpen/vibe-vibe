@@ -1,0 +1,486 @@
+{
+  "task": "Redraw existing concept map with vibe-coding UI rules; carry the same applicable constraints in both Omni packages.",
+  "commands": [
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/originals/.planning/auto-research-wiki-concept/render.py",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "CHECK /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/originals/.planning/auto-research-wiki-concept/concept-map.svg sha256=39dbc07d935ec3f970f3fb647bc413ea82e1addec9f2053e915d4afe2f30c5b0\nCHECK /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/originals/.planning/auto-research-wiki-concept/concept-map.html sha256=870cec1d1ba240aa27fc673dd7e2a4fd15ef6b592a9a3557a2b32de6d85b0bd8\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/render.py",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "CHECK /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/concept-map.svg sha256=71374f1dc0804a7f5ca60c356691e21c48ce2cfdc5b7d85fcf14dea87b20e408\nCHECK /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/concept-map.html sha256=5fe8c04e6b597b916a5d170a65c98c21a430009a64a952fe3ad07f40dfb62b8a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/mine/omnidraw"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/mine/omnisheet"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tools/vibe_tool/tests/test_omni_ui_design.py",
+        "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+        "tools/vibe_tool/tests/test_visualization_scenarios.py",
+        "tools/vibe_tool/tests/test_ccfa_skill_replacement.py"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "..........................                                          [100%]\n26 passed, 5 subtests passed in 3.65s\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "mine/omnidraw",
+        "mine/omnisheet",
+        "tools/vibe_tool/tests/test_omni_ui_design.py"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/verify_ui.py",
+        "--mode",
+        "baseline"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "exit_status": 0,
+      "stdout": "{\n  \"mode\": \"baseline\",\n  \"observations\": [\n    {\n      \"viewport\": 320,\n      \"pageWidth\": 320,\n      \"smallestVisibleFontPx\": 3,\n      \"stageTops\": [],\n      \"detailsCount\": 0,\n      \"small_screen_task_readability\": \"FAIL\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-320.png\"\n    },\n    {\n      \"viewport\": 768,\n      \"pageWidth\": 768,\n      \"smallestVisibleFontPx\": 7.199999999999999,\n      \"stageTops\": [],\n      \"detailsCount\": 0,\n      \"small_screen_task_readability\": \"FAIL\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-768.png\"\n    },\n    {\n      \"viewport\": 1024,\n      \"pageWidth\": 1024,\n      \"smallestVisibleFontPx\": 9.6,\n      \"stageTops\": [],\n      \"detailsCount\": 0,\n      \"small_screen_task_readability\": \"FAIL\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1024.png\"\n    },\n    {\n      \"viewport\": 1440,\n      \"pageWidth\": 1440,\n      \"smallestVisibleFontPx\": 13.5,\n      \"stageTops\": [],\n      \"detailsCount\": 0,\n      \"small_screen_task_readability\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1440.png\"\n    }\n  ],\n  \"notes\": [\n    \"Original reader scales the entire desktop SVG instead of reflowing. No user timing or success-rate claim.\"\n  ]\n}\n",
+      "stderr": "",
+      "evidence": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/baseline-behavior.json",
+      "sha256": "50c3f8f051b58e3ad1f0429d9a0e7c19597d16364218dc9536d26d542cfac218",
+      "execution": "Completed in the actual browser run immediately before packaging; literal output preserved."
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/verify_ui.py",
+        "--mode",
+        "modified"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "exit_status": 0,
+      "stdout": "{\n  \"mode\": \"modified\",\n  \"source_semantics_unchanged\": \"PASS\",\n  \"contrast_ratios\": {\n    \"light\": {\n      \"text\": 15.78,\n      \"muted\": 7.88,\n      \"accent\": 5.93\n    },\n    \"dark\": {\n      \"text\": 16.47,\n      \"muted\": 9.5,\n      \"accent\": 9.16\n    }\n  },\n  \"observations\": [\n    {\n      \"viewport\": 320,\n      \"pageWidth\": 320,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        218,\n        408,\n        598,\n        788\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"light\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-320.png\"\n    },\n    {\n      \"viewport\": 768,\n      \"pageWidth\": 768,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -359,\n        -359,\n        -359,\n        -359\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"light\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-768.png\"\n    },\n    {\n      \"viewport\": 1024,\n      \"pageWidth\": 1024,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -152,\n        -152,\n        -152,\n        -152\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"light\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1024.png\"\n    },\n    {\n      \"viewport\": 1440,\n      \"pageWidth\": 1440,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -129,\n        -129,\n        -129,\n        -129\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"light\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1440.png\"\n    },\n    {\n      \"viewport\": 320,\n      \"pageWidth\": 320,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        218,\n        408,\n        598,\n        788\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"dark\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-320.png\"\n    },\n    {\n      \"viewport\": 768,\n      \"pageWidth\": 768,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -359,\n        -359,\n        -359,\n        -359\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"dark\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-768.png\"\n    },\n    {\n      \"viewport\": 1024,\n      \"pageWidth\": 1024,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -152,\n        -152,\n        -152,\n        -152\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"dark\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1024.png\"\n    },\n    {\n      \"viewport\": 1440,\n      \"pageWidth\": 1440,\n      \"smallestVisibleFontPx\": 14,\n      \"stageTops\": [\n        -129,\n        -129,\n        -129,\n        -129\n      ],\n      \"detailsCount\": 1,\n      \"theme\": \"dark\",\n      \"keyboard_disclosure\": \"PASS\",\n      \"content_and_boundaries\": \"PASS\",\n      \"screenshot\": \"/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1440.png\"\n    }\n  ],\n  \"svg_geometry\": {\n    \"viewBox\": [\n      1440,\n      1280\n    ],\n    \"texts\": 67,\n    \"outside\": [],\n    \"overlaps\": []\n  },\n  \"static_output\": \"1440 × 1280 px, light fixed theme\",\n  \"not_applicable\": [\n    \"Static SVG hover/loading/save states\",\n    \"Backend persistence: no data-writing UI\",\n    \"User research: browser assertions are AI checks only\"\n  ]\n}\n",
+      "stderr": "",
+      "evidence": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/modified-behavior.json",
+      "sha256": "fd439c5a1599602095c1a0b88302c99369eb7dbe5f9823f77ca47cd5f10b97f7",
+      "execution": "Completed in the actual browser run immediately before packaging; literal output preserved."
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-index",
+        "--binary",
+        "--src-prefix=a/",
+        "--dst-prefix=b/",
+        "originals",
+        "modified"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw",
+      "exit_status": 1,
+      "stdout_artifact": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/changes.patch",
+      "stderr": "",
+      "path_normalization": "Strip snapshot directory components from a/ and b/ paths."
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/changes.patch"
+      ],
+      "cwd": "/tmp/ui-redraw-rollback-ac42z_hv",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "apply",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/changes.patch"
+      ],
+      "cwd": "/tmp/ui-redraw-rollback-ac42z_hv",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/rollback.py",
+        "--root",
+        "/tmp/ui-redraw-rollback-ac42z_hv"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 2,
+      "exit_status": 2,
+      "stdout": "CONFLICT: later edits detected; no files changed: mine/omnidraw/SKILL.md\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/rollback.py",
+        "--root",
+        "/tmp/ui-redraw-rollback-ac42z_hv"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "RESTORED: 12 originals; 4 additions removed\nOriginal SHA256 set verified; unrelated files retained.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/tmp/ui-redraw-rollback-ac42z_hv/.planning/auto-research-wiki-concept/render.py",
+        "--check"
+      ],
+      "cwd": "/tmp/ui-redraw-rollback-ac42z_hv",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "CHECK /tmp/ui-redraw-rollback-ac42z_hv/.planning/auto-research-wiki-concept/concept-map.svg sha256=39dbc07d935ec3f970f3fb647bc413ea82e1addec9f2053e915d4afe2f30c5b0\nCHECK /tmp/ui-redraw-rollback-ac42z_hv/.planning/auto-research-wiki-concept/concept-map.html sha256=870cec1d1ba240aa27fc673dd7e2a4fd15ef6b592a9a3557a2b32de6d85b0bd8\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-B",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/rollback.py",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "expected_exit": 0,
+      "exit_status": 0,
+      "stdout": "DRY RUN: 12 originals; 4 additions removed\n",
+      "stderr": ""
+    }
+  ],
+  "baseline": {
+    "mode": "baseline",
+    "observations": [
+      {
+        "viewport": 320,
+        "pageWidth": 320,
+        "smallestVisibleFontPx": 3,
+        "stageTops": [],
+        "detailsCount": 0,
+        "small_screen_task_readability": "FAIL",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-320.png"
+      },
+      {
+        "viewport": 768,
+        "pageWidth": 768,
+        "smallestVisibleFontPx": 7.199999999999999,
+        "stageTops": [],
+        "detailsCount": 0,
+        "small_screen_task_readability": "FAIL",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-768.png"
+      },
+      {
+        "viewport": 1024,
+        "pageWidth": 1024,
+        "smallestVisibleFontPx": 9.6,
+        "stageTops": [],
+        "detailsCount": 0,
+        "small_screen_task_readability": "FAIL",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1024.png"
+      },
+      {
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "smallestVisibleFontPx": 13.5,
+        "stageTops": [],
+        "detailsCount": 0,
+        "small_screen_task_readability": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1440.png"
+      }
+    ],
+    "notes": [
+      "Original reader scales the entire desktop SVG instead of reflowing. No user timing or success-rate claim."
+    ]
+  },
+  "modified": {
+    "mode": "modified",
+    "source_semantics_unchanged": "PASS",
+    "contrast_ratios": {
+      "light": {
+        "text": 15.78,
+        "muted": 7.88,
+        "accent": 5.93
+      },
+      "dark": {
+        "text": 16.47,
+        "muted": 9.5,
+        "accent": 9.16
+      }
+    },
+    "observations": [
+      {
+        "viewport": 320,
+        "pageWidth": 320,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          218,
+          408,
+          598,
+          788
+        ],
+        "detailsCount": 1,
+        "theme": "light",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-320.png"
+      },
+      {
+        "viewport": 768,
+        "pageWidth": 768,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -359,
+          -359,
+          -359,
+          -359
+        ],
+        "detailsCount": 1,
+        "theme": "light",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-768.png"
+      },
+      {
+        "viewport": 1024,
+        "pageWidth": 1024,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -152,
+          -152,
+          -152,
+          -152
+        ],
+        "detailsCount": 1,
+        "theme": "light",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1024.png"
+      },
+      {
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -129,
+          -129,
+          -129,
+          -129
+        ],
+        "detailsCount": 1,
+        "theme": "light",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1440.png"
+      },
+      {
+        "viewport": 320,
+        "pageWidth": 320,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          218,
+          408,
+          598,
+          788
+        ],
+        "detailsCount": 1,
+        "theme": "dark",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-320.png"
+      },
+      {
+        "viewport": 768,
+        "pageWidth": 768,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -359,
+          -359,
+          -359,
+          -359
+        ],
+        "detailsCount": 1,
+        "theme": "dark",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-768.png"
+      },
+      {
+        "viewport": 1024,
+        "pageWidth": 1024,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -152,
+          -152,
+          -152,
+          -152
+        ],
+        "detailsCount": 1,
+        "theme": "dark",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1024.png"
+      },
+      {
+        "viewport": 1440,
+        "pageWidth": 1440,
+        "smallestVisibleFontPx": 14,
+        "stageTops": [
+          -129,
+          -129,
+          -129,
+          -129
+        ],
+        "detailsCount": 1,
+        "theme": "dark",
+        "keyboard_disclosure": "PASS",
+        "content_and_boundaries": "PASS",
+        "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1440.png"
+      }
+    ],
+    "svg_geometry": {
+      "viewBox": [
+        1440,
+        1280
+      ],
+      "texts": 67,
+      "outside": [],
+      "overlaps": []
+    },
+    "static_output": "1440 × 1280 px, light fixed theme",
+    "not_applicable": [
+      "Static SVG hover/loading/save states",
+      "Backend persistence: no data-writing UI",
+      "User research: browser assertions are AI checks only"
+    ]
+  },
+  "rules": {
+    "manifests/vibe-coding/rules/vibe-coding-ui-design.mdc": "9e5b5f6e7bb47175474c5d7019009c9a529a6f3c3a3117d2cd96b4e685bbeaa3",
+    "manifests/vibe-coding/references/ui-usability.md": "ea20134c6085c9dc0c19248f44a42745b2fc5aa41b9ec06b29548aa02af00305"
+  },
+  "environment": {
+    "PYTHONPATH": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/tools/vibe_tool/src",
+    "OMNIDRAW_MERMAID_RENDERER": "/tmp/omni-workflow-renderer-G8TFr9/scripts/render.mjs",
+    "VIBE_PROJECTS_FILE": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/test-projects.json"
+  },
+  "scope": {
+    "baseline": "Original static desktop SVG reader, measured at four widths.",
+    "modified": "Responsive HTML at four widths × light/dark; keyboard disclosure; text and domain coverage; token contrast; 1440×1280 static SVG/PNG.",
+    "skill_install": "Actual isolated add_skill for each package, followed by removal of its source repo; both guides remain usable without design-skill dependencies.",
+    "not_claimed": [
+      "No user-study results",
+      "No backend state or data-writing UI",
+      "No domain research execution",
+      "Existing projects were not batch-updated; source packages changed only."
+    ]
+  },
+  "patch_and_rollback": {
+    "patch_apply": "PASS",
+    "modified_hashes": "PASS",
+    "later_edit_guard": "PASS",
+    "original_hashes_restored": "PASS",
+    "restored_renderer": "PASS",
+    "unrelated_files_retained": "PASS",
+    "execution_scope": "Disposable mirror only; the real workspace remains at the modified version."
+  },
+  "artifacts": {
+    "modified_map": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/concept-map.svg",
+      "sha256": "71374f1dc0804a7f5ca60c356691e21c48ce2cfdc5b7d85fcf14dea87b20e408"
+    },
+    "preview": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/concept-map.png",
+      "sha256": "70757b7977115dc707ea0f78fdddc27ed7a714210ad3c5afbd7ffa40cf9cab0d"
+    },
+    "reader": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/concept-map.html",
+      "sha256": "5fe8c04e6b597b916a5d170a65c98c21a430009a64a952fe3ad07f40dfb62b8a"
+    },
+    "patch": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/changes.patch",
+      "sha256": "e3ba835211bf4450b9ba2dae97387f647171055321a2003c7d552d22aa3e76a9"
+    },
+    "rollback": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/rollback.py",
+      "sha256": "cb451de4f645695a90d83feb7a66cd5fe290e1daa08cb17f90d824852a3685c5"
+    },
+    "original_manifest": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/originals.json",
+      "sha256": "8628e678a2af7d106223cf6d10ec9226adc0c3805d079ebe9c58878c085f1407"
+    },
+    "modified_manifest": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/modified.json",
+      "sha256": "9ce1abe8697323cef675db1ba1a55936bea7540a7fe2ecf72cf4c451725b707b"
+    }
+  },
+  "status": "PASS"
+}

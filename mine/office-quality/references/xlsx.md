@@ -14,7 +14,7 @@
 - 图表 yes 有指标/单位、类型、位置和源范围；原生 Excel 图表由格式工程师写入，图片经 Omnidraw。no/pending 未新增/重建图表（含图片或制图宏绕道），既有图表默认保留，数据引用更新与新增分开验证。
 - 宏选定制作/保留/修改/调用的实际模式，核对用途、入口/参数、目标簿/表/范围、触发与预期输出；已有明确任务范围直接复用。打开输入不自动执行宏，不变更全局信任。
 - `.xlsx` 不承载 VBA；`.bas` / `.cls` 源与 `.xlsm` / `.xltm` 编译项目来源/哈希分开，源码静态检查、包部件/关系保留和真实 Excel 编译/运行分别记录。`keep_vba=True` 不是执行或全面保真；示例项目保留测试不是新源码已编译/运行。
-- 当前 Office recalc/render 的表格路径仅为非宏 `.xlsx`；含宏文件不得经转 `.xlsx` 丢失项目。若本次要求执行宏/Excel 保真重算而缺环境，保留副本并标具体 `pending`；仅要求保留则不额外要求运行。已安装 Office manifest 时详见 `office/xlsx/references/charts-and-macros.md`。
+- 当前 Office recalc/render 的表格路径仅为非宏 `.xlsx`；含宏文件不得经转 `.xlsx` 丢失项目。若本次要求执行宏/Excel 保真重算而缺环境，保留副本并标具体 `pending`；仅要求保留则不额外要求运行。已安装 Office Skill 时详见 `.agents/skills/office/xlsx/references/charts-and-macros.md`。
 
 ## 数值与公式
 

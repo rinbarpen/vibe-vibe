@@ -1,0 +1,55 @@
+name: Portable project setup
+on:
+  pull_request:
+    paths:
+      - 'tools/vibe_tool/**'
+      - 'manifests/**'
+      - 'scripts/setup-project.py'
+      - 'scripts/render-manifest-workflow.py'
+      - 'docs/project-setup-workflow.*'
+      - 'docs/project-management-workflow.*'
+      - 'BOOTSTRAP.md'
+      - '.github/workflows/project-setup.yml'
+  push:
+    paths:
+      - 'tools/vibe_tool/**'
+      - 'manifests/**'
+      - 'scripts/setup-project.py'
+      - 'scripts/render-manifest-workflow.py'
+      - 'docs/project-setup-workflow.*'
+      - 'docs/project-management-workflow.*'
+      - 'BOOTSTRAP.md'
+      - '.github/workflows/project-setup.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  setup:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      PYTHONPATH: tools/vibe_tool/src
+      VIBE_PROJECTS_FILE: ${{ runner.temp }}/vibe-projects.json
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Offline setup, preservation, and rollback tests
+        run: python -m unittest discover -s tools/vibe_tool/tests -p test_setup.py -v
+      - name: Project registry and coordinated refresh tests
+        run: python -m unittest discover -s tools/vibe_tool/tests -p test_projects.py -v
+      - name: Harness-independent rules, scope, and migration tests
+        run: python -m unittest discover -s tools/vibe_tool/tests -p test_harness_rules.py -v
+      - name: Read-only workflow drift check
+        run: python scripts/render-manifest-workflow.py --source docs/project-setup-workflow.json --output docs/project-setup-workflow.svg --check
+      - name: Read-only project-management drift check
+        run: python scripts/render-manifest-workflow.py --source docs/project-management-workflow.json --output docs/project-management-workflow.svg --check

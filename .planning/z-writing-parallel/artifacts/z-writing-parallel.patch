@@ -1,0 +1,142 @@
+diff --git a/mine/z-writing/SKILL.md b/mine/z-writing/SKILL.md
+--- a/mine/z-writing/SKILL.md
++++ b/mine/z-writing/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: z-writing
+-description: "中英文写作统一入口：从材料与大纲起草、分节写作、学习样本文风、局部改写、句段衔接、审阅与润色。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，原生 Office 文件工程由 office 负责。"
++description: "中英文写作统一入口：从材料与大纲起草、分节写作与多 Agent 并行改章后主 Agent 合并、学习样本文风、局部改写、句段衔接、审阅与润色。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，原生 Office 文件工程由 office 负责。"
+ ---
+ 
+ # z-writing
+@@ -33,6 +33,14 @@
+ 
+ 默认交付本次需要的正文、修改或审阅意见，少量必要说明另列。已明确要求改写时复用本次范围，不另设一次整篇 Approve。只读审阅保持输入不变。
+ 
++## 多 Agent 并行改章与主 Agent 合并
++
++用户要求按章节并行时，读取 [章节并行与合并](references/parallel-chapters.md)。主 Agent 负责共享目标、样本文风、术语、证据口径和章节依赖；每章由一个章节 Agent 修改，按宿主可用并发分批执行，不因章节多而超额启动。普通局部改句仍直接完成。
++
++章节 Agent 只写分配给自己的候选稿与交接意见，不同时修改总稿、公共参考文献、文风档案或其他章节。主 Agent 核对输入版本后，按大纲顺序合并，处理跨章重复、论证缺口、术语、引用/图表交叉引用与过渡，再统一审阅文风及内容保真。有依赖的章节等待所需结果；失败只重派受影响任务，已完成章节保留。
++
++这是一套宿主 Agent 调度约定，不是新增后台调度器。有实际多 Agent 工具才报告已并行执行；没有时按同一任务边界顺序处理并说明执行方式。已有 Writing Plan 时仍由原 planner/resolver 产生每个章节的任务包，不另建计划或绕过原审阅节点。
++
+ ## 文风学习与写作
+ 
+ 有样本时先学习会影响当前决策的语气/语域、词汇术语、句段节奏、论证顺序、限定语与引用习惯，并附短例、位置、语言/体裁和支持程度。区分 `author_confirmed`、`sample_inferred`、`editorial_default`。没有样本时按明确风格目标写作，不声称已经学会某位作者。
+diff --git a/mine/z-writing/references/parallel-chapters.md b/mine/z-writing/references/parallel-chapters.md
+new file mode 100644
+--- /dev/null
++++ b/mine/z-writing/references/parallel-chapters.md
+@@ -0,0 +1,60 @@
++# 章节并行修改与统一合并
++
++适用：用户要求每章一个 Agent，或选用多 Agent 处理多章起草/修改。主 Agent 是协调者和总稿唯一写入者；章节 Agent 是独立单元的执笔者，不是各自制定全文目标的作者。实际调度使用宿主已有工具，本文件不提供常驻服务。
++
++## 1. 主 Agent 定边界，再分批派章
++
++先沿用已有大纲、章节 ID、原稿、材料、文风档案、术语及证据记录，保留本轮原稿。确认本次是语言润色、结构改写还是内容增补；用户已确定的范围直接执行，不追加逐章审批。
++
++每批使用同一版共享约束：目标/读者/语言、作者样本与适用体裁、术语、关键数字及单位、研究状态、引用键和图表 ID。记录实际来源路径与版本；文件工作流可用内容哈希，聊天材料可用明确的消息/附件版本。冻结的是本批读取版本，不阻止用户继续编辑；新版本出现时由主 Agent 识别影响。
++
++按内容依赖而非章节编号机械拆分：
++
++- 已有完整稿件的各章语言润色通常可在同一批处理；保留相邻章职责和必要上下文。
++- 正文证据尚未稳定时，摘要、贡献概括与结论宜在相关方法/结果验收后处理；不是一律串行。
++- 一章需要另一章的新定义、新结果或新图表时，先完成前置任务，或只处理不依赖它的部分，不猜测尚未产出的内容。
++- 每个章节/计划节点同一修订轮只有一个执笔 Agent；并发不超过宿主容量，并保留主 Agent 的协调能力。章节多时排队分批，未经另行分配不递归派出更多作者。
++
++auto-research 项目继续使用原 Writing Plan 的阶段、节点 ID、resolver 和审阅边界。主 Agent 从原机制取得每章的 resolved node/任务包，章节 writer 不读取原始 YAML、不更新整份计划。正文跨多个原节点时保留原节点粒度，不为凑“一章一 Agent”越过依赖或审批。
++
++## 2. 每个章节 Agent 收到什么
++
++只给完成本章所需的材料，但保留影响论证的上下文。任务包可直接放在 Agent 消息中；已有项目格式就复用，不强制创建新 YAML 或重复账本。
++
++```text
++章节：现有章节 ID / 标题；本章职责、当前论点与本次修改目标
++输入：本章原稿及版本；相关来源/证据；前后章职责与必要原文
++共享约束：同版文风档案、术语、数字/单位、状态、引用键与图表 ID
++修改边界：允许改什么、必须保留什么；前置结果及尚未解决的问题
++专属输出：本章候选稿位置；交接意见位置或消息
++验收：与原稿对照的内容保真、任务目标与需转交主 Agent 的跨章问题
++```
++
++### 章节 Agent 的动作与交接
++
++1. 在本章边界内起草/修改，按任务选择写作或一个主润色路线，沿用共享文风，不各自重新学习一套声音。
++2. 只写专属候选稿与交接意见。不改总稿、其他章节、共享术语/文风/参考文献库，不给全篇重排编号，也不直接重写同一个 DOCX/PPTX。
++3. 对照输入检查数字、条件、否定、术语、已完成/拟开展状态、引用、公式和代码。材料缺口与证据冲突带位置上报，不补造结果或将范文事实移入当前稿。
++4. 交回：章节 ID、实际输入版本、候选稿、实质改动摘要、保真核对范围、待核实项及跨章问题。只返回已执行的检查，不用“自评通过”代替证据。
++
++需要新增引用、修订公共术语或调整图表时，交给主 Agent 协调原有研究/图表流程；章节候选稿保留明确待办位置。只需调整句段的任务，不扩成重新调研。
++
++没有现成项目约定时，可用 `revision/<本轮>/chapters/<章节ID>.md` 和同名 `.notes.md`；它们是候选稿，不是第二套科研计划。只有聊天工具时交回带章节 ID 的文本，不声称写入了文件。
++
++## 3. 主 Agent 收稿、审阅、合并
++
++完成先后不决定正文顺序。按原大纲/节点顺序处理候选稿，主 Agent 执行以下动作：
++
++1. **核对版本与完成范围。** 检查候选稿使用的原稿和共享约束版本。原稿或依赖已变时，对照新旧差异，只让受影响章节重新基于新输入修改；不覆盖用户新稿，不把旧输出标为当前版本。失败/超时只重派未完成部分，保留其他章节成果。
++2. **审阅实际差异。** 检查任务目标和内容保真，不只阅读章节 Agent 的交接结论。新主张、冲突数字、引用与证据缺口先定位；按来源与已有决策解决，不以“语言更顺”静默改掉事实。
++3. **统一全文。** 消除重复定义和重复论述，补齐章间承接与未回答的问题，统一术语/缩写、语气与限定强度，核对摘要/贡献/结论是否匹配正文证据。过渡句必须符合真实逻辑关系。
++4. **统一公共资源。** 保留稳定引用键与图表 ID；公共参考文献去重、编号、题注和交叉引用由主 Agent 按原项目流程处理。图表正文口径一致，链接到实际存在的素材；不在每章各生成一套全局编号。
++5. **产出总稿并复核。** 在候选总稿中按顺序合并，保留原稿及各章候选，回查合并时新增的改动。只修正全局问题，不无依据地再次整篇重写。最终原生 Office 文件由主 Agent 统一交给 office 处理，避免共享文件并发写入。
++
++未完成或证据待核实的章节保持明确状态；可交付部分稿时说明范围，不将占位或失败章节包装成最终验收。若涉及目标/观点选择等新决策，沿原项目的人类决策边界处理；一般措辞、衔接和已有约束内的修复由主 Agent 完成。
++
++## 4. 交付与后续返工
++
++交付统一稿、必要的实质改动/未决事项，以及实际使用的执行方式（并行或顺序）。文件任务保留原稿或已有版本记录，总稿只由主 Agent 写入；替换当前稿前再次检查其版本，按已有版本管理或备份机制保存恢复入口。
++
++后续只重派受反馈影响的章节和真实依赖，再由主 Agent 复核全局影响。不重跑已验收、输入未变的章节，不为多 Agent 模式再建另一套审批流。原流程要求独立审阅时仍保留该节点；主 Agent 合并不是独立审稿的替代。
+diff --git a/tools/vibe_tool/tests/test_z_writing.py b/tools/vibe_tool/tests/test_z_writing.py
+--- a/tools/vibe_tool/tests/test_z_writing.py
++++ b/tools/vibe_tool/tests/test_z_writing.py
+@@ -68,6 +68,7 @@
+         "references/ai-vibe-writing/.ai_context/prompts/1_style_extractor.md",
+         "references/ai-vibe-writing/.ai_context/prompts/17_sentence_flow_agent.md",
+         "references/ai-vibe-writing/.ai_context/document_spec_template.md",
++        "references/parallel-chapters.md",
+         "references/z-humanizer/references/unslop/references/commands/teach.md",
+         "references/z-humanizer/references/unslop/references/commands/mimic.md",
+         "references/z-humanizer/skills/academic-humanizer/SKILL.md",
+@@ -75,12 +76,38 @@
+     ):
+         assert (installed / relative).is_file(), relative
+     for file in (installed / "SKILL.md", installed / "references/context.md",
+-                 installed / "references/scenes.md"):
++                 installed / "references/scenes.md", installed / "references/parallel-chapters.md"):
+         for link in re.findall(r"\]\(([^)]+)\)", file.read_text()):
+             if link.startswith(("http:", "https:", "#")):
+                 continue
+             path = (file.parent / link.split("#", 1)[0]).resolve()
+             assert path.is_relative_to(installed.resolve()) and path.exists(), (file, link)
++
++
++def test_parallel_contract_is_discoverable_and_updates_with_the_standalone_writer(sources, tmp_path):
++    target = tmp_path / "project"
++    installed = install(sources, target)
++    entry = (installed / "SKILL.md").read_text()
++    relative = "references/parallel-chapters.md"
++    assert f"]({relative})" in entry
++    contract = installed / relative
++    before = contract.read_bytes()
++    # The contract is packaged guidance, not a promise of a bundled scheduler.
++    assert "宿主" in entry and "后台调度器" in entry
++    assert "总稿唯一写入者" in contract.read_text()
++    chapter = target / "draft/chapter-1.md"
++    chapter.parent.mkdir()
++    chapter.write_text("Existing user chapter; keep unchanged.\n")
++    (sources / "mine/z-writing" / relative).write_bytes(before + b"\nSynthetic revision.\n")
++    assert update_skill(sources, "z-writing", target, dry_run=True) == 0
++    assert contract.read_bytes() == before
++    assert update_skill(sources, "z-writing", target) == 0
++    assert contract.read_bytes() == before + b"\nSynthetic revision.\n"
++    assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
++    restore, = (target / ".vibe-tool/backups").glob("*/restore.py")
++    run([sys.executable, restore])
++    assert contract.read_bytes() == before
++    assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
+ 
+ 
+ def test_scholarly_resources_also_work_in_direct_humanizer_install(sources, tmp_path):

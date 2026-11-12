@@ -2105,3 +2105,13 @@
 - **Path**: `mine/state-machine-reasoning`
 - **Description**: Converts general problem analysis into verifiable states, events, evidence, and transitions, then generates a Mermaid state-machine visualization.
 - **Usage**: Decision, debugging, research, workflow, or system analysis with branches, unknowns, retries, or terminal states.
+
+### office
+- **Path**: `mine/office`
+- **Description**: Reusable office capability for writing/voice, visuals, native formats/macros and traceable acceptance, separate from project coordination.
+- **Usage**: Use `vibe add skill office <target>` for file tasks; use `vibe init office <target>` for an office project with companion Skills.
+
+### z-writing
+- **Path**: `mine/z-writing`
+- **Description**: Unified writing, sampled voice, structural/sentence editing and faithful humanization through bundled AI Vibe and z-humanizer.
+- **Usage**: `vibe add skill z-writing <target>`; task-scoped, without forcing research or publishing pipelines.

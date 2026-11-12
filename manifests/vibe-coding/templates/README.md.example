@@ -1,52 +1,11 @@
-# Project Name
+# 项目名称
 
-> 一行描述：这个项目解决什么问题
+<!-- 用一句具体的话说明项目解决什么问题、适用于谁；写真实能力，不写口号。 -->
 
-![CI](https://img.shields.io/github/actions/workflow/status/org/repo/ci.yml?branch=main)
-![License](https://img.shields.io/github/license/org/repo)
-![Version](https://img.shields.io/github/v/release/org/repo)
+## 开始使用
 
-## Features
+<!-- 写实际前提、执行目录和一条最短路径。使用已核实的命令，随后给预期结果。不要猜测 make/npm 脚本或填入未经验证的输出。 -->
 
-- 🚀 特性一：一句话说明
-- 🔒 特性二：一句话说明
-- ⚡ 特性三：一句话说明
-- 🎯 特性四：一句话说明
+<!-- 根据当前项目需要添加常用任务、排障与文档入口。只链接真实存在的文件；没有内容的章节省略。参数全集、架构、开发记录和变更日志不堆在首页。 -->
 
-## Quick Start
-
-```bash
-git clone https://github.com/org/repo.git
-cd repo
-make install
-make run
-```
-
-## Documentation
-
-- [Getting Started](docs/guide/getting-started.md)
-- [API Reference](docs/api/reference.md)
-- [Contributing](CONTRIBUTING.md)
-
-## Project Structure
-
-```
-├── src/          # 源码
-├── docs/         # 文档
-├── tests/        # 测试
-└── .github/      # GitHub 配置
-```
-
-## Tech Stack
-
-- Runtime: Node.js 20 / Python 3.12
-- Framework: Express / FastAPI
-- Database: PostgreSQL 16
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
-## License
-
-MIT © 2025 org
+<!-- 不强制徽章、emoji、目录树、技术栈、固定八段结构或双语；先确定读者和任务，再选择需要的内容。 -->

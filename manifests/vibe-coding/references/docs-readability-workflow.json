@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "title": "面向读者的文档改写与验收",
+  "description": "先核实读者任务与事实，再重整信息层级、改写和沿阅读路径验证。结构检查只是证据的一部分；只有新的产品承诺或约束冲突才请求人决定。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "文档修改请求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "输入：目标读者、当前任务与已有项目约定。"
+    },
+    {
+      "id": "scope",
+      "label": "选定读者任务与入口",
+      "kind": "ai",
+      "row": 1,
+      "detail": "复用已确认读者任务并保留原文；事实待补时调查实现或运行针对性检查，不重复访谈。"
+    },
+    {
+      "id": "facts",
+      "label": "核实事实与支持范围",
+      "kind": "check",
+      "row": 2,
+      "detail": "对照实现、帮助与已有证据；技术疑问先调查，不靠编造补齐。"
+    },
+    {
+      "id": "decision",
+      "label": "决定新的产品取舍",
+      "kind": "human",
+      "row": 4,
+      "detail": "提供冲突、证据、选项与影响，绑定当前文档版本。",
+      "trigger": "产品承诺、支持范围或关键约束需要新取舍。",
+      "resume": "同意/调整后核对版本，从读者任务与事实继续；取消执行并验证回退。"
+    },
+    {
+      "id": "wait",
+      "label": "等待有效决定",
+      "kind": "check",
+      "row": 5,
+      "detail": "未回答不视为同意；仅等待依赖此决定的修改。"
+    },
+    {
+      "id": "write",
+      "label": "重整结构并改写",
+      "kind": "ai",
+      "row": 6,
+      "detail": "首页给第一步与结果，细节按需下沉；不用固定模板与装饰撑篇幅。"
+    },
+    {
+      "id": "review",
+      "label": "沿读者路径验证",
+      "kind": "check",
+      "row": 7,
+      "detail": "首屏、前提、操作、结果与链接可找到；运行只读结构检查，核对实际命令证据。"
+    },
+    {
+      "id": "evidence",
+      "label": "交付修改与实际证据",
+      "kind": "ai",
+      "row": 8,
+      "detail": "保留必要信息，更新已有语言版本；说明未验证项，不生成多余完成报告。"
+    },
+    {
+      "id": "rollback",
+      "label": "恢复本次文档改动",
+      "kind": "ai",
+      "row": 9,
+      "detail": "取消时只恢复本次拥有的修改，不覆盖他人后续编辑。"
+    },
+    {
+      "id": "restore",
+      "label": "验证恢复状态",
+      "kind": "check",
+      "row": 10,
+      "detail": "检查原文、链接与项目状态；恢复失败继续处理，不假称成功。"
+    },
+    {
+      "id": "done",
+      "label": "交付或取消结束",
+      "kind": "terminal",
+      "row": 11,
+      "detail": "区分文档交付和已验证回退；图表示规则，不是运行记录。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "scope",
+      "label": "读取已确认需求",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "facts",
+      "label": "界定文档与读者",
+      "kind": "normal"
+    },
+    {
+      "from": "facts",
+      "to": "write",
+      "label": "现有约定内执行",
+      "kind": "normal"
+    },
+    {
+      "from": "facts",
+      "to": "decision",
+      "label": "需要新的产品决定",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "wait",
+      "label": "尚无有效回答",
+      "kind": "normal"
+    },
+    {
+      "from": "wait",
+      "to": "decision",
+      "label": "收到真实回答",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "scope",
+      "label": "同意/调整：核对后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "rollback",
+      "label": "取消修改",
+      "kind": "normal"
+    },
+    {
+      "from": "write",
+      "to": "review",
+      "label": "保留项目事实与原文",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "write",
+      "label": "结构或阅读路径有问题",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "evidence",
+      "label": "所选验证通过",
+      "kind": "normal"
+    },
+    {
+      "from": "evidence",
+      "to": "done",
+      "label": "如实交付范围与限制",
+      "kind": "normal"
+    },
+    {
+      "from": "rollback",
+      "to": "restore",
+      "label": "恢复后检查",
+      "kind": "normal"
+    },
+    {
+      "from": "restore",
+      "to": "rollback",
+      "label": "恢复失败：处理后重验",
+      "kind": "rework"
+    },
+    {
+      "from": "restore",
+      "to": "done",
+      "label": "已验证回退",
+      "kind": "normal"
+    },
+    {
+      "from": "facts",
+      "to": "scope",
+      "label": "事实待补：调查后重验",
+      "kind": "rework"
+    }
+  ]
+}

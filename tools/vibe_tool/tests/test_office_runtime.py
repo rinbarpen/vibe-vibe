@@ -13,8 +13,8 @@ from unittest.mock import patch
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-SCRIPTS = REPO_ROOT / "manifests/office/scripts"
-RECALC_SCRIPT = REPO_ROOT / "manifests/office/xlsx/scripts/recalc.py"
+SCRIPTS = REPO_ROOT / "mine/office/scripts"
+RECALC_SCRIPT = REPO_ROOT / "mine/office/xlsx/scripts/recalc.py"
 
 
 def load_script(name, path):

@@ -1,0 +1,9 @@
+..................................................................................................... [ 42%]
+.................... [ 51%]
+....s................ [ 59%]
+....ss............................................... [ 82%]
+..........................................                              [100%]
+=========================== short test summary info ============================
+SKIPPED [1] tools/vibe_tool/tests/test_office_workbook_features.py:314: Pinned official VBA fixture unavailable; set OFFICE_VBA_FIXTURE
+SKIPPED [2] tools/vibe_tool/tests/test_omni_ui_design.py:76: Canonical renderer not configured
+234 passed, 3 skipped, 1030 subtests passed in 60.16s (0:01:00)

@@ -676,7 +676,7 @@
       "acceptance": [
         "literature/position/taxonomy: 关键分类均有来源且区别报告值与复现值",
         "literature/position/gap: gap有多来源支持并记录反例和检索局限",
-        "literature/position/novelty: 近邻方法、重合点、差异及不确定性有引用"
+        "literature/position/novelty: 近邻方法、重合点、差异及不确定性有引用；关键词仅用于召回；以原始方法证据逐项比较研究思路、核心机制、关键方法与贡献，给出重合/差异/未验证结论；研究思路与关键方法均高度重合才判high_overlap；缺证据保留unverified，不以未检出证明首创"
       ],
       "required_evidence": false,
       "inputs": [
@@ -701,7 +701,7 @@
       "return_to": {
         "failed_child": "literature/position"
       },
-      "contract_revision": 1,
+      "contract_revision": 2,
       "handoff": {
         "include": [
           "child_checkpoints",
@@ -851,7 +851,9 @@
       "objective": "对最相近工作逐项核对机制与贡献差异",
       "acceptance": [
         "近邻方法、重合点、差异及不确定性有引用",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "关键词仅用于召回；以原始方法证据逐项比较研究思路、核心机制、关键方法与贡献，给出重合/差异/未验证结论",
+        "研究思路与关键方法均高度重合才判high_overlap；缺证据保留unverified，不以未检出证明首创"
       ],
       "required_evidence": true,
       "inputs": [
@@ -863,14 +865,15 @@
       ],
       "activities": [
         "对最相近工作逐项核对机制与贡献差异",
-        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点"
+        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点",
+        "按references/idea-validation.md核对思路/方法、证据覆盖与结论范围，保留修订依据"
       ],
       "roles": [
         "research"
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/literature--position--novelty.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "startup/scope",
         "failed_check": "literature/position"
@@ -889,7 +892,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -951,8 +957,8 @@
       "title": "假设与方案",
       "objective": "假设与方案",
       "acceptance": [
-        "idea/hypotheses/candidates: 每个候选含预测、反证和最小验证实验",
-        "idea/hypotheses/comparison: 保留淘汰理由及关键假设未验证项"
+        "idea/hypotheses/candidates: 每个候选含预测、反证和最小验证实验；候选以稳定hypothesis/claim ID关联NOVELTY中的思路与方法对照，区分核心假设、method及实现配置",
+        "idea/hypotheses/comparison: 保留淘汰理由及关键假设未验证项；淘汰或保留理由引用思路与关键方法的实质对照，不以关键词命中判已做过；高度重合仍记录复现或扩展价值"
       ],
       "required_evidence": false,
       "inputs": [
@@ -978,7 +984,7 @@
       "return_to": {
         "failed_child": "idea/hypotheses"
       },
-      "contract_revision": 1,
+      "contract_revision": 2,
       "handoff": {
         "include": [
           "child_checkpoints",
@@ -996,7 +1002,8 @@
       "objective": "提出竞争解释、可测预测和否定条件",
       "acceptance": [
         "每个候选含预测、反证和最小验证实验",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "候选以稳定hypothesis/claim ID关联NOVELTY中的思路与方法对照，区分核心假设、method及实现配置"
       ],
       "required_evidence": true,
       "inputs": [
@@ -1016,7 +1023,7 @@
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/idea--hypotheses--candidates.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "literature/position",
         "failed_check": "idea/hypotheses"
@@ -1034,7 +1041,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -1063,7 +1073,8 @@
       "objective": "按新颖性、可证伪性、成本和风险选择方案",
       "acceptance": [
         "保留淘汰理由及关键假设未验证项",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "淘汰或保留理由引用思路与关键方法的实质对照，不以关键词命中判已做过；高度重合仍记录复现或扩展价值"
       ],
       "required_evidence": true,
       "inputs": [
@@ -1082,7 +1093,7 @@
       ],
       "approval": "human_confirmation",
       "review_path": ".auto-research/lifecycle/reviews/idea--hypotheses--comparison.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "literature/position",
         "failed_check": "idea/hypotheses"
@@ -1100,7 +1111,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -1128,9 +1142,9 @@
       "title": "方法细化",
       "objective": "方法细化",
       "acceptance": [
-        "idea/method/mechanism: 公式符号、张量接口和伪代码一致",
+        "idea/method/mechanism: 公式符号、张量接口和伪代码一致；method修订后重验思路与关键方法的重合及贡献差异，保留旧新版本和未验证项",
         "idea/method/components: 每个组件有稳定ID、接口和可实施干预",
-        "idea/method/claims: 所有核心claim都有证据类型和失败解释"
+        "idea/method/claims: 所有核心claim都有证据类型和失败解释；逐claim预先登记最低有效证据、适用范围、反证阈值、必要对照和提前停止条件；区分hypothesis与method失败"
       ],
       "required_evidence": false,
       "inputs": [
@@ -1156,7 +1170,7 @@
       "return_to": {
         "failed_child": "idea/method"
       },
-      "contract_revision": 1,
+      "contract_revision": 2,
       "handoff": {
         "include": [
           "child_checkpoints",
@@ -1174,7 +1188,8 @@
       "objective": "明确输入输出、数学定义、算法步骤和假设",
       "acceptance": [
         "公式符号、张量接口和伪代码一致",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "method修订后重验思路与关键方法的重合及贡献差异，保留旧新版本和未验证项"
       ],
       "required_evidence": true,
       "inputs": [
@@ -1185,14 +1200,15 @@
       ],
       "activities": [
         "明确输入输出、数学定义、算法步骤和假设",
-        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点"
+        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点",
+        "按references/idea-validation.md核对思路/方法、证据覆盖与结论范围，保留修订依据"
       ],
       "roles": [
         "research"
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/idea--method--mechanism.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "literature/position",
         "failed_check": "idea/method"
@@ -1215,7 +1231,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -1311,7 +1330,8 @@
       "objective": "登记主张、证伪阈值和所需证据",
       "acceptance": [
         "所有核心claim都有证据类型和失败解释",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "逐claim预先登记最低有效证据、适用范围、反证阈值、必要对照和提前停止条件；区分hypothesis与method失败"
       ],
       "required_evidence": true,
       "inputs": [
@@ -1330,7 +1350,7 @@
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/idea--method--claims.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "literature/position",
         "failed_check": "idea/method"
@@ -1352,7 +1372,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -1669,7 +1692,7 @@
       "objective": "消融实验",
       "acceptance": [
         "design/ablation/decomposition: 每项变化对应机制假设和控制变量",
-        "design/ablation/coverage: 每个claim和因素为covered或有延期/不适用理由",
+        "design/ablation/coverage: 每个claim和因素为covered或有延期/不适用理由；覆盖矩阵关联claim最低证据与反证条件；缺失、延期和不适用不冒充已执行",
         "design/ablation/matrix: 组合唯一、参考明确且交互不盲目穷举"
       ],
       "required_evidence": false,
@@ -1698,7 +1721,7 @@
       "return_to": {
         "failed_child": "design/ablation"
       },
-      "contract_revision": 1,
+      "contract_revision": 2,
       "handoff": {
         "include": [
           "child_checkpoints",
@@ -1782,7 +1805,8 @@
       "objective": "覆盖移除、增加、替代、交互及边界实验",
       "acceptance": [
         "每个claim和因素为covered或有延期/不适用理由",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "覆盖矩阵关联claim最低证据与反证条件；缺失、延期和不适用不冒充已执行"
       ],
       "required_evidence": true,
       "inputs": [
@@ -1801,7 +1825,7 @@
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/design--ablation--coverage.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "idea/method",
         "failed_check": "design/ablation"
@@ -1820,7 +1844,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -3377,9 +3404,9 @@
       "objective": "论证",
       "acceptance": [
         "analysis/interpretation/ablation: 结论不超出控制条件并解释负结果",
-        "analysis/interpretation/failures: 案例选取规则、失效边界和后续行动明确",
-        "analysis/interpretation/claims: 每个结论引用run与证据且保留反证",
-        "analysis/interpretation/audit: 审查身份和阻断项明确且不将缺席视为通过"
+        "analysis/interpretation/failures: 案例选取规则、失效边界和后续行动明确；区分实现、协议、抽样、method与hypothesis失败；部分实验不佳不等于整体idea无效；保留原始attempt与负结果，分列事实、解释和待验证启发，登记可复用机制及后续验证/cycle引用或明确暂无启发",
+        "analysis/interpretation/claims: 每个结论引用run与证据且保留反证；逐claim对照冻结矩阵与实跑有效证据，列明已测范围、失败/缺失/延期项和结论边界；不足时保留inconclusive；refuted_in_scope须满足预设反证条件并排查实现/协议与混杂；决定性证据可提前停止，资源中止不等于idea无效",
+        "analysis/interpretation/audit: 审查身份和阻断项明确且不将缺席视为通过；独立核对覆盖与结论强度、提前停止依据及失败启发的未验证标记，不从部分实验或method失败推出idea全局无效"
       ],
       "required_evidence": false,
       "inputs": [
@@ -3410,7 +3437,7 @@
       "return_to": {
         "failed_child": "analysis/interpretation"
       },
-      "contract_revision": 1,
+      "contract_revision": 2,
       "handoff": {
         "include": [
           "child_checkpoints",
@@ -3492,7 +3519,9 @@
       "objective": "区分工程失败、方法失效和抽样波动",
       "acceptance": [
         "案例选取规则、失效边界和后续行动明确",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "区分实现、协议、抽样、method与hypothesis失败；部分实验不佳不等于整体idea无效",
+        "保留原始attempt与负结果，分列事实、解释和待验证启发，登记可复用机制及后续验证/cycle引用或明确暂无启发"
       ],
       "required_evidence": true,
       "inputs": [
@@ -3511,7 +3540,7 @@
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/analysis--interpretation--failures.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "execution/runs",
         "failed_check": "analysis/interpretation"
@@ -3530,7 +3559,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -3559,7 +3591,9 @@
       "objective": "逐项判定支持、部分支持或不支持",
       "acceptance": [
         "每个结论引用run与证据且保留反证",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "逐claim对照冻结矩阵与实跑有效证据，列明已测范围、失败/缺失/延期项和结论边界；不足时保留inconclusive",
+        "refuted_in_scope须满足预设反证条件并排查实现/协议与混杂；决定性证据可提前停止，资源中止不等于idea无效"
       ],
       "required_evidence": true,
       "inputs": [
@@ -3572,14 +3606,15 @@
       ],
       "activities": [
         "逐项判定支持、部分支持或不支持",
-        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点"
+        "保存来源、版本、实际操作和失败记录；核对下列验收项后提交检查点",
+        "按references/idea-validation.md核对思路/方法、证据覆盖与结论范围，保留修订依据"
       ],
       "roles": [
         "research"
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/analysis--interpretation--claims.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "execution/runs",
         "failed_check": "analysis/interpretation"
@@ -3603,7 +3638,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -3632,7 +3670,8 @@
       "objective": "独立核验统计、归因和选择性报告",
       "acceptance": [
         "审查身份和阻断项明确且不将缺席视为通过",
-        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注"
+        "产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注",
+        "独立核对覆盖与结论强度、提前停止依据及失败启发的未验证标记，不从部分实验或method失败推出idea全局无效"
       ],
       "required_evidence": true,
       "inputs": [
@@ -3651,7 +3690,7 @@
       ],
       "approval": "auto",
       "review_path": ".auto-research/lifecycle/reviews/analysis--interpretation--audit.json",
-      "contract_revision": 1,
+      "contract_revision": 2,
       "return_to": {
         "invalid_input": "execution/runs",
         "failed_check": "analysis/interpretation"
@@ -3670,7 +3709,10 @@
           "sha256",
           "review_path",
           "unresolved_issues",
-          "next_action"
+          "next_action",
+          "baseline_revision_and_hashes",
+          "semantic_diff",
+          "negative_results_and_insight_refs"
         ]
       },
       "checkpoint": {
@@ -6384,7 +6426,8 @@
         "关键来源有原始链接与访问日期",
         "筛选决定有理由",
         "研究空白不是单一搜索结果推断",
-        "候选 baseline 可区分文献值/复现值"
+        "候选 baseline 可区分文献值/复现值",
+        "新颖性按原始方法证据核对思路与关键方法，不以关键词命中或未检出判定"
       ],
       "roles": [
         "research",
@@ -6429,7 +6472,9 @@
         "每个 claim 有证伪路径",
         "创新点不只是规模或调参",
         "组件边界清楚",
-        "负结果解释已预先定义"
+        "负结果解释已预先定义",
+        "候选与修订方法有思路/方法实质对照，未验证项不冒充结论",
+        "每个claim预先登记最低证据、反证范围和提前停止条件"
       ],
       "roles": [
         "research",
@@ -6573,7 +6618,9 @@
         "同 protocol/group/seed 才配对",
         "单 seed 不声称方差/稳健性",
         "FAIL 证据不进入无条件写作 claim",
-        "每个结论可追溯到原始文件"
+        "每个结论可追溯到原始文件",
+        "逐claim核对实跑覆盖与结论边界；部分实验/method失败不等于idea无效",
+        "失败分析保留事实、解释、待验证思想启迪和后续验证链接"
       ],
       "roles": [
         "executor",

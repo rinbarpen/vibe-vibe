@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install the self-contained Office manifest without touching project data.
+"""Install the office project's contract, not its reusable file implementation.
 
 Dependencies listed by skills.txt are installed by the vibe dispatcher, not by
 this script. Direct invocation installs only the manifest's own resources.
@@ -27,6 +27,9 @@ def _files(directory: Path):
 
 def installation_files(manifest: Path):
     """Yield source/destination pairs; do not inspect or create the target."""
+    skill = manifest.parents[1] / "mine" / "office"
+    if not (skill / "SKILL.md").is_file():
+        raise FileNotFoundError(f"Office capability source missing: {skill / 'SKILL.md'}")
     for name in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
         source = manifest / name
         if source.is_file():
@@ -37,7 +40,7 @@ def installation_files(manifest: Path):
     if readme.is_file():
         yield readme, Path("office/README.md")
 
-    for name in ("docx", "xlsx", "pptx", "pdf", "planning", "assets"):
+    for name in ("assets", "templates"):
         for source, relative in _files(manifest / name):
             yield source, Path("office") / name / relative
 
@@ -51,11 +54,11 @@ def installation_files(manifest: Path):
         if relative.parts[0] not in INSTALLER_FILES:
             yield source, Path("office/scripts") / relative
 
-    for source, relative in _files(manifest / "agents"):
-        yield source, Path("office/agents") / relative
-    for name in (".claude/agents", ".codex/agents"):
-        for source, relative in _files(manifest / name):
-            yield source, Path(name) / relative
+    # Register host adapters from the capability's canonical definitions. A
+    # standalone skill installation deliberately does not register host agents.
+    for host in ("claude", "codex"):
+        for source, relative in _files(skill / "agents" / host):
+            yield source, Path(f".{host}/agents") / relative
 
 
 def _atomic_copy(source: Path, destination: Path, *, content: bytes | None = None) -> None:
@@ -105,6 +108,10 @@ def main(argv=None) -> int:
                 if relative == Path("README.md"):
                     content = source.read_text(encoding="utf-8").replace(
                         "](assets/", "](office/assets/"
+                    ).replace(
+                        "](templates/", "](office/templates/"
+                    ).replace(
+                        "](scripts/", "](office/scripts/"
                     ).encode("utf-8")
                 _atomic_copy(source, destination, content=content)
                 print(f"  COPY  {relative}")
@@ -116,7 +123,7 @@ def main(argv=None) -> int:
     label = "[dry-run] Would install" if args.dry_run else "Installed"
     print(f"{label} {copied} Office files; {skipped} preserved; target: {target}")
     print("Office entry: office/README.md. For existing CLAUDE.md/AGENTS.md, add:")
-    print("  For Office tasks, read office/README.md and the referenced office/rules/*.md.")
+    print("  For office projects read office/README.md; file work loads .agents/skills/office/SKILL.md.")
     print("Required skills: vibe init office / vibe add manifest office installs skills.txt dependencies.")
     return 0
 

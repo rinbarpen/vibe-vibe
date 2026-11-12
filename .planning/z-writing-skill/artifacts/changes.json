@@ -1,0 +1,357 @@
+{
+  "source_root": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "changes": [
+    {
+      "path": "docs/catalog.md",
+      "before": {
+        "kind": "file",
+        "sha256": "29d1cc0707051bef419f0f228c57fcc99e1d2b0dfc8d53ff5ee4536fc983036b"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "bbdffb00dcff5c2bf0d9f7b6d7a13984543144f7adb84a866c40f1517bb16394"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "docs/catalog_EN.md",
+      "before": {
+        "kind": "file",
+        "sha256": "8f841cffd8b6a6fe367af6ac1813c51e7dd230b252155ec238bf422cf328e4ee"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "8456897d8012548cd4f6bb68a0ac1282ea1a218a69921f3226fa89968c24c74c"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "manifests/office/skills.txt",
+      "before": {
+        "kind": "file",
+        "sha256": "257795eaca0afaf2dea9763fdf4d77eee921c478d5977420a05fded0d5938ab7"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "4f0519586c91ccd9f9c3531fe73d0e2ac687253d9805e46e032994106d670a6e"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office-quality/references/docx.md",
+      "before": {
+        "kind": "file",
+        "sha256": "4b5c1063336d6d45c8ed979eb7925305b6029d222ce2c7fd57d0712246f9eb62"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "f843ff501c284b9c75b0992cd53ad198b597405a5afa31657fc6d0f0e0eff657"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/SKILL.md",
+      "before": {
+        "kind": "file",
+        "sha256": "c52989054251168c712170972218ad0b726c3e97db2af6600808c60298720211"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "1ec6b83fdf5afe06d86bb030495269b42ea842b365b410db83abb7a55dd9beb5"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/claude/office-docx.md",
+      "before": {
+        "kind": "file",
+        "sha256": "e0f71ea1fb05db9f7fd003e006146ad46bc2876f1c057131f4d61a61df4aa6c3"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "0183017c400931e0c1068f634d1fd255a5a435957d622dacc5a4be23165437f4"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/claude/office-planner.md",
+      "before": {
+        "kind": "file",
+        "sha256": "56f66a1d9804bd0ef2d4a3c9ebf87c132f012c744e797ceaeb854483f31a03c1"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "87c33536a22009672b264493db585353d7aa6955ea41eddd9e931cb765e7919f"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/claude/office-qa.md",
+      "before": {
+        "kind": "file",
+        "sha256": "aa69ee60aa644912514410e76692cef089bc24b31db1068b2fd16da09898f6dc"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "8b2acecb1abf1356886a0008884bbda0efaee2ca60fb75184b2cb5dc08efd548"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/claude/office-writer.md",
+      "before": {
+        "kind": "file",
+        "sha256": "183962dde55d8c997780bfae55263e15fc1aafec0f6ed66e83cfe92b2a41bc11"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "4f21e45345ab05823c82d3b5e4ebae42a3487defc5235251fe10397252bab371"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/codex/office-docx.toml",
+      "before": {
+        "kind": "file",
+        "sha256": "b209bd65d88e3ac4afa74317fbfb1806e917fb3ca6762a8640cfcbb59009d4b0"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "720b181f544a434e0da873df4e2517825947b8bf2ad960ccad0c60aa6ca895d3"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/codex/office-planner.toml",
+      "before": {
+        "kind": "file",
+        "sha256": "577d352021da9a0484c02c83a2ca54fefd2a1207fac398b829c199f8346fb925"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "2a1120b5ab915765d10151ca48ce7501e6799fa42bdfcabaeb119bc9b9e20d29"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/codex/office-qa.toml",
+      "before": {
+        "kind": "file",
+        "sha256": "f8d081673770f3706a2c8e17a3e235371dfff269e8d3ff493467ab67b7a434f0"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "610bea93b6db138259f06118033e1dcb666d6d55f2a28d9aa6cfa4d55dcedc4b"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/codex/office-writer.toml",
+      "before": {
+        "kind": "file",
+        "sha256": "7ee4ecf5af431d7baeab0730c16d9371036f585f43c27cbc610f1bc499bd4e05"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "f3de1c59c389f6db142a4cdef3fbde43aa4a033bbc5d9d1b783d5d80a2e1fa88"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/agents/subagent-roles.md",
+      "before": {
+        "kind": "file",
+        "sha256": "f41b7fddca8d83e73fe0b8a6bd7405cad76c10736b77ed0ae1e537bae24390ff"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "f0b3adb3eeeaeceb11f1fcce5242aa6a866a75f7071fb15777e155ad2ac14023"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/docx/CLAUDE.md",
+      "before": {
+        "kind": "file",
+        "sha256": "a13813eb6a882a103deb36656a22cf831d94ef46656b96c8306f04912ee40ddc"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "f249c632dc4f99edffaae3b20ee70dfb1e2a1a28b590041b95baf3de76d63a97"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/docx/references/voice-and-visuals.md",
+      "before": {
+        "kind": "file",
+        "sha256": "8d5cadbc4910f29cafbbe11fc71cd9c101bfab5b1870d935ac4df088d64622f0"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "18c8d9514b93fc3fe96c6617e1113ea145a4f4b243dfd4f5b7e99a20fabfeaab"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/office/rules/docx.md",
+      "before": {
+        "kind": "file",
+        "sha256": "22c49d0fdb073f6cac51f18dbafe88ac36cf9db0b7e5331bf6628c60e5484e5e"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "d8064f731eea0f070a96f8ec21e33bb1f27412890aa036e8d741216022a4874b"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "mine/z-humanizer/skills/academic-humanizer",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "link",
+        "target": "../../../skills/academic-humanizer"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-humanizer/skills/humanizer-zh-academic",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "link",
+        "target": "../../../skills/humanizer-zh-academic"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-writing/SKILL.md",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "d44f73ea788838023860cbc78530f6fae9c5818299684e29f3d4897bb37fa49d"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-writing/references/ai-vibe-writing",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "link",
+        "target": "../../../skills/ai-vibe-writing"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-writing/references/context.md",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "bd677e14e16493535de3ad04c22f0fb0c623c2497d56caafa921517c2628be1c"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-writing/references/scenes.md",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "85196dc1fc70e6b43423acc07af36411f3e7e30ff0c397684302139929f31d78"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "mine/z-writing/references/z-humanizer",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "link",
+        "target": "../../z-humanizer"
+      },
+      "before_mode": null
+    },
+    {
+      "path": "skills/ANNOTATIONS.md",
+      "before": {
+        "kind": "file",
+        "sha256": "dd87dabd09e6d7fc90ed46ca6dee58b415e37bd9474f83013285fcd23ddb8686"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "5b5a7394b26616771e835e6ab6a47d5213a0006638e6ee3a40329226b03f556a"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "skills/ANNOTATIONS_EN.md",
+      "before": {
+        "kind": "file",
+        "sha256": "b7c45b03ca5f0fc05f441fa75a6618db8f9f21205c03bf9a62068f5f5d8bc5c2"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "8617e00afb5268fb26be9a592f3325bf04673912bbae8222d08c75499392daa7"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "tools/vibe_tool/src/vibe_tool/project_update.py",
+      "before": {
+        "kind": "file",
+        "sha256": "4822fb2f1f1bf0753a3ddd22ea10e120b79a2f1458d98a95a43c91dfc8ea438d"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "2acb67d091d1e9dc8f55eb357305d083a2c4530c23c8ba0999936b40148590c1"
+      },
+      "before_mode": 436
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_office_skill_separation.py",
+      "before": {
+        "kind": "file",
+        "sha256": "0d3e67436d158a17e2dc99723ab82c0ca93f2db468b4077ebabd171dc7d6a758"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "1414e727d3700a2563c0c1b704391e9ee6561ef7183b7b9f1e6c77a10b308940"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+      "before": {
+        "kind": "file",
+        "sha256": "f570be2ba10d17f7f3dd5620e4b72785d440fc0fd97b992ce67645a62bc1119c"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "77cb42aebd89cd5d612b554c44ea4e082a4ab3a15701f3755cc4d2f1a1b680f8"
+      },
+      "before_mode": 384
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_z_writing.py",
+      "before": {
+        "kind": "missing"
+      },
+      "after": {
+        "kind": "file",
+        "sha256": "36a8123b7d94558bf711166485204f7960bf93a4339ed36751ab37064b0d8b9d"
+      },
+      "before_mode": null
+    }
+  ]
+}

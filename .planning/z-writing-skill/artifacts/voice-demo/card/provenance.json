@@ -1,0 +1,13 @@
+{
+  "doc_count": 1,
+  "genre_note": "profile has fewer than 2000 words",
+  "low_confidence": true,
+  "samples": [
+    {
+      "file": "example.md",
+      "sha256": "11d85c4de20a3b66c4941d6b577ee227db9ffb6917c708d92859807cbc913273",
+      "words": 80
+    }
+  ],
+  "total_words": 80
+}

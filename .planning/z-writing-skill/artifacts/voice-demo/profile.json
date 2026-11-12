@@ -1,0 +1,1363 @@
+{
+  "char3": {
+    " a ": 8,
+    " an": 4,
+    " be": 4,
+    " cl": 8,
+    " co": 4,
+    " dr": 4,
+    " ea": 4,
+    " ev": 4,
+    " ha": 4,
+    " in": 4,
+    " na": 4,
+    " on": 4,
+    " pr": 4,
+    " re": 4,
+    " so": 4,
+    " ta": 4,
+    " te": 4,
+    " we": 3,
+    ". a": 4,
+    ". e": 4,
+    ". w": 3,
+    "a c": 8,
+    "abl": 4,
+    "ach": 4,
+    "aft": 4,
+    "aim": 4,
+    "al ": 4,
+    "ame": 4,
+    "and": 4,
+    "ar ": 4,
+    "as ": 4,
+    "bef": 4,
+    "ble": 4,
+    "cal": 4,
+    "ce ": 4,
+    "ce.": 4,
+    "ch ": 4,
+    "chn": 4,
+    "cla": 4,
+    "cle": 4,
+    "con": 4,
+    "ct ": 4,
+    "d t": 4,
+    "den": 4,
+    "dit": 4,
+    "dra": 4,
+    "e b": 4,
+    "e h": 4,
+    "e i": 4,
+    "e r": 4,
+    "e s": 4,
+    "e. ": 4,
+    "eac": 4,
+    "ear": 4,
+    "ech": 4,
+    "ect": 4,
+    "efo": 4,
+    "enc": 4,
+    "erv": 4,
+    "es ": 4,
+    "es.": 4,
+    "ese": 4,
+    "evi": 8,
+    "for": 4,
+    "ft ": 4,
+    "g a": 4,
+    "h t": 4,
+    "has": 4,
+    "hni": 4,
+    "ica": 4,
+    "ide": 4,
+    "im.": 4,
+    "ing": 4,
+    "ins": 4,
+    "ion": 4,
+    "isi": 4,
+    "iti": 4,
+    "l n": 4,
+    "lai": 4,
+    "le ": 4,
+    "lea": 4,
+    "m. ": 4,
+    "mes": 4,
+    "nam": 4,
+    "nce": 4,
+    "nd ": 4,
+    "ndi": 4,
+    "ne ": 4,
+    "ng ": 4,
+    "nic": 4,
+    "ns ": 4,
+    "nsp": 4,
+    "ond": 4,
+    "one": 4,
+    "ons": 4,
+    "ore": 4,
+    "our": 4,
+    "pec": 4,
+    "pre": 4,
+    "r d": 4,
+    "raf": 4,
+    "rce": 4,
+    "re ": 4,
+    "res": 4,
+    "rev": 4,
+    "rve": 4,
+    "s a": 4,
+    "s c": 4,
+    "s o": 4,
+    "s. ": 3,
+    "ser": 4,
+    "sin": 4,
+    "sou": 4,
+    "spe": 4,
+    "t e": 4,
+    "t p": 4,
+    "tab": 4,
+    "tec": 4,
+    "tio": 4,
+    "urc": 4,
+    "ves": 4,
+    "vid": 4,
+    "vis": 4,
+    "we ": 4
+  },
+  "contraction_rate": 0.0,
+  "function_word_background": {
+    "a": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "about": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "above": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "across": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "after": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "again": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "against": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "all": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "almost": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "along": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "already": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "also": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "although": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "am": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "among": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "an": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "and": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "another": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "any": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "are": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "aren't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "around": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "as": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "at": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "back": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "be": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "because": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "been": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "before": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "behind": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "being": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "below": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "beside": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "between": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "beyond": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "both": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "but": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "by": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "can": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "cannot": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "concerning": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "could": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "couldn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "despite": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "did": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "didn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "do": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "does": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "doesn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "doing": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "done": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "dont": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "down": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "during": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "each": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "either": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "else": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "even": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "every": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "except": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "first": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "for": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "from": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "good": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "had": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "hadn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "has": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "hasn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "have": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "haven't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "having": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "he": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "he'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "he'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "he's": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "her": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "here": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "herself": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "him": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "himself": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "his": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "how": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "however": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "i": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "i'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "i'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "i'm": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "i've": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "if": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "in": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "including": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "indeed": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "inside": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "instead": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "into": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "is": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "isn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "it": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "it's": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "its": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "itself": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "just": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "last": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "let": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "lets": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "like": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "made": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "make": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "many": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "may": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "me": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "might": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "mightn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "mine": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "minus": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "more": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "moreover": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "most": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "much": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "must": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "mustn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "my": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "myself": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "near": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "neither": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "never": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "nevertheless": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "no": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "nor": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "now": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "of": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "off": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "on": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "once": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "one": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "only": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "or": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "other": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "our": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "ours": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "ourselves": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "out": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "outside": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "over": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "own": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "people": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "per": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "perhaps": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "plus": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "rather": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "regarding": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "same": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "see": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "she": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "she'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "she'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "she's": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "should": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "shouldn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "since": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "so": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "some": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "still": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "such": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "than": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "that": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "the": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "their": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "theirs": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "them": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "themselves": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "then": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "there": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "therefore": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "these": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "they": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "they'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "they'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "they're": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "they've": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "this": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "those": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "though": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "through": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "thus": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "to": {
+      "mean": 0.025,
+      "std": 0.006
+    },
+    "toward": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "towards": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "two": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "under": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "until": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "up": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "upon": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "us": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "versus": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "very": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "via": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "was": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "wasn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "we": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "we'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "we'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "we're": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "we've": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "well": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "were": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "weren't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "what": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "when": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "where": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "whether": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "which": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "while": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "who": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "whom": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "whose": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "why": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "will": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "with": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "within": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "without": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "won't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "would": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "wouldn't": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "yet": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "you": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "you'd": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "you'll": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "you're": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "you've": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "your": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "yours": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "yourself": {
+      "mean": 0.0025,
+      "std": 0.006
+    },
+    "yourselves": {
+      "mean": 0.0025,
+      "std": 0.006
+    }
+  },
+  "function_words": {
+    "a": 0.1,
+    "about": 0.0,
+    "above": 0.0,
+    "across": 0.0,
+    "after": 0.0,
+    "again": 0.0,
+    "against": 0.0,
+    "all": 0.0,
+    "almost": 0.0,
+    "along": 0.0,
+    "already": 0.0,
+    "also": 0.0,
+    "although": 0.0,
+    "am": 0.0,
+    "among": 0.0,
+    "an": 0.0,
+    "and": 0.05,
+    "another": 0.0,
+    "any": 0.0,
+    "are": 0.0,
+    "aren't": 0.0,
+    "around": 0.0,
+    "as": 0.0,
+    "at": 0.0,
+    "back": 0.0,
+    "be": 0.0,
+    "because": 0.0,
+    "been": 0.0,
+    "before": 0.05,
+    "behind": 0.0,
+    "being": 0.0,
+    "below": 0.0,
+    "beside": 0.0,
+    "between": 0.0,
+    "beyond": 0.0,
+    "both": 0.0,
+    "but": 0.0,
+    "by": 0.0,
+    "can": 0.0,
+    "cannot": 0.0,
+    "concerning": 0.0,
+    "could": 0.0,
+    "couldn't": 0.0,
+    "despite": 0.0,
+    "did": 0.0,
+    "didn't": 0.0,
+    "do": 0.0,
+    "does": 0.0,
+    "doesn't": 0.0,
+    "doing": 0.0,
+    "done": 0.0,
+    "dont": 0.0,
+    "down": 0.0,
+    "during": 0.0,
+    "each": 0.05,
+    "either": 0.0,
+    "else": 0.0,
+    "even": 0.0,
+    "every": 0.0,
+    "except": 0.0,
+    "first": 0.0,
+    "for": 0.0,
+    "from": 0.0,
+    "good": 0.0,
+    "had": 0.0,
+    "hadn't": 0.0,
+    "has": 0.05,
+    "hasn't": 0.0,
+    "have": 0.0,
+    "haven't": 0.0,
+    "having": 0.0,
+    "he": 0.0,
+    "he'd": 0.0,
+    "he'll": 0.0,
+    "he's": 0.0,
+    "her": 0.0,
+    "here": 0.0,
+    "herself": 0.0,
+    "him": 0.0,
+    "himself": 0.0,
+    "his": 0.0,
+    "how": 0.0,
+    "however": 0.0,
+    "i": 0.0,
+    "i'd": 0.0,
+    "i'll": 0.0,
+    "i'm": 0.0,
+    "i've": 0.0,
+    "if": 0.0,
+    "in": 0.0,
+    "including": 0.0,
+    "indeed": 0.0,
+    "inside": 0.0,
+    "instead": 0.0,
+    "into": 0.0,
+    "is": 0.0,
+    "isn't": 0.0,
+    "it": 0.0,
+    "it's": 0.0,
+    "its": 0.0,
+    "itself": 0.0,
+    "just": 0.0,
+    "last": 0.0,
+    "let": 0.0,
+    "lets": 0.0,
+    "like": 0.0,
+    "made": 0.0,
+    "make": 0.0,
+    "many": 0.0,
+    "may": 0.0,
+    "me": 0.0,
+    "might": 0.0,
+    "mightn't": 0.0,
+    "mine": 0.0,
+    "minus": 0.0,
+    "more": 0.0,
+    "moreover": 0.0,
+    "most": 0.0,
+    "much": 0.0,
+    "must": 0.0,
+    "mustn't": 0.0,
+    "my": 0.0,
+    "myself": 0.0,
+    "near": 0.0,
+    "neither": 0.0,
+    "never": 0.0,
+    "nevertheless": 0.0,
+    "no": 0.0,
+    "nor": 0.0,
+    "now": 0.0,
+    "of": 0.0,
+    "off": 0.0,
+    "on": 0.0,
+    "once": 0.0,
+    "one": 0.05,
+    "only": 0.0,
+    "or": 0.0,
+    "other": 0.0,
+    "our": 0.0,
+    "ours": 0.0,
+    "ourselves": 0.0,
+    "out": 0.0,
+    "outside": 0.0,
+    "over": 0.0,
+    "own": 0.0,
+    "people": 0.0,
+    "per": 0.0,
+    "perhaps": 0.0,
+    "plus": 0.0,
+    "rather": 0.0,
+    "regarding": 0.0,
+    "same": 0.0,
+    "see": 0.0,
+    "she": 0.0,
+    "she'd": 0.0,
+    "she'll": 0.0,
+    "she's": 0.0,
+    "should": 0.0,
+    "shouldn't": 0.0,
+    "since": 0.0,
+    "so": 0.0,
+    "some": 0.0,
+    "still": 0.0,
+    "such": 0.0,
+    "than": 0.0,
+    "that": 0.0,
+    "the": 0.0,
+    "their": 0.0,
+    "theirs": 0.0,
+    "them": 0.0,
+    "themselves": 0.0,
+    "then": 0.0,
+    "there": 0.0,
+    "therefore": 0.0,
+    "these": 0.0,
+    "they": 0.0,
+    "they'd": 0.0,
+    "they'll": 0.0,
+    "they're": 0.0,
+    "they've": 0.0,
+    "this": 0.0,
+    "those": 0.0,
+    "though": 0.0,
+    "through": 0.0,
+    "thus": 0.0,
+    "to": 0.0,
+    "toward": 0.0,
+    "towards": 0.0,
+    "two": 0.0,
+    "under": 0.0,
+    "until": 0.0,
+    "up": 0.0,
+    "upon": 0.0,
+    "us": 0.0,
+    "versus": 0.0,
+    "very": 0.0,
+    "via": 0.0,
+    "was": 0.0,
+    "wasn't": 0.0,
+    "we": 0.05,
+    "we'd": 0.0,
+    "we'll": 0.0,
+    "we're": 0.0,
+    "we've": 0.0,
+    "well": 0.0,
+    "were": 0.0,
+    "weren't": 0.0,
+    "what": 0.0,
+    "when": 0.0,
+    "where": 0.0,
+    "whether": 0.0,
+    "which": 0.0,
+    "while": 0.0,
+    "who": 0.0,
+    "whom": 0.0,
+    "whose": 0.0,
+    "why": 0.0,
+    "will": 0.0,
+    "with": 0.0,
+    "within": 0.0,
+    "without": 0.0,
+    "won't": 0.0,
+    "would": 0.0,
+    "wouldn't": 0.0,
+    "yet": 0.0,
+    "you": 0.0,
+    "you'd": 0.0,
+    "you'll": 0.0,
+    "you're": 0.0,
+    "you've": 0.0,
+    "your": 0.0,
+    "yours": 0.0,
+    "yourself": 0.0,
+    "yourselves": 0.0
+  },
+  "metadata": {
+    "doc_count": 1,
+    "genre_warning": "profile has fewer than 2000 words",
+    "low_confidence": true,
+    "total_words": 80
+  },
+  "mtld": 27.01298701298701,
+  "paragraph_stats": {
+    "count": 1,
+    "mean_words": 80.0
+  },
+  "punctuation": {
+    "!": 0.0,
+    "\"": 0.0,
+    "'": 0.0,
+    "(": 0.0,
+    ")": 0.0,
+    ",": 0.0,
+    "-": 0.0,
+    ".": 0.15,
+    ":": 0.0,
+    ";": 0.0,
+    "?": 0.0
+  },
+  "sentence_lengths": {
+    "iqr": 3.0,
+    "lengths": [
+      7,
+      5,
+      8,
+      7,
+      5,
+      8,
+      7,
+      5,
+      8,
+      7,
+      5,
+      8
+    ],
+    "median": 7.0
+  },
+  "total_words": 80,
+  "word_length_histogram": {
+    "1": 0.1,
+    "10": 0.05,
+    "11": 0.0,
+    "12": 0.0,
+    "13": 0.0,
+    "14": 0.0,
+    "15": 0.0,
+    "2": 0.05,
+    "3": 0.15,
+    "4": 0.05,
+    "5": 0.25,
+    "6": 0.1,
+    "7": 0.05,
+    "8": 0.1,
+    "9": 0.1
+  }
+}

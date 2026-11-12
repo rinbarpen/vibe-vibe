@@ -41,6 +41,15 @@ def _build_parser() -> argparse.ArgumentParser:
 
     subs = parser.add_subparsers(dest="command")
 
+    from .projects import configure as configure_projects
+    configure_projects(subs)
+
+    # ── setup (portable, agent-facing project configuration) ──
+    from .setup import configure as configure_setup
+    setup_p = subs.add_parser("setup", help="Portable Codex/Claude project setup with preview and rollback")
+    configure_setup(setup_p)
+    setup_p.set_defaults(func=_cmd_setup)
+
     # ── init ──
     init_p = subs.add_parser("init", help="Initialize a new project from a manifest")
     init_p.add_argument("manifest", help="Manifest name")
@@ -174,44 +183,41 @@ def _get_repo_paths(args) -> tuple[Path, Path, tuple[Path, Path]]:
     return root, root / "manifests", (root / "skills", root / "mine")
 
 
+def _cmd_setup(args) -> int:
+    from .setup import dispatch
+    root, _, _ = _get_repo_paths(args)
+    return dispatch(args, root)
+
+
+def _track_install(root, target, rc, dry_run):
+    if rc == 0 and not dry_run:
+        from .projects import auto_register
+        auto_register(target, root)
+    return rc
+
+
 def _cmd_init(args) -> int:
     from .manifest import init_manifest
-
-    _, manifests_dir, _ = _get_repo_paths(args)
+    root, manifests_dir, _ = _get_repo_paths(args)
     target = Path(args.target or ".")
-
-    kwargs = _collect_kwargs(args)
-    return init_manifest(
-        manifests_dir,
-        args.manifest,
-        target,
-        force=args.force,
-        dry_run=args.dry_run,
-        **kwargs,
-    )
+    rc = init_manifest(manifests_dir, args.manifest, target, force=args.force,
+                       dry_run=args.dry_run, **_collect_kwargs(args))
+    return _track_install(root, target, rc, args.dry_run)
 
 
 def _cmd_add_manifest(args) -> int:
     from .manifest import add_manifest
-
-    _, manifests_dir, _ = _get_repo_paths(args)
+    root, manifests_dir, _ = _get_repo_paths(args)
     target = Path(args.target).resolve()
-
-    kwargs = _collect_kwargs(args, source_attr="manifest_name")
-    return add_manifest(
-        manifests_dir,
-        args.manifest_name,
-        target,
-        force=args.force,
-        dry_run=args.dry_run,
-        **kwargs,
-    )
+    rc = add_manifest(manifests_dir, args.manifest_name, target, force=args.force,
+                      dry_run=args.dry_run, **_collect_kwargs(args, source_attr="manifest_name"))
+    return _track_install(root, target, rc, args.dry_run)
 
 
 def _cmd_add_skill(args) -> int:
     from .skill import add_all_skills, add_skill
 
-    _, _, skills_root = _get_repo_paths(args)
+    root, _, skills_root = _get_repo_paths(args)
     target = Path(args.target).resolve()
 
     if args.all:
@@ -222,13 +228,24 @@ def _cmd_add_skill(args) -> int:
             if response not in ("y", "yes"):
                 print("Aborted.")
                 return 0
-        return add_all_skills(skills_root, target, force=args.force, dry_run=args.dry_run)
+        if (target / ".vibe-setup.json").exists():
+            from .project_sync import add_setup_skills
+            rc = add_setup_skills(root, target, [s.name for s in discover_skills(*skills_root)],
+                                  force=args.force, dry_run=args.dry_run, skip_is_success=True)
+        else:
+            rc = add_all_skills(skills_root, target, force=args.force, dry_run=args.dry_run)
+        return _track_install(root, target, rc, args.dry_run)
 
     if not args.skill_name:
         print("Error: specify a skill name or use --all", file=sys.stderr)
         return 1
 
-    return add_skill(skills_root, args.skill_name, target, force=args.force, dry_run=args.dry_run)
+    if (target / ".vibe-setup.json").exists():
+        from .project_sync import add_setup_skills
+        rc = add_setup_skills(root, target, [args.skill_name], force=args.force, dry_run=args.dry_run)
+    else:
+        rc = add_skill(skills_root, args.skill_name, target, force=args.force, dry_run=args.dry_run)
+    return _track_install(root, target, rc, args.dry_run)
 
 
 def _cmd_list(args) -> int:

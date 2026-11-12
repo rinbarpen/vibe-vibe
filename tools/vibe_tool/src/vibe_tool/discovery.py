@@ -9,7 +9,7 @@ INIT_BLACKLIST = {"agent-browser"}
 
 
 def discover_manifests(manifests_dir: Path) -> list[ManifestInfo]:
-    """Scan manifests_dir for valid manifests (must have CLAUDE.md)."""
+    """Find manifests with a plain project entry; no named harness is required."""
     manifests: list[ManifestInfo] = []
     for entry in sorted(manifests_dir.iterdir()):
         if not entry.is_dir() or entry.name.startswith("."):
@@ -17,11 +17,12 @@ def discover_manifests(manifests_dir: Path) -> list[ManifestInfo]:
         if entry.name in INIT_BLACKLIST:
             continue
 
-        claude_md = entry / "CLAUDE.md"
-        if not claude_md.exists():
+        instruction = next((entry / name for name in ("CLAUDE.md", "AGENTS.md", "PROJECT_RULES.md")
+                            if (entry / name).is_file()), None)
+        if instruction is None:
             continue
 
-        description = _read_description(claude_md)
+        description = _read_description(instruction)
 
         init_scripts = sorted(entry.glob("scripts/*init*.sh"))
         has_init = len(init_scripts) > 0

@@ -7,7 +7,7 @@ description: "Coordinate quality-first creation and editing of DOCX, XLSX, PPTX 
 
 ![Office 质量工作流](assets/workflow.svg)
 
-本技能负责办公文件的编排与验收，不重新实现格式引擎。先定位当前环境实际可用的文档 skill；精确来源为 `anthropics/skills/docx`、`anthropics/skills/xlsx`、`anthropics/skills/pptx`、`anthropics/skills/pdf`。Office manifest 安装时目录为 `.agents/skills/anthropics-skills-<format>/`；单独安装本技能时按环境发现 skill，不依赖仓库或个人目录。辅助脚本只在 Office manifest 已安装时可用，缺脚本则用可用引擎执行同等检查并记录命令。
+本技能负责办公文件的编排与验收，不重新实现格式引擎。先定位当前环境实际可用的文档 skill；精确来源为 `anthropics/skills/docx`、`anthropics/skills/xlsx`、`anthropics/skills/pptx`、`anthropics/skills/pdf`。办公项目 Manifest 安装时目录为 `.agents/skills/anthropics-skills-<format>/`；单独安装本技能时按环境发现 skill，不依赖仓库或个人目录。通用指南与辅助脚本由 `office` Skill 分发；先发现其实际路径，按需读取或执行。缺脚本则用可用引擎执行同等检查并记录命令。
 
 ## 工作契约
 

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/rczx/miniconda3/bin/python",
+    "-c",
+    "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/parallel-chapters.md').exists(); assert 'parallel-chapters.md' not in (p/'SKILL.md').read_text(); print('BASELINE: chapter writing exists; explicit parallel chapter handoff/merge contract absent.')"
+  ],
+  "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "stdout": "BASELINE: chapter writing exists; explicit parallel chapter handoff/merge contract absent.\n",
+  "stderr": "",
+  "exit_status": 0
+}

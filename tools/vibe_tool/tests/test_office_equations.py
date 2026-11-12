@@ -21,7 +21,7 @@ except ImportError as exc:
     raise unittest.SkipTest("Optional python-docx is not installed") from exc
 
 REPO = Path(__file__).resolve().parents[3]
-SCRIPTS = REPO / "manifests/office/docx/scripts"
+SCRIPTS = REPO / "mine/office/docx/scripts"
 
 
 def load(name):
@@ -421,7 +421,7 @@ class EquationTests(unittest.TestCase):
         self.assertEqual(part.blob, blob)
 
     def test_word_macro_orders_seq_ref_and_pagination_without_managed_fields_or_autorun(self):
-        macro = (REPO / "manifests/office/docx/macros/OfficeLayout.bas").read_text()
+        macro = (REPO / "mine/office/docx/macros/OfficeLayout.bas").read_text()
         start = macro.index("Private Sub RefreshNativeFields")
         body = macro[start:macro.index("Private Function UpdateFieldPass", start)]
         one, two, three = (body.index(f"UpdateFieldPass(doc, {n})") for n in (1, 2, 3))

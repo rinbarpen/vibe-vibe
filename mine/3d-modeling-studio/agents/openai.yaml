@@ -1,0 +1,4 @@
+interface:
+  display_name: "3D 精细建模工作室"
+  short_description: "跨主流软件执行精细建模、雕刻、拓扑、材质与多视角质量验收"
+  default_prompt: "使用 $3d-modeling-studio，按指定软件与用途创建精细的 3D 模型，并交付源文件、多视角预览和质量检查记录。"

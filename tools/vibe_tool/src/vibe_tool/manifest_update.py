@@ -191,6 +191,8 @@ def _under(path: Path, root: Path) -> bool:
 
 
 def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
+    if (Path('rules') / name) in relative.parents or relative == Path('PROJECT_RULES.md'):
+        return True  # Neutral static bundle, distinct from live project data.
     if any(part in {".git", ".vibe-tool", ".auto-research"} for part in relative.parts):
         return False
     if relative.name in _PRESERVED_NAMES:
@@ -212,6 +214,8 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
             "scripts/render_codegraph_workflow.py",
             "references/ui-usability.md", "references/ui-usability-workflow.json",
             "references/ui-usability-workflow.svg",
+            "references/readme-guide.md", "references/setup-guide.md",
+            "references/docs-readability-workflow.json", "references/docs-readability-workflow.svg",
         }:
             return True
         provider = options.get("provider") or "github"
@@ -220,6 +224,10 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
             or provider == "gitlab" and relative == Path(".gitlab-ci.yml")
             or provider == "gitee" and _under(relative, Path(".workflow"))
         )
+    if name == "office":
+        return any(_under(relative, Path(root)) for root in (
+            "office/rules", "office/scripts", "office/assets", "office/templates",
+        ))
     if name == "auto-research":
         return any(_under(relative, Path(root)) for root in (
             ".github", "scripts", "references", "templates", "writing", "lifecycle",

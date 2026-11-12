@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "id": "demo-pilot-review",
+  "revision": 1,
+  "mode": "create",
+  "brief": {
+    "audience": "演示技能使用方式的读者",
+    "outcome": "理解原创策划合同；数据仅为合成示例，不作现实业务结论"
+  },
+  "canvas": {
+    "width": 13.333,
+    "height": 7.5,
+    "unit": "in"
+  },
+  "tokens": {
+    "font": "Noto Sans CJK SC",
+    "background": "#FFFFFF",
+    "foreground": "#17233D",
+    "accent": "#2563EB",
+    "body_pt": 20,
+    "title_pt": 30
+  },
+  "sources": [
+    {
+      "id": "src-demo",
+      "kind": "data",
+      "location": "sample-data.csv"
+    }
+  ],
+  "facts": [
+    {
+      "id": "fact-duration",
+      "text": "合成示例基线10分钟、试点8分钟，减少2分钟（20%）；非真实测量。",
+      "source_ids": [
+        "src-demo"
+      ]
+    },
+    {
+      "id": "fact-limits",
+      "text": "示例文件只有两行汇总数据，不支持真实推广或因果结论。",
+      "source_ids": [
+        "src-demo"
+      ]
+    }
+  ],
+  "outline": [
+    {
+      "id": "s1",
+      "conclusion": "合成示例：耗时由10降至8分钟",
+      "fact_ids": [
+        "fact-duration",
+        "fact-limits"
+      ]
+    },
+    {
+      "id": "s2",
+      "conclusion": "先验证样本与口径，再讨论推广",
+      "fact_ids": [
+        "fact-duration",
+        "fact-limits"
+      ]
+    }
+  ],
+  "storyboard": [
+    {
+      "id": "s1",
+      "layout": "one-evidence-card-and-context",
+      "elements": [
+        {
+          "id": "s1-title",
+          "kind": "text",
+          "box": [
+            0.5,
+            0.4,
+            12.3,
+            0.8
+          ],
+          "native": true,
+          "text": "合成示例：耗时由10降至8分钟",
+          "fact_ids": [
+            "fact-duration"
+          ]
+        },
+        {
+          "id": "s1-main",
+          "kind": "card",
+          "box": [
+            0.5,
+            1.6,
+            7.5,
+            3.8
+          ],
+          "native": true,
+          "fact_ids": [
+            "fact-duration"
+          ]
+        },
+        {
+          "id": "s1-value",
+          "kind": "text",
+          "parent": "s1-main",
+          "box": [
+            0.85,
+            2.1,
+            6.8,
+            1.2
+          ],
+          "native": true,
+          "text": "减少2分钟 / 20%",
+          "fact_ids": [
+            "fact-duration"
+          ]
+        },
+        {
+          "id": "s1-context",
+          "kind": "text",
+          "box": [
+            8.5,
+            1.9,
+            4.2,
+            2.7
+          ],
+          "native": true,
+          "text": "仅为合成数据示范，不作现实业务或因果结论。",
+          "fact_ids": [
+            "fact-limits"
+          ]
+        },
+        {
+          "id": "s1-source",
+          "kind": "text",
+          "box": [
+            0.5,
+            6.5,
+            12.3,
+            0.5
+          ],
+          "native": true,
+          "text": "来源：sample-data.csv（合成示例）",
+          "fact_ids": [
+            "fact-duration",
+            "fact-limits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "layout": "native-table-and-next-action",
+      "elements": [
+        {
+          "id": "s2-title",
+          "kind": "text",
+          "box": [
+            0.5,
+            0.4,
+            12.3,
+            0.8
+          ],
+          "native": true,
+          "text": "先验证样本与口径，再讨论推广",
+          "fact_ids": [
+            "fact-limits"
+          ]
+        },
+        {
+          "id": "s2-table",
+          "kind": "table",
+          "box": [
+            0.5,
+            1.7,
+            7.6,
+            3.3
+          ],
+          "native": true,
+          "text": "阶段 | 分钟 | 数据性质\nbaseline | 10 | 合成\npilot | 8 | 合成",
+          "fact_ids": [
+            "fact-duration"
+          ]
+        },
+        {
+          "id": "s2-action",
+          "kind": "text",
+          "box": [
+            8.6,
+            1.8,
+            4.1,
+            3.1
+          ],
+          "native": true,
+          "text": "建议：先明确计时口径并补充真实样本；当前两行数据仅用于展示合同和原生表格。",
+          "fact_ids": [
+            "fact-limits"
+          ]
+        },
+        {
+          "id": "s2-source",
+          "kind": "text",
+          "box": [
+            0.5,
+            6.5,
+            12.3,
+            0.5
+          ],
+          "native": true,
+          "text": "来源：sample-data.csv；建议非观测事实",
+          "fact_ids": [
+            "fact-limits"
+          ]
+        }
+      ]
+    }
+  ],
+  "stage_revisions": {
+    "outline": 1,
+    "storyboard": 1,
+    "design": 1
+  },
+  "decisions": {
+    "chart": {
+      "decision": "no",
+      "scope": "demo-pilot-review",
+      "source": "simulated example: no new data charts",
+      "evidence_type": "simulated"
+    },
+    "macro": {
+      "decision": "no",
+      "scope": "demo-pilot-review",
+      "source": "simulated example: no macro automation",
+      "evidence_type": "simulated",
+      "requested_modes": [
+        "preserve"
+      ]
+    }
+  }
+}

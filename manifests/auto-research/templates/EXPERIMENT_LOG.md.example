@@ -12,3 +12,21 @@
 - GPU hours / cost:
 - raw JSON/CSV / stdout / stderr / checkpoint archive:
 - baseline / audit / conclusion / next:
+- hypothesis / claim ID / method revision / tested scope:
+- planned vs completed valid runs / missing, failed, deferred runs & reasons:
+- failure layer: implementation / protocol / method / hypothesis / unresolved:
+- observed fact / interpretation / untested insight (separate):
+- FAILURE_ANALYSIS insight ID / next discriminating test / later cycle link:
+- conclusion status & limits / decisive-stop evidence or resource-stop reason:
+
+## Revision / Context Handoff
+每轮修订及压缩、切换、恢复时追加；引用原始契约/证据，不用摘要覆盖历史。
+- cycle / stage / attempt / trusted checkpoint & commit:
+- confirmed goal / non-goals / constraints / effective decision reference:
+- source contract paths / revisions / hashes / current actual process & artifacts:
+- this round changes / unchanged invariants / old→new revision / reason:
+- semantic diff: goal / mechanism / claims / evaluation / conclusion strength / budget:
+- affected novelty, design, reviews & approvals / revalidation result:
+- contrary evidence / missing coverage / related failure & insight IDs:
+- conflict, if any / preserved attempt / trusted baseline & validation to resume:
+- next action / unresolved decisions / checkpoint reference:

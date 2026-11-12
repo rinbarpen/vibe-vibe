@@ -1,154 +1,80 @@
-# README Writing Guide
+# 面向读者的文档写作约定
 
-## 定位
+先确定读者要完成的事，再决定结构。README 是入口，任务指南帮助操作，参数参考用于查找；不要把三者挤成一页。
 
-README 是项目的首页。一个好的 README 回答三个核心问题：
+## 首页先回答什么
 
-1. **这是什么？** — 项目定位、解决的问题
-2. **怎么用？** — 从零开始到运行的最短路径
-3. **怎么参与？** — 贡献、反馈、联系方式
+首屏让初次读者知道：项目解决什么问题、适用于谁、第一次该做什么。给出开始所需的前提、一个最短操作路径，以及操作后的预期结果。
 
-## 中英双语要求
+不要先摆完整功能清单、内部目录、架构名词或开发记录。安装、首次使用、维护和排障是不同任务；默认路径只展示必要选项，其他选择通过清楚的链接进入。
 
-```
-README.md      # 中文版本
-README_EN.md   # 英文版本
-```
+## 内容如何分层
 
-- 中文版本作为默认 README（面向中文开发者）
-- 英文版本作为补充（面向国际化开发者）
-- 两个文件必须保持同步，关键信息一致
+- **README**：定位、首次使用、少量任务入口和必要限制。没有实际内容的章节直接省略。
+- **操作指南**：一篇解决一个任务，按前提 → 步骤 → 预期结果 → 常见失败组织。
+- **参数与 API 参考**：准确、便于查找；需要长表时放在这里，不占首页首屏。
+- **架构与决策记录**：解释职责、取舍和限制，链接事实来源，不替代入门说明。
+- **变更与验收记录**：留在既有 CHANGELOG、PR 或交付记录里，不倒灌成产品介绍。
 
-## 标准结构
+保留有用的信息，只调整位置和顺序；不要用删掉限制或拆成大量难找的小文件换取表面简短。
 
-### 1. 项目名称 + 一行描述 + Badge
+## 写法与版式
 
-```
-# Project Name
+- 标题描述具体任务或问题，不用连续的「核心优势」「完整方案」等空泛栏目。
+- 每段只推进一个意思，先给结论或动作；适合自然段的解释不要机械拆成碎片列表。
+- 名词首次出现就用短句解释；面向用户时优先写用途，不先暴露内部模块名。
+- 不强制徽章、emoji、功能卡片、技术栈、目录树或中英双语。已有双语文档保持命令、事实和关键入口一致。
+- 表格用于同维度比较、参数和状态查询；长段说明用正文。避免过宽表格和单元格中的大段文字。
+- 链接说清能得到什么，不用满页「点击这里」「详见上文」；一个入口通常只链接一次。
+- 示例写明执行目录、前置条件和预期结果。区分可复制命令、需替换的参数和伪代码；不虚构 make/npm 脚本、版本、徽章或成功输出。
+- 不承诺未经测量的「30 秒开始」、高性能或开箱即用。未执行的验证明确说明。
 
-> 一行描述：这个项目解决什么问题
+## 一个具体例子
 
-![CI](https://img.shields.io/...) ![License](https://img.shields.io/...) ![Version](https://img.shields.io/...)
-```
+差：先列十几项特性，再给所有平台和部署方式，让读者自己拼出第一步。
 
-- 名称简明，一眼知道项目做什么
-- 描述不超过一句话
-- Badge 不超过 5 个
+好：先说「给已有项目安装一个技能」，再给最少命令和结果；完整技能目录、其他平台与维护选项通过链接查找。
 
-### 2. 特性亮点
+````markdown
+## 查看可用模板
 
-```
-## Features
-
-- 🚀 特性一：一句话说明
-- 🔒 特性二：一句话说明
-- ⚡ 特性三：一句话说明
-```
-
-- 3-5 个点
-- 每个点一行，附带 emoji 图标
-- 不要说"高性能"这种空话——给数据或具体场景
-
-### 3. 快速开始
-
-```
-## Quick Start
+在已克隆的 vibe-vibe 仓库中，使用安装好的 CLI：
 
 ```bash
-git clone https://github.com/org/repo.git
-cd repo
-make install
-make run
+vibe list manifests
 ```
 
-从 clone 到能跑起来，不超过 5 步。
-不要在这里展开完整文档——那是 docs/ 的事。
+应看到模板名称清单，例如 vibe-coding 和 ui-testing。找不到 vibe 命令时，回到项目的安装说明。
+````
 
-### 4. 文档索引
+## 修改与验收流程
 
-```
-## Documentation
+1. **AI 确认范围**：确定读者、当前任务和要改的页面；已有明确需求不重复访谈。
+2. **AI 核实事实**：对照当前代码、命令帮助、配置和现有证据，找出过时说明；技术疑问先调查或测试。
+3. **AI 重写**：先安排信息层级，再改句子；已有约定内直接写入，保留原件和项目专用内容。
+4. **AI 验证**：按初次读者的路径检查，是否无需猜测就能找到前提、第一步和预期结果；核对迁移后的信息仍可找到。
+5. **结构检查**：运行下面的只读工具，检查围栏、相对链接、锚点和需要人工复看的长段落/长表信号。结构通过不是可读性通过证明，更不是命令已经运行的证明。
+6. **交付**：保留实际运行的命令与结果、未验证项和回退入口；不另造一套必须维护的完成报告。
 
-- [Getting Started](docs/guide/getting-started.md)
-- [API Reference](docs/api/reference.md)
-- [Contributing](CONTRIBUTING.md)
-```
+只有产品承诺、支持范围或关键约束需要新取舍时才请人决定；提供冲突、证据和选项，未回答时等待相关修改，决定后从事实与范围核对处继续。取消修改时恢复本次拥有的文档改动并校验，不覆盖他人后续编辑。
 
-指向 `docs/` 目录的关键文档。
+## 只读结构检查
 
-### 5. 项目结构
+在项目根目录运行，显式指定要检查的文档：
 
-```
-## Project Structure
-
-├── src/          # 源码
-├── docs/         # 文档
-├── tests/        # 测试
-└── .github/      # GitHub 配置
+```bash
+python3 .cursor/commands/update-docs/update_docs.py --root . README.md
 ```
 
-只展示顶层目录，每个目录一行注释。
+在模板源目录中使用 `commands/update-docs/update_docs.py`。工具只读；缺文件或越界路径退出 2，围栏/本地链接错误退出 1，结构未发现错误退出 0。长段落和长表只给提示，不按字数打「质量分」。外部链接不联网校验。
 
-### 6. 技术栈
+[写作与验收工作流](docs-readability-workflow.svg) · [可编辑源](docs-readability-workflow.json)
 
-```
-## Tech Stack
+从模板目录或安装后的项目根目录生成与检查：
 
-- Runtime: Node.js 20 / Python 3.12
-- Framework: Express / FastAPI
-- Database: PostgreSQL 16
-```
-
-一行一个核心依赖，标明版本。
-
-### 7. 贡献指南
-
-```
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+```bash
+python3 scripts/render_codegraph_workflow.py --source references/docs-readability-workflow.json --output references/docs-readability-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/docs-readability-workflow.json --output references/docs-readability-workflow.svg --check
 ```
 
-一句话指向 CONTRIBUTING.md。
-
-### 8. 许可证
-
-```
-## License
-
-MIT © 2025 org
-```
-
-一行 + badge。
-
-## Badge 使用约定
-
-只使用有意义的 badge，不要全部加上。
-
-| Badge | 必要性 | 来源 |
-|-------|--------|------|
-| CI build status | ✅ 必要 | GitHub Actions |
-| License | ✅ 必要 | Shields.io |
-| Code coverage | ✅ 有自动化测试时 | Codecov |
-| Version | ✅ 有发布时 | GitHub Release |
-| Python / Node 版本 | ⚡ 可选 | Shields.io |
-| Code style | ⚡ 可选 | Shields.io |
-| Downloads | ⚡ 可选 | npm / PyPI |
-
-Badge 示例（Shields.io 格式）：
-
-```
-![CI](https://img.shields.io/github/actions/workflow/status/org/repo/ci.yml?branch=main)
-![License](https://img.shields.io/github/license/org/repo)
-![Version](https://img.shields.io/github/v/release/org/repo)
-```
-
-## 应避免的问题
-
-- ❌ **过时的截屏** — 版本更新后忘记替换，比没有更糟
-- ❌ **"敬请期待"占位符** — 没有就是没有
-- ❌ **大段未格式化的 changelog** — changelog 放 CHANGELOG.md
-- ❌ **敏感信息** — API key、内部 URL、密码
-- ❌ **空泛的描述** — "本项目致力于..." 不如 "每天处理 100 万次 API 调用"
-- ❌ **没有 badge** — 用户无法一眼看出项目状态
-- ❌ **过长的 README** — 超出 5 分钟阅读量，说明需要拆到 docs/
+图表示规则，不代表实际执行状态。安装器保留旧的 `.cursor/references/readme-guide.md` 兼容副本；同一份源文件也分发到 `references/readme-guide.md`，不分别维护两套写作规则。

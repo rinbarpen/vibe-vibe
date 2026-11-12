@@ -2105,3 +2105,13 @@
 - **路径**: `mine/state-machine-reasoning`
 - **简介**: 将通用问题分析转换为可验证的状态、事件、证据和转移，并生成 Mermaid 状态机可视化。
 - **使用场景**: 决策、排障、研究、工作流或系统分析存在分支、未知、重试和终态时。
+
+### office
+- **路径**: `mine/office`
+- **简介**: 可复用办公能力：正文/样本文风、图表、原生格式/宏和可追溯验收；与办公项目 Manifest 分层。
+- **使用场景**: 单次文件任务使用 `vibe add skill office <target>`；项目级协作使用包含该能力的 `vibe init office <target>`。
+
+### z-writing
+- **路径**: `mine/z-writing`
+- **简介**: 中英文写作、样本文风、结构/句段优化与保真润色的统一入口；随包复用 AI Vibe 和 z-humanizer。
+- **使用场景**: `vibe add skill z-writing <target>`；按任务加载，不强制科研或公众号全流程。

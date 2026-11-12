@@ -1,0 +1,26 @@
+# Novelty Comparison
+
+用于 refine-logs/contracts/NOVELTY.md；关键词只召回，不作为重合结论。
+
+## Identity & Search
+- hypothesis / claim ID / method revision / baseline commit & hashes:
+- query variants / date / scope / citation chaining / unavailable sources:
+
+## Nearest Work (repeat per work)
+- paper / official code / version / checked date / section, equation or algorithm:
+
+| Dimension | Proposed idea | Prior work & source location | Overlap | Substantive difference | Unknown / discriminating test |
+| --- | --- | --- | --- | --- | --- |
+| Problem & assumptions | | | | | |
+| Research reasoning & mechanism | | | | | |
+| Method: algorithm / objective / inference | | | | | |
+| Core contribution & predictions | | | | | |
+| Validation protocol | | | | | |
+
+## Scoped Decision
+- high_overlap / related_but_distinct / unverified:
+- reasoning (research thought AND key method, not keywords or naming):
+- replication/extension value even if overlapping:
+- uncertainty / evidence to obtain / next owner & stage:
+- previous revision / changed comparison / superseded conclusion & evidence:
+- IDEA_DECISION confirmation reference (ordinary Q&A is not approval):

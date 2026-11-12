@@ -12,7 +12,7 @@ Manifest 是人与 AI 的协作契约。新建 manifest，或修改既有 manife
 
 ```text
 manifests/<name>/
-├── CLAUDE.md
+├── PROJECT_RULES.md             # 普通 Markdown 业务入口；也可用 AGENTS.md / CLAUDE.md
 ├── AGENTS.md                     # 如模板提供，保持双端规则一致
 ├── README.md                     # 链接 SVG、图源和复现命令
 ├── references/
@@ -29,6 +29,8 @@ manifests/<name>/
 - **一致性检查**：提供只读的漂移检查，缺图、源与图不一致或引用失效时返回非零状态。
 
 只更新无关措辞时不强制重画。新增或修改工作流时补齐这些交付物；保留现有模板的有效命名和生成方式，不为统一文件名批量迁移。
+
+入口与规则不依赖宿主：发现器接受 `AGENTS.md`、`PROJECT_RULES.md` 或 `CLAUDE.md`。新规则优先用普通 `.md`，以 `always`、`paths`、`when` 明确范围。`vibe setup --harness generic` 生成通用规则包；无 Cursor 输出兼容要求。命名宿主入口只做导入，保持同一业务契约，不虚构工具、agent 或批准。具体安装布局与范围语义见 [CLI 规则说明](cli-reference.md#harness-无关的规则)。
 
 ## 2. 图上需要表达什么
 
@@ -106,7 +108,7 @@ python3 manifests/<name>/scripts/render_workflow.py \
 
 本规范覆盖 **manifest 的创作交付**，不表示所有旧模板都已补图，也不改变 `vibe init/add/update` 的安装策略。
 
-若模板承诺在目标项目中提供图和再生成能力，其安装器应显式分发 SVG、源数据和渲染入口，并测试安装后的链接与再生成命令。通用安装器目前不自动复制任意 `references/` 目录；具体分发位置由模板约定。
+若模板承诺在目标项目中提供图和再生成能力，其安装器应显式分发 SVG、源数据和渲染入口，并测试安装后的链接与再生成命令。历史 init/add 的根布局仍由模板约定；新的 setup 会显式分发支持资源到中立规则包，承诺的执行路径仍须在安装项目内验证。
 
 Manifest 转为 skill 时保留图、源和生成依赖，更新相对链接，避免出现只有 SVG 而缺少源数据的包。源数据位于另一个 skill 包时，记录依赖并验证安装后的路径。
 

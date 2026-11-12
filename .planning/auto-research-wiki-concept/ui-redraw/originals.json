@@ -1,0 +1,62 @@
+{
+  ".planning/auto-research-wiki-concept/concept-map.json": {
+    "exists": true,
+    "sha256": "e443989dbea7f55fcf891ea150d435660deb2cbeb8cbcd9208b1ac532cd28672"
+  },
+  ".planning/auto-research-wiki-concept/render.py": {
+    "exists": true,
+    "sha256": "d03e995794ded08c6199325ffa425ed5739a4eb54abf56513ecc75d907b51212"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.svg": {
+    "exists": true,
+    "sha256": "39dbc07d935ec3f970f3fb647bc413ea82e1addec9f2053e915d4afe2f30c5b0"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.html": {
+    "exists": true,
+    "sha256": "870cec1d1ba240aa27fc673dd7e2a4fd15ef6b592a9a3557a2b32de6d85b0bd8"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.png": {
+    "exists": true,
+    "sha256": "42a8f631dc17a649d92db2aa240ed903379e52abf21857486a13131d1972f6e8"
+  },
+  ".planning/auto-research-wiki-concept/verification.json": {
+    "exists": true,
+    "sha256": "8e35db1a94bcfee3c555b0bc96490271020eeb8440c304417496e0b690815caa"
+  },
+  "mine/omnidraw/SKILL.md": {
+    "exists": true,
+    "sha256": "dc35c54c7138266dd7620e81a839ceca36dfbb8d8006739667c60310934623b0"
+  },
+  "mine/omnidraw/assets/workflow.mmd": {
+    "exists": true,
+    "sha256": "0075dd19852b555c769ec676e535faec1d805ad2b926f819a98197b31b52e11c"
+  },
+  "mine/omnidraw/assets/workflow.svg": {
+    "exists": true,
+    "sha256": "c44ef3b9aa9b3afabe7406f3aabceb6f8755b6662934dc5f97850ce505b698d6"
+  },
+  "mine/omnidraw/references/ui-design.md": {
+    "exists": false
+  },
+  "mine/omnisheet/SKILL.md": {
+    "exists": true,
+    "sha256": "858e4fca2fa12afc251a46bf650f5506fae56d39f2fca8de6aef4e5b31f2a707"
+  },
+  "mine/omnisheet/assets/workflow.mmd": {
+    "exists": true,
+    "sha256": "873f004742150c0a516fd68dc8be02d8cd47c169bb5f7e02a03cd44b36d19176"
+  },
+  "mine/omnisheet/assets/workflow.svg": {
+    "exists": true,
+    "sha256": "9531d34dd1bdae7aacda910ca79594055bdeecffdc1c3dc474f2c1c85ef09919"
+  },
+  "mine/omnisheet/references/ui-design.md": {
+    "exists": false
+  },
+  "tools/vibe_tool/tests/test_omni_ui_design.py": {
+    "exists": false
+  },
+  ".planning/auto-research-wiki-concept/verify_ui.py": {
+    "exists": false
+  }
+}

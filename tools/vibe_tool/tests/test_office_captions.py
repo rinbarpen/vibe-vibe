@@ -22,7 +22,7 @@ except ImportError as exc:
     raise unittest.SkipTest("Optional python-docx/Pillow are not installed") from exc
 
 REPO = Path(__file__).resolve().parents[3]
-SCRIPTS = REPO / "manifests/office/docx/scripts"
+SCRIPTS = REPO / "mine/office/docx/scripts"
 
 
 def load(name):
@@ -220,7 +220,7 @@ class CaptionTests(unittest.TestCase):
         profile = self.root / "profile.json"
         profile.write_text('{"allow_multipage_tables":true}')
         self.assertTrue(native.profile_settings(profile)["allow_multipage_tables"])
-        macro = (REPO / "manifests/office/docx/macros/OfficeLayout.bas").read_text()
+        macro = (REPO / "mine/office/docx/macros/OfficeLayout.bas").read_text()
         for token in ("Public Sub ApplyOfficeCaptionLayout()", "ALLOW_MULTIPAGE_TABLES As Boolean = False",
                       "item.Type = wdFieldSequence", 'candidate = "FIGURE" Or candidate = "TABLE"',
                       "previous.Range.ParagraphFormat.KeepWithNext = True",

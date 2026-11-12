@@ -11,6 +11,10 @@ Routes drawing requests to the right sub-skill based on **what you need** and **
 
 [可编辑 Mermaid 图源](assets/workflow.mmd)。流程图展示本技能的路由与审阅闭环。
 
+## 设计前置约束
+
+生成或重绘前先读随包的 [UI 设计约束](references/ui-design.md)，按 vibe-coding 的 UI 设计规则组织信息、文案、视觉 token 与验收。先明确读者、主要任务和结果；用布局解释关系，不默认等权卡片，不堆无必要副标签与重复说明。将本次设计约束带入所选子技能及最终审阅，覆盖模板的装饰性默认值；保留科学语义、数据、必要标签与用户指定格式。静态图和交互页面分别按实际尺寸或任务验收，不为绘图强制安装整套前端依赖。
+
 ## 安装后的路由与办公配图
 
 - 先读本技能内所选子目录的 `SKILL.md`；例如 `mermaid/` 的语法与模板可独立使用。仅检查本次路线需要的工具，不要求初始化全部上游子模块。

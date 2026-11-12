@@ -1,5 +1,6 @@
 flowchart TD
-    A["图意 · 场景 · 受众<br/>输入数据与交付要求"] --> B{"按语义与格式<br/>选择制作路线"}
+    A["图意 · 场景 · 受众<br/>输入数据与交付要求"] --> P["UI 设计约束<br/>信息层级 · 必要文案 · 视觉 token"]
+    P --> B{"按语义与格式<br/>选择制作路线"}
     B -->|HTML 讲解 / 对比评审| C["Visual Explainer<br/>图解网页与 HTML 幻灯片"]
     B -->|流程 / 时序 / 概念关系| D["Mermaid / PlantUML<br/>文本图源与结构图"]
     B -->|统计 / 交互图 / 论文数据| E["Matplotlib / Seaborn / Plotly<br/>scientific-visualization"]
@@ -12,6 +13,6 @@ flowchart TD
     I --> F
     J --> F
     K --> F
-    F --> G{"语义 / 数值 / 交互<br/>格式与视觉审阅通过？"}
+    F --> G{"语义 / 数值 / 交互<br/>设计约束与格式审阅通过？"}
     G -->|否：只修所选路线| B
     G -->|是| H["按用户指定格式交付<br/>说明实际验证与未验证项"]

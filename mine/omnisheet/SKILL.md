@@ -11,6 +11,10 @@ Routes sheet generation requests to the right sub-skill based on **what you need
 
 [可编辑 Mermaid 图源](assets/workflow.mmd)。流程图展示本技能的路由与审阅闭环。
 
+## 设计前置约束
+
+制作或重排表格前先读随包的 [UI 设计约束](references/ui-design.md)，按 vibe-coding 的 UI 设计规则确定读者任务、信息优先级、必要文案与统一样式。用表头、对齐和分组解释数据，不默认 KPI 卡片墙，不堆无必要副标签。将约束写入表格规格并带入场景子技能、格式制作人及最终审阅；保留字段、单位、公式、来源、风险和已有图表/宏确认。XLSX、原生文档表格和 Web 视图按各自媒介验收，不把前端栈或移动断点强加给工作簿。
+
 ## 安装后的路由与办公表格
 
 - 先读本技能自带的场景子技能，例如 `financial/`、`data-analysis/`；本地场景模板可独立使用，不要求初始化全部外部子模块。

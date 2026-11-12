@@ -80,6 +80,13 @@ When uncertain, consult `references/language-specs/` for the target language.
 - Independent modules, parallel tests, and multi-language builds may run concurrently when coordination cost is justified.
 - `implement` delegates two independent review axes: requirement correctness/behavior/tests and code quality/design/maintainability. No separate manual code-review invocation is needed.
 - Add a security reviewer for security-sensitive changes.
+## 文档可读性
+
+- README 先给用途、前提、首次操作与预期结果；完整参数、清单、架构和开发记录按需链接，不占首页首屏。
+- 面向读者的任务写作，不强制徽章、emoji、八段模板或双语；避免空泛口号、重复说明、过宽表格和不必要术语。
+- 命令、路径和支持范围对照当前实现；已有明确需求的文档调整直接写入并验证，只为新的产品语义/约束取舍请求人决定。
+- `/update-docs` 使用真实的只读结构检查和读者路径走查；结构通过不等于可读性或运行验证通过。详见项目根目录 `references/readme-guide.md`。
+
 ## 9. 软件设计理念
 
 **面对用户，操作简便、表达易懂；面对专业场景，运行效率优先。**

@@ -1,221 +1,73 @@
-# Vibe Coding Unified Manifest
+# Vibe Coding 项目模板
 
-Full lifecycle engineering manifest covering 0-to-1 project building → development → testing → CI/CD → production deployment across 5 languages and 5 cloud platforms.
+给 AI 编码助手提供开发规则、场景配置与验证入口，适用于新项目，也可增量加入已有项目。
 
-## What's Included
+本模板安装的是协作上下文，不是已经完成的业务应用。已有项目的业务约定、数据和运行状态需要保留。
 
-- **MANIFEST.md**: Canonical AI instructions; `AGENTS.md` and `CLAUDE.md` are symlinks to it in the manifest and initialized projects.
-- **15 Scenarios**: agent-dev, api-service, cli-tool, cross-platform, data-pipeline, distributed, frontend, fullstack-web, llm-dev, research, saas, desktop-electron, desktop-tauri, desktop-flutter, wechat-miniprogram.
-- **17 Rules**: Core, standards, collaboration, lifecycle, deployment, backend, frontend, testing, refactoring, optimization, UI design, cloud, enterprise, agent-dev, desktop, frontend-scenario, CLAUDE.md maintenance.
-- **15 Commands**: plan, scaffold, implement, quality-gate, deploy-check, lang-select, cloud-deploy, release, agent-eval, frontend-check, desktop-build, update-docker, update-docs, update-examples, update-scripts.
-- **5 Cloud Platform References**: Vercel, Cloudflare, Tencent Cloud, Alibaba Cloud, Huawei Cloud.
-- **5 Language Specs + Decision Trees**: Go, Rust, Python, TypeScript/JavaScript, Java.
-- **Code hosting and CI/CD**: Git-only, GitHub (12 workflows and governance), GitLab CI, or Gitee Go; shared VERSION/Changelog checks and tag releases.
-- **Enterprise References**: Branching strategy, release process, PR conventions, tag conventions.
-- **39 Skills installed by the vibe CLI**: Four manifest-bundled skills, Anthropic's `canvas-design` (installed as `anthropics-skills-canvas-design` to disambiguate sources), three `wxa-skills-*` skills, and all 31 published Matt Pocock Chinese skills.
-- **Templates**: CHANGELOG, README, release checklist, roadmap.
+## 开始使用
 
-## Quick Start
-
-### Initialize a New Project
+在已配置本仓库来源的 `vibe` CLI 中，先预览再创建项目：
 
 ```bash
-bash manifests/vibe-coding/scripts/vibe-init.sh \
-  --scenario=fullstack-web \
-  --cloud=vercel \
-  --org mycompany \
-  --repo my-app \
-  --provider=github
-
-# Or via the vibe CLI; use `vibe add manifest` for an existing project.
-vibe init vibe-coding ./my-app --provider=gitlab
-vibe add manifest vibe-coding ./my-app --provider=gitee --dry-run
+vibe init vibe-coding ./my-app --scenario=fullstack-web --provider=git --dry-run
+vibe init vibe-coding ./my-app --scenario=fullstack-web --provider=git
 ```
 
-### Required Skills and First-Time Setup
+完成后，`my-app` 中会有 `MANIFEST.md`、指向它的 `AGENTS.md` / `CLAUDE.md`、规则、命令与必需技能。进入项目目录，把具体开发任务交给 AI 助手。首次使用 Matt Pocock 工程技能前，运行 `/setup-matt-pocock-skills` 完成项目设置。
 
-`vibe init vibe-coding` and `vibe add manifest vibe-coding` install the dependencies
-in `skills.txt` into the target project's `.agents/skills/`. Running
-`scripts/vibe-init.sh` directly installs the scaffold only, not these dependencies;
-use the vibe CLI to install the complete manifest.
+已有项目使用 `vibe add manifest vibe-coding <项目目录>`；已有模板副本使用 `vibe update manifest vibe-coding <项目目录> --dry-run` 预览更新，不重复初始化。
 
-The [Matt Pocock Chinese skill bundle](https://github.com/vinvcn/mattpocock-skills-zh-CN)
-is tracked as the managed `skills/mattpocock-skills-zh-CN` submodule on `main` and
-participates in `vibe update`. The manifest includes the published `engineering`,
-`productivity`, and `misc` buckets only. Translation maintenance (`.skills`), beta
-(`in-progress`), and retired/out-of-scope skills are not default dependencies.
-New upstream skills must be explicitly added to `skills.txt` when updating the bundle.
+## 按需要使用
 
-After installation, run `/setup-matt-pocock-skills` in your coding agent once per
-project, before using the engineering skills. It guides you through issue tracker,
-triage labels, and domain documentation configuration. Initialization copies the
-skills only; it does not run setup or choose those settings for you.
+| 任务 | 入口 |
+| --- | --- |
+| 日常功能与修复 | [项目协作规则](MANIFEST.md)；按任务规模选择直接修改或实现流程 |
+| 简化界面、验证真实操作 | [UI/UX 契约](references/ui-usability.md) |
+| 整理 README 与使用说明 | [面向读者的写作约定](references/readme-guide.md) |
+| 查场景、参数、托管与依赖 | [安装与配置参考](references/setup-guide.md) |
 
-### UI Simplification and Real Interaction Checks
-
-The manifest guides agents editing Web App and desktop/webview UI; it is not a
-visual drag-and-drop editor. UI work prioritizes the user's task over decorative
-style: essential information first, clear next actions, advanced settings on demand,
-explicit save/error states and fewer unnecessary navigation/input steps.
-
-UI/UX copy rule: **Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.**
-Avoid decorative slogans and repeated explanations; keep necessary labels,
-accessibility information, errors, risk warnings, units and essential help.
-
-Use the [UI usability contract](references/ui-usability.md) and select the checks
-that match the change:
+UI/UX 文案约束：**Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.** 保留必要标签、错误和风险说明。
 
 ```text
 /frontend-check usability
 /frontend-check interaction
-/frontend-check all
+/update-docs README.md
 ```
 
-`all` includes usability, interaction, accessibility, performance, bundle and visual
-checks. These are agent instructions that use actual project tooling, not an
-installed browser runner. Missing prerequisites and unrun checks remain explicit;
-AI walkthroughs do not replace user research. Existing design skills are optional
-resources; the scenario's catalog does not automatically install every listed skill.
-No new design-skill dependencies are required for this workflow.
+`/frontend-check all` 包含六类前端检查。命令指南使用项目实际工具，不自动安装测试环境；未执行的检查如实标注。
 
-![UI usability and interaction workflow](references/ui-usability-workflow.svg)
+## 文档与流程图
 
-[Editable JSON](references/ui-usability-workflow.json) ·
-[Shared standalone renderer](scripts/render_codegraph_workflow.py).
-The existing renderer accepts any validated workflow source; its historical filename
-is retained to avoid duplicating a renderer. The diagram describes rules, not status.
-From this manifest directory or an initialized project root:
+首页只保留使用入口；完整参数与流程说明按需查阅。以下图都是规则，不代表任务已经完成。
+
+- [UI 操作验收流程图](references/ui-usability-workflow.svg) · [图源](references/ui-usability-workflow.json)
+- [文档写作与验收流程图](references/docs-readability-workflow.svg) · [图源](references/docs-readability-workflow.json)
+- [CodeGraph 查询流程图](references/codegraph-workflow.svg) · [图源](references/codegraph-workflow.json)
+
+### 可选 CodeGraph
+
+[CodeGraph](https://github.com/colbymchenry/codegraph) 仅在项目已经有 `.codegraph/` 时优先使用 CLI；没有索引就直接普通搜索。安装和更新不会自动装工具、建立索引或改全局配置。用户决定启用时，按上游安装说明手动执行 `codegraph init`，详见 [查询规则](MANIFEST.md#code-navigation-cli-first-codegraph)。
+
+<details>
+<summary>流程图再生成与只读检查命令</summary>
+
+从本模板目录或安装后的项目根目录运行，复用同一个[标准库渲染器](scripts/render_codegraph_workflow.py)：
 
 ```bash
 python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg
 python3 scripts/render_codegraph_workflow.py --source references/ui-usability-workflow.json --output references/ui-usability-workflow.svg --check
-```
-
-Init/add distribute the contract, JSON, SVG and shared renderer. Direct manifest
-update includes these exact resources in its backup/restore transaction while
-preserving the project's README and data. To update an already installed manifest:
-
-```bash
-vibe update manifest vibe-coding /path/to/project --dry-run
-vibe update manifest vibe-coding /path/to/project
-```
-
-Recorded generation options are reused; legacy projects may need the explicit
-provider/scenario/owner/org/repo/email options described in the repository's update
-contract. Follow the printed restore command if rolling back a project update.
-
-### Optional CodeGraph Navigation
-
-[CodeGraph](https://github.com/colbymchenry/codegraph) gives coding agents indexed symbol source and call relationships. The manifest uses its CLI first when the project root already contains `.codegraph/`: start with `codegraph explore "<question, symbol, or file>"` before broad search or code reads. `node`, `impact`, and `affected` help with targeted reading, change-impact analysis, and candidate test discovery; see the [canonical instructions](MANIFEST.md#code-navigation-cli-first-codegraph) for examples.
-
-CodeGraph is optional, not a new required Skill or quality gate. With no index, use ordinary search immediately; do not pause the task to request indexing. A missing CLI, failed query, or insufficient result falls back to focused `rg` and file reads with a brief limitation note. Verify source and run actual tests regardless of graph coverage. An already configured MCP tool may supplement the CLI; initialization does not install CodeGraph, wire up MCP, or modify global agent settings.
-
-Indexing is the user's decision. If you choose to enable it, follow the [official installation instructions](https://github.com/colbymchenry/codegraph#get-started), then run this yourself in the intended project:
-
-```bash
-codegraph init
-```
-
-Neither `vibe init/add/update` nor the agent's normal code-navigation flow runs that command or rebuilds an index automatically. Existing CodeGraph indexes and configuration are left untouched by manifest installation and updates. CLI examples were checked against v1.6.2; the manifest does not pin or upgrade the installed tool.
-
-![CodeGraph query workflow](references/codegraph-workflow.svg)
-
-[Editable JSON](references/codegraph-workflow.json) · [Standalone renderer](scripts/render_codegraph_workflow.py). This diagram documents navigation rules, not task progress; the optional setup branch is entered only on an explicit user request. Source inspection and actual tests remain AI validation responsibilities. See [MANIFEST.md](MANIFEST.md#code-navigation-cli-first-codegraph) for the boundaries and fallback behavior.
-
-From this manifest directory or an initialized project root, use Python's standard library to regenerate or run the read-only drift check:
-
-```bash
+python3 scripts/render_codegraph_workflow.py --source references/docs-readability-workflow.json --output references/docs-readability-workflow.svg
+python3 scripts/render_codegraph_workflow.py --source references/docs-readability-workflow.json --output references/docs-readability-workflow.svg --check
 python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg
 python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg --check
 ```
 
-The installer distributes exactly these three workflow assets at the same relative paths; updates include them in the existing backup/restore transaction while preserving the project's README and data.
+只读文档结构检查：
 
-### Available Init Flags
-
-```
---scenario=<name>[,<name>...]   15 scenarios (agent-dev, api-service, cli-tool, cross-platform,
-                                  data-pipeline, distributed, frontend, fullstack-web,
-                                  llm-dev, research, saas,
-                                  desktop-electron, desktop-tauri, desktop-flutter,
-                                  wechat-miniprogram)
---cloud=<provider>              vercel / cloudflare / tencent / alibaba / huawei
--o, --owner <owner>             CODEOWNERS default owner
---org <org>                     GitHub organization
---repo <repo>                   GitHub repository
---email <email>                 Security contact email
---provider=<name>             git / github / gitlab / gitee (default: github)
---git / --no-git                Git initialization (default: auto)
--f, --force                     Overwrite existing files
--n, --dry-run                   Preview without writing
+```bash
+python3 .cursor/commands/update-docs/update_docs.py --root . README.md
 ```
 
-### Scenarios Summary
+此检查入口位于安装后的项目。在模板源目录，把脚本路径换成 `commands/update-docs/update_docs.py`。检查工具只读，不证明文档已经好读或示例命令已经运行。
 
-| Scenario | Focus | Languages |
-|----------|-------|-----------|
-| `agent-dev` | AI agent systems | Python, TypeScript |
-| `api-service` | REST/gRPC backend | Go, TypeScript, Java |
-| `cli-tool` | CLI utilities | Go, Rust, TypeScript |
-| `cross-platform` | Multi-platform apps | TypeScript, Rust |
-| `data-pipeline` | ETL and data processing | Python, Go |
-| `distributed` | Distributed systems | Go, Rust |
-| `fullstack-web` | Full-stack web apps | TypeScript + Go |
-| `llm-dev` | LLM applications | Python, TypeScript |
-| `research` | Research/experimentation | Python |
-| `saas` | SaaS products | TypeScript + Go/Python |
-| `frontend` | Pure frontend apps | TypeScript |
-| `desktop-electron` | Electron desktop | TypeScript + Node.js |
-| `desktop-tauri` | Tauri desktop | TypeScript + Rust |
-| `desktop-flutter` | Flutter desktop | Dart |
-| `wechat-miniprogram` | WeChat Mini Program and AI mode skills | TypeScript/JavaScript, WXML, WXSS |
-
-## Language Support
-
-| Language | Reviewer | Build Resolver | Patterns | Testing |
-|----------|----------|----------------|----------|---------|
-| Go | go-reviewer | go-build-resolver | golang-patterns | golang-testing |
-| Rust | rust-reviewer | rust-build-resolver | rust-patterns | rust-testing |
-| Python | python-reviewer | — | python-patterns | python-testing |
-| TypeScript | typescript-reviewer | build-error-resolver | frontend-patterns | e2e-testing |
-| Java | java-reviewer | java-build-resolver | java-coding-standards | springboot-tdd |
-| Kotlin | kotlin-reviewer | kotlin-build-resolver | kotlin-patterns | kotlin-testing |
-| C++ | cpp-reviewer | cpp-build-resolver | cpp-coding-standards | cpp-testing |
-| C# | csharp-reviewer | — | dotnet-patterns | csharp-testing |
-| Dart/Flutter | flutter-reviewer | dart-build-resolver | dart-flutter-patterns | flutter-test |
-
-## Cloud Platforms
-
-| Platform | Deploy Command | Reference |
-|----------|---------------|-----------|
-| Vercel | `vercel deploy --prod` | `references/cloud-platforms/vercel.md` |
-| Cloudflare | `wrangler deploy` | `references/cloud-platforms/cloudflare.md` |
-| Tencent Cloud | `serverless deploy` | `references/cloud-platforms/tencent-cloud.md` |
-| Alibaba Cloud | `fun deploy` | `references/cloud-platforms/alibaba-cloud.md` |
-| Huawei Cloud | `fgs deploy` | `references/cloud-platforms/huawei-cloud.md` |
-
-## Desktop Frameworks
-
-| Framework | Best For | Reference |
-|-----------|----------|-----------|
-| Electron | Full Node.js + Chromium access, mature ecosystem | `scenarios/desktop-electron/` |
-| Tauri | Minimal binary, Rust backend, best security | `scenarios/desktop-tauri/` |
-| Flutter Desktop | Shared mobile+desktop codebase | `scenarios/desktop-flutter/` |
-
-See `references/desktop-frameworks.md` for full comparison and decision guide.
-
-## Version records and CI/CD
-
-Initialization creates root `VERSION` and `CHANGELOG.md` (unless already present). Every version bump must add a meaningful section to Changelog in the same change. Run `python3 scripts/version_guard.py check --base-ref origin/main` before merging; tag releases run `check --tag vX.Y.Z` and publish only that section. Optional POSIX hooks are `scripts/ci.sh` and `scripts/build.sh`; `dist/` files are attached when present. Set `--provider=git` for local-only workflow, or select GitHub, GitLab, or Gitee. For GitLab enable runners; for Gitee enable Gitee Go and configure `GITEE_OWNER`, `GITEE_REPO`, and secret `GITEE_TOKEN`. See `references/release-process.md`.
-
-## Dependencies
-
-- **Bash**: Init and maintenance scripts.
-- **Git**: Version control.
-- **GitHub CLI** (`gh`): Optional for GitHub repository operations and CI monitoring.
-- **Language toolchains**: Go, Rust, Python (uv), Node (pnpm), Java (maven/gradle) as needed.
-- **Cloud CLIs**: Platform-specific CLIs for cloud deployments.
-
-## File Count
-
-~150 files total covering the complete engineering lifecycle from idea to production.
+</details>

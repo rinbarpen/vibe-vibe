@@ -1,0 +1,18 @@
+{
+  "source_root": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "files": {
+    "mine/z-writing/SKILL.md": {
+      "sha256": "12939770319d109dc23ac131220bf136ed536ac863481db7932e0aae580dc987",
+      "mode": 384
+    },
+    "mine/z-writing/references/parallel-chapters.md": {
+      "sha256": "7b8a48b314b8357fc3300a8e1aaad913b1db5da2c081429ba64ec67de246d27b",
+      "mode": 384
+    },
+    "mine/z-writing/references/figures-and-tables.md": null,
+    "tools/vibe_tool/tests/test_z_writing.py": {
+      "sha256": "3a624486ccfa41e0aea46725ae0ee89f9e3bce62cfd02a1fd4943425481b390f",
+      "mode": 384
+    }
+  }
+}

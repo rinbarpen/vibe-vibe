@@ -1,5 +1,6 @@
 """Documentation diagrams and explicit Omni skill routing, not an SVG runtime."""
 import hashlib
+import json
 import math
 import os
 from pathlib import Path
@@ -14,7 +15,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[3]
 OFFICE = ROOT / "manifests/office"
-SKILL_NAMES = ("office-quality", "omnidraw", "omnisheet", "omnippt")
+SKILL_NAMES = ("office", "office-quality", "omnidraw", "omnisheet", "omnippt")
 
 
 class OfficeWorkflowDiagramTests(unittest.TestCase):
@@ -26,8 +27,11 @@ class OfficeWorkflowDiagramTests(unittest.TestCase):
                 self.assertRegex(markdown, r"!\[[^\]]+\]\(assets/workflow\.svg\)")
                 svg = base / "assets/workflow.svg"
                 source = base / "assets/workflow.mmd"
-                self.assertTrue(source.is_file())
-                self.assertIn("flowchart", source.read_text(encoding="utf-8"))
+                if source.is_file():
+                    self.assertIn("flowchart", source.read_text(encoding="utf-8"))
+                else:
+                    source = base / "assets/workflow.json"
+                    self.assertEqual(json.loads(source.read_text())["schema_version"], 1)
                 tree = ET.fromstring(svg.read_bytes())
                 self.assertEqual(tree.tag, "{http://www.w3.org/2000/svg}svg")
                 box = [float(x) for x in tree.attrib["viewBox"].replace(",", " ").split()]
@@ -39,8 +43,8 @@ class OfficeWorkflowDiagramTests(unittest.TestCase):
     def test_office_requires_omni_entry_skills_without_new_svg_processing_feature(self):
         required = [line.split("#", 1)[0].strip() for line in (OFFICE / "skills.txt").read_text().splitlines()]
         required = [line for line in required if line]
-        self.assertEqual(len(required), 9)
-        self.assertEqual(len(set(required)), 9)
+        self.assertEqual(len(required), 10)
+        self.assertEqual(len(set(required)), 10)
         self.assertIn("omnidraw", required)
         self.assertIn("omnisheet", required)
         self.assertIn("omnippt", required)
@@ -67,16 +71,17 @@ class OfficeWorkflowDiagramTests(unittest.TestCase):
                 skill = repo / "skills/anthropics/skills" / name
                 skill.mkdir(parents=True)
                 (skill / "SKILL.md").write_text(f"---\nname: {name}\ndescription: fixture\n---\n")
-            ai = repo / "skills/ai-vibe-writing"
+            ai = repo / "mine/z-writing"
             ai.mkdir()
-            (ai / "SKILL.md").write_text("---\nname: ai-vibe-writing\ndescription: fixture\n---\n")
+            (ai / "SKILL.md").write_text("---\nname: z-writing\ndescription: fixture\n---\n")
             command = [sys.executable, "-m", "vibe_tool", "init", "office", str(target)]
             env = {**os.environ, "VIBE_HOME": str(repo), "PYTHONPATH": str(ROOT / "tools/vibe_tool/src"),
                    "PYTHONDONTWRITEBYTECODE": "1"}
             result = subprocess.run(command, cwd=base, env=env, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             for name in SKILL_NAMES:
-                for relative in ("SKILL.md", "assets/workflow.svg", "assets/workflow.mmd"):
+                for relative in ("SKILL.md", "assets/workflow.svg",
+                                 "assets/workflow.json" if name == "office" else "assets/workflow.mmd"):
                     original = ROOT / "mine" / name / relative
                     installed = target / ".agents/skills" / name / relative
                     self.assertEqual(hashlib.sha256(original.read_bytes()).digest(), hashlib.sha256(installed.read_bytes()).digest())

@@ -15,7 +15,7 @@ description: 为 vibe-coding 创建或维护 manifests 目录下的项目模板�
 - 读取目标仓库的 `docs/manifest-workflow.md`（若存在）。涉及安装、场景或更新逻辑时，再读 [安装与维护契约](references/vibe-contract.md)，并以当前 CLI 源码和测试为准。
 - 目标、关键约束或验收取舍存在实质歧义时提问；实现细节先由 AI 调研和试验。合理可推断的信息直接采用并在交付中说明。
 
-本 skill 编写的是 manifest 本身。若用户仅要将现有模板转换成 skill，使用转换工作流；若只要从已有模板初始化项目，使用 `vibe init`，不另建模板。
+本 skill 编写的是 manifest 本身。若用户仅要将现有模板转换成 skill，使用转换工作流；若只要从已有模板配置项目，优先使用 `vibe setup <name> <target> --harness generic`；需要命名宿主入口时选 codex/claude/both，不另建模板。
 
 ## 设计业务协作契约
 
@@ -37,8 +37,9 @@ description: 为 vibe-coding 创建或维护 manifests 目录下的项目模板�
 
 ## 编写模板文件
 
-- `CLAUDE.md` 是当前发现器要求的入口。开头给出清楚的用途说明，再写任务所需命令、约束、流程与资源链接。
-- 项目面向 Codex 时提供 `AGENTS.md`；已有双端指令时保持目标、流程门与验收规则一致，避免重复维护两套冲突事实。
+- 当前发现器接受 `AGENTS.md`、`PROJECT_RULES.md`、`CLAUDE.md` 中任一普通 Markdown 入口，不强制 Claude 或 Cursor 文件。开头给出清楚的用途说明，再写任务所需命令、约束、流程与资源链接。
+- 规则优先写普通 `rules/*.md`，可选头字段 `always`、`paths`、`when` 明确常驻/路径/任务范围；不要把条件规则默认为全局。旧 `.mdc` 仅作源格式迁移，不新增 Cursor 兼容层。
+- `vibe setup` 分发 `PROJECT_RULES.md` 与 `rules/<name>/`；其他 harness 显式读取同一契约，宿主实际发现与工具能力单独验证。项目面向 Codex 时可提供 `AGENTS.md`；已有双端指令时保持目标、流程门与验收规则一致，避免重复维护两套冲突事实。
 - 仅按实际需要添加 `README.md`、`skills.txt`、`scenarios/`、agent 定义、规则、命令或初始化脚本。工作流图和复现命令必须由 README 或主指令链接。
 - `skills.txt` 每行使用一个可解析的规范 skill 名称。通过当前仓库发现结果确认依赖；不根据旧清单猜名称，不创建无用占位目录。
 - `MANIFEST.md` 若已承担产物账本职责，沿用该职责；区分模板配置与项目数据，避免更新模板时覆盖实际成果。

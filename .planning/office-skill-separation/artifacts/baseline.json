@@ -1,0 +1,373 @@
+{
+  "root": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "scopes": [
+    "manifests/office",
+    "mine/office",
+    "mine/office-quality",
+    "docs/catalog.md",
+    "docs/catalog_EN.md",
+    "skills/ANNOTATIONS.md",
+    "skills/ANNOTATIONS_EN.md",
+    "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+    "tools/vibe_tool/tests/test_office_native_format.py",
+    "tools/vibe_tool/tests/test_office_equations.py",
+    "tools/vibe_tool/tests/test_office_runtime.py",
+    "tools/vibe_tool/tests/test_office_word_features.py",
+    "tools/vibe_tool/tests/test_office_workbook_features.py",
+    "tools/vibe_tool/tests/test_office_captions.py",
+    "tools/vibe_tool/tests/test_office_install.py",
+    "tools/vibe_tool/tests/test_omnippt.py",
+    "tools/vibe_tool/tests/test_office_skill_separation.py",
+    "tools/vibe_tool/src/vibe_tool/manifest_update.py"
+  ],
+  "absent": [
+    "mine/office",
+    "tools/vibe_tool/tests/test_office_skill_separation.py"
+  ],
+  "files": {
+    "manifests/office/.claude/agents/office-docx.md": {
+      "sha256": "b0b687d7f38179dab3e6285fa0fa806128f6264ee813416cc966c707734e4b4e",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-pdf.md": {
+      "sha256": "414ab51aa4c70e3874a90e584bc9f3e69dacee1f3822ea464381447253881761",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-planner.md": {
+      "sha256": "ff5a1129d4ae45042abb4c589cf245ad3f406f59661c7dc174fe704f52cae67f",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-pptx.md": {
+      "sha256": "bde2513e029e0f7923d7d8c3b634f8f9547af0c49ffe4505304e43988c9fe8d3",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-qa.md": {
+      "sha256": "39a45d2fac65626ca9023b1ffd6e202c8df231f6317159f878d503389002a02c",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-visuals.md": {
+      "sha256": "315aea3adf54a2fb1850169400f4bbc8bab9ec19b95dbe15d1a5ed92b0991303",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-writer.md": {
+      "sha256": "adb1b19575c5a98ffdc82dee5f42c6be3e35e63071840771b5988b1191d2ae8c",
+      "mode": 436
+    },
+    "manifests/office/.claude/agents/office-xlsx.md": {
+      "sha256": "76fa78c7d13eb00d29c0eaee94873e3a66578d8ba9660db25d0621fc614afe6b",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-docx.toml": {
+      "sha256": "aa12dcebae76d15fb4fe963d29c57bfc2a0116869e93fde0436776e32c21d973",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-pdf.toml": {
+      "sha256": "7151ab9bf16d1112b6d5b689fbaf94bad9b0931a6fc146a5ee61dd9675bc1856",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-planner.toml": {
+      "sha256": "194f24f10ab89dbf362901f62a776ddd12ad0cb93e007f784bb3d83ef279dd05",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-pptx.toml": {
+      "sha256": "54c75812c3cbd39d7f43798d6445b89cb312c900dcb090d42e0b44b9e07f7a36",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-qa.toml": {
+      "sha256": "5aaf532f7d7807d895e8ec0e39e67f4522fe2ccdeddec391a4b4c3d6e077af51",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-visuals.toml": {
+      "sha256": "8b625e60395a93ebfe0fc6bc9263697368690464f88225fb288cc5d6af6c10bb",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-writer.toml": {
+      "sha256": "0a198c1268a7e1e5fefa3f3fb8c43c0b331ecd5782db295bc78ee6718b12f2d8",
+      "mode": 436
+    },
+    "manifests/office/.codex/agents/office-xlsx.toml": {
+      "sha256": "619990f45cac2ff067ddf74dde28029a82b245124483a784fa7cf60bad11fc59",
+      "mode": 436
+    },
+    "manifests/office/AGENTS.md": {
+      "sha256": "7b669dab22d9456acdfca75c93f4fc08d7418fe26d7555775fae4930a1e9435f",
+      "mode": 436
+    },
+    "manifests/office/CLAUDE.md": {
+      "sha256": "4d1951d6323d14accb7f373ddf760ef077dff7654cb29b7ee590262b63648f81",
+      "mode": 436
+    },
+    "manifests/office/MANIFEST.md": {
+      "sha256": "3fd1646206b1c7abdc3784129ad662dea4cbc6692d568c2e76e12faf8a9c5a4a",
+      "mode": 436
+    },
+    "manifests/office/README.md": {
+      "sha256": "d8cd3308fa9efeba65073a57f58b10bb2f32b16baef334ed73f3decf51b8ee8f",
+      "mode": 436
+    },
+    "manifests/office/agents/subagent-roles.md": {
+      "sha256": "59b9fde53de8c1f49226559119c32de7b6f4d7a852f4c1b8962f26214895da2f",
+      "mode": 436
+    },
+    "manifests/office/assets/workflow.mmd": {
+      "sha256": "8d02662e7c6848eac260d905140f92a41e6ee17d9243ceed5c0579eef571bca6",
+      "mode": 436
+    },
+    "manifests/office/assets/workflow.svg": {
+      "sha256": "02c50021374b30cdb17838306d34402b1c7cde48b1f0f496484cf318397b3438",
+      "mode": 436
+    },
+    "manifests/office/docx/CLAUDE.md": {
+      "sha256": "ddfe989295da625ee590c625caa7a01ef1791d054bdc8259995a1b97578f79a4",
+      "mode": 436
+    },
+    "manifests/office/docx/macros/OfficeLayout.bas": {
+      "sha256": "66b7cb8f615a824c120acfb182eb0ddf298eb132f645ac8ccf34c5913d044f93",
+      "mode": 436
+    },
+    "manifests/office/docx/references/equations-and-fields.md": {
+      "sha256": "c82db04b36216e32977321d0a0bdb0dba05b290bc1b4afc26c650bebbd8fb370",
+      "mode": 436
+    },
+    "manifests/office/docx/references/native-formatting.md": {
+      "sha256": "2888473549acc0e7580e4068fad941b4617d41914de1c33e2933d0219fdb7671",
+      "mode": 436
+    },
+    "manifests/office/docx/references/voice-and-visuals.md": {
+      "sha256": "8d5cadbc4910f29cafbbe11fc71cd9c101bfab5b1870d935ac4df088d64622f0",
+      "mode": 436
+    },
+    "manifests/office/docx/rules/patent.md": {
+      "sha256": "af114ad511cda0aee20090c26a4dc994b3fb7663502a2c6b0e2cdd6ec50220f5",
+      "mode": 436
+    },
+    "manifests/office/docx/scripts/equations.py": {
+      "sha256": "94064e956a0b2ef405e99b6e394235e744cf439702dbfc739a14f84478ec04fa",
+      "mode": 436
+    },
+    "manifests/office/docx/scripts/feature_audit.py": {
+      "sha256": "ce9bd952ffe9b5ece7f1a62f96e7d1a2816eb317833152b806fb68adc365e4dd",
+      "mode": 436
+    },
+    "manifests/office/docx/scripts/native_format.py": {
+      "sha256": "6914ea26709be881673b6c1af87555fe76f4f41eb2874e3b4ebac5b8de6ef80f",
+      "mode": 509
+    },
+    "manifests/office/docx/templates/content-brief.md": {
+      "sha256": "2c1c701782fc124e39233fd4f7d27c60026cd3839d5cf64f2465fbbe837660e3",
+      "mode": 436
+    },
+    "manifests/office/pdf/CLAUDE.md": {
+      "sha256": "86d39bab2d7aea689d41b33955428954073db59d57440d2d16f9b91890abcd15",
+      "mode": 436
+    },
+    "manifests/office/planning/CLAUDE.md": {
+      "sha256": "ab8a09cdbe62fba3a6b33bf05659b2a60758518e1ce7242ff624ed981ff053e6",
+      "mode": 436
+    },
+    "manifests/office/pptx/CLAUDE.md": {
+      "sha256": "ae5afe538b1d687ba997bea4e5c9f03db74ab4cfdc8efd84efadb1c3d1389ea8",
+      "mode": 436
+    },
+    "manifests/office/rules/docx.md": {
+      "sha256": "56345e69a41e76ff93013ce031b45244f46652bdff8107b8fc0659ab205d47a0",
+      "mode": 436
+    },
+    "manifests/office/rules/file-safety.md": {
+      "sha256": "f93fa57d5f010de60e691320c3d28401f3b76304cbab1780dc805bd996aacb9d",
+      "mode": 436
+    },
+    "manifests/office/rules/office-docx.mdc": {
+      "sha256": "1870db62b38d6592019b86a88505b51db4ecc7276bc4f720148ba13784ad50a5",
+      "mode": 436
+    },
+    "manifests/office/rules/office-file-safety.mdc": {
+      "sha256": "84cae267cab16b915494ab3e22504d86cfb3bb211d4c275d10aea13b97769677",
+      "mode": 436
+    },
+    "manifests/office/rules/office-pdf.mdc": {
+      "sha256": "eb12b76f091e47833fea1ad8f96ee6cff3c5bc1786d8c6a3f3bf2597a2771077",
+      "mode": 436
+    },
+    "manifests/office/rules/office-pptx.mdc": {
+      "sha256": "6073b17ff3d6739d3ee71d9c7d1ef487dd61a74701411255dd24870de8aaa287",
+      "mode": 436
+    },
+    "manifests/office/rules/office-quality.mdc": {
+      "sha256": "27e699854b68dc5390832186731217c187f0d9890242883eb7ed25295228f54f",
+      "mode": 436
+    },
+    "manifests/office/rules/office-xlsx.mdc": {
+      "sha256": "3cdab0a42bf79218f559e1bc2f9e68951468d3b646331beb018beddb38434fd7",
+      "mode": 436
+    },
+    "manifests/office/rules/pdf.md": {
+      "sha256": "35e65eb99c6c34379b1cc3f338acf797efd4b238f8e451301b7ee902d39ff8ba",
+      "mode": 436
+    },
+    "manifests/office/rules/pptx.md": {
+      "sha256": "71f7afa969edd0bd7c618947e70bf555edd52048c71b5914cbf19d751aab8178",
+      "mode": 436
+    },
+    "manifests/office/rules/quality.md": {
+      "sha256": "78587ce88cdcaf4db654798c966a18fcde17fa2851e67582e267f78b665da61e",
+      "mode": 436
+    },
+    "manifests/office/rules/xlsx.md": {
+      "sha256": "d040ba5f9e2c6c288983f07d54011da4bbdbc4f019f4a5b565f2a1a33c59786c",
+      "mode": 436
+    },
+    "manifests/office/scripts/doctor.py": {
+      "sha256": "5de377304cdbb8c7a347697ff66811df357d1399683b031e856fe8c1ddd31b61",
+      "mode": 436
+    },
+    "manifests/office/scripts/init-office.sh": {
+      "sha256": "5f7b318b5792c34d358fb4b3183a31902c4ecd09dba91fccee1303b218b64e21",
+      "mode": 509
+    },
+    "manifests/office/scripts/install_office.py": {
+      "sha256": "da4ecb3056b811e464142162ca36d1761f21044d8e710ec1068403e80ff89175",
+      "mode": 509
+    },
+    "manifests/office/scripts/render.py": {
+      "sha256": "f6687c48f3306110812a51987ac8c433f1f46e966092cb6d34836d3c9e6ec526",
+      "mode": 436
+    },
+    "manifests/office/scripts/smoke.py": {
+      "sha256": "e8e88021d4ff574573d2b6f4a563e1ca64b3bc5cc56f06d61d017c6e780212ef",
+      "mode": 436
+    },
+    "manifests/office/scripts/verify.py": {
+      "sha256": "645a215754563abb5581dca9dfa7c939092dda3396171556ac49587aa9d1573c",
+      "mode": 436
+    },
+    "manifests/office/skills.txt": {
+      "sha256": "9ccb4eefb0659f9879c2ba93fd78cc30eedc04b1bbe763f09f9cf43e9045d9ab",
+      "mode": 436
+    },
+    "manifests/office/xlsx/CLAUDE.md": {
+      "sha256": "1970428ec31c6e01fa0130fcfd7bbdb48461b873ee4cb0cdc227df2c34435449",
+      "mode": 436
+    },
+    "manifests/office/xlsx/macros/OfficeWorkbook.bas": {
+      "sha256": "223b1b78a8447c31ee0b47d1468d52ab822b08097f553ffaa666072cc2d6f03c",
+      "mode": 436
+    },
+    "manifests/office/xlsx/references/charts-and-macros.md": {
+      "sha256": "df98976c9d0598857554a10f89bf0673c09c1bacb5dd1bfdf511f8a9039fdacc",
+      "mode": 436
+    },
+    "manifests/office/xlsx/scripts/analyze.py": {
+      "sha256": "851afc6617ab86d1f9921904eb5684333565efd7f01e80e96b79572bfa9c0231",
+      "mode": 509
+    },
+    "manifests/office/xlsx/scripts/create.py": {
+      "sha256": "8751f99b07285ff91fc787d586dc815d3cbad3bac1dab9a8c2a79e592c8303ca",
+      "mode": 509
+    },
+    "manifests/office/xlsx/scripts/recalc.py": {
+      "sha256": "c19e0d1f73b97c85d91c54d0b50eaec1a375de258ac954b3339c63442cef114a",
+      "mode": 436
+    },
+    "manifests/office/xlsx/scripts/recalc.sh": {
+      "sha256": "aa56ab744b9243f867a4aa53dd8ca17605d44fdfb4f337bdc8370ca11e246879",
+      "mode": 436
+    },
+    "manifests/office/xlsx/scripts/workbook_features.py": {
+      "sha256": "380d680c8a2fd441039f393b0736b8f25aa1ad51881bbdc02cd0de4e079c35f6",
+      "mode": 436
+    },
+    "manifests/office/xlsx/templates/workbook-brief.md": {
+      "sha256": "0eda3ca15c470d044119e8a3d96bb5a4765c47721064b8ca71b78858d00fa267",
+      "mode": 436
+    },
+    "mine/office-quality/SKILL.md": {
+      "sha256": "1620022335e1cd8ec6b0ddcc78fe660c2bf4b1968c6156fed4d1f2fd7206b874",
+      "mode": 436
+    },
+    "mine/office-quality/assets/workflow.mmd": {
+      "sha256": "a9e89b65923fcc94932dfe64da81b06d5f0ceae5b17aaca6f6c265177d60eb51",
+      "mode": 436
+    },
+    "mine/office-quality/assets/workflow.svg": {
+      "sha256": "4a3bd0507aeccfe589f5578b0ca7c1b62a376bb40280e3c58f95d5ce1a979b2d",
+      "mode": 436
+    },
+    "mine/office-quality/references/delivery.md": {
+      "sha256": "6ad3810604df9686e97f077a72fcf23edbfa910ded801bdd676ab373eeff8379",
+      "mode": 436
+    },
+    "mine/office-quality/references/docx.md": {
+      "sha256": "15ac6b84fcbbfd5fcec63b2cc42695aab1b36a76b286e874355a04d0a50352d4",
+      "mode": 436
+    },
+    "mine/office-quality/references/pdf.md": {
+      "sha256": "b38da99278e21bbfd63ebd615a6953c7327d997d6f016e032d29ce8c2635eb4e",
+      "mode": 436
+    },
+    "mine/office-quality/references/pptx.md": {
+      "sha256": "868a1600d5d8708be136c76aa064943baa34b046720baf94e041bc36a0c4426c",
+      "mode": 436
+    },
+    "mine/office-quality/references/xlsx.md": {
+      "sha256": "3ca5e6f4e3d6e14dec5f1f451d726e730929685d751ed1cf4f64b8da9f9a5b07",
+      "mode": 436
+    },
+    "docs/catalog.md": {
+      "sha256": "8b966b026b76b9d07e8681c701ccd3eeeff082b5ff196fb6c4160c77d5aa2edd",
+      "mode": 420
+    },
+    "docs/catalog_EN.md": {
+      "sha256": "bba64b5e477b1d8f935714aa3291fc49fc8043b9ee321a19439da609cf9be209",
+      "mode": 420
+    },
+    "skills/ANNOTATIONS.md": {
+      "sha256": "240b30589874e76d8c72fed2287fa6fe52ad5e514b51da7d8242476bcd5ce0d9",
+      "mode": 384
+    },
+    "skills/ANNOTATIONS_EN.md": {
+      "sha256": "cd0bbc12d508a791eb76ba6fc05c0179f6d41a38c14268d96e7500e81f6e611e",
+      "mode": 384
+    },
+    "tools/vibe_tool/tests/test_office_workflow_diagrams.py": {
+      "sha256": "d224d21724f8682703bd733607abbec5ed365f40a371df258d98ab4ae8aa2eb4",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_native_format.py": {
+      "sha256": "3760b3b07d0ebf7fbf2d5be25acf1a0740399529245ad8e060e03e6800dc9065",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_equations.py": {
+      "sha256": "013585728a31dd383a3c701ef0db63108324d889c6fde640b81b928f351be71b",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_runtime.py": {
+      "sha256": "4dcf65c96440e4456955d3dd5892132a491087f04aef873b4451b908bc01d485",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_word_features.py": {
+      "sha256": "6e99082f4b2b6578e5531b9a53a9d7357acd72d4e7e05c8c65a328b1ee6b33b9",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_workbook_features.py": {
+      "sha256": "d89fd47962617145bb442c2d2a2352965a7287a5f4610fa3ca09419b55cd0b66",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_captions.py": {
+      "sha256": "ea565f181017b4cb91e81990cfd118658b0804be50319caa71660450d06c0ef4",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_office_install.py": {
+      "sha256": "9bd0deda8f3b3ca7aee4ef2f71010e4084eb8bce60ec533bd53a0e843c5c08bc",
+      "mode": 436
+    },
+    "tools/vibe_tool/tests/test_omnippt.py": {
+      "sha256": "7c033f41a78c7ecb3768fadc93ed57eed7453049decb5546a3fbdee4a86acee7",
+      "mode": 436
+    },
+    "tools/vibe_tool/src/vibe_tool/manifest_update.py": {
+      "sha256": "cd752e6a2d09b4637f7eba1c8514fe181a1cc6c2a2968b95f2da5bd66161b4c4",
+      "mode": 384
+    }
+  }
+}

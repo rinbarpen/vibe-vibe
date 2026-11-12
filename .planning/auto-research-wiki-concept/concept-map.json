@@ -1,0 +1,203 @@
+{
+  "title": "ARIS / auto-research · Wiki 概念发展图",
+  "subtitle": "从文献积累，到可持续的研究记忆",
+  "snapshot": "本地代码核对 · 2026-11-10 · ARIS 2901234",
+  "stages": [
+    {
+      "id": "collect",
+      "number": "01",
+      "title": "文献积累",
+      "question": "读过什么？",
+      "status": "基础工具已实现",
+      "tone": "green",
+      "items": [
+        "论文元数据、摘要与标签",
+        "去重、批量补录、阅读笔记"
+      ],
+      "gap": "内容补全需另行调用 wiki-enrich",
+      "edge": "抽取与补全"
+    },
+    {
+      "id": "connect",
+      "number": "02",
+      "title": "关系化知识",
+      "question": "知识之间如何关联？",
+      "status": "基础结构已实现",
+      "tone": "green",
+      "items": [
+        "论文 / 想法 / 实验 / Claim",
+        "启发、继承、支持与反驳关系"
+      ],
+      "gap": "关系识别与一致性仍需维护",
+      "edge": "关联与核验"
+    },
+    {
+      "id": "evidence",
+      "number": "03",
+      "title": "证据化研究",
+      "question": "哪些判断有证据？",
+      "status": "流程部分接通",
+      "tone": "amber",
+      "items": [
+        "证明状态与实验证据分离",
+        "保留来源、运行记录和负结果"
+      ],
+      "gap": "默认生命周期回写尚未接全",
+      "edge": "压缩与回灌"
+    },
+    {
+      "id": "memory",
+      "number": "04",
+      "title": "持续研究记忆",
+      "question": "下一轮如何接着研究？",
+      "status": "目标能力待补强",
+      "tone": "blue",
+      "items": [
+        "已有 query_pack 跨会话摘要",
+        "面向新选题复用既有知识"
+      ],
+      "gap": "需补问题检索、失败范围与保留策略"
+    }
+  ],
+  "loop": [
+    {
+      "id": "paper",
+      "label": "论文 / Paper",
+      "detail": "方法 · 局限 · 可复用组件"
+    },
+    {
+      "id": "idea",
+      "label": "想法 / Idea",
+      "detail": "机制 · 预测 · 反证条件"
+    },
+    {
+      "id": "experiment",
+      "label": "实验 / Experiment",
+      "detail": "设置 · 指标 · 来源"
+    },
+    {
+      "id": "claim",
+      "label": "主张 / Claim",
+      "detail": "证明状态 ≠ 实验支持"
+    }
+  ],
+  "domains": [
+    {
+      "title": "AI / 机器学习",
+      "detail": "LLM · 多模态 · Diffusion · RL",
+      "status": "默认研究主线",
+      "tone": "green"
+    },
+    {
+      "title": "机器人 / 具身智能",
+      "detail": "操作 · 导航 · 仿真优先 · sim2real",
+      "status": "ARIS 专项：选题与可行性",
+      "tone": "blue"
+    },
+    {
+      "title": "系统 / 架构 / EDA",
+      "detail": "性能剖析 · 设计空间探索 · 系统写作",
+      "status": "ARIS 专项：工具与写作",
+      "tone": "blue"
+    },
+    {
+      "title": "通信 / 网络",
+      "detail": "无线 · 卫星 / NTN · 路由 · 拥塞控制",
+      "status": "ARIS 专项：文献调研",
+      "tone": "blue"
+    },
+    {
+      "title": "数学 / ML 理论",
+      "detail": "公式推导 · 证明检查 · Lean 路线",
+      "status": "ARIS 专项：理论与证明",
+      "tone": "blue"
+    },
+    {
+      "title": "技术发明 / 专利材料",
+      "detail": "现有技术 · 新颖性 · 权利要求 · 实施例",
+      "status": "ARIS 可选扩展",
+      "tone": "blue"
+    }
+  ],
+  "priorities": [
+    {
+      "number": "1",
+      "title": "接通默认闭环",
+      "detail": "安装依赖、helper 与阶段回写"
+    },
+    {
+      "number": "2",
+      "title": "提升知识质量",
+      "detail": "来源可追溯；区分入库与补全"
+    },
+    {
+      "number": "3",
+      "title": "守住记忆边界",
+      "detail": "失败限定到方法、条件与 Claim"
+    },
+    {
+      "number": "4",
+      "title": "补齐检索与校验",
+      "detail": "按问题召回；关系一致性检查"
+    }
+  ],
+  "notes": [
+    "箭头表示能力递进，不是历史时间线，也不代表阶段已经完成。",
+    "领域无关的是 Wiki 数据骨架；领域专项技能不等于 auto-research 默认安装或端到端实测。",
+    "其他学科可迁移文献、笔记与写作能力；尚未核实其领域专用实验闭环。"
+  ],
+  "sources": [
+    "skills/aris/skills/research-wiki/SKILL.md",
+    "skills/aris/skills/wiki-enrich/SKILL.md",
+    "skills/aris/tools/research_wiki.py",
+    "manifests/auto-research/skills.txt",
+    "manifests/auto-research/references/implementation-status.md",
+    "skills/aris/skills/idea-discovery-robot/SKILL.md",
+    "skills/aris/skills/comm-lit-review/SKILL.md",
+    "skills/aris/skills/dse-loop/SKILL.md",
+    "skills/aris/skills/system-profile/SKILL.md",
+    "skills/aris/skills/proof-checker/SKILL.md",
+    "skills/aris/skills/patent-pipeline/SKILL.md"
+  ],
+  "presentation": {
+    "title": "从文献积累到研究记忆",
+    "context": "ARIS / auto-research",
+    "boundary": "能力递进，非历史时间线；当前能力与目标分开标注。",
+    "rules": [
+      "manifests/vibe-coding/rules/vibe-coding-ui-design.mdc",
+      "manifests/vibe-coding/references/ui-usability.md"
+    ],
+    "tokens": {
+      "light": {
+        "surface": "#FFFFFF",
+        "text": "#1B2429",
+        "muted": "#48535B",
+        "accent": "#265FC7",
+        "line": "#C8CDD0",
+        "soft": "#F3F5F6"
+      },
+      "dark": {
+        "surface": "#111518",
+        "text": "#F0F3F5",
+        "muted": "#B2BCC3",
+        "accent": "#94B7FF",
+        "line": "#53606B",
+        "soft": "#1B2228"
+      },
+      "font": "\"Noto Sans CJK SC\", \"Microsoft YaHei\", \"PingFang SC\", sans-serif",
+      "type": {
+        "display": 44,
+        "heading": 26,
+        "body": 20,
+        "secondary": 18
+      },
+      "spacing": {
+        "page": 56,
+        "section": 44,
+        "group": 24,
+        "item": 12
+      },
+      "radius": 0
+    }
+  }
+}

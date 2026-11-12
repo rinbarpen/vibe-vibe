@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "office-project": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project",
+      "source": "/home/rczx/workspace/rinbarpen/projects/vibe-coding"
+    },
+    "standalone-project": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project",
+      "source": "/home/rczx/workspace/rinbarpen/projects/vibe-coding"
+    }
+  },
+  "schema_version": 1
+}

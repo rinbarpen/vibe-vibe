@@ -27,6 +27,12 @@
 
 每项写清变化、控制条件、假设、指标、结果解释、成本和配置。覆盖表状态为 covered/deferred/not_applicable，后两者必须给理由。covered 引用实际实验 ID。负结果同样留档；预算外候选不得自动运行。主结果后 ablation-planner 可以提建议，先更新计划再审批。
 
+## 覆盖、负结果与科学结论
+
+按 [Idea 验证契约](idea-validation.md) 预先定义 claim 的最低证据、反证/停止条件，并在分析中逐项对照冻结矩阵与实际 runs。缺失/失败/延期不算反证；smoke、部分实验和具体 method 失败不推出整体 idea 无效。决定性有效反证可触发预设提前停止，但只给出受测范围内结论；资源中止记未定。全部 attempt 及失败方法的启发分别写入既有日志、FAILURE_ANALYSIS 与 CLAIM_EVIDENCE，下一 cycle 回看，不强行跑到正结果。
+
+每轮修订/恢复核对目标、方法与 claim revision、配置哈希、有效审批、原始证据和真实进程；语义 diff 与交接写入原 checkpoint/日志。独立 worktree 不替代上下文保真。审查变化后的科学结论，再交 Writing Plan。
+
 ## 执行接口
 
 ```bash

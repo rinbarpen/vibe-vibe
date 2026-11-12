@@ -106,15 +106,21 @@ English skill。官方 venue template 的 `.cls`、`.sty`、字体、参考文�
 figure style 文件必须通过 sha256 manifest 锁定，任何 style 修改都使
 `template_integrity` gate 失败。
 
+### 上下文保真与科学基线
+
+隔离 workspace 之外，还须按 [Idea 验证契约](idea-validation.md) 执行语义检查：每轮修改、会话压缩/切换及恢复时重新读取已确认目标/约束、HYPOTHESES、METHOD_SPEC、CLAIMS、相关负结果和原始证据，核对可信 commit/revision/hash；不能只继承上轮摘要。checkpoint summary/next 与登记产物保留变与不变、old/new revision、理由、影响依赖、未知项与恢复动作；不增加平行状态库。
+
+目标/标准/方法/证据漂移先重验相应 novelty、设计与审查/审批；冲突时保留当前 attempt，从可信 checkpoint 重建并验证后晋级。方法失败仍记录思想启迪，未支持的 claim 不等于 idea 全局失效。已终态阶段及科学/配置变化沿用新 cycle 规则；不静默迁移旧 settings。
+
 ## 周期终点与写作
 
 研究→实验→结果不支持时回到 idea/design 新 cycle；内部评审→补实验→Writing Plan 更新；外审→响应矩阵→补实验/回复→修订提交；拒稿→新 submission 与转投。每次论文节点修改遵守原 Writing Plan 的 validate/resolve/render/approval/review。
 
 真正中稿以正式录用通知为依据；camera-ready/校样/归档是录用后单独状态。正式投稿与作者确认、撤稿等有外部影响的操作必须先获得用户确认，记录实际回执而不是模拟成功。集成测试只用标记为 fixture 的本地材料。
 
-## 叶节点完成门（contract revision 1）
+## 叶节点完成门（逐节点 contract revision）
 
-新项目默认 `enforce_stage_contracts: true`。每个叶节点完成前，按 `references/lifecycle-leaf-contracts.md` 准备输出，并在节点的 `review_path` 提交 JSON：`stage_id`、`contract_hash`、`reviewer`、`reviewed_at`、`artifacts: [{path, sha256}]`、`checks: [{criterion, status: pass, evidence}]`。criteria 必须逐字对应 acceptance。需要人工确认的节点还需 `approval: {approved: true, approved_by, approved_at}`。报告绑定当前输出哈希；输出变化后旧报告失效。
+新项目默认 `enforce_stage_contracts: true`。Idea 验证相关节点使用 revision 2，其余保留原 revision；以节点当前契约哈希为准。每个叶节点完成前，按 `references/lifecycle-leaf-contracts.md` 准备输出，并在节点的 `review_path` 提交 JSON：`stage_id`、`contract_hash`、`reviewer`、`reviewed_at`、`artifacts: [{path, sha256}]`、`checks: [{criterion, status: pass, evidence}]`。criteria 必须逐字对应 acceptance。需要人工确认的节点还需 `approval: {approved: true, approved_by, approved_at}`。报告绑定当前输出哈希；输出变化后旧报告失效。
 
 先运行 `python3 scripts/stage_contract.py --project-root . --stage STAGE_ID` 得到当前契约哈希、产物哈希和缺项，再由审查者填写报告；工具不会自动填充 pass。`checkpoint completed` 必须通过 `--artifact` 同时登记所有声明输出和审查报告。仅做文件、哈希和声明完整性检查，不验证审查者身份、不代替科学评审或平台回执核验。输入证据核对仍属于节点审查。
 

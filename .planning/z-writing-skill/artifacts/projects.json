@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "project": {
+      "path": "/tmp/z-writing-office-cm7zdg1_/project",
+      "source": "/home/rczx/workspace/rinbarpen/projects/vibe-coding"
+    },
+    "standalone": {
+      "path": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-skill/artifacts/standalone",
+      "source": "/home/rczx/workspace/rinbarpen/projects/vibe-coding"
+    }
+  },
+  "schema_version": 1
+}

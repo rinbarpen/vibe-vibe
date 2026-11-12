@@ -24,6 +24,7 @@ class OfficeInstallTests(unittest.TestCase):
         self.base = Path(self.tmp.name)
         self.repo = self.base / "fixture repo"
         self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
         self.target = self.base / "project with spaces"
         self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
                         PYTHONDONTWRITEBYTECODE="1")
@@ -32,27 +33,29 @@ class OfficeInstallTests(unittest.TestCase):
         (self.repo / "mine").mkdir()
         for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
             self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
         for fmt in (*FORMATS, "planning"):
-            self.write(self.manifest / fmt / "CLAUDE.md", f"# {fmt} guide\n")
-        self.write(self.manifest / "docx/rules/patent.md", "# Optional reference\n")
-        self.write(self.manifest / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
-        self.write(self.manifest / "rules/quality.md", "# Shared quality rules\n")
-        self.write(self.manifest / "rules/office-quality.mdc", "---\nalwaysApply: true\n---\nQuality\n")
-        self.write(self.manifest / "scripts/check_dependencies.py", "print('check')\n")
-        self.write(self.manifest / "scripts/nested/script with spaces.py", "print('nested')\n")
-        self.write(self.manifest / "scripts/__pycache__/ignored.pyc", "cache")
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
         for role in ROLES:
-            self.write(self.manifest / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
-            self.write(self.manifest / ".claude/agents" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
-            self.write(self.manifest / ".codex/agents" / f"{role}.toml", f'name = "{role}"\n')
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
         for name in ("init-office.sh", "install_office.py"):
             destination = self.manifest / "scripts" / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
         for fmt in FORMATS:
             self.write(self.repo / "skills/anthropics/skills" / fmt / "SKILL.md", f"# {fmt}\n")
         self.write(self.repo / "mine/office-quality/SKILL.md", "# Office quality\n")
         self.write(self.manifest / "skills.txt", "\n".join(
-            [f"anthropics/skills/{fmt}" for fmt in FORMATS] + ["office-quality", ""]
+            ["office"] + [f"anthropics/skills/{fmt}" for fmt in FORMATS] + ["office-quality", ""]
         ))
 
     def write(self, path, content):
@@ -81,25 +84,25 @@ class OfficeInstallTests(unittest.TestCase):
         self.assertEqual(manifest["name"], "office")
         self.assertTrue(manifest["has_init_script"])
         self.assertEqual(manifest["required_skills"],
-                         [f"anthropics/skills/{fmt}" for fmt in FORMATS] + ["office-quality"])
+                         ["office"] + [f"anthropics/skills/{fmt}" for fmt in FORMATS] + ["office-quality"])
 
     def test_init_installs_resources_skills_rules_and_both_native_agents(self):
         self.assert_ok(self.cli("init", "office", self.target))
         expected = ["CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md", "office/README.md",
-                    "office/rules/quality.md", ".cursor/rules/office-quality.mdc",
-                    "office/docx/rules/patent.md", "office/xlsx/scripts/recalc.sh",
-                    "office/scripts/check_dependencies.py",
-                    "office/scripts/nested/script with spaces.py"]
-        expected += [f"office/{fmt}/CLAUDE.md" for fmt in (*FORMATS, "planning")]
+                    ".agents/skills/office/rules/quality.md", "office/rules/office-project.md",
+                    ".agents/skills/office/docx/rules/patent.md", ".agents/skills/office/xlsx/scripts/recalc.sh",
+                    ".agents/skills/office/scripts/check_dependencies.py",
+                    ".agents/skills/office/scripts/nested/script with spaces.py"]
+        expected += [f".agents/skills/office/{fmt}/CLAUDE.md" for fmt in (*FORMATS, "planning")]
         expected += [f".agents/skills/anthropics-skills-{fmt}/SKILL.md" for fmt in FORMATS]
-        expected += [".agents/skills/office-quality/SKILL.md"]
+        expected += [".agents/skills/office-quality/SKILL.md", ".agents/skills/office/SKILL.md"]
         expected += [f"{prefix}/{role}.{ext}" for role in ROLES for prefix, ext in (
-            ("office/agents/subagent-roles", "md"), (".claude/agents", "md"), (".codex/agents", "toml"))]
+            (".agents/skills/office/agents/subagent-roles", "md"), (".claude/agents", "md"), (".codex/agents", "toml"))]
         for relative in expected:
             with self.subTest(relative=relative):
                 self.assertTrue((self.target / relative).is_file())
-        for relative in ("office/scripts/install_office.py", "office/scripts/init-office.sh",
-                         "office/scripts/__pycache__", "docx", "rules", ".claude/skills"):
+        for relative in (".agents/skills/office/scripts/install_office.py", ".agents/skills/office/scripts/init-office.sh",
+                         ".agents/skills/office/scripts/__pycache__", "docx", "rules", ".claude/skills"):
             self.assertFalse((self.target / relative).exists(), relative)
 
     def test_add_preserves_project_entries_and_repeated_install_is_idempotent(self):
@@ -118,13 +121,13 @@ class OfficeInstallTests(unittest.TestCase):
     def test_force_updates_managed_files_but_preserves_unrelated_files(self):
         self.assert_ok(self.cli("init", "office", self.target))
         self.write(self.target / "CLAUDE.md", "edited root")
-        self.write(self.target / "office/docx/CLAUDE.md", "edited guide")
+        self.write(self.target / ".agents/skills/office/docx/CLAUDE.md", "edited guide")
         self.write(self.target / ".agents/skills/anthropics-skills-docx/SKILL.md", "edited skill")
         self.write(self.target / "office/custom note.txt", "project data")
         self.write(self.target / "MANIFEST.md", "# Output history\nPreserve prior deliverables.\n")
         self.assert_ok(self.cli("add", "manifest", "office", self.target, "--force"))
         self.assertEqual((self.target / "CLAUDE.md").read_bytes(), (self.manifest / "CLAUDE.md").read_bytes())
-        self.assertEqual((self.target / "office/docx/CLAUDE.md").read_text(), "# docx guide\n")
+        self.assertEqual((self.target / ".agents/skills/office/docx/CLAUDE.md").read_text(), "# docx guide\n")
         self.assertEqual((self.target / ".agents/skills/anthropics-skills-docx/SKILL.md").read_text(), "# docx\n")
         self.assertEqual((self.target / "office/custom note.txt").read_text(), "project data")
         self.assertEqual((self.target / "MANIFEST.md").read_text(), "# Output history\nPreserve prior deliverables.\n")

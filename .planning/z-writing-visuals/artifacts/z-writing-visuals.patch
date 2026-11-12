@@ -1,0 +1,240 @@
+diff --git a/mine/z-writing/SKILL.md b/mine/z-writing/SKILL.md
+--- a/mine/z-writing/SKILL.md
++++ b/mine/z-writing/SKILL.md
+@@ -1,6 +1,6 @@
+ ---
+ name: z-writing
+-description: "中英文写作统一入口：从材料与大纲起草、分节写作与多 Agent 并行改章后主 Agent 合并、学习样本文风、局部改写、句段衔接、审阅与润色。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，原生 Office 文件工程由 office 负责。"
++description: "中英文写作统一入口：起草与改写、样本文风、润色、多 Agent 分章协作，以及写作中的图表需求交接与正文关联。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，图表制作按需组合专用技能，原生 Office 文件工程由 office 负责。"
+ ---
+ 
+ # z-writing
+@@ -23,6 +23,7 @@
+ | 学习指定作者/团队的表达习惯 | [Style Extractor](references/ai-vibe-writing/.ai_context/prompts/1_style_extractor.md)，区分自写样本、他人范文与用户确认偏好 |
+ | 新文章的大纲、章节职责 | [Outline Manager](references/ai-vibe-writing/.ai_context/prompts/6_outline_manager_agent.md)；复杂任务按需组合 [Coordinator](references/ai-vibe-writing/.ai_context/prompts/9_workflow_coordinator.md) |
+ | 章节起草 | [Content Writer](references/ai-vibe-writing/.ai_context/prompts/7_content_writer_agent.md)，一次处理当前章节或已有计划节点 |
++| 写作中需要图/表并与正文关联 | [图文协同](references/figures-and-tables.md)：提出用途与证据要求，按需交 `omnidraw` / `omnisheet`，取得实际素材后回查正文与引用 |
+ | 改写/精炼已有句段 | [Writer](references/ai-vibe-writing/.ai_context/prompts/2_writer.md)，保留原意、语域及独立信息 |
+ | 句子接不上、指代或推进有问题 | [Sentence Flow](references/ai-vibe-writing/.ai_context/prompts/17_sentence_flow_agent.md)，核对真实信息关系而非堆连接词 |
+ | 内容、事实与证据审阅 | [Content Review](references/ai-vibe-writing/.ai_context/prompts/8_content_review_agent.md)，只报告核查范围内的结论 |
+@@ -33,11 +34,17 @@
+ 
+ 默认交付本次需要的正文、修改或审阅意见，少量必要说明另列。已明确要求改写时复用本次范围，不另设一次整篇 Approve。只读审阅保持输入不变。
+ 
++## 边写边制作图表
++
++在包含图表的写作任务中，章节写作者随论证发现视觉需求，不必等全文写完。读取 [图文协同](references/figures-and-tables.md)，沿用原项目的稳定图表 ID，把主张/段落、来源与数据版本、制作任务、实际产物、题注和正文引用关联起来。图表任务可与不依赖它的正文并行；结果返回后，写作者读取真实图表及核对后的数据，再补写解释、限定与引用，不从预期图形预写结论。
++
++主 Agent 统一维护关联和最终装配；同一图表只有一个制作任务，可被多章引用。正文语义或数据变化时更新关联图表，图表语义或数值变化时回查引用段落，只返工受影响部分。没有图表需求的任务不强制配图，纯纠错不扩成制作任务；尚无素材、检查未完成或依赖缺失的状态如实保留。
++
+ ## 多 Agent 并行改章与主 Agent 合并
+ 
+ 用户要求按章节并行时，读取 [章节并行与合并](references/parallel-chapters.md)。主 Agent 负责共享目标、样本文风、术语、证据口径和章节依赖；每章由一个章节 Agent 修改，按宿主可用并发分批执行，不因章节多而超额启动。普通局部改句仍直接完成。
+ 
+-章节 Agent 只写分配给自己的候选稿与交接意见，不同时修改总稿、公共参考文献、文风档案或其他章节。主 Agent 核对输入版本后，按大纲顺序合并，处理跨章重复、论证缺口、术语、引用/图表交叉引用与过渡，再统一审阅文风及内容保真。有依赖的章节等待所需结果；失败只重派受影响任务，已完成章节保留。
++章节 Agent 只写分配给自己的候选稿与交接意见，不同时修改总稿、公共参考文献、文风档案或其他章节。需要图表时按上述图文协同约定提出任务并接收结果，不让各章重复制作共享图表。主 Agent 核对输入版本后，按大纲顺序合并，处理跨章重复、论证缺口、术语、引用/图表交叉引用与过渡，再统一审阅文风及内容保真。有依赖的章节等待所需结果；失败只重派受影响任务，已完成章节保留。
+ 
+ 这是一套宿主 Agent 调度约定，不是新增后台调度器。有实际多 Agent 工具才报告已并行执行；没有时按同一任务边界顺序处理并说明执行方式。已有 Writing Plan 时仍由原 planner/resolver 产生每个章节的任务包，不另建计划或绕过原审阅节点。
+ 
+@@ -60,11 +67,13 @@
+ - 用户项目的 `.ai_context/`、大纲、样本文风与证据记录沿用已有位置；引擎里的模板和示例不是当前用户的事实或偏好。
+ - auto-research 已有 Writing Plan 时，遵守其 planner/resolver/writer/reviewer 边界。writer 只消费当前 resolved node/任务包及交接证据，不读取原始 YAML、重建阶段树或覆盖审批；本技能不复制科研计划脚本。
+ - 公众号 writing-agent 是独立的长文生产项目；只有用户选用该场景时才沿用它的阶段与运行记录，不把其开头赛马、传播测试、故事素材要求强加给论文或办公正文。
+-- 图/表在大纲中说明用途、来源、题注和引用位置；真实素材交 `omnidraw` / `omnisheet`。最终 DOCX/XLSX/PPTX/PDF 交 `office` 及具体格式引擎；正文 Skill 不把写出 Markdown 冒称原生文件完成。
++- 图/表制作按图文协同约定交 `omnidraw` / `omnisheet`；已有 Writing Plan 时复用其资产节点、`composition.assets`、`first_reference`、`discuss_in` 与 writer packet，新增需求交原 planner/resolver，不由 writer 另造计划。最终 DOCX/XLSX/PPTX/PDF 交 `office` 及具体格式引擎；正文 Skill 不把写出 Markdown 冒称原生文件完成。
+ - 可用工具和独立审查只报告实际执行结果；若项目要求独立审阅，复用其机制，缺条件说明对应未决项。不要为普通纠错强制创建多代理流程。
+ 
+ ## 使用
+ 
+ 安装：`vibe add skill z-writing <target>`。写作与润色的规范源在仓库中通过相对链接复用，安装时物化为自包含副本；无需另装 AI Vibe 或 z-humanizer 才能读取本包引擎。
+ 
++图表制作和 Office 是按需组合能力，不随本包的写作引擎捆绑。先通过宿主发现本次所需技能的实际入口；缺项说明对应未决任务，不因一次配图安装全套依赖，也不擅自改变用户要求的文件格式。
++
+ 例如：`$z-writing 根据这些材料写一份项目进展说明，先列结构，沿用我的样本文风。` 或 `$z-writing 只修正这两段的衔接，保留数据、术语和引用。` 实际自动发现、`$` 调用与工具执行由宿主支持，本包不注册公共 CLI 或常驻服务。
+diff --git a/mine/z-writing/references/parallel-chapters.md b/mine/z-writing/references/parallel-chapters.md
+--- a/mine/z-writing/references/parallel-chapters.md
++++ b/mine/z-writing/references/parallel-chapters.md
+@@ -24,6 +24,7 @@
+ ```text
+ 章节：现有章节 ID / 标题；本章职责、当前论点与本次修改目标
+ 输入：本章原稿及版本；相关来源/证据；前后章职责与必要原文
++关联图表：稳定 ID、用途/支持主张、实际数据与素材版本；本章的首次引用/讨论位置
+ 共享约束：同版文风档案、术语、数字/单位、状态、引用键与图表 ID
+ 修改边界：允许改什么、必须保留什么；前置结果及尚未解决的问题
+ 专属输出：本章候选稿位置；交接意见位置或消息
+@@ -37,7 +38,7 @@
+ 3. 对照输入检查数字、条件、否定、术语、已完成/拟开展状态、引用、公式和代码。材料缺口与证据冲突带位置上报，不补造结果或将范文事实移入当前稿。
+ 4. 交回：章节 ID、实际输入版本、候选稿、实质改动摘要、保真核对范围、待核实项及跨章问题。只返回已执行的检查，不用“自评通过”代替证据。
+ 
+-需要新增引用、修订公共术语或调整图表时，交给主 Agent 协调原有研究/图表流程；章节候选稿保留明确待办位置。只需调整句段的任务，不扩成重新调研。
++需要新增引用、修订公共术语或调整图表时，交给主 Agent 协调原有研究/图表流程；章节候选稿保留明确待办位置。图表制作与结果回流按 [图文协同](figures-and-tables.md)：章节 Agent 可在写作中提出需求，主 Agent 按稳定 ID 去重并分派独立图/表任务，与章节任务共享宿主并发容量；结果返回同一章节任务继续写作，不因等待图表重启整章。只需调整句段的任务，不扩成重新调研。
+ 
+ 没有现成项目约定时，可用 `revision/<本轮>/chapters/<章节ID>.md` 和同名 `.notes.md`；它们是候选稿，不是第二套科研计划。只有聊天工具时交回带章节 ID 的文本，不声称写入了文件。
+ 
+@@ -48,7 +49,7 @@
+ 1. **核对版本与完成范围。** 检查候选稿使用的原稿和共享约束版本。原稿或依赖已变时，对照新旧差异，只让受影响章节重新基于新输入修改；不覆盖用户新稿，不把旧输出标为当前版本。失败/超时只重派未完成部分，保留其他章节成果。
+ 2. **审阅实际差异。** 检查任务目标和内容保真，不只阅读章节 Agent 的交接结论。新主张、冲突数字、引用与证据缺口先定位；按来源与已有决策解决，不以“语言更顺”静默改掉事实。
+ 3. **统一全文。** 消除重复定义和重复论述，补齐章间承接与未回答的问题，统一术语/缩写、语气与限定强度，核对摘要/贡献/结论是否匹配正文证据。过渡句必须符合真实逻辑关系。
+-4. **统一公共资源。** 保留稳定引用键与图表 ID；公共参考文献去重、编号、题注和交叉引用由主 Agent 按原项目流程处理。图表正文口径一致，链接到实际存在的素材；不在每章各生成一套全局编号。
++4. **统一公共资源。** 保留稳定引用键与图表 ID；公共参考文献去重、编号、题注和交叉引用由主 Agent 按原项目流程处理。核对每个图表任务的实际产物、版本与引用/讨论段落，图表正文口径一致，链接到实际存在的素材；不在每章各生成一套全局编号，也不把待制作的图当成已可支持结论的证据。
+ 5. **产出总稿并复核。** 在候选总稿中按顺序合并，保留原稿及各章候选，回查合并时新增的改动。只修正全局问题，不无依据地再次整篇重写。最终原生 Office 文件由主 Agent 统一交给 office 处理，避免共享文件并发写入。
+ 
+ 未完成或证据待核实的章节保持明确状态；可交付部分稿时说明范围，不将占位或失败章节包装成最终验收。若涉及目标/观点选择等新决策，沿原项目的人类决策边界处理；一般措辞、衔接和已有约束内的修复由主 Agent 完成。
+diff --git a/mine/z-writing/references/figures-and-tables.md b/mine/z-writing/references/figures-and-tables.md
+new file mode 100644
+--- /dev/null
++++ b/mine/z-writing/references/figures-and-tables.md
+@@ -0,0 +1,88 @@
++# 写作中的图表协同与正文关联
++
++图/表是论证的一部分，不是文末装饰。用于已包含图表的写作任务，或在约定范围内发现的实际需要；纯文字纠错不扩成新制作任务。这里规定交接和回流，制作仍用当前项目实际可用的专用技能，格式与来源约束沿原项目执行。
++
++## 1. 写到哪里，需要什么
++
++章节写作者发现关系难以用文字说明、比较需要并列、数值需要展示或已有图表应更新时，提出具体需求：
++
++| 关联项 | 最少说明 |
++| --- | --- |
++| 正文位置与职责 | 哪个现有章节/段落/计划节点；需要解释的关系或支持的主张；无视觉是否更清楚 |
++| 稳定 ID 与归属 | 沿用已有 ID，如 `fig:method`、`tab:comparison`；主 Agent 协调唯一制作人，多章可引用同一资产 |
++| 来源与数据 | 已核对材料/数据/公式的实际位置和版本；单位、口径、缺失值、限制；来源未齐标明缺项 |
++| 图表规格 | 图/表类型、必要标签/字段、图例/表头、单位、目标格式与尺寸、编辑要求、题注/替代文本 |
++| 正文关联 | 首次引用、插入位置和要讨论的段落；需接回的章节任务；内部交叉引用与外部文献引用分开 |
++| 结果与状态 | 实际图源/表数据/预览路径及版本、核查范围、未决项；沿用项目状态，不用“文件存在”代替验收 |
++
++记录落在已有大纲、Brief 或计划资产记录中；小任务可直接用交接消息，不强制新建图表库。制作与引用中的显示号不是稳定 ID：插入新图后可以重排“图 2”，但原图身份不随编号变化。
++
++**已有 auto-research Writing Plan：**复用 `composition.assets` 的资产 `node_id`、`label`、`first_reference`、`discuss_in`，以及 resolved writer packet 的相关 `assets`。章节 writer 只接收任务包；新需求交原 planner/resolver 更新、重算受影响任务包并沿原审批流执行，不修改原始 YAML、不另建资产账本。图型和编辑格式服从该项目当前规范，不以通用路由覆盖更具体的科研图要求。
++
++## 2. 按需制作，可以和正文并行
++
++| 需求 | 交接 |
++| --- | --- |
++| 真实数据图/统计图 | `omnidraw` 的数据绘图路线；使用核对后的数据、可执行代码及真实统计定义，不用图像模型生成曲线、误差线或显著性 |
++| 流程、结构、机制、概念说明图 | `omnidraw` 按图型与交付格式分流；箭头、分组与标签来自当前材料，保留实际编辑源与预览 |
++| 比较表、汇总表、进度/预算或结果表 | `omnisheet` 统一字段、单位、行列语义、计算/合计和注释；目标是正文表格时不额外强制生成工作簿 |
++| 已有图表复用或修订 | 先核对现有文件与来源，复用稳定 ID；只重做受内容/数据变化影响的部分，不重新生成已验收的同一素材 |
++| 文献原图或综述图 | 使用本项目实际检索/论文读取能力取得原图与来源记录，再交图表/格式角色处理；图像搜索缩略图不算已取得论文图 |
++
++按技能名发现已安装入口，不沿用源码仓库相对路径。将用途、来源、版本、文风中的必要术语及最终媒介的视觉约束交给制作人；沿用 Omni 的 UI/avoid 约束，不在 z-writing 再维护一份冲突的视觉禁用清单。已有明确的图表范围直接复用；Office 中新增图表、宏或外部服务尚有决定待确认时，继续独立的正文/表格工作，不绕过原约定。
++
++多 Agent 时，主 Agent 可把图与表分别派给制作 Agent，与不依赖它们的章节并行；小任务也可由主 Agent 直接调用所需技能，不强制一图一个 Agent。所有角色共享宿主并发上限。章节 Agent 提出需求，主 Agent 去重并确定依赖：
++
++```text
++章节写作 ──发现图/表需求──→ 主 Agent ──分派──→ 图/表制作
++   │                                             │
++   └─继续不依赖结果的内容           实际素材 + 数据/来源 + 检查结果
++   ↑                                             │
++   └────主 Agent 核对版本后回流给原章节任务──────────┘
++                     ↓
++        更新解释、限定、题注及引用 → 总稿装配与审阅
++```
++
++等待期间只标明具体未决位置，不把预期结果写成实测结论。原始数据没有提供时，不绘制貌似真实的结果图；按范围继续其他内容，计划示意与实际证据明确分开。
++
++## 3. 制作人交回什么，写作者如何接回
++
++制作人交回稳定 ID、实际输入版本、产物版本、可定位的输出，以及所做检查与未决项：
++
++- **自绘图**：数据/计算依据、绘图代码或可编辑图源、交付预览、题注草案和必要替代文本；检查标签、箭头语义、坐标、尺度、单位、图例与最终尺寸可读性。
++- **表格**：同一份已核对数据/计算模型、字段/单位、展示精度、表头/注释与表源。正文关键数值来自同一数据或结果记录，不各自手工维护一份；研究项目已有 ResearchValue 等引用机制时继续复用。
++- **外部图**：原始文件/具体 panel、实际论文与版本、图号/页码/题注定位、原始资源位置、署名与已核对使用条件；不把下载的位图冒称为可编辑图源。
++
++原章节写作者接回后，**读取真实图表及其核对数据**，而不只看“制作完成”消息。围绕图表确实展示的关系写引入、解释和必要限制；逐项核对正文中的数字/单位、比较对象、统计定义和主张强度。题注说明图表内容和条件，正文解释它对本节论证的意义，避免只复述“如图所示”。
++
++原生 Word/PPT 表格仍交格式工程师制作可编辑表对象，不以截图冒充；图像、SVG、原生图表/形状、嵌入模型及源文件按目标格式约定交付。自绘、改编、原图引用和多源综合明确区分，不能仅加引文就把外部图变为自绘结果。
++
++### 搜索期刊/会议综述中的图
++
++用户要求综述/Survey/Review 图时，先由正文问题确定查找目的，检索并核对已发表的期刊/会议论文与实际版本、题名、作者、年份、venue、DOI/正式页面；读取全文/PDF 中具体图、panel 与题注，不仅使用搜索摘要。若图由综述转引其他论文，追溯原始图源及相应署名/使用条件。记录正文所需的文献键、引用方式和实际取得的文件；未核对的项保持未决。没有进行检索就不写“已核实来源”。
++
++内部“见图 X/表 Y”是定位本稿资产，外部文献引用是说明证据/素材来源；两者都需要时分别保留。只提炼参考图版式时，也不把参考论文的科学内容或数据迁入本稿。
++
++## 4. 双向更新，只返工受影响部分
++
++| 变化 | 主 Agent 的处理 |
++| --- | --- |
++| 正文的概念、方法步骤、比较条件或主张变化 | 定位关联资产，更新必要标签/箭头/表字段或重新核查证据；不只改题注掩盖旧图 |
++| 数据、计算或统计定义变化 | 基于同版来源重新生成受影响图/表，回查所有引用它们的段落、摘要/结论及题注；不复用旧值 |
++| 图表的语义、数值或 panel 内容变化 | 回流给全部相关章节任务，修订解释和限制，保留其他不受影响章节 |
++| 只改颜色、间距或显示编号 | 检查可读性、交叉引用与布局，正文意义未变时不重写论证或重跑研究 |
++| 写作/制作期间用户改了输入 | 核对输入版本，只重派实际受影响任务；旧结果不覆盖新稿/新数据 |
++
++状态、版本和返工记录继续放原项目已有位置。没有后台监听：由宿主 Agent 在需求发现、任务交接、结果回流和最终装配时执行核对；不要声称文件一改就会自动实时刷新。
++
++## 5. 主 Agent 最终装配与验收
++
++总稿及共享引用记录由主 Agent 统一写入；原生文件再交唯一格式写入者。章节和图表制作人不并发修改同一 DOCX/PPTX 或公共参考文献库。
++
++- 图表确实存在，稳定 ID 唯一，正文引用目标正确；计划中需要的图/表没有丢失，交付范围内没有无解释的孤立资产或待制作占位。
++- 首次引用、插入位置、讨论段落、题注、来源和实际产物版本相互对应；同一资产跨章引用不重复造图，不把 LaTeX 注释/示例当有效正文引用。
++- LaTeX 使用项目已有 `label`/`ref` 等机制；Markdown 使用现有锚点/链接或交叉引用插件；Word 由格式工程师把稳定 ID 映射为有效书签与 SEQ/REF 等原生域，实际更新后核验显示号。不把通用的 `fig:...` 字符串原样当作合法 Word 书签。
++- 正文、图、表和摘要/结论同一数值与证据口径；实际数值、合计、舍入、条件、统计解释与引用分别核对。链接存在不等于图表支持该结论。
++- 编译/打开最终交付文件，按实际尺寸检查清晰度、图文距离、题注邻接、表头/分页、字体及交叉引用；沿原流程取得需要的独立 QA。素材自检不替代最终版式与语义审查。
++
++交付统一稿、实际图表与按约定保留的编辑/数据源、必要来源与未决事项。只报告已执行的生成、检索和检查；此规范本身不是制图引擎或已完成的用户图表。
+diff --git a/tools/vibe_tool/tests/test_z_writing.py b/tools/vibe_tool/tests/test_z_writing.py
+--- a/tools/vibe_tool/tests/test_z_writing.py
++++ b/tools/vibe_tool/tests/test_z_writing.py
+@@ -69,6 +69,7 @@
+         "references/ai-vibe-writing/.ai_context/prompts/17_sentence_flow_agent.md",
+         "references/ai-vibe-writing/.ai_context/document_spec_template.md",
+         "references/parallel-chapters.md",
++        "references/figures-and-tables.md",
+         "references/z-humanizer/references/unslop/references/commands/teach.md",
+         "references/z-humanizer/references/unslop/references/commands/mimic.md",
+         "references/z-humanizer/skills/academic-humanizer/SKILL.md",
+@@ -76,7 +77,8 @@
+     ):
+         assert (installed / relative).is_file(), relative
+     for file in (installed / "SKILL.md", installed / "references/context.md",
+-                 installed / "references/scenes.md", installed / "references/parallel-chapters.md"):
++                 installed / "references/scenes.md", installed / "references/parallel-chapters.md",
++                 installed / "references/figures-and-tables.md"):
+         for link in re.findall(r"\]\(([^)]+)\)", file.read_text()):
+             if link.startswith(("http:", "https:", "#")):
+                 continue
+@@ -84,30 +86,40 @@
+             assert path.is_relative_to(installed.resolve()) and path.exists(), (file, link)
+ 
+ 
+-def test_parallel_contract_is_discoverable_and_updates_with_the_standalone_writer(sources, tmp_path):
++@pytest.mark.parametrize("relative", ["references/parallel-chapters.md", "references/figures-and-tables.md"])
++def test_collaboration_contract_updates_without_changing_user_chapters_or_assets(sources, tmp_path, relative):
+     target = tmp_path / "project"
+     installed = install(sources, target)
+     entry = (installed / "SKILL.md").read_text()
+-    relative = "references/parallel-chapters.md"
+     assert f"]({relative})" in entry
+     contract = installed / relative
+     before = contract.read_bytes()
+     # The contract is packaged guidance, not a promise of a bundled scheduler.
+     assert "宿主" in entry and "后台调度器" in entry
+-    assert "总稿唯一写入者" in contract.read_text()
++    if relative.endswith("parallel-chapters.md"):
++        assert "总稿唯一写入者" in contract.read_text()
++    else:
++        assert "first_reference" in contract.read_text() and "discuss_in" in contract.read_text()
++        assert "后台监听" in contract.read_text()
+     chapter = target / "draft/chapter-1.md"
+     chapter.parent.mkdir()
+     chapter.write_text("Existing user chapter; keep unchanged.\n")
++    asset = target / "assets/source.svg"
++    asset.parent.mkdir()
++    asset.write_text('<svg xmlns="http://www.w3.org/2000/svg"><text>Original figure</text></svg>\n')
++    asset_before = asset.read_bytes()
+     (sources / "mine/z-writing" / relative).write_bytes(before + b"\nSynthetic revision.\n")
+     assert update_skill(sources, "z-writing", target, dry_run=True) == 0
+     assert contract.read_bytes() == before
+     assert update_skill(sources, "z-writing", target) == 0
+     assert contract.read_bytes() == before + b"\nSynthetic revision.\n"
+     assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
++    assert asset.read_bytes() == asset_before
+     restore, = (target / ".vibe-tool/backups").glob("*/restore.py")
+     run([sys.executable, restore])
+     assert contract.read_bytes() == before
+     assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
++    assert asset.read_bytes() == asset_before
+ 
+ 
+ def test_scholarly_resources_also_work_in_direct_humanizer_install(sources, tmp_path):

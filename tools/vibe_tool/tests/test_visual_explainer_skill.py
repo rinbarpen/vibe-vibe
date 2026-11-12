@@ -78,8 +78,8 @@ def test_discovery_exposes_only_the_canonical_payload():
     ]
 
 
-def test_both_readmes_and_indexes_document_the_canonical_source():
-    for name in ("README.md", "README_EN.md", "skills/ANNOTATIONS.md", "skills/ANNOTATIONS_EN.md"):
+def test_catalogs_and_indexes_document_the_canonical_source():
+    for name in ("docs/catalog.md", "docs/catalog_EN.md", "skills/ANNOTATIONS.md", "skills/ANNOTATIONS_EN.md"):
         text = (ROOT / name).read_text(encoding="utf-8")
         assert "skills/visual-explainer/plugins/visual-explainer" in text
         assert "vibe add skill visual-explainer" in text

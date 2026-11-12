@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "report": "ui-redraw/verification-record.json",
+  "baseline": "ui-redraw/baseline-behavior.json",
+  "modified": "ui-redraw/modified-behavior.json",
+  "source_semantics_unchanged": true
+}

@@ -45,6 +45,19 @@ python3 scripts/render_idea_workflow.py --source references/idea-workflow.json -
 
 此图仅描述 Idea 子流程规则，不表示科研阶段已完成、文献已核验或用户已批准。完整生命周期仍以 `lifecycle/defaults.json` 为准。
 
+## Idea 验证与迭代记录
+
+关键词相近只表示相关，判定“已做过”还要核对研究思路、机制与关键方法是否高度重合。部分实验不佳或 method 失败也不等于完整 idea 无效：逐 claim 记录已测范围、缺项和有效反证；允许按预设决定性条件提前停止，或因资源暂停，但结论严格限定范围。
+
+从 [Idea 验证契约](references/idea-validation.md) 开始，将最相近工作对照写入既有 `NOVELTY.md`，将失败层次、思想启迪与后续验证写入 `FAILURE_ANALYSIS.md`；模板见 [新颖性对照](templates/NOVELTY.md.example) 和 [失败分析](templates/FAILURE_ANALYSIS.md.example)。每轮迭代重新核对已确认目标、方法/claim 版本、源证据和 checkpoint，记录语义 diff，防止多次修改后的上下文腐蚀。旧项目需显式合并阶段契约，更新模板不自动迁移运行记录。
+
+[验证与迭代工作流 SVG](references/validation-workflow.svg) / [可编辑 JSON](references/validation-workflow.json)，复用随包渲染器：
+
+```bash
+python3 scripts/render_idea_workflow.py --source references/validation-workflow.json --output references/validation-workflow.svg
+python3 scripts/render_idea_workflow.py --source references/validation-workflow.json --output references/validation-workflow.svg --check
+```
+
 ## 快速开始
 
 1. 在每次制定研究、实验或论文计划前调用 `grill-me`；也可在任意阶段直接调用

@@ -12,7 +12,7 @@
 该 skill 不增加生命周期阶段、不替代科研模型绑定、审批门或 checkpoint 工具：
 
 1. 在 `idea/hypotheses/candidates` 形成竞争解释、可测预测、反证条件和最小验证。AI 建议、用户直觉、已核验文献和估计分别标注；相关文献按机制比较，不因关键词相似就淘汰方向，也不把未检出等同于首创。
-2. 与 `aris/research-lit` / `aris/novelty-check` 衔接证据核验；缺来源或无法确认的比较保留未验证状态。证据不足回到 `literature/position`；可行性涉及资源取舍时回到 `startup/roadmap`，不静默降低 baseline 或扩展预算。
+2. 与 `aris/research-lit` / `aris/novelty-check` 衔接证据核验；按 [Idea 验证契约](idea-validation.md) 核对研究思路与关键方法的实质重合，写入既有 NOVELTY.md；缺来源或无法确认的比较保留未验证状态。证据不足回到 `literature/position`；可行性涉及资源取舍时回到 `startup/roadmap`，不静默降低 baseline 或扩展预算。
 3. 用户要求书面总结或正式阶段交接时，读取 skill 的 `references/idea-card.md`，将核心内容合并到既有 `refine-logs/contracts/HYPOTHESES.md`；无需另建一套账本。保留未验证假设，不默认保存逐轮对话或公开未发表机制。
 4. 在原有 `idea/hypotheses/comparison` 形成 `refine-logs/contracts/IDEA_DECISION.md`，沿用其 `human_confirmation` 门。用户同意后进入 `idea/method/mechanism`；调整则返回候选；未答复保持等待。直觉问答中的普通回答不是方案审批。
 5. 方法阶段继续交付既有 METHOD_SPEC、组件与 claims。按原 checkpoint 规则登记正式产物；“机制清楚”“相关工作差异已核验”“收益已实验验证”是三个不同状态。

@@ -1,0 +1,44 @@
+{
+  "mode": "baseline",
+  "observations": [
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "smallestVisibleFontPx": 3,
+      "stageTops": [],
+      "detailsCount": 0,
+      "small_screen_task_readability": "FAIL",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-320.png"
+    },
+    {
+      "viewport": 768,
+      "pageWidth": 768,
+      "smallestVisibleFontPx": 7.199999999999999,
+      "stageTops": [],
+      "detailsCount": 0,
+      "small_screen_task_readability": "FAIL",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-768.png"
+    },
+    {
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "smallestVisibleFontPx": 9.6,
+      "stageTops": [],
+      "detailsCount": 0,
+      "small_screen_task_readability": "FAIL",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1024.png"
+    },
+    {
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "smallestVisibleFontPx": 13.5,
+      "stageTops": [],
+      "detailsCount": 0,
+      "small_screen_task_readability": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/before-light-1440.png"
+    }
+  ],
+  "notes": [
+    "Original reader scales the entire desktop SVG instead of reflowing. No user timing or success-rate claim."
+  ]
+}

@@ -1,0 +1,54 @@
+.....F.....................                                   [100%]
+=================================== FAILURES ===================================
+__ test_update_tracks_the_canonical_engine_and_rollback_restores_prior_bundle __
+
+sources = PosixPath('/tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0/source repo')
+tmp_path = PosixPath('/tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0')
+
+    def test_update_tracks_the_canonical_engine_and_rollback_restores_prior_bundle(sources, tmp_path):
+        target = tmp_path / "project"
+        installed = install(sources, target)
+        source = sources / "skills/ai-vibe-writing/.ai_context/prompts/2_writer.md"
+        destination = installed / "references/ai-vibe-writing/.ai_context/prompts/2_writer.md"
+        before = hashlib.sha256(destination.read_bytes()).hexdigest()
+        source.write_text(source.read_text() + "\nSynthetic upstream update marker.\n")
+        assert update_skill(sources, "z-writing", target, dry_run=True) == 0
+        assert hashlib.sha256(destination.read_bytes()).hexdigest() == before
+        assert update_skill(sources, "z-writing", target) == 0
+>       assert destination.read_bytes() == source.read_bytes()
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tools/vibe_tool/tests/test_z_writing.py:144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0/project/.agents/skills/z-writing/references/ai-vibe-writing/.ai_context/prompts/2_writer.md')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0/project/.agents/skills/z-writing/references/ai-vibe-writing/.ai_context/prompts/2_writer.md'
+
+/home/rczx/miniconda3/lib/python3.12/pathlib.py:1013: FileNotFoundError
+----------------------------- Captured stdout call -----------------------------
+  COPY  z-writing
+  WILL UPDATE  .agents/skills/z-writing
+Dry run; project content, installation records and backups unchanged.
+  UPDATE  .agents/skills/z-writing
+Updated skill z-writing: 1 changed paths.
+Backup: /tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0/project/.vibe-tool/backups/20261112T105334.612752Z-fe29cd37
+Restore: /home/rczx/miniconda3/bin/python /tmp/pytest-of-rczx/pytest-498/test_update_tracks_the_canonic0/project/.vibe-tool/backups/20261112T105334.612752Z-fe29cd37/restore.py
+=========================== short test summary info ============================
+FAILED tools/vibe_tool/tests/test_z_writing.py::test_update_tracks_the_canonical_engine_and_rollback_restores_prior_bundle
+1 failed, 26 passed, 11 subtests passed in 4.23s

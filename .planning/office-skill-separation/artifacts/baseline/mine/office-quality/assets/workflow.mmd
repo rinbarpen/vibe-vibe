@@ -1,0 +1,44 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  securityLevel: strict
+  fontFamily: 'Noto Sans CJK SC, sans-serif'
+  themeVariables:
+    fontFamily: 'Noto Sans CJK SC, sans-serif'
+    fontSize: 17px
+    background: '#ffffff'
+    primaryColor: '#EAF3F5'
+    primaryTextColor: '#173B47'
+    primaryBorderColor: '#6794A0'
+    lineColor: '#64828C'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    htmlLabels: false
+    wrappingWidth: 240
+    curve: linear
+    nodeSpacing: 30
+    rankSpacing: 42
+    padding: 16
+    useMaxWidth: false
+---
+%% Omnidraw -> local mermaid sub-skill. Gates inspect the final unchanged version.
+flowchart TD
+    A["需求契约与基线<br/>样式 · 数据 · 源文件哈希"] --> B["唯一制作人与交接<br/>写作 · Omnidraw · Omnisheet"]
+    B --> C["按格式原生制作<br/>保留可编辑内容与所需特性"]
+    C --> D["结构完整 · 重新打开<br/>内容 / 公式 / 重算（适用时）<br/>原生特性与约束校验"]
+    D --> E["全量视觉审阅<br/>全部页面 / 声明的交付视图"]
+    E --> F{"独立 QA<br/>证据完整且无问题？"}
+    F -->|通过| G["当前最终版：passed<br/>成品 + 预览 + 验证记录"]
+    F -->|有问题| H["问题定位交回制作人<br/>修复后更新哈希与证据"]
+    H --> C
+    F -->|缺渲染 / 重算 / 独立 QA| I["pending 待验收<br/>列明缺项与下一动作"]
+    I -->|补齐条件后重新校验| D
+    classDef source fill:#EDF4F7,stroke:#6E97A6,color:#173B47;
+    classDef gate fill:#FBF3DE,stroke:#B29A59,color:#52421D;
+    classDef repair fill:#F8ECE7,stroke:#B38978,color:#603D2E;
+    classDef done fill:#DCEEE4,stroke:#4C8467,color:#143E29;
+    class A,B,C source;
+    class D,E,F gate;
+    class H,I repair;
+    class G done;

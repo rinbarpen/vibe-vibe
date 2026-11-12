@@ -1,0 +1,315 @@
+{
+  "root": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "scopes": [
+    "mine/z-writing",
+    "mine/z-humanizer",
+    "mine/office",
+    "mine/office-quality",
+    "manifests/office/skills.txt",
+    "docs/catalog.md",
+    "docs/catalog_EN.md",
+    "skills/ANNOTATIONS.md",
+    "skills/ANNOTATIONS_EN.md",
+    "tools/vibe_tool/tests/test_office_skill_separation.py",
+    "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+    "tools/vibe_tool/tests/test_z_writing.py",
+    "tools/vibe_tool/src/vibe_tool/project_update.py"
+  ],
+  "files": {
+    "mine/z-humanizer/SKILL.md": {
+      "sha256": "4ea229682e2f4622c72c3895a44ad54c950256cf7180677e6d67f156d720ddde",
+      "mode": 436
+    },
+    "mine/z-humanizer/patterns/patent.md": {
+      "sha256": "d323d16f8c30e6ca84c36776906e4e4f2c32f1486240cb5f653e8136a248c1f8",
+      "mode": 436
+    },
+    "mine/z-humanizer/patterns/conference.md": {
+      "sha256": "f63a3a2c6d290d01481f711023f21e0c7eba235becb965d252bc2d23e686bfb7",
+      "mode": 436
+    },
+    "mine/z-humanizer/references/general.md": {
+      "sha256": "bc3fb970a9cf4147429a48259fe5049e9a5603400e23866ef22756f13f7f29a5",
+      "mode": 436
+    },
+    "mine/office/SKILL.md": {
+      "sha256": "c52989054251168c712170972218ad0b726c3e97db2af6600808c60298720211",
+      "mode": 384
+    },
+    "mine/office/agents/subagent-roles.md": {
+      "sha256": "f41b7fddca8d83e73fe0b8a6bd7405cad76c10736b77ed0ae1e537bae24390ff",
+      "mode": 384
+    },
+    "mine/office/planning/CLAUDE.md": {
+      "sha256": "4ce9cbf5a7557370c78625d9eaed7a16e204e2d5f030a170a63a5e0f1c6e17bb",
+      "mode": 384
+    },
+    "mine/office/assets/workflow.json": {
+      "sha256": "aef23dc606cc507057924ba04bef629c4f74d083188f4f429e0267c7b3ab7df3",
+      "mode": 384
+    },
+    "mine/office/assets/workflow.svg": {
+      "sha256": "f4615004cf300bfe2a0292062511ce4f8bf971869963b87cbb75ee05364a08ce",
+      "mode": 384
+    },
+    "mine/office/rules/pptx.md": {
+      "sha256": "ed4979b802bf2e455ccab878944e7d4482171c75db46dfb162eddd95d89cc25f",
+      "mode": 384
+    },
+    "mine/office/rules/pdf.md": {
+      "sha256": "02cf76e697c7871d0ec5b99fcd2461969fa18b3df37bb0b2cdc9d47bd563b688",
+      "mode": 384
+    },
+    "mine/office/rules/quality.md": {
+      "sha256": "76e0e983411bfc9077605793ada182d3ecd4a0ee5a98425faa5c777259533df6",
+      "mode": 384
+    },
+    "mine/office/rules/file-safety.md": {
+      "sha256": "f93fa57d5f010de60e691320c3d28401f3b76304cbab1780dc805bd996aacb9d",
+      "mode": 384
+    },
+    "mine/office/rules/docx.md": {
+      "sha256": "22c49d0fdb073f6cac51f18dbafe88ac36cf9db0b7e5331bf6628c60e5484e5e",
+      "mode": 384
+    },
+    "mine/office/rules/xlsx.md": {
+      "sha256": "b2cccd8fc5b5dcb6e8ef1af648f064f564e22fc3aba2991879499e0d940b97f8",
+      "mode": 384
+    },
+    "mine/office/xlsx/CLAUDE.md": {
+      "sha256": "25020ac1fab68335b676f40b802e5da7645cd37d4b3c05acff47899f9e48ea21",
+      "mode": 384
+    },
+    "mine/office/scripts/render_workflow.py": {
+      "sha256": "cc23a845ea90ff1fec66966ee12fcdf557edf1474f22fe698b14361b15f087b3",
+      "mode": 384
+    },
+    "mine/office/scripts/doctor.py": {
+      "sha256": "f5bd3e8a46341acef9a947b5d046ea73e8d773eee20b725399fcd1d95b00cda7",
+      "mode": 384
+    },
+    "mine/office/scripts/verify.py": {
+      "sha256": "645a215754563abb5581dca9dfa7c939092dda3396171556ac49587aa9d1573c",
+      "mode": 384
+    },
+    "mine/office/scripts/render.py": {
+      "sha256": "f6687c48f3306110812a51987ac8c433f1f46e966092cb6d34836d3c9e6ec526",
+      "mode": 384
+    },
+    "mine/office/scripts/smoke.py": {
+      "sha256": "e8e88021d4ff574573d2b6f4a563e1ca64b3bc5cc56f06d61d017c6e780212ef",
+      "mode": 384
+    },
+    "mine/office/pdf/CLAUDE.md": {
+      "sha256": "fb333f042e3732898780cde67357657e8da44becc00a00feb917ca6fde1da603",
+      "mode": 384
+    },
+    "mine/office/pptx/CLAUDE.md": {
+      "sha256": "cf654e921471a94eb901ade15b98fefe5a859e1c6966248e728bd70688a3d532",
+      "mode": 384
+    },
+    "mine/office/docx/CLAUDE.md": {
+      "sha256": "a13813eb6a882a103deb36656a22cf831d94ef46656b96c8306f04912ee40ddc",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-pptx.toml": {
+      "sha256": "5b90c9f5063542d937ccd46793c0368720438c859be04cc578fa6fb449df0517",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-writer.toml": {
+      "sha256": "7ee4ecf5af431d7baeab0730c16d9371036f585f43c27cbc610f1bc499bd4e05",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-planner.toml": {
+      "sha256": "577d352021da9a0484c02c83a2ca54fefd2a1207fac398b829c199f8346fb925",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-visuals.toml": {
+      "sha256": "056b32260e96fb8865e06f9a5a5705c2d224f0a4779ed09ecda7e23448d15268",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-qa.toml": {
+      "sha256": "f8d081673770f3706a2c8e17a3e235371dfff269e8d3ff493467ab67b7a434f0",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-pdf.toml": {
+      "sha256": "c726821673816f63a432c4c679ab657d2db2e061931f996c639c44447012932a",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-xlsx.toml": {
+      "sha256": "cca3fc4afe5925430e4d65a473f8dce736b6b5afe6d0a2c7b95c00ad44dc56b3",
+      "mode": 384
+    },
+    "mine/office/agents/codex/office-docx.toml": {
+      "sha256": "b209bd65d88e3ac4afa74317fbfb1806e917fb3ca6762a8640cfcbb59009d4b0",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-pdf.md": {
+      "sha256": "0fa44c5d1c367c8fa366b40e4561786e891b59e06f9738064b596eaa03594b8d",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-pptx.md": {
+      "sha256": "d95c328a9079fc7a7ef8aea147f24bd05a0503826e4c4a3db05fbf21ac117fbd",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-planner.md": {
+      "sha256": "56f66a1d9804bd0ef2d4a3c9ebf87c132f012c744e797ceaeb854483f31a03c1",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-writer.md": {
+      "sha256": "183962dde55d8c997780bfae55263e15fc1aafec0f6ed66e83cfe92b2a41bc11",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-visuals.md": {
+      "sha256": "4729e4324a68bdf3b214f7c9fee20e375d185fd2341533c9169f61a6fbe82f6c",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-xlsx.md": {
+      "sha256": "9706417ef7420414b0b8d8989a210e2f8ebdaa5e34e7797c04179e91a31cf61e",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-qa.md": {
+      "sha256": "aa69ee60aa644912514410e76692cef089bc24b31db1068b2fd16da09898f6dc",
+      "mode": 384
+    },
+    "mine/office/agents/claude/office-docx.md": {
+      "sha256": "e0f71ea1fb05db9f7fd003e006146ad46bc2876f1c057131f4d61a61df4aa6c3",
+      "mode": 384
+    },
+    "mine/office/xlsx/templates/workbook-brief.md": {
+      "sha256": "0853d85a02215986fc201ebed9b2b49b5d17ffc31d1e09cb2fbba64397287d8e",
+      "mode": 384
+    },
+    "mine/office/xlsx/scripts/workbook_features.py": {
+      "sha256": "380d680c8a2fd441039f393b0736b8f25aa1ad51881bbdc02cd0de4e079c35f6",
+      "mode": 384
+    },
+    "mine/office/xlsx/scripts/recalc.sh": {
+      "sha256": "aa56ab744b9243f867a4aa53dd8ca17605d44fdfb4f337bdc8370ca11e246879",
+      "mode": 384
+    },
+    "mine/office/xlsx/scripts/recalc.py": {
+      "sha256": "c19e0d1f73b97c85d91c54d0b50eaec1a375de258ac954b3339c63442cef114a",
+      "mode": 384
+    },
+    "mine/office/xlsx/scripts/create.py": {
+      "sha256": "8751f99b07285ff91fc787d586dc815d3cbad3bac1dab9a8c2a79e592c8303ca",
+      "mode": 384
+    },
+    "mine/office/xlsx/scripts/analyze.py": {
+      "sha256": "851afc6617ab86d1f9921904eb5684333565efd7f01e80e96b79572bfa9c0231",
+      "mode": 384
+    },
+    "mine/office/xlsx/references/charts-and-macros.md": {
+      "sha256": "2193dcfaa47cc44b846a4ce71d1057dbfbe89eb61d4456dca4acea66651ea237",
+      "mode": 384
+    },
+    "mine/office/xlsx/macros/OfficeWorkbook.bas": {
+      "sha256": "223b1b78a8447c31ee0b47d1468d52ab822b08097f553ffaa666072cc2d6f03c",
+      "mode": 436
+    },
+    "mine/office/docx/templates/content-brief.md": {
+      "sha256": "2c1c701782fc124e39233fd4f7d27c60026cd3839d5cf64f2465fbbe837660e3",
+      "mode": 384
+    },
+    "mine/office/docx/rules/patent.md": {
+      "sha256": "af114ad511cda0aee20090c26a4dc994b3fb7663502a2c6b0e2cdd6ec50220f5",
+      "mode": 384
+    },
+    "mine/office/docx/scripts/native_format.py": {
+      "sha256": "6914ea26709be881673b6c1af87555fe76f4f41eb2874e3b4ebac5b8de6ef80f",
+      "mode": 384
+    },
+    "mine/office/docx/scripts/equations.py": {
+      "sha256": "94064e956a0b2ef405e99b6e394235e744cf439702dbfc739a14f84478ec04fa",
+      "mode": 384
+    },
+    "mine/office/docx/scripts/feature_audit.py": {
+      "sha256": "ce9bd952ffe9b5ece7f1a62f96e7d1a2816eb317833152b806fb68adc365e4dd",
+      "mode": 384
+    },
+    "mine/office/docx/references/equations-and-fields.md": {
+      "sha256": "38676dd51e2e1083803a9f2894a68e9536daf09bd350f1258ddaba522d6e2907",
+      "mode": 384
+    },
+    "mine/office/docx/references/native-formatting.md": {
+      "sha256": "23ac4e71e7973e350d28ed131cf388f6d1518728d154d5470e47fb8a9bc1e041",
+      "mode": 384
+    },
+    "mine/office/docx/references/voice-and-visuals.md": {
+      "sha256": "8d5cadbc4910f29cafbbe11fc71cd9c101bfab5b1870d935ac4df088d64622f0",
+      "mode": 384
+    },
+    "mine/office/docx/macros/OfficeLayout.bas": {
+      "sha256": "66b7cb8f615a824c120acfb182eb0ddf298eb132f645ac8ccf34c5913d044f93",
+      "mode": 436
+    },
+    "mine/office-quality/SKILL.md": {
+      "sha256": "2776664d11aa926c3026f7970a9cd70f7bee03bb2dfaf550ff4c95bcf4fc35d8",
+      "mode": 384
+    },
+    "mine/office-quality/assets/workflow.mmd": {
+      "sha256": "a9e89b65923fcc94932dfe64da81b06d5f0ceae5b17aaca6f6c265177d60eb51",
+      "mode": 436
+    },
+    "mine/office-quality/assets/workflow.svg": {
+      "sha256": "4a3bd0507aeccfe589f5578b0ca7c1b62a376bb40280e3c58f95d5ce1a979b2d",
+      "mode": 436
+    },
+    "mine/office-quality/references/pptx.md": {
+      "sha256": "868a1600d5d8708be136c76aa064943baa34b046720baf94e041bc36a0c4426c",
+      "mode": 384
+    },
+    "mine/office-quality/references/delivery.md": {
+      "sha256": "6ad3810604df9686e97f077a72fcf23edbfa910ded801bdd676ab373eeff8379",
+      "mode": 384
+    },
+    "mine/office-quality/references/pdf.md": {
+      "sha256": "b38da99278e21bbfd63ebd615a6953c7327d997d6f016e032d29ce8c2635eb4e",
+      "mode": 384
+    },
+    "mine/office-quality/references/docx.md": {
+      "sha256": "4b5c1063336d6d45c8ed979eb7925305b6029d222ce2c7fd57d0712246f9eb62",
+      "mode": 384
+    },
+    "mine/office-quality/references/xlsx.md": {
+      "sha256": "05b06f73b6e5ab8a60dc057b32321ebeb75b5490bfeccfbb0712f546446b94be",
+      "mode": 384
+    },
+    "manifests/office/skills.txt": {
+      "sha256": "257795eaca0afaf2dea9763fdf4d77eee921c478d5977420a05fded0d5938ab7",
+      "mode": 384
+    },
+    "docs/catalog.md": {
+      "sha256": "29d1cc0707051bef419f0f228c57fcc99e1d2b0dfc8d53ff5ee4536fc983036b",
+      "mode": 384
+    },
+    "docs/catalog_EN.md": {
+      "sha256": "8f841cffd8b6a6fe367af6ac1813c51e7dd230b252155ec238bf422cf328e4ee",
+      "mode": 384
+    },
+    "skills/ANNOTATIONS.md": {
+      "sha256": "dd87dabd09e6d7fc90ed46ca6dee58b415e37bd9474f83013285fcd23ddb8686",
+      "mode": 384
+    },
+    "skills/ANNOTATIONS_EN.md": {
+      "sha256": "b7c45b03ca5f0fc05f441fa75a6618db8f9f21205c03bf9a62068f5f5d8bc5c2",
+      "mode": 384
+    },
+    "tools/vibe_tool/tests/test_office_skill_separation.py": {
+      "sha256": "0d3e67436d158a17e2dc99723ab82c0ca93f2db468b4077ebabd171dc7d6a758",
+      "mode": 384
+    },
+    "tools/vibe_tool/tests/test_office_workflow_diagrams.py": {
+      "sha256": "f570be2ba10d17f7f3dd5620e4b72785d440fc0fd97b992ce67645a62bc1119c",
+      "mode": 384
+    },
+    "tools/vibe_tool/src/vibe_tool/project_update.py": {
+      "sha256": "4822fb2f1f1bf0753a3ddd22ea10e120b79a2f1458d98a95a43c91dfc8ea438d",
+      "mode": 436
+    }
+  },
+  "links": {
+    "mine/z-humanizer/references/unslop": "../../../skills/unslop"
+  }
+}

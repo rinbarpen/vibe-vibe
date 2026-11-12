@@ -11,7 +11,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[3]
-SCRIPT = ROOT / "manifests/office/docx/scripts/feature_audit.py"
+SCRIPT = ROOT / "mine/office/docx/scripts/feature_audit.py"
 spec = importlib.util.spec_from_file_location("office_features_test", SCRIPT)
 features = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(features)
@@ -134,9 +134,15 @@ class WordFeaturesTests(unittest.TestCase):
                                 capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(entry.read_text(), "Existing project instructions\n")
-        expected = ["office/docx/scripts/feature_audit.py", "office/docx/scripts/native_format.py",
-                    "office/docx/macros/OfficeLayout.bas", "office/docx/templates/content-brief.md",
-                    "office/docx/references/voice-and-visuals.md", "office/docx/references/native-formatting.md"]
+        install_skill = subprocess.run(
+            [sys.executable, "-m", "vibe_tool", "add", "skill", "office", str(target)],
+            env={**os.environ, "VIBE_HOME": str(ROOT), "PYTHONPATH": str(ROOT / "tools/vibe_tool/src"),
+                 "PYTHONDONTWRITEBYTECODE": "1", "VIBE_PROJECTS_FILE": str(self.root / "projects.json")},
+            capture_output=True, text=True)
+        self.assertEqual(install_skill.returncode, 0, install_skill.stdout + install_skill.stderr)
+        expected = [".agents/skills/office/docx/scripts/feature_audit.py", ".agents/skills/office/docx/scripts/native_format.py",
+                    ".agents/skills/office/docx/macros/OfficeLayout.bas", ".agents/skills/office/docx/templates/content-brief.md",
+                    ".agents/skills/office/docx/references/voice-and-visuals.md", ".agents/skills/office/docx/references/native-formatting.md"]
         roles = ("planner", "writer", "visuals", "docx", "xlsx", "pptx", "pdf", "qa")
         for role in roles:
             expected += [f".claude/agents/office-{role}.md", f".codex/agents/office-{role}.toml"]
@@ -149,12 +155,11 @@ class WordFeaturesTests(unittest.TestCase):
             import tomllib
         except ImportError:
             self.skipTest("Native agent TOML parity check requires Python 3.11+ (as does validate-agent-compat.py)")
-        manifest = ROOT / "manifests/office"
+        capability = ROOT / "mine/office"
         for name in ("quality", "file-safety", "docx", "xlsx", "pptx", "pdf"):
-            cursor = (manifest / f"rules/office-{name}.mdc").read_text(encoding="utf-8")
-            canonical = (manifest / f"rules/{name}.md").read_text(encoding="utf-8")
-            self.assertEqual(cursor.split("---\n", 2)[2].strip(), canonical.strip())
+            self.assertTrue((capability / f"rules/{name}.md").is_file())
+            self.assertFalse((ROOT / f"manifests/office/rules/office-{name}.mdc").exists())
         for role in ("planner", "writer", "visuals", "docx", "xlsx", "pptx", "pdf", "qa"):
-            claude = (manifest / f".claude/agents/office-{role}.md").read_text(encoding="utf-8")
-            codex = tomllib.loads((manifest / f".codex/agents/office-{role}.toml").read_text(encoding="utf-8"))
+            claude = (capability / f"agents/claude/office-{role}.md").read_text(encoding="utf-8")
+            codex = tomllib.loads((capability / f"agents/codex/office-{role}.toml").read_text(encoding="utf-8"))
             self.assertEqual(claude.split("---\n", 2)[2].strip(), codex["developer_instructions"].strip())

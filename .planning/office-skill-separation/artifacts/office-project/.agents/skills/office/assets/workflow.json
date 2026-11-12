@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "title": "Office Skill：可复用办公能力",
+  "description": "能力工作流，不表示某次任务已经运行或获得用户决定。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "办公文件任务",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "复用本次目标、原稿与已确认约束。"
+    },
+    {
+      "id": "plan",
+      "label": "Office：选择实际能力",
+      "kind": "ai",
+      "row": 1,
+      "detail": "按需路由写作、Omnidraw、Omnisheet、Omnippt及格式引擎；同一文件唯一写入者。"
+    },
+    {
+      "id": "decision",
+      "label": "用户决定变化部分",
+      "kind": "human",
+      "row": 2,
+      "detail": "仅当目标变化、宏或图表选择等约定门尚未确认时等待；独立工作继续。",
+      "trigger": "缺少会改变产物的业务选择；复用已有有效决定。",
+      "resume": "继续返回制作；调整回计划；取消本项保留原件与记录。"
+    },
+    {
+      "id": "build",
+      "label": "制作或局部修复",
+      "kind": "ai",
+      "row": 3,
+      "detail": "正文、素材、原生表格与格式工程按已确认来源装配；保留工作副本与编辑源。"
+    },
+    {
+      "id": "check",
+      "label": "结构、原生功能与全量视觉",
+      "kind": "check",
+      "row": 4,
+      "detail": "核对内容、数值、宏实际状态、页面/工作表覆盖和输入/最终哈希。"
+    },
+    {
+      "id": "qa",
+      "label": "独立 Office QA",
+      "kind": "check",
+      "row": 5,
+      "detail": "另一审查者读取最终文件与证据；缺条件保持 pending，问题回制作人。"
+    },
+    {
+      "id": "done",
+      "label": "成品与证据交付",
+      "kind": "terminal",
+      "row": 6,
+      "detail": "仅当前版本全部适用验收有证据时 passed；否则明确未决项，不伪造验证。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "plan",
+      "label": "复用已知输入",
+      "kind": "normal"
+    },
+    {
+      "from": "plan",
+      "to": "decision",
+      "label": "本次必要决定待确认",
+      "kind": "normal"
+    },
+    {
+      "from": "plan",
+      "to": "build",
+      "label": "条件齐备",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "build",
+      "label": "继续：有效决定",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "plan",
+      "label": "调整约束",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "done",
+      "label": "取消本项：保留记录",
+      "kind": "normal"
+    },
+    {
+      "from": "build",
+      "to": "check",
+      "label": "真实产物与执行记录",
+      "kind": "normal"
+    },
+    {
+      "from": "check",
+      "to": "qa",
+      "label": "检查与覆盖证据齐备",
+      "kind": "normal"
+    },
+    {
+      "from": "check",
+      "to": "build",
+      "label": "检查失败：原制作人修复",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "build",
+      "label": "发现问题：修复并复验",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "done",
+      "label": "通过或明确 pending",
+      "kind": "normal"
+    }
+  ]
+}

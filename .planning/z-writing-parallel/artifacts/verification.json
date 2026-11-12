@@ -1,0 +1,150 @@
+{
+  "status": "verified",
+  "change": "Host-driven chapter agents with single-writer main-agent merge; no new runtime scheduler.",
+  "changed_paths": [
+    {
+      "path": "mine/z-writing/SKILL.md",
+      "before": {
+        "sha256": "d44f73ea788838023860cbc78530f6fae9c5818299684e29f3d4897bb37fa49d",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "12939770319d109dc23ac131220bf136ed536ac863481db7932e0aae580dc987",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/parallel-chapters.md",
+      "before": null,
+      "after": {
+        "sha256": "7b8a48b314b8357fc3300a8e1aaad913b1db5da2c081429ba64ec67de246d27b",
+        "mode": 384
+      }
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_z_writing.py",
+      "before": {
+        "sha256": "36a8123b7d94558bf711166485204f7960bf93a4339ed36751ab37064b0d8b9d",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "3a624486ccfa41e0aea46725ae0ee89f9e3bce62cfd02a1fd4943425481b390f",
+        "mode": 384
+      }
+    }
+  ],
+  "package": {
+    "path": "z-writing.skill",
+    "sha256": "b6047a707d4d5da2781a4f02b923f8be882ef27d48cb346623266387b688e2d3",
+    "members": 517
+  },
+  "commands": [
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-c",
+        "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/parallel-chapters.md').exists(); assert 'parallel-chapters.md' not in (p/'SKILL.md').read_text(); print('BASELINE: chapter writing exists; explicit parallel chapter handoff/merge contract absent.')"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "BASELINE: chapter writing exists; explicit parallel chapter handoff/merge contract absent.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-parallel/artifacts/z-writing-parallel.patch"
+      ],
+      "cwd": "/tmp/z-writing-parallel-patch-j35k16zu/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-parallel/artifacts/z-writing-parallel.patch"
+      ],
+      "cwd": "/tmp/z-writing-parallel-patch-j35k16zu/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-parallel/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-parallel-patch-j35k16zu/repo",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 3 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-parallel/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-parallel-patch-j35k16zu/repo"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Restored and verified 3 paths; Git index untouched.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-parallel/artifacts/rollback.py",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 3 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "add",
+        "skill",
+        "z-writing",
+        "/tmp/z-writing-parallel-install-7x5fqmma/project"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "  COPY  z-writing\nProject registered: project\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/tmp/z-writing-parallel-install-7x5fqmma/archive-check/z-writing"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Skill is valid!\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src uv run --no-project --offline --with python-docx --with openpyxl --with python-pptx --with pypdf --with pillow --with pytest python -m pytest tools/vibe_tool/tests/test_z_writing.py tools/vibe_tool/tests/test_project_update.py tools/vibe_tool/tests/test_office_skill_separation.py tools/vibe_tool/tests/test_writing_design_sources.py -q -rs -p no:cacheprovider",
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "........................................................................ [ 88%]\n.........                                                           [100%]\n81 passed, 5 subtests passed in 25.36s\n",
+      "stderr": "",
+      "exit_status": 0
+    }
+  ],
+  "limits": [
+    "No real manuscript or model-driven multi-agent writing evaluation was run.",
+    "Automated tests validate packaging, update/restore behavior and preservation of an existing user chapter; they do not score prose or semantic merge quality."
+  ]
+}

@@ -15,8 +15,8 @@ import zipfile
 
 
 REPO = Path(__file__).resolve().parents[3]
-SCRIPT = REPO / "manifests/office/docx/scripts/native_format.py"
-MACRO = REPO / "manifests/office/docx/macros/OfficeLayout.bas"
+SCRIPT = REPO / "mine/office/docx/scripts/native_format.py"
+MACRO = REPO / "mine/office/docx/macros/OfficeLayout.bas"
 spec = importlib.util.spec_from_file_location("office_native_format_test_module", SCRIPT)
 native = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(native)

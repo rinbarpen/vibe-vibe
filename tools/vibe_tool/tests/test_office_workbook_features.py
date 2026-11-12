@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 REPO = Path(__file__).resolve().parents[3]
-SCRIPTS = REPO / "manifests/office/xlsx/scripts"
+SCRIPTS = REPO / "mine/office/xlsx/scripts"
 spec = importlib.util.spec_from_file_location("office_workbook_features_test", SCRIPTS / "workbook_features.py")
 features = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(features)
@@ -256,7 +256,7 @@ class WorkbookFeatureTests(unittest.TestCase):
         self.assertEqual(sha(source), original)
 
     def test_vba_has_explicit_inputs_confirmation_and_no_automatic_execution(self):
-        path = REPO / "manifests/office/xlsx/macros/OfficeWorkbook.bas"
+        path = REPO / "mine/office/xlsx/macros/OfficeWorkbook.bas"
         text = path.read_text()
         code = "\n".join(line for line in text.splitlines() if not line.lstrip().startswith("'"))
         self.assertIn('Attribute VB_Name = "OfficeWorkbook"', code)

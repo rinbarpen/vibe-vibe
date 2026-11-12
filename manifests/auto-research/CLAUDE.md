@@ -2,6 +2,17 @@
 
 面向自动化学术研究的 manifest 包。整合 intuit-to-idea（直觉问答式课题形成）、aris（研究编排框架）、paper-review（证据驱动论文评审）、paperreview（外部自动论文评审）、autofigure（自动图表生成）、anti-defensive-writing（中英文写作原则）与 `mine/z-humanizer`（中英文 humanization）能力线。
 
+## Idea 验证与迭代保真
+
+执行 [Idea 验证契约](references/idea-validation.md)，优先于仅凭关键词或部分实验的简化判断：
+
+- **新颖性**：关键词仅用于召回；从原始论文/方法证据逐项核对研究思路、核心机制、关键方法和贡献。思路与方法高度重合才可判 `high_overlap`；有实质差异写清可区分实验，证据不足保留 `unverified`。方法修订后重验。
+- **结论边界**：区分核心 hypothesis、method 与实现/配置。逐 claim 核对冻结矩阵、实际完成/缺失项与有效证据；部分实验或 method 失败不等于 idea 无效。仅满足预设决定性反证条件时作 `refuted_in_scope`，提前停止与暂停投入分别记录，不越过检验范围，也不盲目耗尽预算。
+- **失败积累**：每个 attempt 留原始记录，在既有 `FAILURE_ANALYSIS.md` 记录失败层次、可复用机制/组件、思想启迪和下一项验证；事实、解释与待验证启发分开，后续 cycle 回看并引用，不删除负结果。
+- **防上下文腐蚀**：每轮修改及压缩/切换/恢复时，从已确认契约、源证据与可信 checkpoint 重建，核对 ID/revision/hash；记录本轮变与不变、语义 diff、未验证项及下一步。目标、方法、评价标准或证据变化使相关旧审查/审批需重验；冲突时保留 attempt，从可信基线修复后再晋级，不让滚动摘要覆盖原始决定。
+
+复用 `NOVELTY.md`、`HYPOTHESES.md`、`METHOD_SPEC.md`、`CLAIMS.json`、`CLAIM_EVIDENCE.json` 与生命周期记录，不建立平行账本。工作流：[SVG](references/validation-workflow.svg) / [图源](references/validation-workflow.json)，生成与只读检查命令见上述契约。科学判断由实际 reviewer 留证，文件/哈希检查不等于科学验证。
+
 ## Commands
 
 | Command | Description |

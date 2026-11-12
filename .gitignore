@@ -7,3 +7,12 @@
 # Local hookify rules (per-developer overrides)
 hooks/*.local.md
 paseo.json
+
+# Local browser profiles (session databases and caches)
+.planning/**/chromium-*/
+
+# Python runtime and test caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/

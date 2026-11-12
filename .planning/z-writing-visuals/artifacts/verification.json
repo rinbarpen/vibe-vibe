@@ -1,0 +1,161 @@
+{
+  "status": "verified",
+  "change": "Writing-time figure/table tasks, stable text/asset/source links and result handback through the existing project plan; no new runtime scheduler.",
+  "changed_paths": [
+    {
+      "path": "mine/z-writing/SKILL.md",
+      "before": {
+        "sha256": "12939770319d109dc23ac131220bf136ed536ac863481db7932e0aae580dc987",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "d683b2f85c3c9240f5194ad5814ef895a1f8f8278647497612a7e5f8b18e5887",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/parallel-chapters.md",
+      "before": {
+        "sha256": "7b8a48b314b8357fc3300a8e1aaad913b1db5da2c081429ba64ec67de246d27b",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "90494d06f0364a9b53241261d80213794bd67b69139e10add5507b2af78d947e",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/figures-and-tables.md",
+      "before": null,
+      "after": {
+        "sha256": "1cdb74e3c9f72de48b1dc1f4bd8a7101c07ecb979a11dc6582971b64c69a286b",
+        "mode": 384
+      }
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_z_writing.py",
+      "before": {
+        "sha256": "3a624486ccfa41e0aea46725ae0ee89f9e3bce62cfd02a1fd4943425481b390f",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "fc64df81a3631f9d7ec38d43e1d33ccdd484d913b3597f3e6792f2a54cf83080",
+        "mode": 384
+      }
+    }
+  ],
+  "package": {
+    "path": "z-writing.skill",
+    "sha256": "49346133e8bc6064cf6f7f5b0270025882f93458c314d9f05203470139a33ad4",
+    "members": 518
+  },
+  "commands": [
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-c",
+        "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/figures-and-tables.md').exists(); assert 'figures-and-tables.md' not in (p/'SKILL.md').read_text(); assert (p/'references/parallel-chapters.md').is_file(); print('BASELINE: parallel chapter contract exists; only general visual routing, no writing-time figure/table handoff and return loop.')"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "BASELINE: parallel chapter contract exists; only general visual routing, no writing-time figure/table handoff and return loop.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-visuals/artifacts/z-writing-visuals.patch"
+      ],
+      "cwd": "/tmp/z-writing-visuals-patch-ls7ez0dp/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-visuals/artifacts/z-writing-visuals.patch"
+      ],
+      "cwd": "/tmp/z-writing-visuals-patch-ls7ez0dp/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-visuals/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-visuals-patch-ls7ez0dp/repo",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 4 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-visuals/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-visuals-patch-ls7ez0dp/repo"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Restored and verified 4 paths; Git index untouched.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-visuals/artifacts/rollback.py",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 4 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "add",
+        "skill",
+        "z-writing",
+        "/tmp/z-writing-visuals-install-yuesoysy/project"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "  COPY  z-writing\nProject registered: project\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/tmp/z-writing-visuals-install-yuesoysy/archive-check/z-writing"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Skill is valid!\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src uv run --no-project --offline --with python-docx --with openpyxl --with python-pptx --with pypdf --with pillow --with pytest python -m pytest tools/vibe_tool/tests/test_z_writing.py tools/vibe_tool/tests/test_project_update.py tools/vibe_tool/tests/test_office_skill_separation.py tools/vibe_tool/tests/test_writing_design_sources.py -q -rs -p no:cacheprovider",
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "........................................................................ [ 87%]\n..........                                                          [100%]\n82 passed, 5 subtests passed in 28.92s\n",
+      "stderr": "",
+      "exit_status": 0
+    }
+  ],
+  "limits": [
+    "No user manuscript, source dataset, literature figure search or model-driven writing/asset orchestration was executed.",
+    "Automated tests validate packaging, update/restore behavior and preservation of an existing user chapter and figure source; they do not establish semantic consistency, source usage conditions or final rendered layout."
+  ]
+}

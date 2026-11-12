@@ -81,6 +81,12 @@
 - **门禁**：录用通知与稿件对应；camera-ready 有提交证据；大文件可读取且 hash 正确；最终 claims 与 accepted text 对齐。
 - **回退**：校样问题回到 `acceptance/final`，内容变化创建新的 revision。
 
+## 验证与上下文保真
+
+按 [Idea 验证契约](idea-validation.md)，literature/idea 比较研究思路与关键方法而非关键词；method 细化/修订后重验。analysis 逐 claim 核对实跑覆盖，部分实验或 method 失败不推出完整 idea 无效；预设决定性反证允许限定范围提前停止，预算中止保留未定。失败分析记录待验证思想启迪和后续 cycle 引用。
+
+每轮修改与上下文切换重新读取已确认契约、源证据和可信 checkpoint，记录变与不变及语义 diff；相关审查/审批随实质变更重验，不依赖滚动摘要。新增 acceptance 位于对应叶节点；现有 settings 需显式合并，不自动迁移。
+
 ## 跨阶段固定规则
 
 每个大/小/小小阶段都记录 `started`、终态和下一步，并按检查点提交 Git。模型按角色路由：研究 GPT-6 Pro、规划 GPT-6.1 Sol high、执行 Opus 5.5 high、写作 Opus 5.5 high。模型不可用时记录 `blocked_model_unavailable`，不静默替换。阶段完成不代表科学结论为正；所有失败、负结果、暂停和 skipped 都留档。

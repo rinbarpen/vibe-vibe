@@ -104,7 +104,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/GAP.md`, `refine-logs/contracts/TAXONOMY.md`
 - 输出：`refine-logs/contracts/NOVELTY.md`
-- 验收：近邻方法、重合点、差异及不确定性有引用
+- 验收：近邻方法、重合点、差异及不确定性有引用；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；关键词仅用于召回；以原始方法证据逐项比较研究思路、核心机制、关键方法与贡献，给出重合/差异/未验证结论；研究思路与关键方法均高度重合才判high_overlap；缺证据保留unverified，不以未检出证明首创
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/literature--position--novelty.json`
 - 回退：{"invalid_input": "startup/scope", "failed_check": "literature/position"}
@@ -115,7 +115,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/GAP.md`, `refine-logs/contracts/NOVELTY.md`, `refine-logs/contracts/CONSTRAINTS.md`
 - 输出：`refine-logs/contracts/HYPOTHESES.md`
-- 验收：每个候选含预测、反证和最小验证实验
+- 验收：每个候选含预测、反证和最小验证实验；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；候选以稳定hypothesis/claim ID关联NOVELTY中的思路与方法对照，区分核心假设、method及实现配置
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/idea--hypotheses--candidates.json`
 - 回退：{"invalid_input": "literature/position", "failed_check": "idea/hypotheses"}
@@ -126,7 +126,7 @@
 - 角色：planner
 - 输入：`refine-logs/contracts/HYPOTHESES.md`, `refine-logs/contracts/BUDGET.md`
 - 输出：`refine-logs/contracts/IDEA_DECISION.md`
-- 验收：保留淘汰理由及关键假设未验证项
+- 验收：保留淘汰理由及关键假设未验证项；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；淘汰或保留理由引用思路与关键方法的实质对照，不以关键词命中判已做过；高度重合仍记录复现或扩展价值
 - 审批：human_confirmation
 - 审查记录：`.auto-research/lifecycle/reviews/idea--hypotheses--comparison.json`
 - 回退：{"invalid_input": "literature/position", "failed_check": "idea/hypotheses"}
@@ -137,7 +137,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/IDEA_DECISION.md`
 - 输出：`refine-logs/contracts/METHOD_SPEC.md`
-- 验收：公式符号、张量接口和伪代码一致
+- 验收：公式符号、张量接口和伪代码一致；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；method修订后重验思路与关键方法的重合及贡献差异，保留旧新版本和未验证项
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/idea--method--mechanism.json`
 - 回退：{"invalid_input": "literature/position", "failed_check": "idea/method"}
@@ -159,7 +159,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/METHOD_SPEC.md`, `refine-logs/contracts/COMPONENTS.json`
 - 输出：`refine-logs/contracts/CLAIMS.json`
-- 验收：所有核心claim都有证据类型和失败解释
+- 验收：所有核心claim都有证据类型和失败解释；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；逐claim预先登记最低有效证据、适用范围、反证阈值、必要对照和提前停止条件；区分hypothesis与method失败
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/idea--method--claims.json`
 - 回退：{"invalid_input": "literature/position", "failed_check": "idea/method"}
@@ -214,7 +214,7 @@
 - 角色：planner
 - 输入：`refine-logs/contracts/ABLATION_FACTORS.json`, `refine-logs/contracts/CLAIMS.json`
 - 输出：`refine-logs/contracts/ABLATION_COVERAGE.json`
-- 验收：每个claim和因素为covered或有延期/不适用理由
+- 验收：每个claim和因素为covered或有延期/不适用理由；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；覆盖矩阵关联claim最低证据与反证条件；缺失、延期和不适用不冒充已执行
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/design--ablation--coverage.json`
 - 回退：{"invalid_input": "idea/method", "failed_check": "design/ablation"}
@@ -434,7 +434,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/RUN_RECORDS.json`, `refine-logs/contracts/COMPARISONS.json`
 - 输出：`refine-logs/contracts/FAILURE_ANALYSIS.md`
-- 验收：案例选取规则、失效边界和后续行动明确
+- 验收：案例选取规则、失效边界和后续行动明确；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；区分实现、协议、抽样、method与hypothesis失败；部分实验不佳不等于整体idea无效；保留原始attempt与负结果，分列事实、解释和待验证启发，登记可复用机制及后续验证/cycle引用或明确暂无启发
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/analysis--interpretation--failures.json`
 - 回退：{"invalid_input": "execution/runs", "failed_check": "analysis/interpretation"}
@@ -445,7 +445,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/CLAIMS.json`, `refine-logs/contracts/COMPARISONS.json`, `refine-logs/contracts/FAILURE_ANALYSIS.md`
 - 输出：`refine-logs/contracts/CLAIM_EVIDENCE.json`
-- 验收：每个结论引用run与证据且保留反证
+- 验收：每个结论引用run与证据且保留反证；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；逐claim对照冻结矩阵与实跑有效证据，列明已测范围、失败/缺失/延期项和结论边界；不足时保留inconclusive；refuted_in_scope须满足预设反证条件并排查实现/协议与混杂；决定性证据可提前停止，资源中止不等于idea无效
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/analysis--interpretation--claims.json`
 - 回退：{"invalid_input": "execution/runs", "failed_check": "analysis/interpretation"}
@@ -456,7 +456,7 @@
 - 角色：research
 - 输入：`refine-logs/contracts/CLAIM_EVIDENCE.json`, `refine-logs/contracts/RESULT_INTEGRITY.json`
 - 输出：`refine-logs/contracts/SCIENTIFIC_AUDIT.json`
-- 验收：审查身份和阻断项明确且不将缺席视为通过
+- 验收：审查身份和阻断项明确且不将缺席视为通过；产物包含来源/版本与实际执行记录；示例数据和未完成工作明确标注；独立核对覆盖与结论强度、提前停止依据及失败启发的未验证标记，不从部分实验或method失败推出idea全局无效
 - 审批：auto
 - 审查记录：`.auto-research/lifecycle/reviews/analysis--interpretation--audit.json`
 - 回退：{"invalid_input": "execution/runs", "failed_check": "analysis/interpretation"}

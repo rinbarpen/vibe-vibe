@@ -27,6 +27,21 @@ from .transaction import Change, apply_update, ensure_separate
 from .types import SkillInfo
 
 
+# Explicit first-party bundles only. Ordinary skill symlinks retain their
+# existing update semantics; a bundle may not be retargeted outside its source.
+_SKILL_BUNDLES = {
+    "z-writing": {
+        "references/ai-vibe-writing": "skills/ai-vibe-writing",
+        "references/z-humanizer": "mine/z-humanizer",
+    },
+    "z-humanizer": {
+        "references/unslop": "skills/unslop",
+        "skills/academic-humanizer": "skills/academic-humanizer",
+        "skills/humanizer-zh-academic": "skills/humanizer-zh-academic",
+    },
+}
+
+
 def _target(target: Path) -> Path:
     target = Path(target).resolve()
     if not target.is_dir():
@@ -55,16 +70,19 @@ def _copy_skill(source: Path, destination: Path) -> None:
     def ignore(directory: str, names: list[str]) -> list[str]:
         return [name for name in names if _is_excluded(Path(directory) / name)]
     shutil.copytree(source, destination, symlinks=True, ignore=ignore)
-    # Materialize this first-party dependency just as add_skill does, without
-    # changing the update policy for unrelated symbolic links.
-    bundle = source / "references" / "unslop"
-    if source.name == "z-humanizer" and source.parent.name == "mine" and bundle.is_symlink():
-        canonical = source.parent.parent / "skills" / "unslop"
-        if bundle.resolve() != canonical.resolve():
-            raise ValueError("z-humanizer's unslop bundle must reference skills/unslop")
-        installed_bundle = destination / "references" / "unslop"
+    # Materialize registered engines recursively, including the writer's
+    # humanizer bundle, so update remains as portable as initial installation.
+    bundles = _SKILL_BUNDLES.get(source.name, {}) if source.parent.name == "mine" else {}
+    for relative, canonical_relative in bundles.items():
+        bundle = source / relative
+        if not bundle.is_symlink():
+            continue
+        canonical = source.parent.parent / canonical_relative
+        if bundle.resolve() != canonical.resolve() or not canonical.is_dir():
+            raise ValueError(f"{source.name}'s {relative} bundle must reference {canonical_relative}")
+        installed_bundle = destination / relative
         installed_bundle.unlink()
-        shutil.copytree(bundle, installed_bundle, ignore=ignore)
+        _copy_skill(canonical, installed_bundle)
 
 
 def _stage_skill(root: Path, info: SkillInfo, target: Path, staging: Path,

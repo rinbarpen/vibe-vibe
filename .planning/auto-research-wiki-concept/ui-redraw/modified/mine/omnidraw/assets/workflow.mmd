@@ -1,0 +1,18 @@
+flowchart TD
+    A["图意 · 场景 · 受众<br/>输入数据与交付要求"] --> P["UI 设计约束<br/>信息层级 · 必要文案 · 视觉 token"]
+    P --> B{"按语义与格式<br/>选择制作路线"}
+    B -->|HTML 讲解 / 对比评审| C["Visual Explainer<br/>图解网页与 HTML 幻灯片"]
+    B -->|流程 / 时序 / 概念关系| D["Mermaid / PlantUML<br/>文本图源与结构图"]
+    B -->|统计 / 交互图 / 论文数据| E["Matplotlib / Seaborn / Plotly<br/>scientific-visualization"]
+    B -->|KPI / 筛选 / 多视图| I["creating-dashboards<br/>数据应用与联动界面"]
+    B -->|图网络 / 空间数据| J["NetworkX / GeoPandas<br/>真实关系与空间分析"]
+    B -->|科研方法 / 插画 / 照片| K["CCFA / 当前图像工具<br/>科学语义或创意图像"]
+    C --> F["图源 / 代码 + 实际数据<br/>所需格式 · 来源 · 可访问说明"]
+    D --> F
+    E --> F
+    I --> F
+    J --> F
+    K --> F
+    F --> G{"语义 / 数值 / 交互<br/>设计约束与格式审阅通过？"}
+    G -->|否：只修所选路线| B
+    G -->|是| H["按用户指定格式交付<br/>说明实际验证与未验证项"]

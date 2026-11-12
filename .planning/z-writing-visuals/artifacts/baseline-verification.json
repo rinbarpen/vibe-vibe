@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/rczx/miniconda3/bin/python",
+    "-c",
+    "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/figures-and-tables.md').exists(); assert 'figures-and-tables.md' not in (p/'SKILL.md').read_text(); assert (p/'references/parallel-chapters.md').is_file(); print('BASELINE: parallel chapter contract exists; only general visual routing, no writing-time figure/table handoff and return loop.')"
+  ],
+  "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "stdout": "BASELINE: parallel chapter contract exists; only general visual routing, no writing-time figure/table handoff and return loop.\n",
+  "stderr": "",
+  "exit_status": 0
+}

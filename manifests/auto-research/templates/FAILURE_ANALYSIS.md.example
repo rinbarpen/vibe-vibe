@@ -1,0 +1,29 @@
+# Failure Analysis & Research Insights
+
+用于 refine-logs/contracts/FAILURE_ANALYSIS.md；每条关联原始日志，保留负结果。
+
+## Attempt (repeat)
+- cycle / stage / hypothesis & claim IDs / method revision:
+- run / attempt / code commit / plan & config hashes / raw outputs & audit:
+- original prediction / observed facts / tested conditions:
+- required vs completed valid runs / missing & deferred items / reasons:
+- implementation / protocol / sampling / method / hypothesis / unresolved:
+- diagnosis evidence / ruled-out explanations / unresolved confounders:
+- conclusion: not_supported / inconclusive / refuted_in_scope / other scoped status:
+- scope & limitations / falsification conditions met / untested conditions:
+- stop decision: decisive predeclared condition or resource/priority decision:
+
+## Insight (repeat, or explicitly none)
+- stable insight ID / source attempt & evidence:
+- observation (fact):
+- interpretation (hypothesis):
+- possible inspiration / reusable mechanism, component or boundary (unverified):
+- applicability conditions / competing explanations / next discriminating test:
+- validation status / later cycle & claim links / adopted or not & reason:
+- similar previous attempt / new evidence or changed condition justifying retry:
+
+## Revision & Handoff
+- old/new revision / preserved negative evidence / superseded conclusion:
+- unchanged goal, constraints & evaluation standard / semantic diff:
+- affected novelty / design / scientific audit / approval / writing checks:
+- trusted checkpoint, commit & artifact hashes / unresolved issues / next action:

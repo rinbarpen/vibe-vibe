@@ -1,6 +1,6 @@
 # DOCX 验收清单
 
-用于 Word 新建、修改与 QA。图片/绘图先用当前环境 Omnidraw，任何表格数据/模型/布局先用 Omnisheet，再读 DOCX 格式 skill；涉及正文起草/润色时另读当前环境的 `ai-vibe-writing`（Office 安装入口 `.agents/skills/ai-vibe-writing/SKILL.md`）。写作层处理文字，DOCX skill 处理文件工程，本清单补充验收决策。
+用于 Word 新建、修改与 QA。图片/绘图先用当前环境 Omnidraw，任何表格数据/模型/布局先用 Omnisheet，再读 DOCX 格式 skill；涉及正文起草/润色时另读当前环境的 `z-writing`（Office 安装入口 `.agents/skills/z-writing/SKILL.md`）。写作层处理文字，DOCX skill 处理文件工程，本清单补充验收决策。
 
 ## 制作前
 
@@ -26,11 +26,11 @@
 
 ## 题注位置与同页
 
-默认图题在图下且同页，表题在表上且与整张表同页；题注不是章节 Heading。核对图片段 KeepWithNext 连下方题注、题注末段不连后文；表题连表、全表行/段链和 cantSplit、表末断链。实际渲染记录图片/题注页与表题/表首末行页，属性成功不等于同页通过。超页仅按允许范围作可读调整，仍超页/需拆表则 `pending` 给具体选项，不静默拆页、裁切或压缩成难读内容；跨页表/续页表头仅用户或模板明确约定时采用，不能冒充整表同页。Office manifest 的实现说明见 `office/docx/references/native-formatting.md`。
+默认图题在图下且同页，表题在表上且与整张表同页；题注不是章节 Heading。核对图片段 KeepWithNext 连下方题注、题注末段不连后文；表题连表、全表行/段链和 cantSplit、表末断链。实际渲染记录图片/题注页与表题/表首末行页，属性成功不等于同页通过。超页仅按允许范围作可读调整，仍超页/需拆表则 `pending` 给具体选项，不静默拆页、裁切或压缩成难读内容；跨页表/续页表头仅用户或模板明确约定时采用，不能冒充整表同页。Office Skill 的实现说明见 `.agents/skills/office/docx/references/native-formatting.md`。
 
 ## 公式与动态引用（按需）
 
-Office manifest 安装时读 `office/docx/references/equations-and-fields.md` 的集中约定。保留 LaTeX/Markdown 源与稳定 eq/fig/tbl ID，核对 OMML 可编辑数学、右侧 SEQ Equation 编号及独立图/表序列；复用模板标签/章编号，REF/PAGEREF 对应合法书签。前置引用和插入/删除/移动后须先更新 SEQ，再更新 REF/分页域并核验显示，无失效目标或硬编码号。CITATION/BIBLIOGRAPHY/Zotero 不由 SEQ 接管；缺转换或实际应用更新则 `pending`。
+办公项目 Manifest 安装时读 `.agents/skills/office/docx/references/equations-and-fields.md` 的集中约定。保留 LaTeX/Markdown 源与稳定 eq/fig/tbl ID，核对 OMML 可编辑数学、右侧 SEQ Equation 编号及独立图/表序列；复用模板标签/章编号，REF/PAGEREF 对应合法书签。前置引用和插入/删除/移动后须先更新 SEQ，再更新 REF/分页域并核验显示，无失效目标或硬编码号。CITATION/BIBLIOGRAPHY/Zotero 不由 SEQ 接管；缺转换或实际应用更新则 `pending`。
 
 ## 最终文件
 

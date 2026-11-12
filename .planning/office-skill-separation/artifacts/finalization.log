@@ -1,0 +1,13 @@
+Reusing verified standalone/project installations and prior command records.
+patch applicability on baseline exit 0
+patch application on baseline exit 0
+rollback preview on modified copy exit 0
+rollback execution on modified copy exit 0
+live rollback preview only exit 0
+final scoped regression exit 0
+VERIFIED 136 changed paths; patch replay and rollback passed.
+............................................................................................................s....................ss.............. [ 65%]
+....................................................... [ 90%]
+....................                                                    [100%]
+217 passed, 3 skipped, 1025 subtests passed in 55.26s
+

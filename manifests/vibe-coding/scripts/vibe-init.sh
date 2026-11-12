@@ -222,7 +222,9 @@ copy_file "$MANIFEST_DIR/scripts/version_guard.py" "$TARGET/scripts/version_guar
 
 # Explicit portable workflow resources only; do not copy arbitrary references.
 for asset in references/codegraph-workflow.json references/codegraph-workflow.svg scripts/render_codegraph_workflow.py \
-  references/ui-usability.md references/ui-usability-workflow.json references/ui-usability-workflow.svg; do
+  references/ui-usability.md references/ui-usability-workflow.json references/ui-usability-workflow.svg \
+  references/readme-guide.md references/setup-guide.md \
+  references/docs-readability-workflow.json references/docs-readability-workflow.svg; do
   copy_file "$MANIFEST_DIR/$asset" "$TARGET/$asset"
 done
 
@@ -371,6 +373,11 @@ for ref in branching-strategy pages-guide pr-conventions readme-guide release-pr
   ref_file="$MANIFEST_DIR/references/${ref}.md"
   [[ -f "$ref_file" ]] || continue
   copy_file "$ref_file" "$TARGET/.cursor/references/${ref}.md"
+done
+
+# Preserve relative diagram links from the legacy Cursor writing-guide location.
+for asset in docs-readability-workflow.json docs-readability-workflow.svg; do
+  copy_file "$MANIFEST_DIR/references/$asset" "$TARGET/.cursor/references/$asset"
 done
 
 # ── Zone 7: Cloud Platform References ──

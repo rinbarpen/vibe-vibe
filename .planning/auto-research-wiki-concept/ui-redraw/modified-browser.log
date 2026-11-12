@@ -1,0 +1,161 @@
+{
+  "mode": "modified",
+  "source_semantics_unchanged": "PASS",
+  "contrast_ratios": {
+    "light": {
+      "text": 15.78,
+      "muted": 7.88,
+      "accent": 5.93
+    },
+    "dark": {
+      "text": 16.47,
+      "muted": 9.5,
+      "accent": 9.16
+    }
+  },
+  "observations": [
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        218,
+        408,
+        598,
+        788
+      ],
+      "detailsCount": 1,
+      "theme": "light",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-320.png"
+    },
+    {
+      "viewport": 768,
+      "pageWidth": 768,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -359,
+        -359,
+        -359,
+        -359
+      ],
+      "detailsCount": 1,
+      "theme": "light",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-768.png"
+    },
+    {
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -152,
+        -152,
+        -152,
+        -152
+      ],
+      "detailsCount": 1,
+      "theme": "light",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1024.png"
+    },
+    {
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -129,
+        -129,
+        -129,
+        -129
+      ],
+      "detailsCount": 1,
+      "theme": "light",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-light-1440.png"
+    },
+    {
+      "viewport": 320,
+      "pageWidth": 320,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        218,
+        408,
+        598,
+        788
+      ],
+      "detailsCount": 1,
+      "theme": "dark",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-320.png"
+    },
+    {
+      "viewport": 768,
+      "pageWidth": 768,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -359,
+        -359,
+        -359,
+        -359
+      ],
+      "detailsCount": 1,
+      "theme": "dark",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-768.png"
+    },
+    {
+      "viewport": 1024,
+      "pageWidth": 1024,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -152,
+        -152,
+        -152,
+        -152
+      ],
+      "detailsCount": 1,
+      "theme": "dark",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1024.png"
+    },
+    {
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "smallestVisibleFontPx": 14,
+      "stageTops": [
+        -129,
+        -129,
+        -129,
+        -129
+      ],
+      "detailsCount": 1,
+      "theme": "dark",
+      "keyboard_disclosure": "PASS",
+      "content_and_boundaries": "PASS",
+      "screenshot": "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/auto-research-wiki-concept/ui-redraw/screenshots/after-dark-1440.png"
+    }
+  ],
+  "svg_geometry": {
+    "viewBox": [
+      1440,
+      1280
+    ],
+    "texts": 67,
+    "outside": [],
+    "overlaps": []
+  },
+  "static_output": "1440 × 1280 px, light fixed theme",
+  "not_applicable": [
+    "Static SVG hover/loading/save states",
+    "Backend persistence: no data-writing UI",
+    "User research: browser assertions are AI checks only"
+  ]
+}

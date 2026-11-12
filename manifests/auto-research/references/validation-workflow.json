@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "title": "Auto-Research：验证、失败积累与上下文保真",
+  "description": "流程规则，不是运行状态。复用既有阶段、预算门、checkpoint 与隔离 attempt；关键词不判重，部分实验不作全局否定，启发仍待验证。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "进入或恢复当前研究",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "读取已确认目标、方法/claim、源证据、负结果与可信 checkpoint。"
+    },
+    {
+      "id": "context",
+      "label": "AI：核对语义与版本基线",
+      "kind": "check",
+      "row": 1,
+      "detail": "核对 ID/revision/hash、目标与标准、有效决定及真实进程；每轮和上下文切换均执行。"
+    },
+    {
+      "id": "restore",
+      "label": "AI：重建并复核可信上下文",
+      "kind": "ai",
+      "row": 2,
+      "detail": "冲突时保留 attempt，从可信 checkpoint 与原始证据重建；版本、语义和状态复核一致后再继续。"
+    },
+    {
+      "id": "novelty",
+      "label": "AI：思路与关键方法比较",
+      "kind": "check",
+      "row": 3,
+      "detail": "原始方法证据逐项核对；high_overlap / distinct / unverified；方法修订后重验。"
+    },
+    {
+      "id": "retrieve",
+      "label": "AI：补文献与方法证据",
+      "kind": "ai",
+      "row": 4,
+      "detail": "缺证据回 literature/position；关键词只召回，不凭相似或未检出作结论。"
+    },
+    {
+      "id": "decision",
+      "label": "用户：沿用既有决策门",
+      "kind": "human",
+      "row": 5,
+      "detail": "沿用方案选择与目标/预算变更门；不是每轮技术修复都重新审批。",
+      "trigger": "首次候选方案选择，或需要改变已确认目标、约束或预算。",
+      "resume": "继续后 AI 从设计/执行恢复；调整返回证据与候选；未答复等待；取消归档。"
+    },
+    {
+      "id": "design",
+      "label": "AI：设计或修复并执行",
+      "kind": "ai",
+      "row": 6,
+      "detail": "预设最低证据、反证/停止条件；先审查/sanity/预算 gate，再按冻结矩阵 run/queue。"
+    },
+    {
+      "id": "coverage",
+      "label": "AI：核对实跑覆盖与有效性",
+      "kind": "check",
+      "row": 7,
+      "detail": "逐 claim 对照矩阵和全部 attempts，记录缺失/失败；决定性反证可早停，资源中止不等于无效。"
+    },
+    {
+      "id": "learn",
+      "label": "AI：失败分层与启发留档",
+      "kind": "ai",
+      "row": 8,
+      "detail": "FAILURE_ANALYSIS 保留事实、解释、待验证启发及下一项区分实验；method 失败不等于 idea 无效。"
+    },
+    {
+      "id": "audit",
+      "label": "AI：审查限定范围的结论",
+      "kind": "check",
+      "row": 9,
+      "detail": "支持/部分支持/未支持/未定/范围内反证分别记录；审查身份和证据资格沿用原规则。"
+    },
+    {
+      "id": "archive",
+      "label": "AI：归档判断与恢复点",
+      "kind": "ai",
+      "row": 10,
+      "detail": "保存旧新版本、语义 diff、负结果/启发索引及 next；科学配置变化新 cycle，保留失败 attempt。"
+    },
+    {
+      "id": "done",
+      "label": "交接或暂停：保留证据边界",
+      "kind": "terminal",
+      "row": 11,
+      "detail": "经审查的范围结论交 Writing Plan；暂停/取消归档不等于判定 idea 无效。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "context",
+      "label": "读取源契约和 checkpoint",
+      "kind": "normal"
+    },
+    {
+      "from": "context",
+      "to": "restore",
+      "label": "冲突/来源缺失：暂停晋级",
+      "kind": "rework"
+    },
+    {
+      "from": "restore",
+      "to": "novelty",
+      "label": "重建与基线复核通过",
+      "kind": "normal"
+    },
+    {
+      "from": "context",
+      "to": "novelty",
+      "label": "基线与状态一致",
+      "kind": "normal"
+    },
+    {
+      "from": "novelty",
+      "to": "retrieve",
+      "label": "证据不足",
+      "kind": "rework"
+    },
+    {
+      "from": "retrieve",
+      "to": "novelty",
+      "label": "补证据后复核",
+      "kind": "normal"
+    },
+    {
+      "from": "novelty",
+      "to": "decision",
+      "label": "需要既有人工决定",
+      "kind": "normal"
+    },
+    {
+      "from": "novelty",
+      "to": "design",
+      "label": "已有有效决定且范围未变",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "retrieve",
+      "label": "调整：修订候选",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "design",
+      "label": "继续：在有效范围内执行",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "archive",
+      "label": "取消：归档当前证据",
+      "kind": "normal"
+    },
+    {
+      "from": "design",
+      "to": "coverage",
+      "label": "保存实际 run/attempt",
+      "kind": "normal"
+    },
+    {
+      "from": "coverage",
+      "to": "design",
+      "label": "缺关键证据：批准范围内补齐",
+      "kind": "rework"
+    },
+    {
+      "from": "coverage",
+      "to": "decision",
+      "label": "补齐需改变目标/预算",
+      "kind": "rework"
+    },
+    {
+      "from": "coverage",
+      "to": "learn",
+      "label": "评估当前证据或停止依据",
+      "kind": "normal"
+    },
+    {
+      "from": "learn",
+      "to": "audit",
+      "label": "负结果与启发分开",
+      "kind": "normal"
+    },
+    {
+      "from": "audit",
+      "to": "learn",
+      "label": "结论越界/解释缺证据",
+      "kind": "rework"
+    },
+    {
+      "from": "audit",
+      "to": "archive",
+      "label": "审查后限定结论",
+      "kind": "normal"
+    },
+    {
+      "from": "archive",
+      "to": "context",
+      "label": "继续迭代：从基线重建",
+      "kind": "rework"
+    },
+    {
+      "from": "archive",
+      "to": "done",
+      "label": "交写作或保存暂停状态",
+      "kind": "normal"
+    }
+  ]
+}

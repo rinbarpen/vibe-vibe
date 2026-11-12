@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "title": "办公项目 Manifest：业务协作契约",
+  "description": "项目工作方式与通用 Office 能力分层；图只描述规则，不代表实际进度。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "办公项目需求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "报告、会议材料、方案或跨格式交付；保留既有项目内容。"
+    },
+    {
+      "id": "brief",
+      "label": "项目目标与材料版本",
+      "kind": "ai",
+      "row": 1,
+      "detail": "整理受众、交付清单、来源、模板/样文、负责人及验收范围；复用已有简报。"
+    },
+    {
+      "id": "decision",
+      "label": "业务决策与范围确认",
+      "kind": "human",
+      "row": 2,
+      "detail": "仅处理新目标、约束冲突、对外发布等已约定门；不接管常规实现。",
+      "trigger": "新业务取舍或约定的高影响门；已确认范围直接进入制作。",
+      "resume": "继续交 Office；调整返回简报；取消保留原件并归档本次状态。"
+    },
+    {
+      "id": "office",
+      "label": "调用 Office 技能制作",
+      "kind": "ai",
+      "row": 3,
+      "detail": "通用写作、图表、格式、宏与检查由 office 及配套 Skills 实现；项目不复制实现。"
+    },
+    {
+      "id": "review",
+      "label": "项目验收与版本核对",
+      "kind": "check",
+      "row": 4,
+      "detail": "复用 Office 独立 QA，核对跨格式口径、交付清单和当前版本哈希。"
+    },
+    {
+      "id": "archive",
+      "label": "归档与交付登记",
+      "kind": "ai",
+      "row": 5,
+      "detail": "在既有 MANIFEST.md 登记成品、证据、未决项与用户反馈；修订另存版本。"
+    },
+    {
+      "id": "done",
+      "label": "项目阶段交付",
+      "kind": "terminal",
+      "row": 6,
+      "detail": "仅按任务范围宣告完成；对外发送另按已有业务决定执行。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "brief",
+      "label": "接收或恢复任务",
+      "kind": "normal"
+    },
+    {
+      "from": "brief",
+      "to": "decision",
+      "label": "需要新业务决定",
+      "kind": "normal"
+    },
+    {
+      "from": "brief",
+      "to": "office",
+      "label": "范围已确认",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "office",
+      "label": "继续",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "brief",
+      "label": "调整",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "archive",
+      "label": "取消：保留原件与记录",
+      "kind": "normal"
+    },
+    {
+      "from": "office",
+      "to": "review",
+      "label": "成品与独立 QA 证据",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "office",
+      "label": "问题清单：局部修复",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "archive",
+      "label": "通过或明确 pending",
+      "kind": "normal"
+    },
+    {
+      "from": "archive",
+      "to": "done",
+      "label": "登记版本与状态",
+      "kind": "normal"
+    }
+  ]
+}

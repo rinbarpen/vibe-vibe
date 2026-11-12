@@ -1,0 +1,31 @@
+{
+  "version": "1.1",
+  "description": "Empty project template. Populate only with scoped, sourced research records or author preferences. Generic guidance is in docs/writing-guidelines.md.",
+  "domains": {
+    "general": {
+      "terms": [],
+      "units": [],
+      "key_values": []
+    },
+    "outline": {
+      "terms": [],
+      "units": [],
+      "key_values": []
+    },
+    "paper": {
+      "terms": [],
+      "units": [],
+      "key_values": []
+    },
+    "thesis": {
+      "terms": [],
+      "units": [],
+      "key_values": []
+    },
+    "grant": {
+      "terms": [],
+      "units": [],
+      "key_values": []
+    }
+  }
+}

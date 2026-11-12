@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "asset_name": "ASSET",
+  "profile": "portfolio",
+  "software": [],
+  "units": {"name": null, "front_axis": null, "up_axis": null},
+  "files": [],
+  "technical_review": {"status": "pending", "evidence": []},
+  "visual_review": {"status": "pending", "evidence": [], "issues": []},
+  "roundtrip": {"status": "pending", "evidence": []},
+  "notes": ["Fill files with relative path, role and SHA256; keep reviews pending until actually performed."]
+}

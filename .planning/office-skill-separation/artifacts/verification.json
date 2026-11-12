@@ -1,0 +1,334 @@
+{
+  "status": "verified",
+  "changed_file_count": 136,
+  "baseline_manifest": "baseline.json",
+  "changes": "changes.json",
+  "patch": "office-separation.patch",
+  "rollback": "rollback.py",
+  "skill_archive": {
+    "path": "office.skill",
+    "sha256": "eb94c5784d057902c57406f6386b1f37d7efd1ab2202f49ac21351c3bb4b3326"
+  },
+  "macro_preservation": [
+    {
+      "baseline": "manifests/office/docx/macros/OfficeLayout.bas",
+      "modified": "mine/office/docx/macros/OfficeLayout.bas",
+      "sha256": "66b7cb8f615a824c120acfb182eb0ddf298eb132f645ac8ccf34c5913d044f93",
+      "byte_identical": true,
+      "native_execution": "not part of this packaging change"
+    },
+    {
+      "baseline": "manifests/office/xlsx/macros/OfficeWorkbook.bas",
+      "modified": "mine/office/xlsx/macros/OfficeWorkbook.bas",
+      "sha256": "223b1b78a8447c31ee0b47d1468d52ab822b08097f553ffaa666072cc2d6f03c",
+      "byte_identical": true,
+      "native_execution": "not part of this packaging change"
+    }
+  ],
+  "visual_review": {
+    "method": "CairoSVG PNGs viewed in chat after CJK font and SVG 1.1 text fixes",
+    "files": [
+      "office-skill-workflow.png",
+      "office-project-workflow.png"
+    ],
+    "result": "Chinese labels, branch labels, nodes and lane boundaries readable; no clipping observed"
+  },
+  "commands": [
+    {
+      "label": "baseline regression",
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "tools/vibe_tool/tests/test_office_install.py",
+        "tools/vibe_tool/tests/test_office_runtime.py",
+        "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "inputs": {
+        "source_snapshot": "baseline.json"
+      },
+      "stdout": "............sss.......... [ 71%]\n..s.......                                                      [100%]\n31 passed, 4 skipped, 56 subtests passed in 3.53s\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "skill validation",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "mine/office"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "Skill is valid!\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "mine/office workflow check",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "mine/office/scripts/render_workflow.py",
+        "--source",
+        "mine/office/assets/workflow.json",
+        "--output",
+        "mine/office/assets/workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "OK: mine/office/assets/workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "manifests/office workflow check",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "manifests/office/scripts/render_workflow.py",
+        "--source",
+        "manifests/office/assets/workflow.json",
+        "--output",
+        "manifests/office/assets/workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "OK: manifests/office/assets/workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "standalone skill install",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "add",
+        "skill",
+        "office",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "  COPY  office\nProject registered: standalone-project\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "actual project dry-run",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "init",
+        "office",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "  WILL  CLAUDE.md\n  WILL  AGENTS.md\n  WILL  README.md\n  WILL  MANIFEST.md\n  WILL  office/README.md\n  WILL  office/assets/workflow.json\n  WILL  office/assets/workflow.svg\n  WILL  office/templates/task-brief.md\n  WILL  office/rules/office-project.md\n  WILL  office/scripts/render_workflow.py\n  WILL  .claude/agents/office-docx.md\n  WILL  .claude/agents/office-pdf.md\n  WILL  .claude/agents/office-planner.md\n  WILL  .claude/agents/office-pptx.md\n  WILL  .claude/agents/office-qa.md\n  WILL  .claude/agents/office-visuals.md\n  WILL  .claude/agents/office-writer.md\n  WILL  .claude/agents/office-xlsx.md\n  WILL  .codex/agents/office-docx.toml\n  WILL  .codex/agents/office-pdf.toml\n  WILL  .codex/agents/office-planner.toml\n  WILL  .codex/agents/office-pptx.toml\n  WILL  .codex/agents/office-qa.toml\n  WILL  .codex/agents/office-visuals.toml\n  WILL  .codex/agents/office-writer.toml\n  WILL  .codex/agents/office-xlsx.toml\n[dry-run] Would install 26 Office files; 0 preserved; target: /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project\nOffice entry: office/README.md. For existing CLAUDE.md/AGENTS.md, add:\n  For office projects read office/README.md; file work loads .agents/skills/office/SKILL.md.\nRequired skills: vibe init office / vibe add manifest office installs skills.txt dependencies.\n[dry-run] Running: /home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project -n\n\nInstalling 10 required skills:\n  WILL  office\n  WILL  anthropics-skills-docx\n  WILL  anthropics-skills-xlsx\n  WILL  anthropics-skills-pptx\n  WILL  anthropics-skills-pdf\n  WILL  office-quality\n  WILL  ai-vibe-writing\n  WILL  omnidraw\n  WILL  omnisheet\n  WILL  omnippt\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "actual project install",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "init",
+        "office",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "  COPY  CLAUDE.md\n  COPY  AGENTS.md\n  COPY  README.md\n  COPY  MANIFEST.md\n  COPY  office/README.md\n  COPY  office/assets/workflow.json\n  COPY  office/assets/workflow.svg\n  COPY  office/templates/task-brief.md\n  COPY  office/rules/office-project.md\n  COPY  office/scripts/render_workflow.py\n  COPY  .claude/agents/office-docx.md\n  COPY  .claude/agents/office-pdf.md\n  COPY  .claude/agents/office-planner.md\n  COPY  .claude/agents/office-pptx.md\n  COPY  .claude/agents/office-qa.md\n  COPY  .claude/agents/office-visuals.md\n  COPY  .claude/agents/office-writer.md\n  COPY  .claude/agents/office-xlsx.md\n  COPY  .codex/agents/office-docx.toml\n  COPY  .codex/agents/office-pdf.toml\n  COPY  .codex/agents/office-planner.toml\n  COPY  .codex/agents/office-pptx.toml\n  COPY  .codex/agents/office-qa.toml\n  COPY  .codex/agents/office-visuals.toml\n  COPY  .codex/agents/office-writer.toml\n  COPY  .codex/agents/office-xlsx.toml\nInstalled 26 Office files; 0 preserved; target: /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project\nOffice entry: office/README.md. For existing CLAUDE.md/AGENTS.md, add:\n  For office projects read office/README.md; file work loads .agents/skills/office/SKILL.md.\nRequired skills: vibe init office / vibe add manifest office installs skills.txt dependencies.\nRunning: /home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project\n\nInstalling 10 required skills:\n  COPY  office\n  COPY  anthropics-skills-docx\n  COPY  anthropics-skills-xlsx\n  COPY  anthropics-skills-pptx\n  COPY  anthropics-skills-pdf\n  COPY  office-quality\n  COPY  ai-vibe-writing\n  COPY  omnidraw\n  COPY  omnisheet\n  COPY  omnippt\nProject registered: office-project\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "installed workflow check",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project/.agents/skills/office/scripts/render_workflow.py",
+        "--source",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project/.agents/skills/office/assets/workflow.json",
+        "--output",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project/.agents/skills/office/assets/workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "OK: /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/standalone-project/.agents/skills/office/assets/workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "installed workflow check",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project/office/scripts/render_workflow.py",
+        "--source",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project/office/assets/workflow.json",
+        "--output",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project/office/assets/workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "OK: /home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-project/office/assets/workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "patch applicability on baseline",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-separation.patch"
+      ],
+      "cwd": "/tmp/office patch rollback 441tdf7p/repo",
+      "inputs": {},
+      "stdout": "",
+      "stderr": "error: 补丁在第 1541 行损坏\n",
+      "exit_status": 128
+    },
+    {
+      "label": "patch applicability on baseline",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-separation.patch"
+      ],
+      "cwd": "/tmp/office patch rollback ntvixbgb/repo",
+      "inputs": {},
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "patch application on baseline",
+      "command": [
+        "git",
+        "apply",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/office-separation.patch"
+      ],
+      "cwd": "/tmp/office patch rollback ntvixbgb/repo",
+      "inputs": {},
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "rollback preview on modified copy",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/rollback.py",
+        "--root",
+        "/tmp/office patch rollback ntvixbgb/repo",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "Would restore 136 files; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "rollback execution on modified copy",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/rollback.py",
+        "--root",
+        "/tmp/office patch rollback ntvixbgb/repo"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "Restored and verified 136 files. Git index untouched.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "live rollback preview only",
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/office-skill-separation/artifacts/rollback.py",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "Would restore 136 files; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "final scoped regression",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--offline",
+        "--with",
+        "python-docx",
+        "--with",
+        "openpyxl",
+        "--with",
+        "python-pptx",
+        "--with",
+        "pypdf",
+        "--with",
+        "pillow",
+        "--with",
+        "pytest",
+        "python",
+        "-m",
+        "pytest",
+        "tools/vibe_tool/tests/test_office_captions.py",
+        "tools/vibe_tool/tests/test_office_equations.py",
+        "tools/vibe_tool/tests/test_office_install.py",
+        "tools/vibe_tool/tests/test_office_native_format.py",
+        "tools/vibe_tool/tests/test_office_runtime.py",
+        "tools/vibe_tool/tests/test_office_skill_separation.py",
+        "tools/vibe_tool/tests/test_office_word_features.py",
+        "tools/vibe_tool/tests/test_office_workbook_features.py",
+        "tools/vibe_tool/tests/test_office_workflow_diagrams.py",
+        "tools/vibe_tool/tests/test_omnippt.py",
+        "tools/vibe_tool/tests/test_omni_ui_design.py",
+        "tools/vibe_tool/tests/test_setup.py",
+        "tools/vibe_tool/tests/test_project_update.py",
+        "tools/vibe_tool/tests/test_manifest_installation.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "inputs": {},
+      "stdout": "............................................................................................................s....................ss.............. [ 65%]\n....................................................... [ 90%]\n....................                                                    [100%]\n217 passed, 3 skipped, 1025 subtests passed in 55.26s\n",
+      "stderr": "",
+      "exit_status": 0
+    }
+  ],
+  "limits": [
+    "Native Microsoft Office VBA compile/run was not performed by this packaging change.",
+    "Final regression reports three skips; optional-tool and target-application conditions are not declared verified by this packaging change."
+  ],
+  "resolved_attempts": [
+    {
+      "step": "patch applicability",
+      "earlier_exit_status": 128,
+      "cause": "missing no-newline marker for original SVG",
+      "resolution": "standard EOF markers and byte-preserving diff; subsequent application and rollback both exited 0"
+    }
+  ]
+}

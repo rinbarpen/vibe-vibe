@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "title": "Vibe：项目索引与按项目更新",
+  "description": "规则图，以 project update 为主。全局仅索引名称/路径/来源，项目内记录是资源事实源；每项目一个事务，批量逐项目继续。登记/改名/迁移/移除仅修改索引。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "用户：项目与更新范围",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "指定名称/路径或 --all；可选择 manifest/skill，可先 dry-run。"
+    },
+    {
+      "id": "read",
+      "label": "AI/CLI：回读索引与本地记录",
+      "kind": "ai",
+      "row": 1,
+      "detail": "使用登记来源与生成参数；不扫描整盘，不复制资源清单，不自动 fetch。"
+    },
+    {
+      "id": "paths",
+      "label": "校验：路径、来源与记录",
+      "kind": "check",
+      "row": 2,
+      "detail": "失联/损坏记录保留；CLI 报告失败，不制造空资源或新安装。"
+    },
+    {
+      "id": "prepare",
+      "label": "AI/CLI：准备选定资源",
+      "kind": "ai",
+      "row": 3,
+      "detail": "编译通用规则包，保留作用域；维护所选宿主副本；只同步已安装依赖。"
+    },
+    {
+      "id": "preflight",
+      "label": "校验：冲突、哈希与范围",
+      "kind": "check",
+      "row": 4,
+      "detail": "先核对全部选定变更；setup 本地定制保留，技能整目录刷新，业务数据不覆盖。"
+    },
+    {
+      "id": "apply",
+      "label": "AI/CLI：单项目备份并应用",
+      "kind": "ai",
+      "row": 5,
+      "detail": "配置、技能、安装记录与 setup 哈希同一事务；无变化不生成备份。"
+    },
+    {
+      "id": "verify",
+      "label": "校验：本次资源与记录",
+      "kind": "check",
+      "row": 6,
+      "detail": "应用时核对文件/目录与记录哈希；不将文件存在当宿主激活或业务完成。"
+    },
+    {
+      "id": "rollback",
+      "label": "AI/CLI：原事务自动回退",
+      "kind": "ai",
+      "row": 6,
+      "detail": "恢复已应用路径与记录；保留恢复脚本和失败证据，不自动扩大修改范围。"
+    },
+    {
+      "id": "report",
+      "label": "核对并汇总每项目结果",
+      "kind": "check",
+      "row": 7,
+      "detail": "preview/updated/no-op/failed 分开；一个失败不删除登记，继续其他项目。"
+    },
+    {
+      "id": "decision",
+      "label": "用户：处理新的实质取舍",
+      "kind": "human",
+      "row": 8,
+      "detail": "仅交互式 AI 需要新决定时提问；CLI 本身报告失败退出，不自动批准。",
+      "trigger": "来源/路径需要重新绑定，或本地定制与上游更新存在实质冲突。",
+      "resume": "未回答保留现场并等待；决定修复后从读取原记录继续；跳过则保持失败结果。"
+    },
+    {
+      "id": "done",
+      "label": "汇总结果与退出码",
+      "kind": "terminal",
+      "row": 9,
+      "detail": "全部项目访问后汇总；任一失败返回非零；各项目单独回退，不承诺跨项目整体原子性。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "read",
+      "label": "读取明确选择",
+      "kind": "normal"
+    },
+    {
+      "from": "read",
+      "to": "paths",
+      "label": "核对真实状态",
+      "kind": "normal"
+    },
+    {
+      "from": "paths",
+      "to": "prepare",
+      "label": "前提成立",
+      "kind": "normal"
+    },
+    {
+      "from": "paths",
+      "to": "report",
+      "label": "路径/记录失联：保留并报告",
+      "kind": "normal"
+    },
+    {
+      "from": "prepare",
+      "to": "preflight",
+      "label": "暂存，不写业务项目",
+      "kind": "normal"
+    },
+    {
+      "from": "preflight",
+      "to": "report",
+      "label": "dry-run：只读预览",
+      "kind": "normal"
+    },
+    {
+      "from": "preflight",
+      "to": "decision",
+      "label": "本地冲突需新决定",
+      "kind": "rework"
+    },
+    {
+      "from": "preflight",
+      "to": "apply",
+      "label": "实际更新且预检通过",
+      "kind": "normal"
+    },
+    {
+      "from": "apply",
+      "to": "verify",
+      "label": "应用后核对",
+      "kind": "normal"
+    },
+    {
+      "from": "apply",
+      "to": "rollback",
+      "label": "应用失败",
+      "kind": "rework"
+    },
+    {
+      "from": "verify",
+      "to": "rollback",
+      "label": "文件验证失败",
+      "kind": "rework"
+    },
+    {
+      "from": "rollback",
+      "to": "report",
+      "label": "恢复后报告失败",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "report",
+      "label": "核对通过或无变化",
+      "kind": "normal"
+    },
+    {
+      "from": "report",
+      "to": "read",
+      "label": "批量还有其他项目",
+      "kind": "rework"
+    },
+    {
+      "from": "report",
+      "to": "done",
+      "label": "本次范围已处理",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "read",
+      "label": "决定修复/重新绑定后重读",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "report",
+      "label": "跳过：保留失败结果",
+      "kind": "normal"
+    }
+  ]
+}

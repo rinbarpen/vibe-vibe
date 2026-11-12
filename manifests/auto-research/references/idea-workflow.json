@@ -8,7 +8,7 @@
       "label": "进入 Idea 候选生成",
       "kind": "terminal",
       "row": 0,
-      "detail": "沿用 idea/hypotheses/candidates；输入方向、已有假设与文献背景。"
+      "detail": "沿用 idea/hypotheses/candidates；从已确认契约、源证据与可信 checkpoint 恢复，核对版本与未知项。"
     },
     {
       "id": "select",
@@ -37,7 +37,7 @@
       "id": "autonomous",
       "label": "AI：aris/idea-discovery",
       "kind": "ai",
-      "row": 3,
+      "row": 1,
       "detail": "用户要求自主发现或批量候选时，保留原有路线。"
     },
     {
@@ -52,7 +52,7 @@
       "label": "AI：相关工作与可行性核验",
       "kind": "check",
       "row": 5,
-      "detail": "衔接 research-lit / novelty-check；未验证不等于新颖，机制差异不等于收益。"
+      "detail": "以原始方法证据比较研究思路、机制与关键方法；关键词仅召回，缺证据保留未验证，差异不等于收益。"
     },
     {
       "id": "evidence",
@@ -66,7 +66,7 @@
       "label": "AI：正式候选交接",
       "kind": "ai",
       "row": 7,
-      "detail": "正式交接写 HYPOTHESES.md，保留来源、反证与未验证项；不默认存逐轮对话。"
+      "detail": "写 HYPOTHESES.md 并引用 NOVELTY 思路/方法对照；保留版本、反证条件、负结果启发和未知项。"
     },
     {
       "id": "comparison",
@@ -82,7 +82,7 @@
       "label": "交接到方法细化",
       "kind": "terminal",
       "row": 9,
-      "detail": "idea/method/mechanism；继续 METHOD_SPEC、组件和 claims，并按原规则 checkpoint。"
+      "detail": "idea/method/mechanism；方法细化后重验重合；claims 登记最低证据、反证范围与提前停止条件。"
     }
   ],
   "edges": [

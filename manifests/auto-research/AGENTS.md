@@ -24,7 +24,7 @@
 0. 调用 `grill-me`，明确研究计划后再开始本阶段
 1. 使用 `aris/research-lit "query"` 进行文献检索和综述
 2. 用户希望从方向或直觉通过问答发展课题时，在 `idea/hypotheses/candidates` 使用 `$intuit-to-idea`：由 AI 提供具体情境，每次一个关键问题，等待用户真实回答，逐步明确机制、意义和最小验证；要求自主发现或批量候选时，继续使用 `aris/idea-discovery "brief"`。已有假设直接延续，不重新索要选题。详见 [接入与交接](references/intuit-to-idea.md) 和 [工作流图](references/idea-workflow.svg)。
-3. 使用 `aris/novelty-check` 进行新颖性验证
+3. 使用 `aris/novelty-check`，按 [Idea 验证契约](references/idea-validation.md) 比较研究思路与关键方法，记录重合/差异/未验证项，而非关键词命中即淘汰
 4. 正式交接时将候选、可测预测、反证条件与未验证项写入 `refine-logs/contracts/HYPOTHESES.md`；在既有 `idea/hypotheses/comparison` 人工确认后记录 `IDEA_DECISION.md`，再进入方法细化。按现有 checkpoint 规则归档正式产物，不默认保存逐轮对话。
 5. 产出：研究纲要 + 新颖性报告；问答路线可附研究想法卡，明确用户直觉、AI 建议和文献事实，证据不足时保留未验证状态。
 
@@ -38,7 +38,7 @@
 6. 付费云使用前和 full suite 前人工确认预算；审查缺席显式记录并请求确认。批准矩阵预算内自动推进。
 7. monitor 只检查运行事实，采集所有 attempts、负结果和失败日志；analyze-results 配合 experiment_stats.py summarize 统计。
 8. experiment-audit 后按 PASS/WARN/FAIL/REVIEW_UNAVAILABLE 分配 eligible/provisional/ineligible，不把失败审计结果当论文支持证据。
-9. 提供原始结果、claim/run、配置和审计引用进入 Writing Plan。每个科研活动检查点提交 Git。
+9. 按 [Idea 验证契约](references/idea-validation.md) 完成逐 claim 覆盖核对、限定结论和失败启发归档，再提供原始结果、claim/run、配置和审计引用进入 Writing Plan。每个科研活动检查点提交 Git。
 
 详细运行契约与统计接口：references/experiment-execution.md。此契约优先于上游 bridge 的静默降级或未审批自动扩展矩阵默认值。
 
@@ -91,6 +91,17 @@
 1. 使用 `mine/export-paper-zip "path" --mode submission --venue <venue>` 导出投稿 ZIP
 2. 或使用 `mine/export-paper-zip "path" --mode bundle --include <files...>` 自定义打包
 3. 产出：`paper-submission_<venue>_YYYYMMDD.zip` + 记录到 [`MANIFEST.md`](MANIFEST.md)
+
+## Idea 验证与迭代保真
+
+执行 [Idea 验证契约](references/idea-validation.md)，优先于仅凭关键词或部分实验的简化判断：
+
+- **新颖性**：关键词仅用于召回；从原始论文/方法证据逐项核对研究思路、核心机制、关键方法和贡献。思路与方法高度重合才可判 `high_overlap`；有实质差异写清可区分实验，证据不足保留 `unverified`。方法修订后重验。
+- **结论边界**：区分核心 hypothesis、method 与实现/配置。逐 claim 核对冻结矩阵、实际完成/缺失项与有效证据；部分实验或 method 失败不等于 idea 无效。仅满足预设决定性反证条件时作 `refuted_in_scope`，提前停止与暂停投入分别记录，不越过检验范围，也不盲目耗尽预算。
+- **失败积累**：每个 attempt 留原始记录，在既有 `FAILURE_ANALYSIS.md` 记录失败层次、可复用机制/组件、思想启迪和下一项验证；事实、解释与待验证启发分开，后续 cycle 回看并引用，不删除负结果。
+- **防上下文腐蚀**：每轮修改及压缩/切换/恢复时，从已确认契约、源证据与可信 checkpoint 重建，核对 ID/revision/hash；记录本轮变与不变、语义 diff、未验证项及下一步。目标、方法、评价标准或证据变化使相关旧审查/审批需重验；冲突时保留 attempt，从可信基线修复后再晋级，不让滚动摘要覆盖原始决定。
+
+复用 `NOVELTY.md`、`HYPOTHESES.md`、`METHOD_SPEC.md`、`CLAIMS.json`、`CLAIM_EVIDENCE.json` 与生命周期记录，不建立平行账本。工作流：[SVG](references/validation-workflow.svg) / [图源](references/validation-workflow.json)，生成与只读检查命令见上述契约。科学判断由实际 reviewer 留证，文件/哈希检查不等于科学验证。
 
 ## Subagent Dispatch
 

@@ -1,0 +1,43 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  securityLevel: strict
+  fontFamily: 'Noto Sans CJK SC, sans-serif'
+  themeVariables:
+    fontFamily: 'Noto Sans CJK SC, sans-serif'
+    fontSize: 17px
+    background: '#ffffff'
+    primaryColor: '#EAF3F5'
+    primaryTextColor: '#173B47'
+    primaryBorderColor: '#6794A0'
+    lineColor: '#64828C'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    htmlLabels: false
+    wrappingWidth: 240
+    curve: linear
+    nodeSpacing: 30
+    rankSpacing: 42
+    padding: 16
+    useMaxWidth: false
+---
+%% Omnidraw -> local mermaid sub-skill. Omnisheet plans tables; format roles produce native objects.
+flowchart TD
+    A["表格用途与目标格式<br/>来源 · 读者 · 业务问题"] --> B["选择本地场景子技能<br/>财务 / 分析 / 项目<br/>业务 / 科研 / 生活"]
+    B --> C["统一表格规格<br/>字段 · 单位 · 表头<br/>公式 / 合计"]
+    C --> D{"交付格式？"}
+    D -->|XLSX| E["工作簿引擎制作<br/>公式保护 + 实际重算"]
+    D -->|DOCX / PPTX| F["交给格式制作人<br/>原生可编辑表格"]
+    E --> G{"数值 / 引用 / 单位<br/>表头 / 分页 / 视觉通过？"}
+    F --> G
+    G -->|否：修正规格与制作| C
+    G -->|是| H["表格 + 数据 / 模型来源<br/>交付或进入 Office 独立 QA"]
+    classDef input fill:#EDF4F7,stroke:#6E97A6,color:#173B47;
+    classDef maker fill:#E8F3EE,stroke:#64957D,color:#173E2C;
+    classDef gate fill:#FBF3DE,stroke:#B29A59,color:#52421D;
+    classDef done fill:#DCEEE4,stroke:#4C8467,color:#143E29;
+    class A,B,C input;
+    class E,F maker;
+    class D,G gate;
+    class H done;

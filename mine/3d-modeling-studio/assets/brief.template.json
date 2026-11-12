@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "asset_name": "ASSET",
+  "request_mode": "create",
+  "profile": "portfolio",
+  "style": "realistic",
+  "software": {"name": null, "version": null, "execution_status": "plan-only"},
+  "references": [],
+  "units": {"name": "m", "dimensions": null, "front_axis": "-Y", "up_axis": "+Z"},
+  "target_camera": {"resolution_px": [2048, 2048], "closest_feature": null},
+  "budgets": {"triangles": null, "texture_resolution": null, "memory_gb": null},
+  "parts": [],
+  "required_views": ["front", "back", "left", "right", "top", "bottom", "three_quarter_front", "three_quarter_back"],
+  "deformation_tests": [],
+  "manufacturing_constraints": {},
+  "deliverables": ["native_source", "exchange", "previews", "qa_report", "review_record", "roundtrip_record"],
+  "assumptions": [],
+  "acceptance": {"benchmark_references": [], "suggested_score": 90, "unclosed_critical_or_major": 0},
+  "state": "brief"
+}

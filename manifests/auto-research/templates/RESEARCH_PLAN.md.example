@@ -17,6 +17,15 @@
 - Claim 2:
 - Claim 3:
 
+## Validation Baseline
+- confirmed goal / non-goals / constraints / decision source:
+- hypothesis IDs / claim IDs / method revision / baseline commit & hashes:
+- nearest work / thought-and-method overlap / NOVELTY.md reference:
+- per-claim prediction / minimum evidence / falsification threshold & scope:
+- decisive early-stop condition / resource-stop condition / inconclusive cases:
+- required controls & ablations / untested conditions:
+- revision: old/new version / reason / unchanged invariants / affected checks:
+
 ## Experiment Design
 
 | Experiment | Metric | Baseline | Target |

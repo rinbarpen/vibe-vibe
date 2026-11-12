@@ -1,0 +1,66 @@
+{
+  ".planning/auto-research-wiki-concept/concept-map.json": {
+    "exists": true,
+    "sha256": "1682ea04c29340dd0a7ed49290aa524f4e8ee04675ee6bfa2b315d14e3ad6b1c"
+  },
+  ".planning/auto-research-wiki-concept/render.py": {
+    "exists": true,
+    "sha256": "41b9761b79334d20045faf1c2503781889f898da1f95d4b9fab4f3b14ac85dde"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.svg": {
+    "exists": true,
+    "sha256": "71374f1dc0804a7f5ca60c356691e21c48ce2cfdc5b7d85fcf14dea87b20e408"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.html": {
+    "exists": true,
+    "sha256": "5fe8c04e6b597b916a5d170a65c98c21a430009a64a952fe3ad07f40dfb62b8a"
+  },
+  ".planning/auto-research-wiki-concept/concept-map.png": {
+    "exists": true,
+    "sha256": "70757b7977115dc707ea0f78fdddc27ed7a714210ad3c5afbd7ffa40cf9cab0d"
+  },
+  ".planning/auto-research-wiki-concept/verification.json": {
+    "exists": true,
+    "sha256": "30db099bb9d303209cbda770cdda1e0a2f19ee9d4ce7ec3a97c5f47f4d7edc33"
+  },
+  "mine/omnidraw/SKILL.md": {
+    "exists": true,
+    "sha256": "4f9eac6c8c425a682109a1c9d77c841ed3082e2488ba97d5d01a6715facb7c03"
+  },
+  "mine/omnidraw/assets/workflow.mmd": {
+    "exists": true,
+    "sha256": "cca5bb934df39c9fb2f7e3bfc245e6f0128846438682ab3f4b292a0a4849fb7a"
+  },
+  "mine/omnidraw/assets/workflow.svg": {
+    "exists": true,
+    "sha256": "b15979a83aef2e574330b8a577c14578960597a312bc74f6fa79a81545ae5125"
+  },
+  "mine/omnidraw/references/ui-design.md": {
+    "exists": true,
+    "sha256": "02079105151b9bbcfdb1af00b04e2686c6f2776e8106bffba65196a136d010b6"
+  },
+  "mine/omnisheet/SKILL.md": {
+    "exists": true,
+    "sha256": "03eed4a9b595644c73c9ffc0ee650e2848c5bffc8131cb4b1e013ae92b278834"
+  },
+  "mine/omnisheet/assets/workflow.mmd": {
+    "exists": true,
+    "sha256": "dbeb986acf4f88a9d83ee3c226e72fe02da553cd005ea89e05966d8c31feb11b"
+  },
+  "mine/omnisheet/assets/workflow.svg": {
+    "exists": true,
+    "sha256": "cd22f81b477d27bfd9f772a395e0104938328cce79ef4151e924c63d5fcc99d2"
+  },
+  "mine/omnisheet/references/ui-design.md": {
+    "exists": true,
+    "sha256": "333fea36cc8bbb113ee03326c18032b7d8c9fab0456d984b5fb9d8d69c20cfe9"
+  },
+  "tools/vibe_tool/tests/test_omni_ui_design.py": {
+    "exists": true,
+    "sha256": "51201d1272c2d6d8e9a9f08c605093afaf15df71171af4d1e4dbc002793a1d40"
+  },
+  ".planning/auto-research-wiki-concept/verify_ui.py": {
+    "exists": true,
+    "sha256": "5642909a412be9e0777cc073b1a586ef67a2eae673b87c0638f6261d4bf079a2"
+  }
+}

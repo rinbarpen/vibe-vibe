@@ -132,6 +132,17 @@ class IdeaInstallationTests(unittest.TestCase):
                 for suffix in ([], ["--check"]):
                     result = subprocess.run(command + suffix, cwd=self.root, capture_output=True, text=True)
                     self.assertEqual(result.returncode, 0, result.stderr)
+                # New validation assets must ship through both real CLI paths.
+                for relative in ("references/idea-validation.md", "references/validation-workflow.json",
+                                 "references/validation-workflow.svg", "templates/NOVELTY.md.example",
+                                 "templates/FAILURE_ANALYSIS.md.example"):
+                    self.assertEqual((target / relative).read_bytes(), (MANIFEST / relative).read_bytes())
+                validation_command = [sys.executable, str(target / "scripts/render_idea_workflow.py"),
+                                      "--source", str(target / "references/validation-workflow.json"),
+                                      "--output", str(target / "references/validation-workflow.svg")]
+                for suffix in ([], ["--check"]):
+                    result = subprocess.run(validation_command + suffix, cwd=self.root, capture_output=True, text=True)
+                    self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertTrue((target / "references/intuit-to-idea.md").is_file())
                 self.assertTrue((target / ".vibe-tool/installations.json").is_file())
                 self.assertFalse((target / ".auto-research/lifecycle/events.jsonl").exists())

@@ -1,0 +1,16 @@
+baseline architecture verification against saved bytes 0
+skill metadata validation 0
+Reusing already installed standalone writer.
+actual Office setup preview 0
+actual Office setup 0
+actual Office setup hash check 0
+bundled voice profile execution 0
+bundled voice card execution 0
+preserved-number positive fixture 0
+changed-number negative fixture 1
+patch applicability on baseline 0
+patch replay on baseline 0
+rollback preview on modified copy 0
+actual rollback on modified copy 0
+live rollback preview only 0
+VERIFIED 30 paths; package, patch replay and rollback passed.

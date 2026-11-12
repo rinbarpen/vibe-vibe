@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1650" height="2328" viewBox="0 0 1650 2328" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Vibe：项目索引与按项目更新</title>
+  <desc id="workflow-description">规则图，以 project update 为主。全局仅索引名称/路径/来源，项目内记录是资源事实源；每项目一个事务，批量逐项目继续。登记/改名/迁移/移除仅修改索引。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1650" height="2328" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Vibe：项目索引与按项目更新</text>
+    <text x="28" y="70" font-size="14" fill="#475569">规则图，以 project update 为主。全局仅索引名称/路径/来源，项目内记录是资源事实源；每项目一个事务，批量逐项目继续。登记/改名/迁移/移除仅修</text>
+    <text x="28" y="90" font-size="14" fill="#475569">改索引。</text>
+    <text x="28" y="114" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="148" width="400" height="2114" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="177" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="148" width="400" height="2114" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="177" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="148" width="400" height="2114" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="177" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="apply" data-to="verify" d="M 220.0,1312 V 1355.0 H 630.0 V 1398" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="report" d="M 1220,1902.0 H 1238 V 1655.0 H 810" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="paths" data-to="prepare" d="M 630.0,712 V 755.0 H 220.0 V 798" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="paths" data-to="report" d="M 630.0,712 V 755.0 H 434 V 1574 H 630.0 V 1598" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="preflight" data-to="apply" d="M 630.0,1112 V 1155.0 H 220.0 V 1198" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="preflight" data-to="report" d="M 630.0,1112 V 1155.0 H 434 V 1574 H 630.0 V 1598" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="prepare" data-to="preflight" d="M 220.0,912 V 955.0 H 630.0 V 998" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="read" data-to="paths" d="M 220.0,512 V 555.0 H 630.0 V 598" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="report" data-to="done" d="M 630.0,1712 V 1755.0 H 630.0 V 2092" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="rollback" data-to="report" d="M 220.0,1512 V 1555.0 H 630.0 V 1598" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="read" d="M 630.0,312 V 355.0 H 220.0 V 398" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="report" d="M 630.0,1512 V 1555.0 H 630.0 V 1598" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="apply" data-to="rollback" d="M 400,1255.0 H 1270 V 1375 H 220.0 V 1398" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="decision" data-to="read" d="M 1220,1902.0 H 1296 V 375 H 220.0 V 398" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="preflight" data-to="decision" d="M 810,1055.0 H 1322 V 1775 H 1040.0 V 1798" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="report" data-to="read" d="M 810,1655.0 H 1348 V 375 H 220.0 V 398" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="verify" data-to="rollback" d="M 810,1455.0 H 1374 V 1375 H 220.0 V 1398" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>用户：项目与更新范围 — 指定名称/路径或 --all；可选择 manifest/skill，可先 dry-run。</title>
+      <rect x="450" y="198" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="222" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="248" font-size="18" font-weight="700">用户：项目与更新范围</text>
+      <text x="466" y="272" font-size="14" fill="#334155">指定名称/路径或 --all；可选择 manifest/skil</text>
+      <text x="466" y="292" font-size="14" fill="#334155">l，可先 dry-run。</text>
+    </g>
+    <g id="node-read" data-kind="ai" data-row="1">
+      <title>AI/CLI：回读索引与本地记录 — 使用登记来源与生成参数；不扫描整盘，不复制资源清单，不自动 fetch。</title>
+      <rect x="40" y="398" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="422" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="448" font-size="18" font-weight="700">AI/CLI：回读索引与本地记录</text>
+      <text x="56" y="472" font-size="14" fill="#334155">使用登记来源与生成参数；不扫描整盘，不复制</text>
+      <text x="56" y="492" font-size="14" fill="#334155">资源清单，不自动 fetch。</text>
+    </g>
+    <g id="node-paths" data-kind="check" data-row="2">
+      <title>校验：路径、来源与记录 — 失联/损坏记录保留；CLI 报告失败，不制造空资源或新安装。</title>
+      <rect x="450" y="598" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="622" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="648" font-size="18" font-weight="700">校验：路径、来源与记录</text>
+      <text x="466" y="672" font-size="14" fill="#334155">失联/损坏记录保留；CLI 报告失败，不制造空资</text>
+      <text x="466" y="692" font-size="14" fill="#334155">源或新安装。</text>
+    </g>
+    <g id="node-prepare" data-kind="ai" data-row="3">
+      <title>AI/CLI：准备选定资源 — 编译通用规则包，保留作用域；维护所选宿主副本；只同步已安装依赖。</title>
+      <rect x="40" y="798" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="822" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="848" font-size="18" font-weight="700">AI/CLI：准备选定资源</text>
+      <text x="56" y="872" font-size="14" fill="#334155">编译通用规则包，保留作用域；维护所选宿主副</text>
+      <text x="56" y="892" font-size="14" fill="#334155">本；只同步已安装依赖。</text>
+    </g>
+    <g id="node-preflight" data-kind="check" data-row="4">
+      <title>校验：冲突、哈希与范围 — 先核对全部选定变更；setup 本地定制保留，技能整目录刷新，业务数据不覆盖。</title>
+      <rect x="450" y="998" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1022" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1048" font-size="18" font-weight="700">校验：冲突、哈希与范围</text>
+      <text x="466" y="1072" font-size="14" fill="#334155">先核对全部选定变更；setup 本地定制保留，技</text>
+      <text x="466" y="1092" font-size="14" fill="#334155">能整目录刷新，业务数据不覆盖。</text>
+    </g>
+    <g id="node-apply" data-kind="ai" data-row="5">
+      <title>AI/CLI：单项目备份并应用 — 配置、技能、安装记录与 setup 哈希同一事务；无变化不生成备份。</title>
+      <rect x="40" y="1198" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1222" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1248" font-size="18" font-weight="700">AI/CLI：单项目备份并应用</text>
+      <text x="56" y="1272" font-size="14" fill="#334155">配置、技能、安装记录与 setup 哈希同一事务；</text>
+      <text x="56" y="1292" font-size="14" fill="#334155">无变化不生成备份。</text>
+    </g>
+    <g id="node-rollback" data-kind="ai" data-row="6">
+      <title>AI/CLI：原事务自动回退 — 恢复已应用路径与记录；保留恢复脚本和失败证据，不自动扩大修改范围。</title>
+      <rect x="40" y="1398" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1422" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1448" font-size="18" font-weight="700">AI/CLI：原事务自动回退</text>
+      <text x="56" y="1472" font-size="14" fill="#334155">恢复已应用路径与记录；保留恢复脚本和失败证</text>
+      <text x="56" y="1492" font-size="14" fill="#334155">据，不自动扩大修改范围。</text>
+    </g>
+    <g id="node-verify" data-kind="check" data-row="6">
+      <title>校验：本次资源与记录 — 应用时核对文件/目录与记录哈希；不将文件存在当宿主激活或业务完成。</title>
+      <rect x="450" y="1398" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1422" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1448" font-size="18" font-weight="700">校验：本次资源与记录</text>
+      <text x="466" y="1472" font-size="14" fill="#334155">应用时核对文件/目录与记录哈希；不将文件存在</text>
+      <text x="466" y="1492" font-size="14" fill="#334155">当宿主激活或业务完成。</text>
+    </g>
+    <g id="node-report" data-kind="check" data-row="7">
+      <title>核对并汇总每项目结果 — preview/updated/no-op/failed 分开；一个失败不删除登记，继续其他项目。</title>
+      <rect x="450" y="1598" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1622" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1648" font-size="18" font-weight="700">核对并汇总每项目结果</text>
+      <text x="466" y="1672" font-size="14" fill="#334155">preview/updated/no-op/failed 分开；一个失败</text>
+      <text x="466" y="1692" font-size="14" fill="#334155">不删除登记，继续其他项目。</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="8">
+      <title>用户：处理新的实质取舍 — 仅交互式 AI 需要新决定时提问；CLI 本身报告失败退出，不自动批准。</title>
+      <rect x="860" y="1798" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1822" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1848" font-size="18" font-weight="700">用户：处理新的实质取舍</text>
+      <text x="876" y="1872" font-size="14" fill="#334155">仅交互式 AI 需要新决定时提问；CLI 本身报告</text>
+      <text x="876" y="1892" font-size="14" fill="#334155">失败退出，不自动批准。</text>
+      <text x="876" y="1924" font-size="14" fill="#9a3412">介入条件：来源/路径需要重新绑定，或本地定制</text>
+      <text x="876" y="1944" font-size="14" fill="#9a3412">与上游更新存在实质冲突。</text>
+      <text x="876" y="1964" font-size="14" fill="#9a3412">恢复执行：未回答保留现场并等待；决定修复后</text>
+      <text x="876" y="1984" font-size="14" fill="#9a3412">从读取原记录继续；跳过则保持失败结果。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="9">
+      <title>汇总结果与退出码 — 全部项目访问后汇总；任一失败返回非零；各项目单独回退，不承诺跨项目整体原子性。</title>
+      <rect x="450" y="2092" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2116" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2142" font-size="18" font-weight="700">汇总结果与退出码</text>
+      <text x="466" y="2166" font-size="14" fill="#334155">全部项目访问后汇总；任一失败返回非零；各项</text>
+      <text x="466" y="2186" font-size="14" fill="#334155">目单独回退，不承诺跨项目整体原子性。</text>
+    </g>
+    <text x="425.0" y="1346.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">应用后核对</text>
+    <text x="1244" y="1771.5" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">跳过：保留失败结果</text>
+    <text x="425.0" y="746.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">前提成立</text>
+    <text x="642.0" y="746.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">路径/记录失联：保留并报</text>
+    <text x="642.0" y="763.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">告</text>
+    <text x="425.0" y="1146.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">实际更新且预检通过</text>
+    <text x="642.0" y="1146.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">dry-run：只读预览</text>
+    <text x="425.0" y="946.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">暂存，不写业务项目</text>
+    <text x="425.0" y="546.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">核对真实状态</text>
+    <text x="642.0" y="1746.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">本次范围已处理</text>
+    <text x="425.0" y="1546.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复后报告失败</text>
+    <text x="425.0" y="346.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">读取明确选择</text>
+    <text x="642.0" y="1546.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">核对通过或无变化</text>
+    <text x="1280" y="1315.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">应用失败</text>
+    <text x="1306" y="1138.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">决定修复/重新绑定后重读</text>
+    <text x="1332" y="1415.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">本地冲突需新决定</text>
+    <text x="1358" y="1015.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">批量还有其他项目</text>
+    <text x="1384" y="1415.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">文件验证失败</text>
+    <text x="28" y="2302" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

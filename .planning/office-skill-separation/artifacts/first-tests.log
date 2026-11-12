@@ -1,0 +1,769 @@
+FFFFFFFFF...sss............s................                                                  [100%]
+=================================== FAILURES ===================================
+_ OfficeInstallTests.test_add_preserves_project_entries_and_repeated_install_is_idempotent _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_add_preserves_project_entries_and_repeated_install_is_idempotent>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install fs2xz65q/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install fs2xz65q/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_cli_and_direct_dry_run_do_not_create_or_modify_target _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_cli_and_direct_dry_run_do_not_create_or_modify_target>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install ysgfj0ri/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install ysgfj0ri/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_cli_exact_skill_install_does_not_depend_on_collision_discovery _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_cli_exact_skill_install_does_not_depend_on_collision_discovery>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install imozmov6/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install imozmov6/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_direct_script_supports_both_flag_forms_without_installing_skills _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_direct_script_supports_both_flag_forms_without_installing_skills>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install tyj49bjw/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install tyj49bjw/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_force_updates_managed_files_but_preserves_unrelated_files _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_force_updates_managed_files_but_preserves_unrelated_files>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install znhcfhxw/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install znhcfhxw/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_init_installs_resources_skills_rules_and_both_native_agents _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_init_installs_resources_skills_rules_and_both_native_agents>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install 2vei_u0j/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install 2vei_u0j/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_missing_required_dependency_dry_run_reports_failure_without_writes _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_missing_required_dependency_dry_run_reports_failure_without_writes>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install asqfuh_b/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install asqfuh_b/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_missing_required_exact_dependency_returns_failure_even_with_nearby_skill _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_missing_required_exact_dependency_returns_failure_even_with_nearby_skill>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install bfyol4g_/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install bfyol4g_/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+_ OfficeInstallTests.test_office_discovery_declares_script_and_required_exact_skills _
+
+self = <test_office_install.OfficeInstallTests testMethod=test_office_discovery_declares_script_and_required_exact_skills>
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="office install ")
+        self.addCleanup(self.tmp.cleanup)
+        self.base = Path(self.tmp.name)
+        self.repo = self.base / "fixture repo"
+        self.manifest = self.repo / "manifests/office"
+        self.skill = self.repo / "mine/office"
+        self.target = self.base / "project with spaces"
+        self.env = dict(os.environ, VIBE_HOME=str(self.repo), PYTHONPATH=str(CLI_SOURCE),
+                        PYTHONDONTWRITEBYTECODE="1")
+        self.manifest.mkdir(parents=True)
+        (self.repo / "skills").mkdir()
+        (self.repo / "mine").mkdir()
+        for filename in ("CLAUDE.md", "AGENTS.md", "README.md", "MANIFEST.md"):
+            self.write(self.manifest / filename, f"# Office fixture {filename}\nRead office/rules/quality.md.\n")
+        self.write(self.skill / "SKILL.md", "---\nname: office\ndescription: fixture\n---\n")
+        for fmt in (*FORMATS, "planning"):
+            self.write(self.skill / fmt / "CLAUDE.md", f"# {fmt} guide\n")
+        self.write(self.skill / "docx/rules/patent.md", "# Optional reference\n")
+        self.write(self.skill / "xlsx/scripts/recalc.sh", "#!/bin/sh\nexit 0\n")
+        self.write(self.skill / "rules/quality.md", "# Shared quality rules\n")
+        self.write(self.manifest / "rules/office-project.md", "---\nalways: true\n---\nProject\n")
+        self.write(self.skill / "scripts/check_dependencies.py", "print('check')\n")
+        self.write(self.skill / "scripts/nested/script with spaces.py", "print('nested')\n")
+        self.write(self.skill / "scripts/__pycache__/ignored.pyc", "cache")
+        for role in ROLES:
+            self.write(self.skill / "agents/subagent-roles" / f"{role}.md", f"# {role}\n")
+            self.write(self.skill / "agents/claude" / f"{role}.md", f"---\nname: {role}\ndescription: fixture\n---\n")
+            self.write(self.skill / "agents/codex" / f"{role}.toml", f'name = "{role}"\n')
+        for name in ("init-office.sh", "install_office.py"):
+            destination = self.manifest / "scripts" / name
+>           shutil.copy2(OFFICE_SOURCE / "scripts" / name, destination)
+
+tools/vibe_tool/tests/test_office_install.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/rczx/miniconda3/lib/python3.12/shutil.py:475: in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+src = PosixPath('/home/rczx/workspace/rinbarpen/projects/vibe-coding/manifests/office/scripts/init-office.sh')
+dst = PosixPath('/tmp/office install unx69gdg/fixture repo/manifests/office/scripts/init-office.sh')
+follow_symlinks = True
+
+    def copyfile(src, dst, *, follow_symlinks=True):
+        """Copy data from src to dst in the most efficient way possible.
+    
+        If follow_symlinks is not set and src is a symbolic link, a new
+        symlink will be created instead of copying the file it points to.
+    
+        """
+        sys.audit("shutil.copyfile", src, dst)
+    
+        if _samefile(src, dst):
+            raise SameFileError("{!r} and {!r} are the same file".format(src, dst))
+    
+        file_size = 0
+        for i, fn in enumerate([src, dst]):
+            try:
+                st = _stat(fn)
+            except OSError:
+                # File most likely does not exist
+                pass
+            else:
+                # XXX What about other special files? (sockets, devices...)
+                if stat.S_ISFIFO(st.st_mode):
+                    fn = fn.path if isinstance(fn, os.DirEntry) else fn
+                    raise SpecialFileError("`%s` is a named pipe" % fn)
+                if _WINDOWS and i == 0:
+                    file_size = st.st_size
+    
+        if not follow_symlinks and _islink(src):
+            os.symlink(os.readlink(src), dst)
+        else:
+            with open(src, 'rb') as fsrc:
+                try:
+>                   with open(dst, 'wb') as fdst:
+                         ^^^^^^^^^^^^^^^
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/tmp/office install unx69gdg/fixture repo/manifests/office/scripts/init-office.sh'
+
+/home/rczx/miniconda3/lib/python3.12/shutil.py:262: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_add_preserves_project_entries_and_repeated_install_is_idempotent
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_cli_and_direct_dry_run_do_not_create_or_modify_target
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_cli_exact_skill_install_does_not_depend_on_collision_discovery
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_direct_script_supports_both_flag_forms_without_installing_skills
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_force_updates_managed_files_but_preserves_unrelated_files
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_init_installs_resources_skills_rules_and_both_native_agents
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_missing_required_dependency_dry_run_reports_failure_without_writes
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_missing_required_exact_dependency_returns_failure_even_with_nearby_skill
+FAILED tools/vibe_tool/tests/test_office_install.py::OfficeInstallTests::test_office_discovery_declares_script_and_required_exact_skills
+9 failed, 31 passed, 4 skipped, 51 subtests passed in 2.03s
