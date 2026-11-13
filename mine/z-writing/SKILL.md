@@ -1,6 +1,6 @@
 ---
 name: z-writing
-description: "中英文写作统一入口：起草与改写、样本文风、润色、多 Agent 分章协作，以及写作中的图表需求交接与正文关联。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，图表制作按需组合专用技能，原生 Office 文件工程由 office 负责。"
+description: "中英文写作统一入口：起草改写、样本文风、润色、多 Agent 分章协作、图表与正文关联、格式交接及多维并行审阅。用于文章、办公正文、论文、基金和审稿回复；纯去 AI 味也可直接用 z-humanizer，图表制作按需组合专用技能，原生 Office 文件工程由 office 负责。"
 ---
 
 # z-writing
@@ -24,6 +24,7 @@ description: "中英文写作统一入口：起草与改写、样本文风、润
 | 新文章的大纲、章节职责 | [Outline Manager](references/ai-vibe-writing/.ai_context/prompts/6_outline_manager_agent.md)；复杂任务按需组合 [Coordinator](references/ai-vibe-writing/.ai_context/prompts/9_workflow_coordinator.md) |
 | 章节起草 | [Content Writer](references/ai-vibe-writing/.ai_context/prompts/7_content_writer_agent.md)，一次处理当前章节或已有计划节点 |
 | 写作中需要图/表并与正文关联 | [图文协同](references/figures-and-tables.md)：提出用途与证据要求，按需交 `omnidraw` / `omnisheet`，取得实际素材后回查正文与引用 |
+| 格式准备、原生文件交接、多维并行 review | [格式与并行审阅](references/format-and-review.md)：区分源级审阅、格式制作与最终 QA；按依赖并行检查，统一修复与复验 |
 | 改写/精炼已有句段 | [Writer](references/ai-vibe-writing/.ai_context/prompts/2_writer.md)，保留原意、语域及独立信息 |
 | 句子接不上、指代或推进有问题 | [Sentence Flow](references/ai-vibe-writing/.ai_context/prompts/17_sentence_flow_agent.md)，核对真实信息关系而非堆连接词 |
 | 内容、事实与证据审阅 | [Content Review](references/ai-vibe-writing/.ai_context/prompts/8_content_review_agent.md)，只报告核查范围内的结论 |
@@ -47,6 +48,12 @@ description: "中英文写作统一入口：起草与改写、样本文风、润
 章节 Agent 只写分配给自己的候选稿与交接意见，不同时修改总稿、公共参考文献、文风档案或其他章节。需要图表时按上述图文协同约定提出任务并接收结果，不让各章重复制作共享图表。主 Agent 核对输入版本后，按大纲顺序合并，处理跨章重复、论证缺口、术语、引用/图表交叉引用与过渡，再统一审阅文风及内容保真。有依赖的章节等待所需结果；失败只重派受影响任务，已完成章节保留。
 
 这是一套宿主 Agent 调度约定，不是新增后台调度器。有实际多 Agent 工具才报告已并行执行；没有时按同一任务边界顺序处理并说明执行方式。已有 Writing Plan 时仍由原 planner/resolver 产生每个章节的任务包，不另建计划或绕过原审阅节点。
+
+## 格式与多维 review 也按依赖并行
+
+涉及格式交付或多类 review 时，读取 [格式与并行审阅](references/format-and-review.md)。格式角色可在写作期间准备模板、样式、编号与原生对象方案；各类 reviewer 对同版候选稿按需并行检查逻辑、来源/引用、数据、文风、图文一致性及规范。reviewer 只读被审稿件，各写审阅报告，不把多种审阅变成多个改写者争写正文。
+
+主 Agent 汇总问题、去重并交给相应执笔/图表/格式角色修复，再派受影响维度复验。最终版式与原生功能 QA 必须基于实际装配、域更新/重算及渲染后的当前文件；同一最终文件仍只有一个写入者，不把源级检查提前当成最终验收。不同输出文件或最终快照上的独立审阅可并行，受相同宿主容量与原项目门禁约束。主 Agent 总审不替代项目要求的独立 QA。
 
 ## 文风学习与写作
 

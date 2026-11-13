@@ -70,6 +70,7 @@ def test_standalone_writer_materializes_all_real_resources_without_project_chang
         "references/ai-vibe-writing/.ai_context/document_spec_template.md",
         "references/parallel-chapters.md",
         "references/figures-and-tables.md",
+        "references/format-and-review.md",
         "references/z-humanizer/references/unslop/references/commands/teach.md",
         "references/z-humanizer/references/unslop/references/commands/mimic.md",
         "references/z-humanizer/skills/academic-humanizer/SKILL.md",
@@ -78,7 +79,7 @@ def test_standalone_writer_materializes_all_real_resources_without_project_chang
         assert (installed / relative).is_file(), relative
     for file in (installed / "SKILL.md", installed / "references/context.md",
                  installed / "references/scenes.md", installed / "references/parallel-chapters.md",
-                 installed / "references/figures-and-tables.md"):
+                 installed / "references/figures-and-tables.md", installed / "references/format-and-review.md"):
         for link in re.findall(r"\]\(([^)]+)\)", file.read_text()):
             if link.startswith(("http:", "https:", "#")):
                 continue
@@ -86,7 +87,8 @@ def test_standalone_writer_materializes_all_real_resources_without_project_chang
             assert path.is_relative_to(installed.resolve()) and path.exists(), (file, link)
 
 
-@pytest.mark.parametrize("relative", ["references/parallel-chapters.md", "references/figures-and-tables.md"])
+@pytest.mark.parametrize("relative", ["references/parallel-chapters.md", "references/figures-and-tables.md",
+                                    "references/format-and-review.md"])
 def test_collaboration_contract_updates_without_changing_user_chapters_or_assets(sources, tmp_path, relative):
     target = tmp_path / "project"
     installed = install(sources, target)
@@ -98,9 +100,12 @@ def test_collaboration_contract_updates_without_changing_user_chapters_or_assets
     assert "宿主" in entry and "后台调度器" in entry
     if relative.endswith("parallel-chapters.md"):
         assert "总稿唯一写入者" in contract.read_text()
-    else:
+    elif relative.endswith("figures-and-tables.md"):
         assert "first_reference" in contract.read_text() and "discuss_in" in contract.read_text()
         assert "后台监听" in contract.read_text()
+    else:
+        assert "SHA-256" in contract.read_text() and "唯一写入者" in contract.read_text()
+        assert "独立只读" in contract.read_text()
     chapter = target / "draft/chapter-1.md"
     chapter.parent.mkdir()
     chapter.write_text("Existing user chapter; keep unchanged.\n")
@@ -108,6 +113,10 @@ def test_collaboration_contract_updates_without_changing_user_chapters_or_assets
     asset.parent.mkdir()
     asset.write_text('<svg xmlns="http://www.w3.org/2000/svg"><text>Original figure</text></svg>\n')
     asset_before = asset.read_bytes()
+    report = target / "reviews/content-review.md"
+    report.parent.mkdir()
+    report.write_text("User review: pending evidence for claim C1.\n")
+    report_before = report.read_bytes()
     (sources / "mine/z-writing" / relative).write_bytes(before + b"\nSynthetic revision.\n")
     assert update_skill(sources, "z-writing", target, dry_run=True) == 0
     assert contract.read_bytes() == before
@@ -115,11 +124,13 @@ def test_collaboration_contract_updates_without_changing_user_chapters_or_assets
     assert contract.read_bytes() == before + b"\nSynthetic revision.\n"
     assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
     assert asset.read_bytes() == asset_before
+    assert report.read_bytes() == report_before
     restore, = (target / ".vibe-tool/backups").glob("*/restore.py")
     run([sys.executable, restore])
     assert contract.read_bytes() == before
     assert chapter.read_text() == "Existing user chapter; keep unchanged.\n"
     assert asset.read_bytes() == asset_before
+    assert report.read_bytes() == report_before
 
 
 def test_scholarly_resources_also_work_in_direct_humanizer_install(sources, tmp_path):
