@@ -136,6 +136,7 @@ Templates can declare required Skills in `skills.txt`; `init/add manifest` insta
 | `git-manager` | Git repository and mirror management |
 | `tutor` | Conversational tutoring for textbooks or topics, illustrated notes, and learning records |
 | `market-analysis` | Industry, market, and competitive research |
+| [`writing`](../manifests/writing/README.md) | Patent drafting: `vibe setup writing <target> --harness generic --scenario patent`; disclosure, claim support, figures, review and DOCX draft handoff |
 | `novel-writing` | Long-form fiction and literary creation |
 | `office` | Office-delivery projects: goals, sources and versions, cross-format coordination, acceptance and archiving; includes Office Skills |
 | `social-media` | Social media content creation and operations |

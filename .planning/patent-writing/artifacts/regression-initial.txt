@@ -1,0 +1,23 @@
+................................................................................F. [ 89%]
+..........    [100%]
+=================================== FAILURES ===================================
+______________ test_all_document_links_and_readme_anchors_resolve ______________
+
+    def test_all_document_links_and_readme_anchors_resolve():
+        for relative in (p for pair in PAIRS for p in pair):
+            document = ROOT / relative
+            for _, href in markdown_links(document.read_text()):
+                parsed = urlsplit(href)
+                if parsed.scheme or parsed.netloc:
+                    continue
+                target = document.parent / unquote(parsed.path) if parsed.path else document
+>               assert target.exists(), (relative, href)
+E               AssertionError: ('docs/catalog.md', '../skills/visual-explainer/plugins/visual-explainer')
+E               assert False
+E                +  where False = exists()
+E                +    where exists = PosixPath('/home/rczx/orca/workspaces/vibe-coding/专利编写/docs/../skills/visual-explainer/plugins/visual-explainer').exists
+
+tools/vibe_tool/tests/test_documentation_languages.py:91: AssertionError
+=========================== short test summary info ============================
+FAILED tools/vibe_tool/tests/test_documentation_languages.py::test_all_document_links_and_readme_anchors_resolve
+1 failed, 91 passed, 121 subtests passed in 32.03s

@@ -181,6 +181,41 @@ class SetupTests(unittest.TestCase):
 
 
 class PortableRendererTests(unittest.TestCase):
+    def test_workflow_svg_stays_canonical_in_crlf_checkout(self):
+        with tempfile.TemporaryDirectory(prefix='workflow CRLF checkout ') as directory:
+            root = Path(directory)
+            names = ['scripts/render-manifest-workflow.py', 'docs/project-setup-workflow.json',
+                     'docs/project-setup-workflow.svg']
+            if (ROOT / '.gitattributes').is_file():
+                names.append('.gitattributes')
+            for name in names:
+                dest = root / name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_bytes((ROOT / name).read_bytes())
+            for command in (['git', 'init'], ['git', 'config', 'core.autocrlf', 'true'],
+                            ['git', 'add', '--', '.']):
+                result = subprocess.run(command, cwd=root, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+            expected = (root / 'docs/project-setup-workflow.svg').read_bytes()
+            for name in names:
+                (root / name).unlink()
+            result = subprocess.run(['git', 'checkout-index', '--all', '--force'], cwd=root,
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((root / 'docs/project-setup-workflow.svg').read_bytes(), expected)
+            result = subprocess.run([sys.executable, str(root / names[0]), '--source',
+                                     str(root / names[1]), '--output', str(root / names[2]), '--check'],
+                                    cwd=root, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_ci_registry_expression_uses_job_environment_context(self):
+        workflow = (ROOT / '.github/workflows/project-setup.yml').read_text(encoding='utf-8')
+        registry = [line.strip() for line in workflow.splitlines()
+                    if line.strip().startswith('VIBE_PROJECTS_FILE:')]
+        # runner is a step context, not available in jobs.<job_id>.env.
+        self.assertEqual(registry, [
+            'VIBE_PROJECTS_FILE: ${{ github.workspace }}/.vibe-tool/ci-projects.json'])
+
     def test_every_current_manifest_has_a_shell_free_renderer(self):
         # All real manifest resources/native Python installers, without pulling
         # unrelated skill bundles into this offline portability test.

@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "title": "Writing · Patent 专利编写协作流程",
+  "description": "项目契约配合 chinese-patent 技能执行；AI 制作、AI 审阅、人工事实补充与范围决定分开。图描述规则，不记录实际进度或批准。单项任务只验收请求范围。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "请求 / 当前检查点",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "读取已有交底、文稿与账本；按全流程或单项任务进入。"
+    },
+    {
+      "id": "intake",
+      "label": "核对交底与事实来源",
+      "kind": "ai",
+      "row": 1,
+      "detail": "复用已确定信息；标出技术事实缺口，不补造数据。"
+    },
+    {
+      "id": "facts",
+      "label": "补充关键技术事实",
+      "kind": "human",
+      "row": 1,
+      "detail": "waiting-input：只暂停依赖该事实的起草，独立整理继续。",
+      "trigger": "材料缺实现结构、步骤或效果依据。",
+      "resume": "补充后回交底核对；取消则保留当前成果并归档。"
+    },
+    {
+      "id": "plan",
+      "label": "规划 / 权利要求支持矩阵",
+      "kind": "ai",
+      "row": 2,
+      "detail": "类型分析、必要/附加特征、术语、实施例及附图清单。"
+    },
+    {
+      "id": "scope",
+      "label": "保护范围与类型取舍",
+      "kind": "human",
+      "row": 2,
+      "detail": "waiting-decision：附具体规划版本、选项与影响，未回答不推进相关动作。",
+      "trigger": "有真实范围取舍、目标冲突或新增特征。",
+      "resume": "同意后制作；调整回规划；取消则保留成果归档。"
+    },
+    {
+      "id": "figures",
+      "label": "绘制并核对所需附图",
+      "kind": "ai",
+      "row": 3,
+      "detail": "chinese-patent-drawer / omnidraw；保留编辑源，核对中文、标记和路径。"
+    },
+    {
+      "id": "draft",
+      "label": "起草说明书 / 权利要求 / 摘要",
+      "kind": "ai",
+      "row": 4,
+      "detail": "chinese-patent-writer；支持矩阵定位到正文、实施例、图与来源。"
+    },
+    {
+      "id": "review",
+      "label": "分轮审阅与内容复验",
+      "kind": "check",
+      "row": 4,
+      "detail": "chinese-patent-review；必须改清零，建议改有处置；记录真实审阅方式。"
+    },
+    {
+      "id": "export",
+      "label": "导出 DOCX 草稿包",
+      "kind": "ai",
+      "row": 5,
+      "detail": "检测 Pandoc；从同版 HTML 和本地图导出，保存命令、退出状态及产物。"
+    },
+    {
+      "id": "preview",
+      "label": "重新打开并预览导出文件",
+      "kind": "check",
+      "row": 5,
+      "detail": "核对中文、图文、公式和分页；缺预览则 pending，不冒充完成。"
+    },
+    {
+      "id": "handback",
+      "label": "按需确认交付版本",
+      "kind": "human",
+      "row": 5,
+      "detail": "waiting-decision：呈交清单、哈希、证据与未核实项；对外动作另立任务。",
+      "trigger": "用户要求最终确认或准备对外动作。",
+      "resume": "确认后归档本地交付；修改回正文；取消保留记录。"
+    },
+    {
+      "id": "rollback",
+      "label": "恢复指定工作前版",
+      "kind": "ai",
+      "row": 6,
+      "detail": "先备份当前版，再恢复同版文稿与图源；核对哈希后回审阅，更新账本。"
+    },
+    {
+      "id": "end",
+      "label": "归档 / 本轮结束",
+      "kind": "terminal",
+      "row": 7,
+      "detail": "记录有效版本、证据与下一步；区分 delivered、单项结果与 cancelled，不宣称已申报。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "intake",
+      "label": "接收或恢复",
+      "kind": "normal"
+    },
+    {
+      "from": "intake",
+      "to": "facts",
+      "label": "缺关键事实",
+      "kind": "normal"
+    },
+    {
+      "from": "facts",
+      "to": "intake",
+      "label": "补充后复核",
+      "kind": "rework"
+    },
+    {
+      "from": "facts",
+      "to": "end",
+      "label": "取消本轮",
+      "kind": "normal"
+    },
+    {
+      "from": "intake",
+      "to": "plan",
+      "label": "新稿 / 范围变化",
+      "kind": "normal"
+    },
+    {
+      "from": "intake",
+      "to": "review",
+      "label": "仅审阅已有稿",
+      "kind": "normal"
+    },
+    {
+      "from": "plan",
+      "to": "scope",
+      "label": "存在实际取舍",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "plan",
+      "label": "调整范围",
+      "kind": "rework"
+    },
+    {
+      "from": "scope",
+      "to": "figures",
+      "label": "同意当前规划",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "end",
+      "label": "取消保留成果",
+      "kind": "normal"
+    },
+    {
+      "from": "plan",
+      "to": "figures",
+      "label": "既有决定有效",
+      "kind": "normal"
+    },
+    {
+      "from": "plan",
+      "to": "end",
+      "label": "仅规划任务完成",
+      "kind": "normal"
+    },
+    {
+      "from": "figures",
+      "to": "draft",
+      "label": "所需图通过 / 有据免图",
+      "kind": "normal"
+    },
+    {
+      "from": "draft",
+      "to": "review",
+      "label": "草稿与矩阵齐备",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "plan",
+      "label": "范围 / 支持不足",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "figures",
+      "label": "图文问题",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "draft",
+      "label": "文字 / 术语问题",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "export",
+      "label": "交付版内容审阅通过",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "end",
+      "label": "仅审阅报告交付",
+      "kind": "normal"
+    },
+    {
+      "from": "export",
+      "to": "preview",
+      "label": "转换成功",
+      "kind": "normal"
+    },
+    {
+      "from": "preview",
+      "to": "export",
+      "label": "导出 / 排版返工",
+      "kind": "rework"
+    },
+    {
+      "from": "preview",
+      "to": "handback",
+      "label": "需要当前版本确认",
+      "kind": "normal"
+    },
+    {
+      "from": "preview",
+      "to": "end",
+      "label": "委托范围内本地交付",
+      "kind": "normal"
+    },
+    {
+      "from": "handback",
+      "to": "end",
+      "label": "确认 / 取消均记录",
+      "kind": "normal"
+    },
+    {
+      "from": "handback",
+      "to": "draft",
+      "label": "要求修订",
+      "kind": "rework"
+    },
+    {
+      "from": "handback",
+      "to": "rollback",
+      "label": "请求撤回工作版",
+      "kind": "rework"
+    },
+    {
+      "from": "rollback",
+      "to": "review",
+      "label": "恢复版重新审阅",
+      "kind": "rework"
+    }
+  ]
+}

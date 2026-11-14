@@ -1,0 +1,3 @@
+# 整包安装；子技能使用包内共享规则与脚本。
+chinese-patent
+omnidraw

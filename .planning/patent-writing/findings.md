@@ -1,0 +1,11 @@
+# 发现
+- 工作区为 vibe-coding 模板源码仓库；git 初始干净，无 .codegraph。
+- 现有 manifests 没有 writing；有 novel-writing、office。workflows/writing-agent 是公众号独立流程，不适合作为专利默认入口。
+- mine/chinese-patent 已包含规划、绘图、撰写、审阅子技能及 HTML→DOCX 脚本；应整体安装，避免拆散相对引用。
+- setup 使用 Python 标准库，支持中立规则包、场景、显式资源分发及事务回退；需核查场景支持资源布局。
+- manifest-creator 要求工作流 SVG、编辑源、renderer、只读 check 和安装后验证。
+- setup 的 compile_bundle 已合并所选场景 rules；无须改动公共安装器。通用 setup 会完整分发 references/scripts/templates，并保留用户正文。
+- 历史 generic init/add 不分发这些资源或场景；本模板仅承诺 setup 场景入口，不扩张通用旧行为。
+- 已按 source_path 修正 SkillInfo 字段读取；依赖用 discover/resolve 的真实名称核对。
+- 源码和双端安装均通过；业务状态账本按需创建，避免进入配置哈希管理。完整复现记录和当前包哈希保存在 artifacts/verification.json。
+- 文档全量链接检查所需的 visual-explainer 源码目录在本工作区缺失；原始文档同样失败。新增模板链接已独立检查通过。
