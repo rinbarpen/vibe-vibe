@@ -1,0 +1,12 @@
+{
+  "label": "baseline",
+  "command": [
+    "/home/rczx/miniconda3/bin/python3",
+    "-c",
+    "from pathlib import Path; import sys; sys.path.insert(0,'tools/vibe_tool/src'); from vibe_tool.discovery import discover_manifests; assert not Path('manifests/writing').exists(); assert 'writing' not in [m.name for m in discover_manifests(Path('manifests'))]; assert Path('mine/chinese-patent/SKILL.md').is_file(); print('BASELINE: writing manifest/patent scenario absent; reusable chinese-patent skill present.')"
+  ],
+  "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+  "stdout": "BASELINE: writing manifest/patent scenario absent; reusable chinese-patent skill present.\n",
+  "stderr": "",
+  "exit_status": 0
+}

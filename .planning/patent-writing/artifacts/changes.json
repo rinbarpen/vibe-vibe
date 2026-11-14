@@ -1,0 +1,85 @@
+{
+  "source_root": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+  "changes": [
+    {
+      "path": "docs/catalog.md",
+      "before": "bbdffb00dcff5c2bf0d9f7b6d7a13984543144f7adb84a866c40f1517bb16394",
+      "after": "c77184fc035dbb216dc3dedf6226728a60b84ec43547935b92c34c3d60315429"
+    },
+    {
+      "path": "docs/catalog_EN.md",
+      "before": "8456897d8012548cd4f6bb68a0ac1282ea1a218a69921f3226fa89968c24c74c",
+      "after": "f19faadc4034c8439254549776b12a718a40aff906361ae60d831d93d282897e"
+    },
+    {
+      "path": "manifests/writing/AGENTS.md",
+      "before": null,
+      "after": "7944c7092d4bef43dc34039ac2d666d2f52d3fc2d3c85a63312bbb4956b0ed7c"
+    },
+    {
+      "path": "manifests/writing/CLAUDE.md",
+      "before": null,
+      "after": "7944c7092d4bef43dc34039ac2d666d2f52d3fc2d3c85a63312bbb4956b0ed7c"
+    },
+    {
+      "path": "manifests/writing/README.md",
+      "before": null,
+      "after": "2dce50381b41d788982d1cea9d33add21ba2f245f60632968b129183f3d2304b"
+    },
+    {
+      "path": "manifests/writing/references/patent-guide.md",
+      "before": null,
+      "after": "fa31ecd99c29cef8f488c47f0547778b35f82c2e7577d4a5e121940627679827"
+    },
+    {
+      "path": "manifests/writing/references/patent-workflow.json",
+      "before": null,
+      "after": "087a2abe5ede7818340f1787d31f190721cadef0ce8b12828ab342ab80d60e35"
+    },
+    {
+      "path": "manifests/writing/references/patent-workflow.svg",
+      "before": null,
+      "after": "0aca3bcbf5bf69f274863caefe2a22276cfcdcdf839e7fdc348e6c0bbd743833"
+    },
+    {
+      "path": "manifests/writing/scenarios/patent/rules/patent.md",
+      "before": null,
+      "after": "28869cc245bb5ab9d686b5cc87605c6f09e0f000df36b6fec38c5d1dde568e40"
+    },
+    {
+      "path": "manifests/writing/scripts/render_patent_workflow.py",
+      "before": null,
+      "after": "dce44604f5011d44c35d37d9560b7307f4ea564088c808ff7a9c69c12eea471a"
+    },
+    {
+      "path": "manifests/writing/skills.txt",
+      "before": null,
+      "after": "b9983247441dd89fac5dcc7c5d81e0b2aa466006a0417739c0e686725d58638b"
+    },
+    {
+      "path": "manifests/writing/templates/claim-support.csv",
+      "before": null,
+      "after": "d18058f771940ef170690a7d1c15402fa5a3b032eab858c1e307e4be58472fe5"
+    },
+    {
+      "path": "manifests/writing/templates/patent-brief.md",
+      "before": null,
+      "after": "7d89cf10dd527ff43e201d405082a72f20d338168e6e9a98e02eb6d30dc7f174"
+    },
+    {
+      "path": "manifests/writing/templates/patent-ledger.md",
+      "before": null,
+      "after": "8bcca26359fe217dec2a40e7b96d3fa0440c925706964f52918d07ccc65435fb"
+    },
+    {
+      "path": "manifests/writing/templates/patent-review.md",
+      "before": null,
+      "after": "87932c3687fa4c1a7ffe9a4f3ac0c885a96fb3895439f2ac76732d4d33c9578b"
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_patent_writing_manifest.py",
+      "before": null,
+      "after": "634e28eef4eb1128faae4dce021948d48633ff1247e16c1442112972aeb496a5"
+    }
+  ]
+}

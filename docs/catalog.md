@@ -134,6 +134,7 @@ Manifest 是项目级配置包，通常包含 `CLAUDE.md`、`AGENTS.md`、规则
 | `git-manager` | Git 仓库与镜像管理 |
 | `tutor` | 对话式学习导师：教材/主题辅导、自动图文笔记与学习记录 |
 | `market-analysis` | 行业研究、市场与竞品分析 |
+| [`writing`](../manifests/writing/README.md) | 专利编写项目：`vibe setup writing <target> --harness generic --scenario patent`；交底、权利要求支持、附图、审阅与 DOCX 草稿交付 |
 | `novel-writing` | 长篇小说与文学创作 |
 | `office` | 办公交付项目：目标、来源与版本、跨格式协作、验收与归档；包含 Office Skills |
 | `social-media` | 社交媒体内容创作与运营 |

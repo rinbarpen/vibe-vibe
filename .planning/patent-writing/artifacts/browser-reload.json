@@ -1,0 +1,32 @@
+{
+  "id": "0e15c107-e699-464f-adca-dd638e80ace0",
+  "ok": true,
+  "result": {
+    "url": "file:///home/rczx/orca/workspaces/vibe-coding/%E4%B8%93%E5%88%A9%E7%BC%96%E5%86%99/.planning/patent-writing/artifacts/workflow-preview.html",
+    "title": "Patent workflow review",
+    "effects": {
+      "settled": true,
+      "page": {
+        "lines": [
+          "  - StaticText \"取消保留成果\"",
+          "  - StaticText \"同意当前规划\"",
+          "  - StaticText \"接收或恢复\"",
+          "  - StaticText \"补充后复核\"",
+          "  - StaticText \"要求修订\"",
+          "  - StaticText \"请求撤回工作版\"",
+          "  - StaticText \"导出 / 排版返工\"",
+          "  - StaticText \"文字 / 术语问题\"",
+          "  - StaticText \"图文问题\"",
+          "  - StaticText \"范围 / 支持不足\"",
+          "  - StaticText \"恢复版重新审阅\""
+        ],
+        "removedLines": 11,
+        "full": false,
+        "truncated": false
+      }
+    }
+  },
+  "_meta": {
+    "runtimeId": "d6db85cf-4680-47bf-a5e2-63ecb466e858"
+  }
+}

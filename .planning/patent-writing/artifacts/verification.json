@@ -1,0 +1,535 @@
+{
+  "status": "verified_with_preexisting_environment_gap",
+  "changed_files": 16,
+  "object": "manifests/writing; scenario=patent",
+  "source_root": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+  "actual_install": "/tmp/patent-writing-verified-ck7htze6/project 专利",
+  "baseline": "writing/patent absent; reusable chinese-patent skill present",
+  "modified": "writing/patent discoverable; complete setup, installed workflow, real DOCX export, patch replay and rollback verified",
+  "artifacts": {
+    "writing-patent-manifest.zip": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/writing-patent-manifest.zip",
+      "sha256": "c3cb14852c221693657f9c2f12f019cbb070f43be04e88b4cee4de8959ba6266"
+    },
+    "writing-patent.patch": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/writing-patent.patch",
+      "sha256": "39789ebc150e1bca47f61297562a1b67daea8f98295482f288666773ac3afd32"
+    },
+    "rollback.py": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/rollback.py",
+      "sha256": "d70f51dab0f5e6f15debf8273e7f28443b048744874ab8428f3b0fac6e1bf504"
+    },
+    "changes.json": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/changes.json",
+      "sha256": "cfb4c9cdd40458b33a30d1495bc71a9e285339a4756dc02ab5b3e0160e5225f7"
+    },
+    "export-smoke.docx": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/export-smoke.docx",
+      "sha256": "fcc3a59ebaeb053fb2f45c7fc8cfd0991be66c8242409d89d7cc948a1cc32533"
+    },
+    "workflow-preview.png": {
+      "path": "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/workflow-preview.png",
+      "sha256": "2a3b90d78456a4ae98f17b746d6ade892bdca07561c1d842ea72f35f1d0f38c8"
+    }
+  },
+  "package_members": 13,
+  "commands": [
+    {
+      "label": "baseline",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-c",
+        "from pathlib import Path; import sys; sys.path.insert(0,'tools/vibe_tool/src'); from vibe_tool.discovery import discover_manifests; assert not Path('manifests/writing').exists(); assert 'writing' not in [m.name for m in discover_manifests(Path('manifests'))]; assert Path('mine/chinese-patent/SKILL.md').is_file(); print('BASELINE: writing manifest/patent scenario absent; reusable chinese-patent skill present.')"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "stdout": "BASELINE: writing manifest/patent scenario absent; reusable chinese-patent skill present.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "label": "baseline unrelated missing-source link",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-c",
+        "import importlib.util\nfrom pathlib import Path\nfrom unittest.mock import patch\nroot=Path.cwd(); spec=importlib.util.spec_from_file_location(\"language_tests\",root/\"tools/vibe_tool/tests/test_documentation_languages.py\")\nm=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\nold=Path.read_text\nmapping={str((root/n).resolve()):root/\".planning/patent-writing/artifacts/baseline\"/n for n in (\"docs/catalog.md\",\"docs/catalog_EN.md\")}\ndef read(p,*a,**kw):\n return old(mapping.get(str(p.resolve()),p),*a,**kw)\nwith patch.object(Path,\"read_text\",read):m.test_all_document_links_and_readme_anchors_resolve()\n"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 10, in <module>\n  File \"/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/tests/test_documentation_languages.py\", line 91, in test_all_document_links_and_readme_anchors_resolve\n    assert target.exists(), (relative, href)\n           ^^^^^^^^^^^^^^^\nAssertionError: ('docs/catalog.md', '../skills/visual-explainer/plugins/visual-explainer')\n",
+      "exit_status": 1,
+      "expected_exit_status": 1
+    },
+    {
+      "label": "initial broad regression before local graph refinement",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-m",
+        "pytest",
+        "tools/vibe_tool/tests/test_patent_writing_manifest.py",
+        "tools/vibe_tool/tests/test_setup.py",
+        "tools/vibe_tool/tests/test_harness_rules.py",
+        "tools/vibe_tool/tests/test_projects.py",
+        "tools/vibe_tool/tests/test_documentation_languages.py",
+        "tests/test_manifest_workflow.py",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "stdout": "................................................................................F. [ 89%]\n..........    [100%]\n=================================== FAILURES ===================================\n______________ test_all_document_links_and_readme_anchors_resolve ______________\n\n    def test_all_document_links_and_readme_anchors_resolve():\n        for relative in (p for pair in PAIRS for p in pair):\n            document = ROOT / relative\n            for _, href in markdown_links(document.read_text()):\n                parsed = urlsplit(href)\n                if parsed.scheme or parsed.netloc:\n                    continue\n                target = document.parent / unquote(parsed.path) if parsed.path else document\n>               assert target.exists(), (relative, href)\nE               AssertionError: ('docs/catalog.md', '../skills/visual-explainer/plugins/visual-explainer')\nE               assert False\nE                +  where False = exists()\nE                +    where exists = PosixPath('/home/rczx/orca/workspaces/vibe-coding/专利编写/docs/../skills/visual-explainer/plugins/visual-explainer').exists\n\ntools/vibe_tool/tests/test_documentation_languages.py:91: AssertionError\n=========================== short test summary info ============================\nFAILED tools/vibe_tool/tests/test_documentation_languages.py::test_all_document_links_and_readme_anchors_resolve\n1 failed, 91 passed, 121 subtests passed in 32.03s\n",
+      "stderr": "",
+      "exit_status": 1,
+      "note": "91 passed, 121 subtests passed; existing missing visual-explainer source link failed."
+    },
+    {
+      "label": "final relevant regression excluding reproduced pre-existing source gap",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-m",
+        "pytest",
+        "tools/vibe_tool/tests/test_patent_writing_manifest.py",
+        "tools/vibe_tool/tests/test_setup.py",
+        "tools/vibe_tool/tests/test_harness_rules.py",
+        "tools/vibe_tool/tests/test_projects.py",
+        "tools/vibe_tool/tests/test_documentation_languages.py",
+        "tests/test_manifest_workflow.py",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-k",
+        "not test_all_document_links_and_readme_anchors_resolve"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": ".................................................................................. [ 89%]\n..........    [100%]\n92 passed, 1 deselected, 121 subtests passed in 35.10s\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "modified manifest discovery",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-m",
+        "vibe_tool",
+        "list",
+        "manifests",
+        "--json"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "[\n  {\n    \"name\": \"auto-research\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/auto-research\",\n    \"description\": \"Auto-Research Manifest\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/auto-research/scripts/init-auto-research.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": [\n      \"grill-me\",\n      \"research-lit\",\n      \"intuit-to-idea\",\n      \"idea-discovery\",\n      \"novelty-check\",\n      \"research-refine\",\n      \"experiment-plan\",\n      \"experiment-bridge\",\n      \"run-experiment\",\n      \"monitor-experiment\",\n      \"analyze-results\",\n      \"result-to-claim\",\n      \"ablation-planner\",\n      \"paper-plan\",\n      \"paper-figure\",\n      \"paper-write\",\n      \"paper-compile\",\n      \"auto-review-loop\",\n      \"auto-paper-improvement-loop\",\n      \"citation-audit\",\n      \"paper-claim-audit\",\n      \"rebuttal\",\n      \"figure-spec\",\n      \"paper-illustration\",\n      \"academic-paper-reviewer\",\n      \"paperreview-ai-review\",\n      \"paper-version-manager\",\n      \"export-paper-zip\",\n      \"z-humanizer\",\n      \"anti-defensive-writing\"\n    ]\n  },\n  {\n    \"name\": \"auto-research-ars\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/auto-research-ars\",\n    \"description\": \"Auto-Research ARS Manifest\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/auto-research-ars/scripts/init-auto-research-ars.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"fund-proposal\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/fund-proposal\",\n    \"description\": \"CLAUDE.md (Fund_Craft_Pro \\u4e13\\u7528)\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/fund-proposal/scripts/vibe-init-fund.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"game-design\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/game-design\",\n    \"description\": \"Game Design \\u2014 \\u591a\\u5f15\\u64ce\\u6e38\\u620f\\u8bbe\\u8ba1\\u4e0e\\u5236\\u4f5c\\u5951\\u7ea6\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/game-design/scripts/init-game-design.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"git-manager\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/git-manager\",\n    \"description\": \"Git \\u4ed3\\u5e93\\u8de8\\u5e73\\u53f0\\u7ba1\\u7406 Manifest\",\n    \"has_init_script\": false,\n    \"init_script_path\": null,\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"market-analysis\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/market-analysis\",\n    \"description\": \"CLAUDE.md \\u2014 \\u884c\\u4e1a\\u7814\\u7a76 / \\u6295\\u8d44\\u5206\\u6790\",\n    \"has_init_script\": false,\n    \"init_script_path\": null,\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"novel-writing\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/novel-writing\",\n    \"description\": \"CLAUDE.md\",\n    \"has_init_script\": false,\n    \"init_script_path\": null,\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"office\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/office\",\n    \"description\": \"\\u529e\\u516c\\u9879\\u76ee\\u534f\\u4f5c\\u5951\\u7ea6\\uff08Claude Code\\uff09\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/office/scripts/init-office.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": [\n      \"office\",\n      \"anthropics/skills/docx\",\n      \"anthropics/skills/xlsx\",\n      \"anthropics/skills/pptx\",\n      \"anthropics/skills/pdf\",\n      \"office-quality\",\n      \"z-writing\",\n      \"omnidraw\",\n      \"omnisheet\",\n      \"omnippt\"\n    ]\n  },\n  {\n    \"name\": \"social-media\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/social-media\",\n    \"description\": \"CLAUDE.md \\u2014 \\u793e\\u4ea4\\u5a92\\u4f53\\u5185\\u5bb9\\u521b\\u4f5c\\u9879\\u76ee\",\n    \"has_init_script\": false,\n    \"init_script_path\": null,\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"tutor\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/tutor\",\n    \"description\": \"Tutor Manifest\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/tutor/scripts/vibe-init-tutor.sh\",\n    \"scenarios\": [\n      \"course-learning\",\n      \"exam-prep\",\n      \"research-reading\",\n      \"self-study\"\n    ],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"ui-testing\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/ui-testing\",\n    \"description\": \"UI Testing Project\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/ui-testing/scripts/ui-testing-init.sh\",\n    \"scenarios\": [\n      \"accessibility\",\n      \"component\",\n      \"mobile\",\n      \"visual-regression\",\n      \"web-e2e\"\n    ],\n    \"init_blacklisted\": false,\n    \"required_skills\": []\n  },\n  {\n    \"name\": \"unity-game\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/unity-game\",\n    \"description\": \"Unity Game Manifest\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/unity-game/scripts/init-unity-game.sh\",\n    \"scenarios\": [],\n    \"init_blacklisted\": false,\n    \"required_skills\": [\n      \"unity-game-development\",\n      \"version-management\",\n      \"git-manager\",\n      \"omnidraw\",\n      \"state-machine-reasoning\"\n    ]\n  },\n  {\n    \"name\": \"vibe-coding\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/vibe-coding\",\n    \"description\": \"Vibe Coding Unified Manifest\",\n    \"has_init_script\": true,\n    \"init_script_path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/vibe-coding/scripts/vibe-init.sh\",\n    \"scenarios\": [\n      \"agent-dev\",\n      \"api-service\",\n      \"cli-tool\",\n      \"cross-platform\",\n      \"data-pipeline\",\n      \"desktop-electron\",\n      \"desktop-flutter\",\n      \"desktop-tauri\",\n      \"distributed\",\n      \"frontend\",\n      \"fullstack-web\",\n      \"llm-dev\",\n      \"research\",\n      \"saas\",\n      \"wechat-miniprogram\"\n    ],\n    \"init_blacklisted\": false,\n    \"required_skills\": [\n      \"domain-dispatcher\",\n      \"language-advisor\",\n      \"lifecycle-orchestrator\",\n      \"vibe-coding\",\n      \"anthropics-skills-canvas-design\",\n      \"wxa-skills-generate\",\n      \"wxa-skills-validate\",\n      \"wxa-skills-eval\",\n      \"ask-matt\",\n      \"code-review\",\n      \"codebase-design\",\n      \"diagnosing-bugs\",\n      \"domain-modeling\",\n      \"grill-with-docs\",\n      \"implement\",\n      \"implement-spec\",\n      \"improve-codebase-architecture\",\n      \"pr\",\n      \"prototype\",\n      \"research\",\n      \"retro\",\n      \"setup-matt-pocock-skills\",\n      \"tdd\",\n      \"to-spec\",\n      \"to-tickets\",\n      \"triage\",\n      \"wayfinder\",\n      \"wizard\",\n      \"grill-me\",\n      \"grilling\",\n      \"handoff\",\n      \"teach\",\n      \"to-questionnaire\",\n      \"wait-what\",\n      \"writing-for-agents\",\n      \"git-guardrails-claude-code\",\n      \"migrate-to-shoehorn\",\n      \"scaffold-exercises\",\n      \"setup-pre-commit\"\n    ]\n  },\n  {\n    \"name\": \"writing\",\n    \"path\": \"/home/rczx/orca/workspaces/vibe-coding/\\u4e13\\u5229\\u7f16\\u5199/manifests/writing\",\n    \"description\": \"Writing \\u2014 \\u5199\\u4f5c\\u9879\\u76ee\\u534f\\u4f5c\\u5951\\u7ea6\",\n    \"has_init_script\": false,\n    \"init_script_path\": null,\n    \"scenarios\": [\n      \"patent\"\n    ],\n    \"init_blacklisted\": false,\n    \"required_skills\": [\n      \"chinese-patent\",\n      \"omnidraw\"\n    ]\n  }\n]\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "actual-source setup preview",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/scripts/setup-project.py",
+        "writing",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利",
+        "--harness",
+        "both",
+        "--scenario",
+        "patent",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "\nInstalling 2 required skills:\n  COPY  chinese-patent\n  COPY  omnidraw\n[dry-run] Setup writing for both in /tmp/patent-writing-verified-ck7htze6/project 专利: 278 planned files; no project writes.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "actual-source complete setup",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/scripts/setup-project.py",
+        "writing",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利",
+        "--harness",
+        "both",
+        "--scenario",
+        "patent"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "\nInstalling 2 required skills:\n  COPY  chinese-patent\n  COPY  omnidraw\n  ADD  .agents/skills/chinese-patent/SKILL.md\n  ADD  .agents/skills/chinese-patent/chinese-patent-drawer/SKILL.md\n  ADD  .agents/skills/chinese-patent/chinese-patent-plan/SKILL.md\n  ADD  .agents/skills/chinese-patent/chinese-patent-review/SKILL.md\n  ADD  .agents/skills/chinese-patent/chinese-patent-writer/SKILL.md\n  ADD  .agents/skills/chinese-patent/drawio/SKILL.md\n  ADD  .agents/skills/chinese-patent/drawio/references/ah-to-xml.md\n  ADD  .agents/skills/chinese-patent/drawio/references/drawio-aesthetic-guide.md\n  ADD  .agents/skills/chinese-patent/drawio/references/examples.md\n  ADD  .agents/skills/chinese-patent/drawio/references/ieee-network-diagrams.md\n  ADD  .agents/skills/chinese-patent/drawio/references/math-typesetting.md\n  ADD  .agents/skills/chinese-patent/drawio/references/mcp-tools.md\n  ADD  .agents/skills/chinese-patent/drawio/references/structured-diagram-prompts.md\n  ADD  .agents/skills/chinese-patent/drawio/references/structured-diagram-quality.md\n  ADD  .agents/skills/chinese-patent/drawio/references/style-presets.md\n  ADD  .agents/skills/chinese-patent/drawio/references/xml-format.md\n  ADD  .agents/skills/chinese-patent/drawio/scripts/install.bat\n  ADD  .agents/skills/chinese-patent/drawio/scripts/install.sh\n  ADD  .agents/skills/chinese-patent/drawio/src/dsl/ah-to-drawio.js\n  ADD  .agents/skills/chinese-patent/drawio/src/dsl/ah-to-drawio.test.js\n  ADD  .agents/skills/chinese-patent/drawio/src/math/index.js\n  ADD  .agents/skills/chinese-patent/reference.md\n  ADD  .agents/skills/chinese-patent/requirements.txt\n  ADD  .agents/skills/chinese-patent/rules/drawing-rules.md\n  ADD  .agents/skills/chinese-patent/rules/patent-type-guide.md\n  ADD  .agents/skills/chinese-patent/rules/review-checklist.md\n  ADD  .agents/skills/chinese-patent/rules/writing-rules.md\n  ADD  .agents/skills/chinese-patent/scripts/generate_figure_example.py\n  ADD  .agents/skills/chinese-patent/scripts/html_to_docx.py\n  ADD  .agents/skills/chinese-patent/scripts/html_to_pdf.py\n  ADD  .agents/skills/chinese-patent/templates/patent_spec_template.html\n  ADD  .agents/skills/chinese-patent/templates/reference-patent-example.html\n  ADD  .agents/skills/omnidraw/SKILL.md\n  ADD  .agents/skills/omnidraw/assets/workflow.mmd\n  ADD  .agents/skills/omnidraw/assets/workflow.svg\n  ADD  .agents/skills/omnidraw/canvas-design/SKILL.md\n  ADD  .agents/skills/omnidraw/canvas-design/references/canvas-design-reference.md\n  ADD  .agents/skills/omnidraw/canvas-design/templates/canvas-design-prompts.md\n  ADD  .agents/skills/omnidraw/drawio/SKILL.md\n  ADD  .agents/skills/omnidraw/drawio/references/drawio-reference.md\n  ADD  .agents/skills/omnidraw/drawio/styles/style-presets.md\n  ADD  .agents/skills/omnidraw/drawio/templates/drawio-prompts.md\n  ADD  .agents/skills/omnidraw/excalidraw/SKILL.md\n  ADD  .agents/skills/omnidraw/excalidraw/references/excalidraw-reference.md\n  ADD  .agents/skills/omnidraw/excalidraw/templates/excalidraw-prompts.md\n  ADD  .agents/skills/omnidraw/gpt-image-2/SKILL.md\n  ADD  .agents/skills/omnidraw/gpt-image-2/references/gpt-image-reference.md\n  ADD  .agents/skills/omnidraw/gpt-image-2/templates/gpt-image-prompts.md\n  ADD  .agents/skills/omnidraw/matplotlib/SKILL.md\n  ADD  .agents/skills/omnidraw/matplotlib/references/matplotlib-styles.md\n  ADD  .agents/skills/omnidraw/matplotlib/scripts/chart-templates.py\n  ADD  .agents/skills/omnidraw/matplotlib/templates/matplotlib-prompts.md\n  ADD  .agents/skills/omnidraw/mermaid/SKILL.md\n  ADD  .agents/skills/omnidraw/mermaid/references/mermaid-reference.md\n  ADD  .agents/skills/omnidraw/mermaid/styles/mermaid-themes.md\n  ADD  .agents/skills/omnidraw/mermaid/templates/mermaid-prompts.md\n  ADD  .agents/skills/omnidraw/nano-banana/SKILL.md\n  ADD  .agents/skills/omnidraw/nano-banana/references/nano-banana-reference.md\n  ADD  .agents/skills/omnidraw/nano-banana/templates/nano-banana-prompts.md\n  ADD  .agents/skills/omnidraw/plantuml/SKILL.md\n  ADD  .agents/skills/omnidraw/plantuml/references/plantuml-reference.md\n  ADD  .agents/skills/omnidraw/plantuml/templates/plantuml-prompts.md\n  ADD  .agents/skills/omnidraw/references/routing-matrix.md\n  ADD  .agents/skills/omnidraw/references/ui-design.md\n  ADD  .agents/skills/omnidraw/references/visualization-scenarios.md\n  ADD  .agents/skills/omnidraw/references/visualization-scenarios_EN.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/01_pipeline/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/01_pipeline/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/01_pipeline/figure.svg\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/01_pipeline/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/01_pipeline/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/02_apparatus/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/02_apparatus/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/02_apparatus/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/02_apparatus/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/03_mechanism/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/03_mechanism/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/03_mechanism/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/03_mechanism/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/04_architecture/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/04_architecture/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/04_architecture/figure.svg\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/04_architecture/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/04_architecture/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.pdf\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.svg\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/render.py\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/05_comparison/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/07_roadmap/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/07_roadmap/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/07_roadmap/figure.svg\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/07_roadmap/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/07_roadmap/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/08_cover_art/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/08_cover_art/figure.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/08_cover_art/prompt.txt\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/08_cover_art/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/data.csv\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/render.py\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/stat_single.pdf\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/09_stat_single/stat_single.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/brief.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/data.csv\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/generate_data.py\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/render.py\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/review.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/stat_multi.pdf\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/stat_multi.png\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/README.md\n  ADD  .agents/skills/omnidraw/review-samples/2026-10-01/index.html\n  ADD  .agents/skills/omnidraw/scientific-schematics/SKILL.md\n  ADD  .agents/skills/omnidraw/scientific-schematics/references/journal-standards.md\n  ADD  .agents/skills/omnidraw/scientific-schematics/templates/scientific-schematics-prompts.md\n  ADD  .agents/skills/omnidraw/templates/scenario-prompts.md\n  ADD  .agents/skills/omnidraw/visio/SKILL.md\n  ADD  .agents/skills/omnidraw/visio/references/visio-reference.md\n  ADD  .agents/skills/omnidraw/visio/templates/visio-templates.md\n  ADD  .claude/skills/chinese-patent/SKILL.md\n  ADD  .claude/skills/chinese-patent/chinese-patent-drawer/SKILL.md\n  ADD  .claude/skills/chinese-patent/chinese-patent-plan/SKILL.md\n  ADD  .claude/skills/chinese-patent/chinese-patent-review/SKILL.md\n  ADD  .claude/skills/chinese-patent/chinese-patent-writer/SKILL.md\n  ADD  .claude/skills/chinese-patent/drawio/SKILL.md\n  ADD  .claude/skills/chinese-patent/drawio/references/ah-to-xml.md\n  ADD  .claude/skills/chinese-patent/drawio/references/drawio-aesthetic-guide.md\n  ADD  .claude/skills/chinese-patent/drawio/references/examples.md\n  ADD  .claude/skills/chinese-patent/drawio/references/ieee-network-diagrams.md\n  ADD  .claude/skills/chinese-patent/drawio/references/math-typesetting.md\n  ADD  .claude/skills/chinese-patent/drawio/references/mcp-tools.md\n  ADD  .claude/skills/chinese-patent/drawio/references/structured-diagram-prompts.md\n  ADD  .claude/skills/chinese-patent/drawio/references/structured-diagram-quality.md\n  ADD  .claude/skills/chinese-patent/drawio/references/style-presets.md\n  ADD  .claude/skills/chinese-patent/drawio/references/xml-format.md\n  ADD  .claude/skills/chinese-patent/drawio/scripts/install.bat\n  ADD  .claude/skills/chinese-patent/drawio/scripts/install.sh\n  ADD  .claude/skills/chinese-patent/drawio/src/dsl/ah-to-drawio.js\n  ADD  .claude/skills/chinese-patent/drawio/src/dsl/ah-to-drawio.test.js\n  ADD  .claude/skills/chinese-patent/drawio/src/math/index.js\n  ADD  .claude/skills/chinese-patent/reference.md\n  ADD  .claude/skills/chinese-patent/requirements.txt\n  ADD  .claude/skills/chinese-patent/rules/drawing-rules.md\n  ADD  .claude/skills/chinese-patent/rules/patent-type-guide.md\n  ADD  .claude/skills/chinese-patent/rules/review-checklist.md\n  ADD  .claude/skills/chinese-patent/rules/writing-rules.md\n  ADD  .claude/skills/chinese-patent/scripts/generate_figure_example.py\n  ADD  .claude/skills/chinese-patent/scripts/html_to_docx.py\n  ADD  .claude/skills/chinese-patent/scripts/html_to_pdf.py\n  ADD  .claude/skills/chinese-patent/templates/patent_spec_template.html\n  ADD  .claude/skills/chinese-patent/templates/reference-patent-example.html\n  ADD  .claude/skills/omnidraw/SKILL.md\n  ADD  .claude/skills/omnidraw/assets/workflow.mmd\n  ADD  .claude/skills/omnidraw/assets/workflow.svg\n  ADD  .claude/skills/omnidraw/canvas-design/SKILL.md\n  ADD  .claude/skills/omnidraw/canvas-design/references/canvas-design-reference.md\n  ADD  .claude/skills/omnidraw/canvas-design/templates/canvas-design-prompts.md\n  ADD  .claude/skills/omnidraw/drawio/SKILL.md\n  ADD  .claude/skills/omnidraw/drawio/references/drawio-reference.md\n  ADD  .claude/skills/omnidraw/drawio/styles/style-presets.md\n  ADD  .claude/skills/omnidraw/drawio/templates/drawio-prompts.md\n  ADD  .claude/skills/omnidraw/excalidraw/SKILL.md\n  ADD  .claude/skills/omnidraw/excalidraw/references/excalidraw-reference.md\n  ADD  .claude/skills/omnidraw/excalidraw/templates/excalidraw-prompts.md\n  ADD  .claude/skills/omnidraw/gpt-image-2/SKILL.md\n  ADD  .claude/skills/omnidraw/gpt-image-2/references/gpt-image-reference.md\n  ADD  .claude/skills/omnidraw/gpt-image-2/templates/gpt-image-prompts.md\n  ADD  .claude/skills/omnidraw/matplotlib/SKILL.md\n  ADD  .claude/skills/omnidraw/matplotlib/references/matplotlib-styles.md\n  ADD  .claude/skills/omnidraw/matplotlib/scripts/chart-templates.py\n  ADD  .claude/skills/omnidraw/matplotlib/templates/matplotlib-prompts.md\n  ADD  .claude/skills/omnidraw/mermaid/SKILL.md\n  ADD  .claude/skills/omnidraw/mermaid/references/mermaid-reference.md\n  ADD  .claude/skills/omnidraw/mermaid/styles/mermaid-themes.md\n  ADD  .claude/skills/omnidraw/mermaid/templates/mermaid-prompts.md\n  ADD  .claude/skills/omnidraw/nano-banana/SKILL.md\n  ADD  .claude/skills/omnidraw/nano-banana/references/nano-banana-reference.md\n  ADD  .claude/skills/omnidraw/nano-banana/templates/nano-banana-prompts.md\n  ADD  .claude/skills/omnidraw/plantuml/SKILL.md\n  ADD  .claude/skills/omnidraw/plantuml/references/plantuml-reference.md\n  ADD  .claude/skills/omnidraw/plantuml/templates/plantuml-prompts.md\n  ADD  .claude/skills/omnidraw/references/routing-matrix.md\n  ADD  .claude/skills/omnidraw/references/ui-design.md\n  ADD  .claude/skills/omnidraw/references/visualization-scenarios.md\n  ADD  .claude/skills/omnidraw/references/visualization-scenarios_EN.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/01_pipeline/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/01_pipeline/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/01_pipeline/figure.svg\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/01_pipeline/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/01_pipeline/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/02_apparatus/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/02_apparatus/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/02_apparatus/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/02_apparatus/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/03_mechanism/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/03_mechanism/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/03_mechanism/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/03_mechanism/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/04_architecture/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/04_architecture/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/04_architecture/figure.svg\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/04_architecture/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/04_architecture/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.pdf\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/comparison.svg\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/render.py\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/05_comparison/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/06_graphical_abstract/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/07_roadmap/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/07_roadmap/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/07_roadmap/figure.svg\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/07_roadmap/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/07_roadmap/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/08_cover_art/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/08_cover_art/figure.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/08_cover_art/prompt.txt\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/08_cover_art/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/data.csv\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/render.py\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/stat_single.pdf\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/09_stat_single/stat_single.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/brief.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/data.csv\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/generate_data.py\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/render.py\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/review.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/stat_multi.pdf\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/10_stat_multi/stat_multi.png\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/README.md\n  ADD  .claude/skills/omnidraw/review-samples/2026-10-01/index.html\n  ADD  .claude/skills/omnidraw/scientific-schematics/SKILL.md\n  ADD  .claude/skills/omnidraw/scientific-schematics/references/journal-standards.md\n  ADD  .claude/skills/omnidraw/scientific-schematics/templates/scientific-schematics-prompts.md\n  ADD  .claude/skills/omnidraw/templates/scenario-prompts.md\n  ADD  .claude/skills/omnidraw/visio/SKILL.md\n  ADD  .claude/skills/omnidraw/visio/references/visio-reference.md\n  ADD  .claude/skills/omnidraw/visio/templates/visio-templates.md\n  ADD  .vibe-tool/installations.json\n  ADD  AGENTS.md\n  ADD  AGENTS.vibe-writing.md\n  ADD  CLAUDE.md\n  ADD  CLAUDE.vibe-writing.md\n  ADD  PROJECT_RULES.md\n  ADD  README.md\n  ADD  references/patent-guide.md\n  ADD  references/patent-workflow.json\n  ADD  references/patent-workflow.svg\n  ADD  rules/writing/CONTRACT.md\n  ADD  rules/writing/INDEX.md\n  ADD  rules/writing/references/patent-guide.md\n  ADD  rules/writing/references/patent-workflow.json\n  ADD  rules/writing/references/patent-workflow.svg\n  ADD  rules/writing/rules/patent.md\n  ADD  rules/writing/rules.json\n  ADD  rules/writing/scripts/render_patent_workflow.py\n  ADD  rules/writing/templates/claim-support.csv\n  ADD  rules/writing/templates/patent-brief.md\n  ADD  rules/writing/templates/patent-ledger.md\n  ADD  rules/writing/templates/patent-review.md\n  ADD  scripts/render_patent_workflow.py\n  ADD  templates/claim-support.csv\n  ADD  templates/patent-brief.md\n  ADD  templates/patent-ledger.md\n  ADD  templates/patent-review.md\n  ADD  .vibe-setup.json\nUpdated setup writing: 278 changed paths.\nBackup: /tmp/patent-writing-verified-ck7htze6/project 专利/.vibe-tool/backups/20261114T195601.384414Z-a02c287e\nRestore: /home/rczx/miniconda3/bin/python3 '/tmp/patent-writing-verified-ck7htze6/project 专利/.vibe-tool/backups/20261114T195601.384414Z-a02c287e/restore.py'\nVerified 277 files for writing; host activation not simulated.\nProject context ready: /tmp/patent-writing-verified-ck7htze6/project 专利. Continue the actual task in your AI tool; application/runtime work has not been run.\nProject registered: project 专利\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "actual-source installed hashes",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/scripts/setup-project.py",
+        "writing",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "Verified 277 files for writing; host activation not simulated.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow regeneration /home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/scripts/render_patent_workflow.py",
+        "--source",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.json",
+        "--output",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.svg"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "Wrote SVG: /home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.svg\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow read-only check /home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/scripts/render_patent_workflow.py",
+        "--source",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.json",
+        "--output",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "OK: /home/rczx/orca/workspaces/vibe-coding/专利编写/manifests/writing/references/patent-workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow regeneration /tmp/patent-writing-verified-ck7htze6/project 专利",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/scripts/render_patent_workflow.py",
+        "--source",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.json",
+        "--output",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.svg"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "Wrote SVG: /tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.svg\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow read-only check /tmp/patent-writing-verified-ck7htze6/project 专利",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/scripts/render_patent_workflow.py",
+        "--source",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.json",
+        "--output",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "OK: /tmp/patent-writing-verified-ck7htze6/project 专利/references/patent-workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow regeneration /tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/scripts/render_patent_workflow.py",
+        "--source",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.json",
+        "--output",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.svg"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "Wrote SVG: /tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.svg\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workflow read-only check /tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/scripts/render_patent_workflow.py",
+        "--source",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.json",
+        "--output",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "OK: /tmp/patent-writing-verified-ck7htze6/project 专利/rules/writing/references/patent-workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "export prerequisite version",
+      "command": [
+        "pandoc",
+        "--version"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "pandoc 2.9.2.1\nCompiled with pandoc-types 1.20, texmath 0.12.0.2, skylighting 0.8.5\nDefault user data directory: /home/rczx/.local/share/pandoc or /home/rczx/.pandoc\nCopyright (C) 2006-2020 John MacFarlane\nWeb:  https://pandoc.org\nThis is free software; see the source for copying conditions.\nThere is no warranty, not even for merchantability or fitness\nfor a particular purpose.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "installed skill real DOCX export smoke",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/.agents/skills/chinese-patent/scripts/html_to_docx.py",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/drafts/export-smoke/说明书.html",
+        "-o",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/drafts/export-smoke/说明书.docx"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "Wrote: /tmp/patent-writing-verified-ck7htze6/project 专利/drafts/export-smoke/说明书.docx\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "reopen DOCX and validate literal content",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "-c",
+        "import zipfile,sys;from xml.etree import ElementTree as E;z=zipfile.ZipFile(sys.argv[1]);assert z.testzip() is None;d=z.read(\"word/document.xml\");E.fromstring(d);assert \"导出格式烟雾测试\" in d.decode();assert b\"oMath\" in d;assert any(n.startswith(\"word/media/\") for n in z.namelist());print(\"DOCX_REOPEN: Chinese text, math XML and local image present; page layout not assessed.\")",
+        "/tmp/patent-writing-verified-ck7htze6/project 专利/drafts/export-smoke/说明书.docx"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "DOCX_REOPEN: Chinese text, math XML and local image present; page layout not assessed.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "reopened packaged workflow",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/tmp/patent-writing-verified-ck7htze6/package-check/writing/scripts/render_patent_workflow.py",
+        "--source",
+        "/tmp/patent-writing-verified-ck7htze6/package-check/writing/references/patent-workflow.json",
+        "--output",
+        "/tmp/patent-writing-verified-ck7htze6/package-check/writing/references/patent-workflow.svg",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "OK: /tmp/patent-writing-verified-ck7htze6/package-check/writing/references/patent-workflow.svg is up to date.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "workspace rollback preflight only",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/rollback.py",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "ROLLBACK_CHECK: all changed paths and preserved originals verified.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "reopened patch applicability",
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/writing-patent.patch"
+      ],
+      "cwd": "/tmp/patent-writing-verified-ck7htze6/patch replay",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "execute patch on baseline copy",
+      "command": [
+        "git",
+        "apply",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/writing-patent.patch"
+      ],
+      "cwd": "/tmp/patent-writing-verified-ck7htze6/patch replay",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "rollback stops before changing locally edited paths",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/rollback.py",
+        "--target",
+        "/tmp/patent-writing-verified-ck7htze6/patch replay"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "",
+      "stderr": "Local edit needs review: manifests/writing/AGENTS.md\n",
+      "exit_status": 1,
+      "expected_exit_status": 1
+    },
+    {
+      "label": "copy rollback preflight",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/rollback.py",
+        "--target",
+        "/tmp/patent-writing-verified-ck7htze6/patch replay",
+        "--check"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "ROLLBACK_CHECK: all changed paths and preserved originals verified.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    },
+    {
+      "label": "execute rollback on patched copy",
+      "command": [
+        "/home/rczx/miniconda3/bin/python3",
+        "/home/rczx/orca/workspaces/vibe-coding/专利编写/.planning/patent-writing/artifacts/rollback.py",
+        "--target",
+        "/tmp/patent-writing-verified-ck7htze6/patch replay"
+      ],
+      "cwd": "/home/rczx/orca/workspaces/vibe-coding/专利编写",
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/home/rczx/orca/workspaces/vibe-coding/专利编写/tools/vibe_tool/src",
+        "VIBE_PROJECTS_FILE": "/tmp/patent-writing-verified-ck7htze6/registry/projects.json"
+      },
+      "stdout": "ROLLBACK_OK: original hashes restored; later unrelated files retained.\n",
+      "stderr": "",
+      "exit_status": 0,
+      "expected_exit_status": 0
+    }
+  ],
+  "visual_review": "Browser canvas raster inspected: Chinese text, three lanes, arrows and workflow branches; local renderer uses facing-edge arrows for same-row stages.",
+  "known_environment_gap": "Full repository documentation-link test also fails against original catalog contents because skills/visual-explainer/plugins/visual-explainer is absent. No unrelated sources initialized.",
+  "limits": [
+    "No actual invention, live prior-art search or patent application authored or submitted.",
+    "DOCX smoke reopens ZIP/XML and checks text/math/image; rendered page layout and legal sufficiency not assessed.",
+    "Host skill auto-activation not observed; explicit file discovery/copies and hashes verified.",
+    "Legacy init/add manifest support is not promised; use setup for this scenario."
+  ]
+}
