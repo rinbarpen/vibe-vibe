@@ -108,9 +108,9 @@ case "$CODE_PROVIDER" in
 esac
 TARGET="$(python3 -c 'import os, sys; print(os.path.abspath(sys.argv[1]))' "$TARGET")"
 PROJECT_ROOT="$TARGET"
-VERSION_ARGS=()
+VERSION_ARGS=("$TARGET")
 $DRY_RUN && VERSION_ARGS+=(--dry-run)
-python3 "$MANIFEST_DIR/scripts/init_version.py" "$TARGET" "${VERSION_ARGS[@]}"
+python3 "$MANIFEST_DIR/scripts/init_version.py" "${VERSION_ARGS[@]}"
 
 echo "=== Vibe Coding Unified Manifest Init ==="
 echo "  Source:    $MANIFEST_DIR"
