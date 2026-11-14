@@ -35,7 +35,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       PYTHONUTF8: '1'
       PYTHONPATH: tools/vibe_tool/src
-      VIBE_PROJECTS_FILE: ${{ runner.temp }}/vibe-projects.json
+      VIBE_PROJECTS_FILE: ${{ github.workspace }}/.vibe-tool/ci-projects.json
     steps:
       - uses: actions/checkout@v7
         with:

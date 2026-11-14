@@ -181,6 +181,14 @@ class SetupTests(unittest.TestCase):
 
 
 class PortableRendererTests(unittest.TestCase):
+    def test_ci_registry_expression_uses_job_environment_context(self):
+        workflow = (ROOT / '.github/workflows/project-setup.yml').read_text(encoding='utf-8')
+        registry = [line.strip() for line in workflow.splitlines()
+                    if line.strip().startswith('VIBE_PROJECTS_FILE:')]
+        # runner is a step context, not available in jobs.<job_id>.env.
+        self.assertEqual(registry, [
+            'VIBE_PROJECTS_FILE: ${{ github.workspace }}/.vibe-tool/ci-projects.json'])
+
     def test_every_current_manifest_has_a_shell_free_renderer(self):
         # All real manifest resources/native Python installers, without pulling
         # unrelated skill bundles into this offline portability test.
