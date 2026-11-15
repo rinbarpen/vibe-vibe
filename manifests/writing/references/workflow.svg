@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1728" height="2802" viewBox="0 0 1728 2802" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">Writing · 标书编写工作流</title>
+  <desc id="workflow-description">从招标要求与真实证据到逐章响应、验收和定稿。AI 负责执行与返工；新的业务取舍交由人决定；未答复等待，确认后 AI 恢复。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1728" height="2802" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">Writing · 标书编写工作流</text>
+    <text x="28" y="70" font-size="14" fill="#475569">从招标要求与真实证据到逐章响应、验收和定稿。AI 负责执行与返工；新的业务取舍交由人决定；未答复等待，确认后 AI 恢复。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="2608" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="2608" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="2608" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="archive" data-to="done" d="M 220.0,2480 V 2523.0 H 630.0 V 2566" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="basis" data-to="decision" d="M 630.0,692 V 735.0 H 1040.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="basis" data-to="outline" d="M 630.0,692 V 735.0 H 220.0 V 1072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="archive" d="M 1040.0,986 V 1029.0 H 24 V 2342 H 220.0 V 2366" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="decision" d="M 1220,882.0 H 1238 V 882.0 H 1220" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="format" data-to="qa" d="M 220.0,1786 V 1829.0 H 630.0 V 1872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="intake" data-to="basis" d="M 220.0,492 V 535.0 H 630.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="outline" data-to="write" d="M 220.0,1186 V 1229.0 H 220.0 V 1272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="qa" data-to="release" d="M 630.0,1986 V 2029.0 H 1040.0 V 2072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="release" data-to="archive" d="M 1040.0,2280 V 2323.0 H 220.0 V 2366" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="release" data-to="release" d="M 1220,2176.0 H 1238 V 2176.0 H 1220" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="review" data-to="format" d="M 630.0,1586 V 1629.0 H 220.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="intake" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="write" data-to="review" d="M 220.0,1386 V 1429.0 H 630.0 V 1472" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="basis" data-to="intake" d="M 810,635.0 H 1270 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="decision" data-to="intake" d="M 1220,882.0 H 1296 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="qa" data-to="format" d="M 810,1929.0 H 1322 V 1649 H 220.0 V 1672" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="qa" data-to="write" d="M 810,1929.0 H 1348 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="release" data-to="format" d="M 1220,2176.0 H 1374 V 1649 H 220.0 V 1672" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="release" data-to="write" d="M 1220,2176.0 H 1400 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="review" data-to="intake" d="M 810,1529.0 H 1426 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="review" data-to="write" d="M 810,1529.0 H 1452 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>接收 / 恢复标书任务 — 读取当前实际稿、用户修改、任务包与检查点；核对版本，不用旧候选覆盖新稿</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">接收 / 恢复标书任务</text>
+      <text x="466" y="252" font-size="14" fill="#334155">读取当前实际稿、用户修改、任务包与检查点；</text>
+      <text x="466" y="272" font-size="14" fill="#334155">核对版本，不用旧候选覆盖新稿</text>
+    </g>
+    <g id="node-intake" data-kind="ai" data-row="1">
+      <title>接收原件、版本与条款依据 — 保留用户上传原件和哈希；核对提取/原页、资料用途、新旧版本与条款</title>
+      <rect x="40" y="378" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">接收原件、版本与条款依据</text>
+      <text x="56" y="452" font-size="14" fill="#334155">保留用户上传原件和哈希；核对提取/原页、资料</text>
+      <text x="56" y="472" font-size="14" fill="#334155">用途、新旧版本与条款</text>
+    </g>
+    <g id="node-basis" data-kind="check" data-row="2">
+      <title>逐页核对条款与缺口 — 核对原文与矩阵；技术问题自主调查，材料/业务缺口另列</title>
+      <rect x="450" y="578" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="602" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="628" font-size="18" font-weight="700">逐页核对条款与缺口</text>
+      <text x="466" y="652" font-size="14" fill="#334155">核对原文与矩阵；技术问题自主调查，材料/业务</text>
+      <text x="466" y="672" font-size="14" fill="#334155">缺口另列</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="3">
+      <title>业务决定 / 等待答复 — 汇总需要人补充的材料/内容/图文及业务决定；仅等待依赖部分，其他章节继续</title>
+      <rect x="860" y="778" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="802" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="828" font-size="18" font-weight="700">业务决定 / 等待答复</text>
+      <text x="876" y="852" font-size="14" fill="#334155">汇总需要人补充的材料/内容/图文及业务决定；</text>
+      <text x="876" y="872" font-size="14" fill="#334155">仅等待依赖部分，其他章节继续</text>
+      <text x="876" y="904" font-size="14" fill="#9a3412">介入条件：投/不投、版本/目标冲突、资质缺口</text>
+      <text x="876" y="924" font-size="14" fill="#9a3412">、实质偏离或报价/合同承诺</text>
+      <text x="876" y="944" font-size="14" fill="#9a3412">恢复执行：继续返回条款与证据；调整更新约束</text>
+      <text x="876" y="964" font-size="14" fill="#9a3412">；取消转归档</text>
+    </g>
+    <g id="node-outline" data-kind="ai" data-row="4">
+      <title>分章、页数预算与图文计划 — 维护章节依赖、页数预算、条款/引用/图文关系与补充清单，不复制事实源</title>
+      <rect x="40" y="1072" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1096" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1122" font-size="18" font-weight="700">分章、页数预算与图文计划</text>
+      <text x="56" y="1146" font-size="14" fill="#334155">维护章节依赖、页数预算、条款/引用/图文关系</text>
+      <text x="56" y="1166" font-size="14" fill="#334155">与补充清单，不复制事实源</text>
+    </g>
+    <g id="node-write" data-kind="ai" data-row="5">
+      <title>基于当前稿分批续写 / 修订 — 保存修订基线、保留用户手改；按影响局部修改，图文回流并提示补充缺口</title>
+      <rect x="40" y="1272" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1296" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1322" font-size="18" font-weight="700">基于当前稿分批续写 / 修订</text>
+      <text x="56" y="1346" font-size="14" fill="#334155">保存修订基线、保留用户手改；按影响局部修改</text>
+      <text x="56" y="1366" font-size="14" fill="#334155">，图文回流并提示补充缺口</text>
+    </g>
+    <g id="node-review" data-kind="check" data-row="6">
+      <title>只读内容与矩阵审查 — 核对事实、定位、来源版本、图文与交叉引用；只读差异分析后局部复验和登记检查点</title>
+      <rect x="450" y="1472" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1496" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1522" font-size="18" font-weight="700">只读内容与矩阵审查</text>
+      <text x="466" y="1546" font-size="14" fill="#334155">核对事实、定位、来源版本、图文与交叉引用；</text>
+      <text x="466" y="1566" font-size="14" fill="#334155">只读差异分析后局部复验和登记检查点</text>
+    </g>
+    <g id="node-format" data-kind="ai" data-row="7">
+      <title>格式制作与候选装配 — 装配当前候选，更新脚注、书签、图表/章节交叉引用、目录和页码；保留前版</title>
+      <rect x="40" y="1672" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1696" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1722" font-size="18" font-weight="700">格式制作与候选装配</text>
+      <text x="56" y="1746" font-size="14" fill="#334155">装配当前候选，更新脚注、书签、图表/章节交叉</text>
+      <text x="56" y="1766" font-size="14" fill="#334155">引用、目录和页码；保留前版</text>
+    </g>
+    <g id="node-qa" data-kind="check" data-row="8">
+      <title>当前版本全量验收 — 实际排版计数与范围核对；全页审查、图文邻接和内容一致，证据绑定当前总稿输入</title>
+      <rect x="450" y="1872" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1896" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1922" font-size="18" font-weight="700">当前版本全量验收</text>
+      <text x="466" y="1946" font-size="14" fill="#334155">实际排版计数与范围核对；全页审查、图文邻接</text>
+      <text x="466" y="1966" font-size="14" fill="#334155">和内容一致，证据绑定当前总稿输入</text>
+    </g>
+    <g id="node-release" data-kind="human" data-row="9">
+      <title>定稿决定 / 等待答复 — 提供当前文件哈希、审查证据和未决项；不自动签署或提交</title>
+      <rect x="860" y="2072" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="2096" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="2122" font-size="18" font-weight="700">定稿决定 / 等待答复</text>
+      <text x="876" y="2146" font-size="14" fill="#334155">提供当前文件哈希、审查证据和未决项；不自动</text>
+      <text x="876" y="2166" font-size="14" fill="#334155">签署或提交</text>
+      <text x="876" y="2198" font-size="14" fill="#9a3412">介入条件：候选定稿已验收，或需改变既定定稿</text>
+      <text x="876" y="2218" font-size="14" fill="#9a3412">范围</text>
+      <text x="876" y="2238" font-size="14" fill="#9a3412">恢复执行：同意后 AI 归档；调整回写作或格式</text>
+      <text x="876" y="2258" font-size="14" fill="#9a3412">；取消保留成果；未答复等待</text>
+    </g>
+    <g id="node-archive" data-kind="ai" data-row="10">
+      <title>归档或取消并保留成果 — 保存实际版本、差异与真实决定；恢复前预览并保存当前状态，保留后来上传原件</title>
+      <rect x="40" y="2366" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2390" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2416" font-size="18" font-weight="700">归档或取消并保留成果</text>
+      <text x="56" y="2440" font-size="14" fill="#334155">保存实际版本、差异与真实决定；恢复前预览并</text>
+      <text x="56" y="2460" font-size="14" fill="#334155">保存当前状态，保留后来上传原件</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="11">
+      <title>交付并记录当前状态 — 交付文件、来源矩阵、审查与决定记录；对外动作单独委托</title>
+      <rect x="450" y="2566" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="2590" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="2616" font-size="18" font-weight="700">交付并记录当前状态</text>
+      <text x="466" y="2640" font-size="14" fill="#334155">交付文件、来源矩阵、审查与决定记录；对外动</text>
+      <text x="466" y="2660" font-size="14" fill="#334155">作单独委托</text>
+    </g>
+    <text x="425.0" y="2514.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">追加账本及交付记录</text>
+    <text x="835.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">需新的业务决定 / 缺必要</text>
+    <text x="835.0" y="743.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">依据</text>
+    <text x="425.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">依据完整 / 无新决定</text>
+    <text x="630.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">取消本项</text>
+    <text x="1244" y="875.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">未答复：等待相关动作</text>
+    <text x="425.0" y="1820.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">当前候选版本</text>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">对照原始材料</text>
+    <text x="232.0" y="1220.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">章节与条款已对应</text>
+    <text x="835.0" y="2020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">适用检查完成</text>
+    <text x="630.0" y="2314.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意定稿 / 取消保留</text>
+    <text x="1244" y="2169.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">未答复：保持等待</text>
+    <text x="425.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">全部章节及图文就绪</text>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">沿用已确认状态</text>
+    <text x="425.0" y="1420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">当前章节候选稿</text>
+    <text x="1280" y="495.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">漏项 / 提取问题</text>
+    <text x="1306" y="618.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">继续 / 调整后恢复</text>
+    <text x="1332" y="1789.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">版式 / 原生功能问题</text>
+    <text x="1358" y="1589.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">内容问题 / 恢复已存前版</text>
+    <text x="1384" y="1912.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整格式并重新验收</text>
+    <text x="1410" y="1712.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">调整内容并重新验收</text>
+    <text x="1436" y="942.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">新资料 / 换版 / 缺证：</text>
+    <text x="1436" y="959.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">核对后局部恢复</text>
+    <text x="1462" y="1389.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">修订差异 / 下一章 / 中</text>
+    <text x="1462" y="1406.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">断恢复</text>
+    <text x="28" y="2776" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

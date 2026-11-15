@@ -1,0 +1,51 @@
+name: Writing scenarios
+
+on:
+  pull_request:
+    paths:
+      - 'manifests/writing/**'
+      - 'tests/test_writing*.py'
+      - 'tools/vibe_tool/tests/test_patent_writing_manifest.py'
+      - 'tools/vibe_tool/src/vibe_tool/**'
+      - '.github/workflows/writing.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'manifests/writing/**'
+      - 'tests/test_writing*.py'
+      - 'tools/vibe_tool/tests/test_patent_writing_manifest.py'
+      - 'tools/vibe_tool/src/vibe_tool/**'
+      - '.github/workflows/writing.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  writing:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      PYTHONUTF8: '1'
+      PYTHONPATH: tools/vibe_tool/src
+      VIBE_PROJECTS_FILE: ${{ github.workspace }}/.vibe-tool/writing-ci-projects.json
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Bid authoring, 120-chapter recovery, references and revisions
+        run: python -m unittest discover -s tests -p 'test_writing*.py' -v
+      - name: Patent preservation and bid scenario installation
+        run: python -m unittest discover -s tools/vibe_tool/tests -p test_patent_writing_manifest.py -v
+      - name: Bid workflow drift
+        run: python manifests/writing/scripts/render_workflow.py --source manifests/writing/references/workflow.json --output manifests/writing/references/workflow.svg --check
+      - name: Patent workflow drift
+        run: python manifests/writing/scripts/render_patent_workflow.py --source manifests/writing/references/patent-workflow.json --output manifests/writing/references/patent-workflow.svg --check

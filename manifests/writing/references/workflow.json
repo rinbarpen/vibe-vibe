@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "title": "Writing · 标书编写工作流",
+  "description": "从招标要求与真实证据到逐章响应、验收和定稿。AI 负责执行与返工；新的业务取舍交由人决定；未答复等待，确认后 AI 恢复。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "接收 / 恢复标书任务",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "读取当前实际稿、用户修改、任务包与检查点；核对版本，不用旧候选覆盖新稿"
+    },
+    {
+      "id": "intake",
+      "label": "接收原件、版本与条款依据",
+      "kind": "ai",
+      "row": 1,
+      "detail": "保留用户上传原件和哈希；核对提取/原页、资料用途、新旧版本与条款"
+    },
+    {
+      "id": "basis",
+      "label": "逐页核对条款与缺口",
+      "kind": "check",
+      "row": 2,
+      "detail": "核对原文与矩阵；技术问题自主调查，材料/业务缺口另列"
+    },
+    {
+      "id": "decision",
+      "label": "业务决定 / 等待答复",
+      "kind": "human",
+      "row": 3,
+      "detail": "汇总需要人补充的材料/内容/图文及业务决定；仅等待依赖部分，其他章节继续",
+      "trigger": "投/不投、版本/目标冲突、资质缺口、实质偏离或报价/合同承诺",
+      "resume": "继续返回条款与证据；调整更新约束；取消转归档"
+    },
+    {
+      "id": "outline",
+      "label": "分章、页数预算与图文计划",
+      "kind": "ai",
+      "row": 4,
+      "detail": "维护章节依赖、页数预算、条款/引用/图文关系与补充清单，不复制事实源"
+    },
+    {
+      "id": "write",
+      "label": "基于当前稿分批续写 / 修订",
+      "kind": "ai",
+      "row": 5,
+      "detail": "保存修订基线、保留用户手改；按影响局部修改，图文回流并提示补充缺口"
+    },
+    {
+      "id": "review",
+      "label": "只读内容与矩阵审查",
+      "kind": "check",
+      "row": 6,
+      "detail": "核对事实、定位、来源版本、图文与交叉引用；只读差异分析后局部复验和登记检查点"
+    },
+    {
+      "id": "format",
+      "label": "格式制作与候选装配",
+      "kind": "ai",
+      "row": 7,
+      "detail": "装配当前候选，更新脚注、书签、图表/章节交叉引用、目录和页码；保留前版"
+    },
+    {
+      "id": "qa",
+      "label": "当前版本全量验收",
+      "kind": "check",
+      "row": 8,
+      "detail": "实际排版计数与范围核对；全页审查、图文邻接和内容一致，证据绑定当前总稿输入"
+    },
+    {
+      "id": "release",
+      "label": "定稿决定 / 等待答复",
+      "kind": "human",
+      "row": 9,
+      "detail": "提供当前文件哈希、审查证据和未决项；不自动签署或提交",
+      "trigger": "候选定稿已验收，或需改变既定定稿范围",
+      "resume": "同意后 AI 归档；调整回写作或格式；取消保留成果；未答复等待"
+    },
+    {
+      "id": "archive",
+      "label": "归档或取消并保留成果",
+      "kind": "ai",
+      "row": 10,
+      "detail": "保存实际版本、差异与真实决定；恢复前预览并保存当前状态，保留后来上传原件"
+    },
+    {
+      "id": "done",
+      "label": "交付并记录当前状态",
+      "kind": "terminal",
+      "row": 11,
+      "detail": "交付文件、来源矩阵、审查与决定记录；对外动作单独委托"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "intake",
+      "label": "沿用已确认状态",
+      "kind": "normal"
+    },
+    {
+      "from": "intake",
+      "to": "basis",
+      "label": "对照原始材料",
+      "kind": "normal"
+    },
+    {
+      "from": "basis",
+      "to": "intake",
+      "label": "漏项 / 提取问题",
+      "kind": "rework"
+    },
+    {
+      "from": "basis",
+      "to": "decision",
+      "label": "需新的业务决定 / 缺必要依据",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "intake",
+      "label": "继续 / 调整后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "decision",
+      "label": "未答复：等待相关动作",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "archive",
+      "label": "取消本项",
+      "kind": "normal"
+    },
+    {
+      "from": "basis",
+      "to": "outline",
+      "label": "依据完整 / 无新决定",
+      "kind": "normal"
+    },
+    {
+      "from": "outline",
+      "to": "write",
+      "label": "章节与条款已对应",
+      "kind": "normal"
+    },
+    {
+      "from": "write",
+      "to": "review",
+      "label": "当前章节候选稿",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "intake",
+      "label": "新资料 / 换版 / 缺证：核对后局部恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "write",
+      "label": "修订差异 / 下一章 / 中断恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "format",
+      "label": "全部章节及图文就绪",
+      "kind": "normal"
+    },
+    {
+      "from": "format",
+      "to": "qa",
+      "label": "当前候选版本",
+      "kind": "normal"
+    },
+    {
+      "from": "qa",
+      "to": "format",
+      "label": "版式 / 原生功能问题",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "write",
+      "label": "内容问题 / 恢复已存前版",
+      "kind": "rework"
+    },
+    {
+      "from": "qa",
+      "to": "release",
+      "label": "适用检查完成",
+      "kind": "normal"
+    },
+    {
+      "from": "release",
+      "to": "release",
+      "label": "未答复：保持等待",
+      "kind": "normal"
+    },
+    {
+      "from": "release",
+      "to": "write",
+      "label": "调整内容并重新验收",
+      "kind": "rework"
+    },
+    {
+      "from": "release",
+      "to": "format",
+      "label": "调整格式并重新验收",
+      "kind": "rework"
+    },
+    {
+      "from": "release",
+      "to": "archive",
+      "label": "同意定稿 / 取消保留",
+      "kind": "normal"
+    },
+    {
+      "from": "archive",
+      "to": "done",
+      "label": "追加账本及交付记录",
+      "kind": "normal"
+    }
+  ]
+}
