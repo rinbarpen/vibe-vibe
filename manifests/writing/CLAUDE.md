@@ -1,14 +1,16 @@
 # Writing — 写作项目协作契约
 
-管理写作项目的材料、目标、版本、审阅与交付。当前提供 `patent` 中国专利起草场景；它复用 chinese-patent 技能，不复制科研生命周期、小说流程或公众号 writing-agent。
+管理写作项目的材料、目标、版本、审阅与交付。提供 `bid` 标书编写与 `patent` 中国专利起草场景；两者分别维护条款响应/长任务修订和专利支持矩阵，不把不同体裁的事实、审批或验收混用。
 
 ## 从当前任务继续
 
 先读已有交底、文稿与 `MANIFEST.md`，核对用户要求的是规划、附图、正文、审阅、导出还是全流程。已有确定信息直接复用；单项任务从对应节点进入，不重走已经完成的步骤。
 
-安装后先读 `PROJECT_RULES.md` 与 `rules/writing/INDEX.md`。选择 `patent` 时加载场景规则及 [专利执行指南](references/patent-guide.md)，再读取 `.agents/skills/chinese-patent/SKILL.md` 和本次阶段的子技能。技能路径以项目根目录为基准；宿主不支持自动发现时显式读取文件，不假定存在斜杠命令或独立代理。
+安装后先读 `PROJECT_RULES.md` 与 `rules/writing/INDEX.md`。任务为标书或选择 `bid` 时，加载 [标书协作契约](references/bid-contract.md)、[长任务说明](references/long-bid.md) 与 [修订/来源说明](references/revisions-and-sources.md)，再按 [安装说明](references/bid-start.md) 读取 z-writing；事实、引用、图表和版本按标书规则管理。
 
-未选场景时，先沿用项目简报，不自动把一般文字套入专利格式。当前技能依赖随 writing 包安装；新增体裁应另写对应场景，而非扩张 patent 规则。
+选择 `patent` 时加载场景规则及 [专利执行指南](references/patent-guide.md)，再读取 `.agents/skills/chinese-patent/SKILL.md` 和本次阶段的子技能。技能路径以项目根目录为基准；宿主不支持自动发现时显式读取文件，不假定存在斜杠命令或独立代理。
+
+未选场景时，先沿用项目简报，不自动把一般文字套入专利或标书格式；已有明确体裁和项目简报直接沿用，不重复访谈。基础依赖保持 chinese-patent 与 omnidraw；bid 配置使用 --skill z-writing 追加正文技能，不改变 patent 的安装要求。新增体裁另写对应场景。
 
 ## AI 执行与复验
 
@@ -23,4 +25,4 @@
 
 继续时核对决定适用的版本，从明确检查点恢复；调整时更新简报及受影响内容；取消时保留原件、前版与已完成成果。每轮有状态修改前保存工作副本和哈希；回退先保留当前版，再恢复选定前版并复验。模板配置的回退使用安装工具打印的 restore.py，与文稿版本回退分开。
 
-[专利工作流 SVG](references/patent-workflow.svg) · [可编辑源](references/patent-workflow.json) · [安装与复现说明](README.md)。图描述规则，不是执行记录。
+[标书工作流 SVG](references/workflow.svg) · [标书可编辑源](references/workflow.json) · [专利工作流 SVG](references/patent-workflow.svg) · [可编辑源](references/patent-workflow.json) · [安装与复现说明](README.md)。图描述规则，不是执行记录。

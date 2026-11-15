@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "page_goal": {
+    "minimum": 101,
+    "target": 120,
+    "maximum": 0,
+    "count_scope": "待确认：正文及计入范围",
+    "layout_basis": "待确认：招标规定模板；101/120页仅为长标书规划示例"
+  },
+  "context_paths": [
+    "brief.md"
+  ],
+  "chapters": [
+    {
+      "id": "CH-01",
+      "title": "资格与商务响应",
+      "path": "draft/01-qualification.md",
+      "budget_pages": 12,
+      "depends_on": [],
+      "requirement_ids": [],
+      "asset_ids": [
+        "TAB-01"
+      ],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-02",
+      "title": "项目理解与需求分析",
+      "path": "draft/02-understanding.md",
+      "budget_pages": 10,
+      "depends_on": [],
+      "requirement_ids": [],
+      "asset_ids": [],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-03",
+      "title": "总体技术或服务方案",
+      "path": "draft/03-solution.md",
+      "budget_pages": 25,
+      "depends_on": [
+        "CH-02"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [
+        "FIG-01"
+      ],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-04",
+      "title": "实施进度与资源安排",
+      "path": "draft/04-implementation.md",
+      "budget_pages": 20,
+      "depends_on": [
+        "CH-03"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [
+        "FIG-02",
+        "TAB-02"
+      ],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-05",
+      "title": "质量保障与验收",
+      "path": "draft/05-quality.md",
+      "budget_pages": 14,
+      "depends_on": [
+        "CH-04"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [
+        "TAB-03"
+      ],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-06",
+      "title": "风险与应急处置",
+      "path": "draft/06-risk.md",
+      "budget_pages": 10,
+      "depends_on": [
+        "CH-03"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-07",
+      "title": "培训运维与服务承诺",
+      "path": "draft/07-service.md",
+      "budget_pages": 14,
+      "depends_on": [
+        "CH-04"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [],
+      "status": "pending",
+      "checkpoint": null
+    },
+    {
+      "id": "CH-08",
+      "title": "证明附件与响应汇总",
+      "path": "draft/08-appendices.md",
+      "budget_pages": 15,
+      "depends_on": [
+        "CH-01"
+      ],
+      "requirement_ids": [],
+      "asset_ids": [],
+      "status": "pending",
+      "checkpoint": null
+    }
+  ],
+  "supplements": [
+    {
+      "id": "G-001",
+      "kind": "material",
+      "title": "完整招标资料",
+      "chapter_ids": [],
+      "requirement_ids": [],
+      "priority": "blocking",
+      "status": "open",
+      "request": "请提供招标正文、全部附件、评分表、澄清/补遗与规定模板；保留原文件及版本。",
+      "owner": "用户/采购材料负责人",
+      "needed_by": "相关章节编写/定稿前",
+      "evidence": []
+    },
+    {
+      "id": "G-002",
+      "kind": "material",
+      "title": "企业及人员证明",
+      "chapter_ids": [
+        "CH-01",
+        "CH-08"
+      ],
+      "requirement_ids": [],
+      "priority": "blocking",
+      "status": "open",
+      "request": "请提供投标主体、资质有效期、拟派人员、授权、真实业绩及证明文件。",
+      "owner": "用户/商务负责人",
+      "needed_by": "相关章节编写/定稿前",
+      "evidence": []
+    },
+    {
+      "id": "G-003",
+      "kind": "content",
+      "title": "项目现状与方案边界",
+      "chapter_ids": [
+        "CH-02",
+        "CH-03"
+      ],
+      "requirement_ids": [],
+      "priority": "important",
+      "status": "open",
+      "request": "请补充现状、服务/技术范围、设备或接口清单、现场条件和已确认方案。",
+      "owner": "用户/技术负责人",
+      "needed_by": "相关章节编写/定稿前",
+      "evidence": []
+    },
+    {
+      "id": "G-004",
+      "kind": "content",
+      "title": "最终排版与篇幅范围",
+      "chapter_ids": [],
+      "requirement_ids": [],
+      "priority": "important",
+      "status": "open",
+      "request": "请确认规定目录、Word模板、字号/行距/页边距，页数上限及封面/目录/附件计入范围。",
+      "owner": "用户/编制负责人",
+      "needed_by": "相关章节编写/定稿前",
+      "evidence": []
+    },
+    {
+      "id": "G-005",
+      "kind": "visual",
+      "title": "现场或案例照片（按需）",
+      "chapter_ids": [
+        "CH-03",
+        "CH-04"
+      ],
+      "requirement_ids": [],
+      "priority": "optional",
+      "status": "open",
+      "request": "若方案需要现场/案例照片，请提供真实原图、拍摄对象说明、日期和可用范围；无需求则记录后移除此项。",
+      "owner": "用户/现场负责人",
+      "needed_by": "相关章节编写/定稿前",
+      "evidence": []
+    }
+  ],
+  "assets": [
+    {
+      "id": "FIG-01",
+      "kind": "diagram",
+      "title": "总体方案架构图",
+      "chapter_ids": [
+        "CH-03"
+      ],
+      "source_ids": [],
+      "purpose": "说明系统或服务的组成、边界和接口",
+      "status": "planned",
+      "path": "",
+      "sha256": "",
+      "editable_path": "",
+      "editable_sha256": "",
+      "preview_path": "",
+      "preview_sha256": "",
+      "caption": "",
+      "alt_text": "",
+      "note": "补充实际架构组成、接口与边界；按实际要求决定是否采用。"
+    },
+    {
+      "id": "FIG-02",
+      "kind": "diagram",
+      "title": "实施工作流程图",
+      "chapter_ids": [
+        "CH-04"
+      ],
+      "source_ids": [],
+      "purpose": "说明实施阶段、责任与交付关系",
+      "status": "planned",
+      "path": "",
+      "sha256": "",
+      "editable_path": "",
+      "editable_sha256": "",
+      "preview_path": "",
+      "preview_sha256": "",
+      "caption": "",
+      "alt_text": "",
+      "note": "需要确认后的实施步骤、责任人与验收节点。"
+    },
+    {
+      "id": "TAB-01",
+      "kind": "table",
+      "title": "人员职责与投入表",
+      "chapter_ids": [
+        "CH-01"
+      ],
+      "source_ids": [],
+      "purpose": "对应人员资格、角色与投入安排",
+      "status": "planned",
+      "path": "",
+      "sha256": "",
+      "editable_path": "",
+      "editable_sha256": "",
+      "preview_path": "",
+      "preview_sha256": "",
+      "caption": "",
+      "alt_text": "",
+      "note": "需要真实人员名单、资格证明和已确认投入。"
+    },
+    {
+      "id": "TAB-02",
+      "kind": "table",
+      "title": "实施进度计划表",
+      "chapter_ids": [
+        "CH-04"
+      ],
+      "source_ids": [],
+      "purpose": "呈现任务、里程碑、工期与依赖",
+      "status": "planned",
+      "path": "",
+      "sha256": "",
+      "editable_path": "",
+      "editable_sha256": "",
+      "preview_path": "",
+      "preview_sha256": "",
+      "caption": "",
+      "alt_text": "",
+      "note": "需要工期约束、工作量与资源口径，不编造实际排程。"
+    },
+    {
+      "id": "TAB-03",
+      "kind": "table",
+      "title": "质量控制与验收对照表",
+      "chapter_ids": [
+        "CH-05"
+      ],
+      "source_ids": [],
+      "purpose": "逐项关联质量目标、方法和验收依据",
+      "status": "planned",
+      "path": "",
+      "sha256": "",
+      "editable_path": "",
+      "editable_sha256": "",
+      "preview_path": "",
+      "preview_sha256": "",
+      "caption": "",
+      "alt_text": "",
+      "note": "需要招标质量条款和实际验收方式。"
+    }
+  ],
+  "rendered": {
+    "path": "",
+    "sha256": "",
+    "pages": 0,
+    "count_scope": "",
+    "qa_path": "",
+    "qa_sha256": ""
+  }
+}
