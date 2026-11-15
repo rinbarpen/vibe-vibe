@@ -33,7 +33,9 @@ class RevisionReferenceTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="reference revision fixture ")
         self.addCleanup(self.tmp.cleanup)
-        self.base = Path(self.tmp.name)
+        # macOS may expose /var paths that the CLI resolves to /private/var.
+        # Match the canonical project path when injecting filesystem failures.
+        self.base = Path(self.tmp.name).resolve()
         self.root = self.base / "project"
         self.upload = self.base / "用户上传的真实材料样例.txt"
         self.upload.write_text("TEST FIXTURE: original reference material, not a real bid fact.\n")
@@ -301,6 +303,27 @@ class RevisionReferenceTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(before, tree(self.root))
         self.assertIn("mid-edit", result.stdout)
+
+    def test_root_alias_keeps_transaction_fault_injection_effective(self):
+        alias = self.base / "project-alias"
+        try:
+            alias.symlink_to(self.root, target_is_directory=True)
+        except OSError as exc:
+            self.skipTest(str(exc))
+        original = refs_tool.atomic
+        failed = [False]
+        def fail_after_write(path, payload):
+            result = original(path, payload)
+            if path == self.root / "references.json" and not failed[0]:
+                failed[0] = True
+                raise OSError("Injected failure through canonical root alias")
+            return result
+        args = ["ingest", str(alias), "--file", str(self.upload), "--id", "S-ALIAS"]
+        with patch.object(refs_tool, "atomic", side_effect=fail_after_write):
+            self.assertEqual(refs_tool.main(args), 2)
+        self.assertTrue(failed[0], "the fault injection must execute, not silently pass")
+        self.assertFalse((self.root / "sources/originals/S-ALIAS/original.txt").exists())
+        self.assertEqual(refs_tool.load(self.root / "references.json"), refs_tool.empty())
 
     def test_revision_impact_follows_citation_and_real_dependencies(self):
         self.plan["chapters"][1]["depends_on"] = ["CH-01"]
