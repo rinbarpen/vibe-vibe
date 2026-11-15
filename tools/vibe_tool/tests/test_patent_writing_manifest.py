@@ -74,7 +74,7 @@ class PatentWritingTests(unittest.TestCase):
 
     def test_discovery_dependencies_and_shared_host_contract(self):
         manifest = resolve_manifest(ROOT / 'manifests', 'writing')
-        self.assertEqual(manifest.scenarios, ['patent'])
+        self.assertEqual(manifest.scenarios, ['bid', 'patent'])
         self.assertEqual(manifest.required_skills, ['chinese-patent', 'omnidraw'])
         for name in manifest.required_skills:
             self.assertEqual(resolve_skill((ROOT / 'skills', ROOT / 'mine'), name).name, name)
@@ -182,6 +182,25 @@ class PatentWritingTests(unittest.TestCase):
         rules = json.loads((self.target / 'rules/writing/rules.json').read_text())
         self.assertEqual(rules['rules'], [])
         self.assertFalse((self.target / 'rules/writing/rules/patent.md').exists())
+
+    def test_bid_scenario_uses_explicit_writing_skill_without_patent_rules(self):
+        # The small offline package tests scenario/extra-skill routing. The real
+        # z-writing engine bundle is checked by tests/test_writing_manifest.py.
+        skill = self.repo / 'mine/z-writing'
+        skill.mkdir()
+        (skill / 'SKILL.md').write_text('---\nname: z-writing\ndescription: Offline routing fixture\n---\n')
+        self.assertEqual(self.install(scenario='bid', skills=['z-writing']), 0)
+        metadata = json.loads((self.target / 'rules/writing/rules.json').read_text())
+        self.assertEqual([r['source'] for r in metadata['rules']], ['scenarios/bid/rules/bid.md'])
+        self.assertFalse((self.target / 'rules/writing/rules/patent.md').exists())
+        self.assertTrue((self.target / '.agents/skills/z-writing/SKILL.md').is_file())
+        self.assertTrue((self.target / 'references/bid-contract.md').is_file())
+        self.assertTrue((self.target / 'references/patent-guide.md').is_file())
+
+    def test_bid_missing_explicit_skill_source_writes_nothing(self):
+        with self.assertRaises(ValueError):
+            self.install(scenario='bid', skills=['z-writing'])
+        self.assertFalse(self.target.exists())
 
     def test_user_edits_are_preserved_before_any_write(self):
         self.assertEqual(self.install(), 0)

@@ -217,15 +217,19 @@ class WritingSetupTests(unittest.TestCase):
                 return result
 
             setup = ROOT / "scripts/setup-project.py"
-            run(setup, "writing", project, "--harness", "generic", "--dry-run")
+            options = ("--harness", "generic", "--scenario", "bid", "--skill", "z-writing")
+            run(setup, "writing", project, *options, "--dry-run")
             self.assertEqual(tree_hash(project), original)
             self.assertFalse((base / "isolated-projects.json").exists())
-            run(setup, "writing", project, "--harness", "generic")
+            run(setup, "writing", project, *options)
             run(setup, "writing", project, "--check")
             self.assertTrue((project / "AGENTS.md").read_text().startswith("User constraints\n"))
             self.assertEqual((project / "README.md").read_text(), "User README\n")
             self.assertEqual((project / "bid.json").read_text(), "user business state\n")
             self.assertFalse((project / ".cursor").exists())
+            rules = json.loads((project / "rules/writing/rules.json").read_text())
+            self.assertEqual([r["source"] for r in rules["rules"]], ["scenarios/bid/rules/bid.md"])
+            self.assertFalse((project / "rules/writing/rules/patent.md").exists())
             for relative in ("PROJECT_RULES.md", "rules/writing/CONTRACT.md",
                              "rules/writing/references/workflow.svg",
                              ".agents/skills/z-writing/references/ai-vibe-writing/SKILL.md",
@@ -248,13 +252,13 @@ class WritingSetupTests(unittest.TestCase):
                         self.assertTrue((file.parent / target.split("#", 1)[0]).exists(),
                                         f"installed broken link: {file} -> {target}")
             installed = tree_hash(project)
-            run(setup, "writing", project, "--harness", "generic")
+            run(setup, "writing", project, *options)
             self.assertEqual(tree_hash(project), installed)
             local = project / "scripts/check_bid.py"
             content = local.read_bytes()
             local.write_bytes(content + b"\n# local customization\n")
             changed = tree_hash(project)
-            run(setup, "writing", project, "--harness", "generic", "--dry-run", expected=1)
+            run(setup, "writing", project, *options, "--dry-run", expected=1)
             self.assertEqual(tree_hash(project), changed)
             run(setup, "writing", project, "--check", expected=1)
             local.write_bytes(content)
