@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "title": "本地多分支与可选 PR / Issue 协作流程",
+  "description": "本地 Git 是基础，远程协作显式启用，Issue 独立可选。AI 执行与校验；仅新的业务决定或实际人工评审门才等待人，恢复后回到绑定 SHA 的原节点。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "分支任务进入",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "输入目标、任务范围、当前上下文；图描述规则，不代表已经执行。"
+    },
+    {
+      "id": "inspect",
+      "label": "只读检查本地状态",
+      "kind": "ai",
+      "row": 1,
+      "detail": "分支、提交、dirty、worktree 占用与 remotes；检查不联网、不创建事项。"
+    },
+    {
+      "id": "route",
+      "label": "核对模式与执行范围",
+      "kind": "check",
+      "row": 2,
+      "detail": "默认 local；remote 存在不自动启用 hosted；明确只开发、开 PR 或合并。"
+    },
+    {
+      "id": "decision",
+      "label": "决定新的范围或目标",
+      "kind": "human",
+      "row": 3,
+      "detail": "仅处理新的 remote/base、发布范围或业务取舍；明确对象与 SHA。",
+      "trigger": "新的 remote/base/发布范围或业务取舍。",
+      "resume": "同意/调整：核对范围与 SHA 后返回模式判定；取消：回退。"
+    },
+    {
+      "id": "scope_wait",
+      "label": "等待当前范围决定",
+      "kind": "check",
+      "row": 4,
+      "detail": "未回答不视为同意；只暂停依赖该决定的动作，记录恢复节点。"
+    },
+    {
+      "id": "work",
+      "label": "隔离分支并实现验证",
+      "kind": "ai",
+      "row": 5,
+      "detail": "复用同任务分支或创建独立分支/worktree，保护 dirty 与其他任务；提交本次路径。"
+    },
+    {
+      "id": "verify",
+      "label": "验证代码与分支结果",
+      "kind": "check",
+      "row": 6,
+      "detail": "运行适用本地测试并核对提交；失败由 AI 返工，不以缺远程工具阻塞本地任务。"
+    },
+    {
+      "id": "local_merge",
+      "label": "执行请求的本地合并",
+      "kind": "ai",
+      "row": 7,
+      "detail": "只在合并属于任务范围时执行项目既定策略；冲突调查、修复与重测。"
+    },
+    {
+      "id": "issue",
+      "label": "可选关联或跳过 Issue",
+      "kind": "ai",
+      "row": 8,
+      "detail": "已有引用先核实；需要新事项才查重后创建。Refs 不等于关闭；无 Issue 仍可开 PR。"
+    },
+    {
+      "id": "publish",
+      "label": "复用或创建目标 PR",
+      "kind": "ai",
+      "row": 9,
+      "detail": "确认 remote/base/head SHA 和平台；按既定目标推送与创建，不重复建 PR。"
+    },
+    {
+      "id": "checks",
+      "label": "核对 CI 与实际评审门",
+      "kind": "check",
+      "row": 10,
+      "detail": "queued/pending 是等待；失败修复同一分支；只认可目标 SHA 的真实证据。"
+    },
+    {
+      "id": "ci_wait",
+      "label": "调查前置与等待检查",
+      "kind": "ai",
+      "row": 11,
+      "detail": "登录、工具、runner 和 CI 等待按原节点保存；就绪后重新核对 SHA，不绕过检查。"
+    },
+    {
+      "id": "review",
+      "label": "需要的真实人工评审",
+      "kind": "human",
+      "row": 12,
+      "detail": "仅当仓库实际要求或出现新业务决定时介入；已给定的合并目标不重复提问。",
+      "trigger": "实际仓库评审规则要求，或检查后出现新的业务决定。",
+      "resume": "批准：核对 head 后合并；修改要求：返工；未回答：保持等待。"
+    },
+    {
+      "id": "review_wait",
+      "label": "等待当前评审结果",
+      "kind": "check",
+      "row": 13,
+      "detail": "未批准不假装通过；有效结果只恢复对应分支/SHA 的评审节点。"
+    },
+    {
+      "id": "hosted_merge",
+      "label": "执行请求的远程合并",
+      "kind": "ai",
+      "row": 14,
+      "detail": "适用检查与实际评审已满足且任务包含合并；执行前再次核对 head/base。"
+    },
+    {
+      "id": "cleanup",
+      "label": "验证结果并定向清理",
+      "kind": "check",
+      "row": 15,
+      "detail": "核对真实合并和必要 Issue 状态；快进本地。仅清理已合并、无新工作、未被占用的任务分支。"
+    },
+    {
+      "id": "rollback",
+      "label": "按本次范围回退",
+      "kind": "ai",
+      "row": 16,
+      "detail": "冲突合并 abort；共享提交按项目策略 revert。保留用户修改和其他分支，远程事项按具体决定处理。"
+    },
+    {
+      "id": "restore",
+      "label": "实际验证恢复结果",
+      "kind": "check",
+      "row": 17,
+      "detail": "核对文件、提交与远程状态；恢复失败继续调查，不把取消视为已回退。"
+    },
+    {
+      "id": "done",
+      "label": "交付当前真实状态",
+      "kind": "terminal",
+      "row": 18,
+      "detail": "区分本地已验证、保留分支、PR 已开、等待、已合并和回退；列实际证据与未验证项。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "inspect",
+      "label": "接收当前请求",
+      "kind": "normal"
+    },
+    {
+      "from": "inspect",
+      "to": "route",
+      "label": "状态已核对",
+      "kind": "normal"
+    },
+    {
+      "from": "route",
+      "to": "work",
+      "label": "范围明确；默认本地",
+      "kind": "normal"
+    },
+    {
+      "from": "route",
+      "to": "decision",
+      "label": "出现新的业务决定",
+      "kind": "normal"
+    },
+    {
+      "from": "decision",
+      "to": "scope_wait",
+      "label": "尚未回答",
+      "kind": "normal"
+    },
+    {
+      "from": "scope_wait",
+      "to": "decision",
+      "label": "收到有效回答",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "route",
+      "label": "同意或调整：核对后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "rollback",
+      "label": "取消或撤销",
+      "kind": "normal"
+    },
+    {
+      "from": "work",
+      "to": "verify",
+      "label": "执行针对性验证",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "work",
+      "label": "失败：修复同一任务",
+      "kind": "rework"
+    },
+    {
+      "from": "verify",
+      "to": "done",
+      "label": "仅开发/验证：保留本地分支",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "local_merge",
+      "label": "local 且请求合并",
+      "kind": "normal"
+    },
+    {
+      "from": "local_merge",
+      "to": "cleanup",
+      "label": "验证提交关系与结果",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "issue",
+      "label": "显式 hosted 请求",
+      "kind": "normal"
+    },
+    {
+      "from": "issue",
+      "to": "publish",
+      "label": "可关联 Issue，也可跳过",
+      "kind": "normal"
+    },
+    {
+      "from": "publish",
+      "to": "checks",
+      "label": "读取目标 SHA 的真实检查",
+      "kind": "normal"
+    },
+    {
+      "from": "checks",
+      "to": "work",
+      "label": "检查失败：修复后重测",
+      "kind": "rework"
+    },
+    {
+      "from": "checks",
+      "to": "ci_wait",
+      "label": "排队或缺前置",
+      "kind": "normal"
+    },
+    {
+      "from": "ci_wait",
+      "to": "checks",
+      "label": "条件就绪：核对后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "ci_wait",
+      "to": "decision",
+      "label": "需要新的资源/范围决定",
+      "kind": "rework"
+    },
+    {
+      "from": "checks",
+      "to": "review",
+      "label": "实际规则要求人工评审",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "review_wait",
+      "label": "尚未获得真实结果",
+      "kind": "normal"
+    },
+    {
+      "from": "review_wait",
+      "to": "review",
+      "label": "收到有效评审",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "work",
+      "label": "要求修改：返工",
+      "kind": "rework"
+    },
+    {
+      "from": "review",
+      "to": "hosted_merge",
+      "label": "批准且任务包含合并",
+      "kind": "normal"
+    },
+    {
+      "from": "checks",
+      "to": "hosted_merge",
+      "label": "检查通过；无额外评审门；请求合并",
+      "kind": "normal"
+    },
+    {
+      "from": "checks",
+      "to": "done",
+      "label": "仅要求开 PR：交付真实状态",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "done",
+      "label": "只需 PR/评审：保留分支",
+      "kind": "normal"
+    },
+    {
+      "from": "hosted_merge",
+      "to": "cleanup",
+      "label": "远程确认合并后同步",
+      "kind": "normal"
+    },
+    {
+      "from": "cleanup",
+      "to": "decision",
+      "label": "出现新工作/清理范围取舍",
+      "kind": "rework"
+    },
+    {
+      "from": "cleanup",
+      "to": "done",
+      "label": "结果核实；仅清理本次范围",
+      "kind": "normal"
+    },
+    {
+      "from": "rollback",
+      "to": "restore",
+      "label": "执行恢复后核验",
+      "kind": "normal"
+    },
+    {
+      "from": "restore",
+      "to": "rollback",
+      "label": "恢复失败：调查重试",
+      "kind": "rework"
+    },
+    {
+      "from": "restore",
+      "to": "done",
+      "label": "恢复已验证",
+      "kind": "normal"
+    }
+  ]
+}

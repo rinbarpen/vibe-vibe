@@ -1,71 +1,39 @@
 ---
-description: GitHub Collaboration & Enterprise Automation — PR, CI, branching, review, release management
+description: Local-first Git branches/worktrees with optional hosted PR and Issue interaction
 globs: ["**/*"]
 alwaysApply: true
 ---
 
-# GitHub Collaboration & Enterprise Automation
+# 本地 Git 与可选远程协作
 
-## 1. Pull Request (PR) Flow
+## 1. 默认本地，多分支独立
 
-- **创建 PR**: 必须使用 `gh pr create` 命令。
-- **描述规范**:
-  - 使用 `--fill` 自动提取 commit 信息。
-  - 必须包含 `## Summary` (变更摘要) 和 `## Test Plan` (测试计划)。
-- **标题格式**: `<type>(<scope>): <description>` — 由 CI workflow 强制。
-- **大小标签**: XS(0-10) / S(11-50) / M(51-200) / L(201-800) / XL(>800) 行。
-- Draft PR 用于 WIP 状态，ready 后标记为 Ready for Review。
-- **自动化检查**: PR 创建后，必须监控 CI 状态 (`gh pr checks` 或 `ci-watcher`)。
+- 本地分支/worktree 是基础能力，不要求 remote、托管账号、PR、Issue 或 gh。普通分支名为 `<type>/<description>`；Issue 编号可选。
+- 同一任务复用已确认分支；独立任务使用独立分支/worktree。先识别 dirty 修改、分支占用和基线，不 reset、抢占或批量清理其他任务。
+- 只要求开发/验证就保留分支；明确包含合并才执行本地 merge。按项目策略验证提交关系、合并结果和回退；仅清理本次已合并、无新工作且未被其他 worktree 占用的分支。
+- 只读检查：`python3 scripts/git_collaboration.py inspect --root .`。完整规则见 `references/git-collaboration.md` 和 git-flow 命令指南；检查不联网、不修改 Git 或创建任何远程对象。
 
-## 2. Branch Convention
+## 2. 远程 PR / Issue 独立可选
 
-- **命名**: `<type>/<issue-number>-<kebab-description>`
-- **示例**: `feat/42-user-auth`, `fix/87-npe-on-null`, `hotfix/v1.2.3`, `release/v2.0.0`
-- **生命周期**: feature 分支合并后自动删除。
-- **保护规则**: main 需要 2 个 review + 所有 status checks 通过 + up-to-date。
+- 有 remote 不自动启用 hosted；用户请求 PR/MR、Issue 或远程合并时才进入该路径。多个 remote、base 或发布范围存在新取舍时再提问，已确认的输入沿用。
+- 使用项目实际平台：GitHub 用 gh，GitLab 用既有 glab/API，Gitee 用既有 API/界面；不默认创建远程、安装工具或改全局账号。`--provider=git` 的本地流程始终完整可用。
+- Issue 可复用、可关联，也可省略；新建前查重且需任务明确需要。`Refs` 仅表示关联，完整解决且需要关闭时才用 `Closes`，合并后核对实际状态。
+- 核对源分支、base、remote、仓库和 SHA，复用已有 PR 或按确认目标推送并创建。标题遵守项目约定，描述含 Summary / Test Plan、证据和未验证项；WIP 可用 Draft。
 
-## 3. Merge Strategy
+## 3. 检查、评审、合并
 
-| Branch Type | Merge Method | Purpose |
-|-------------|-------------|---------|
-| feature | Squash merge | Keep main history clean |
-| release | Merge commit | Preserve release history |
-| hotfix | Merge commit | Preserve fix history |
+- 监控目标 SHA 的实际 CI 与分支保护要求，不预设固定 review 数。queued/pending 是等待，不是通过；失败由 AI 调查、修复同一分支并重测。
+- 只有任务包含合并且适用检查、真实评审要求已满足才执行。遵守项目 merge/squash/rebase 策略，不冒充批准或绕过保护。
+- implement 使用其内含双轴评审，不额外重复通用 review。仅在仓库要求的人工评审或新的业务决定处等待人。
+- 人未回答、CI/登录/runner 尚未就绪时记录等待点；恢复后核对 SHA、范围和真实状态，回到原节点，不重复创建 Issue/PR。
 
-## 4. Review
+## 4. 同步、清理与回退
 
-- CODEOWNERS 自动分配 reviewer。
-- `implement` 内含双轴 subagent review，不要额外启动通用 code-review 流程。
-- 质量门禁继续执行适用的安全、测试与文档检查。
-- 必须解决所有 conversation 后才能合并。
+- 远程确认合并后再同步本地目标分支；清理仅限本次已合并、无新增提交的源分支，保留其他分支/worktree。
+- 冲突中的合并可用 git merge --abort；共享提交优先按项目策略 revert，保留用户修改和其他任务，不重写他人历史。
+- 区分本地已验证、PR 已创建、等待评审、远程已合并、Issue 实际关闭及回退已验证。列实际输出和链接，不把预检或关联当成完成。
 
-## 5. Release & Tag
+## 5. 发布与托管自动化
 
-- **版本化**: SemVer 2.0 (MAJOR.MINOR.PATCH)。
-- **CHANGELOG.md**: 必须维护，Keep-a-Changelog 格式。
-- **Tag**: 所有 release tag 必须 GPG 签名 (`git tag -s v1.2.3 -m "v1.2.3"`)。
-- **发布流程**: tag push → `release.yml` 触发自动发布。
-- Hotfix 从最近 release tag 创建分支，不可在 release tag 上直接修改。
-
-## 6. GitHub CLI (`gh`) 常用指令
-
-- `gh pr status` — 查看当前 PR 状态。
-- `gh pr checks` — 查看 CI 检查结果。
-- `gh pr view --web` — 在浏览器中打开当前 PR。
-- `gh run list` — 查看最近的 GitHub Actions 运行记录。
-- `gh release create v1.2.3` — 创建 GitHub Release。
-
-## 7. Automation
-
-- **Post-Commit**: 每次 commit 后运行 `vibe-post-commit.sh` 同步文档和状态。
-- **CI 修复**: 如果 CI 失败，启动 `ci-watcher` 或 `fix-ci` subagent 分析日志并应用修复。
-- **依赖更新**: 使用 `gh` CLI 触发或管理 Dependabot/Renovate PR。
-- **Workflow 并发**: 使用 `concurrency` 组防止同一分支重复运行。
-
-## 8. Security Management
-
-- SECURITY.md 定义了完整的漏洞披露流程。
-- CodeQL 分析在每次 PR 和每周定时执行。
-- Dependabot 自动创建依赖更新 PR。
-- Dependency Review 在每次 PR 中检查 license 和已知漏洞。
-- Critical 级别的安全 issue 自动通知 project owner。
+- 沿用项目既有 VERSION / CHANGELOG / 签名和发布契约；普通分支任务不自动发版、push tag 或部署。
+- GitHub/GitLab/Gitee 的 CI、CodeQL、依赖检查和通知只在实际配置的托管路径中运行；本地任务不以可选平台可用性为门槛。

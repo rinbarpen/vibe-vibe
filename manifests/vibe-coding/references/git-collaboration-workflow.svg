@@ -1,0 +1,251 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1780" height="4222" viewBox="0 0 1780 4222" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">本地多分支与可选 PR / Issue 协作流程</title>
+  <desc id="workflow-description">本地 Git 是基础，远程协作显式启用，Issue 独立可选。AI 执行与校验；仅新的业务决定或实际人工评审门才等待人，恢复后回到绑定 SHA 的原节点。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1780" height="4222" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">本地多分支与可选 PR / Issue 协作流程</text>
+    <text x="28" y="70" font-size="14" fill="#475569">本地 Git 是基础，远程协作显式启用，Issue 独立可选。AI 执行与校验；仅新的业务决定或实际人工评审门才等待人，恢复后回到绑定 SHA 的原节点。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="4028" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="4028" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="4028" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="checks" data-to="ci_wait" d="M 630.0,2386 V 2429.0 H 220.0 V 2472" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="checks" data-to="done" d="M 630.0,2386 V 2429.0 H 434 V 3962 H 630.0 V 3986" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="checks" data-to="hosted_merge" d="M 630.0,2386 V 2429.0 H 24 V 3142 H 220.0 V 3166" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="checks" data-to="review" d="M 630.0,2386 V 2429.0 H 1040.0 V 2672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="cleanup" data-to="done" d="M 630.0,3480 V 3523.0 H 434 V 3962 H 630.0 V 3986" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="rollback" d="M 1040.0,986 V 1029.0 H 24 V 3542 H 220.0 V 3566" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="scope_wait" d="M 1040.0,986 V 1029.0 H 630.0 V 1072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="hosted_merge" data-to="cleanup" d="M 220.0,3280 V 3323.0 H 630.0 V 3366" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="inspect" data-to="route" d="M 220.0,492 V 535.0 H 630.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="issue" data-to="publish" d="M 220.0,1986 V 2029.0 H 220.0 V 2072" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="local_merge" data-to="cleanup" d="M 220.0,1786 V 1829.0 H 434 V 3342 H 630.0 V 3366" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="publish" data-to="checks" d="M 220.0,2186 V 2229.0 H 630.0 V 2272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="restore" data-to="done" d="M 630.0,3900 V 3943.0 H 630.0 V 3986" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="review" data-to="done" d="M 1040.0,2880 V 2923.0 H 434 V 3962 H 630.0 V 3986" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="review" data-to="hosted_merge" d="M 1040.0,2880 V 2923.0 H 220.0 V 3166" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="review" data-to="review_wait" d="M 1040.0,2880 V 2923.0 H 630.0 V 2966" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="rollback" data-to="restore" d="M 220.0,3700 V 3743.0 H 630.0 V 3786" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="route" data-to="decision" d="M 630.0,692 V 735.0 H 1040.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="route" data-to="work" d="M 630.0,692 V 735.0 H 220.0 V 1272" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="inspect" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="done" d="M 630.0,1586 V 1629.0 H 434 V 3962 H 630.0 V 3986" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="issue" d="M 630.0,1586 V 1629.0 H 24 V 1848 H 220.0 V 1872" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="local_merge" d="M 630.0,1586 V 1629.0 H 220.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="work" data-to="verify" d="M 220.0,1386 V 1429.0 H 630.0 V 1472" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="checks" data-to="work" d="M 810,2329.0 H 1270 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="ci_wait" data-to="checks" d="M 400,2529.0 H 1296 V 2249 H 630.0 V 2272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="ci_wait" data-to="decision" d="M 400,2529.0 H 1322 V 755 H 1040.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="cleanup" data-to="decision" d="M 810,3423.0 H 1348 V 755 H 1040.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="decision" data-to="route" d="M 1220,882.0 H 1374 V 555 H 630.0 V 578" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="restore" data-to="rollback" d="M 810,3843.0 H 1400 V 3543 H 220.0 V 3566" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="review" data-to="work" d="M 1220,2776.0 H 1426 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="review_wait" data-to="review" d="M 810,3023.0 H 1452 V 2649 H 1040.0 V 2672" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="scope_wait" data-to="decision" d="M 810,1129.0 H 1478 V 755 H 1040.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="verify" data-to="work" d="M 810,1529.0 H 1504 V 1249 H 220.0 V 1272" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>分支任务进入 — 输入目标、任务范围、当前上下文；图描述规则，不代表已经执行。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">分支任务进入</text>
+      <text x="466" y="252" font-size="14" fill="#334155">输入目标、任务范围、当前上下文；图描述规则</text>
+      <text x="466" y="272" font-size="14" fill="#334155">，不代表已经执行。</text>
+    </g>
+    <g id="node-inspect" data-kind="ai" data-row="1">
+      <title>只读检查本地状态 — 分支、提交、dirty、worktree 占用与 remotes；检查不联网、不创建事项。</title>
+      <rect x="40" y="378" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">只读检查本地状态</text>
+      <text x="56" y="452" font-size="14" fill="#334155">分支、提交、dirty、worktree 占用与 remotes</text>
+      <text x="56" y="472" font-size="14" fill="#334155">；检查不联网、不创建事项。</text>
+    </g>
+    <g id="node-route" data-kind="check" data-row="2">
+      <title>核对模式与执行范围 — 默认 local；remote 存在不自动启用 hosted；明确只开发、开 PR 或合并。</title>
+      <rect x="450" y="578" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="602" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="628" font-size="18" font-weight="700">核对模式与执行范围</text>
+      <text x="466" y="652" font-size="14" fill="#334155">默认 local；remote 存在不自动启用 hosted；</text>
+      <text x="466" y="672" font-size="14" fill="#334155">明确只开发、开 PR 或合并。</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="3">
+      <title>决定新的范围或目标 — 仅处理新的 remote/base、发布范围或业务取舍；明确对象与 SHA。</title>
+      <rect x="860" y="778" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="802" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="828" font-size="18" font-weight="700">决定新的范围或目标</text>
+      <text x="876" y="852" font-size="14" fill="#334155">仅处理新的 remote/base、发布范围或业务取舍</text>
+      <text x="876" y="872" font-size="14" fill="#334155">；明确对象与 SHA。</text>
+      <text x="876" y="904" font-size="14" fill="#9a3412">介入条件：新的 remote/base/发布范围或业务取</text>
+      <text x="876" y="924" font-size="14" fill="#9a3412">舍。</text>
+      <text x="876" y="944" font-size="14" fill="#9a3412">恢复执行：同意/调整：核对范围与 SHA 后返回</text>
+      <text x="876" y="964" font-size="14" fill="#9a3412">模式判定；取消：回退。</text>
+    </g>
+    <g id="node-scope_wait" data-kind="check" data-row="4">
+      <title>等待当前范围决定 — 未回答不视为同意；只暂停依赖该决定的动作，记录恢复节点。</title>
+      <rect x="450" y="1072" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1096" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1122" font-size="18" font-weight="700">等待当前范围决定</text>
+      <text x="466" y="1146" font-size="14" fill="#334155">未回答不视为同意；只暂停依赖该决定的动作，</text>
+      <text x="466" y="1166" font-size="14" fill="#334155">记录恢复节点。</text>
+    </g>
+    <g id="node-work" data-kind="ai" data-row="5">
+      <title>隔离分支并实现验证 — 复用同任务分支或创建独立分支/worktree，保护 dirty 与其他任务；提交本次路径。</title>
+      <rect x="40" y="1272" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1296" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1322" font-size="18" font-weight="700">隔离分支并实现验证</text>
+      <text x="56" y="1346" font-size="14" fill="#334155">复用同任务分支或创建独立分支/worktree，保护</text>
+      <text x="56" y="1366" font-size="14" fill="#334155">dirty 与其他任务；提交本次路径。</text>
+    </g>
+    <g id="node-verify" data-kind="check" data-row="6">
+      <title>验证代码与分支结果 — 运行适用本地测试并核对提交；失败由 AI 返工，不以缺远程工具阻塞本地任务。</title>
+      <rect x="450" y="1472" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1496" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1522" font-size="18" font-weight="700">验证代码与分支结果</text>
+      <text x="466" y="1546" font-size="14" fill="#334155">运行适用本地测试并核对提交；失败由 AI 返工</text>
+      <text x="466" y="1566" font-size="14" fill="#334155">，不以缺远程工具阻塞本地任务。</text>
+    </g>
+    <g id="node-local_merge" data-kind="ai" data-row="7">
+      <title>执行请求的本地合并 — 只在合并属于任务范围时执行项目既定策略；冲突调查、修复与重测。</title>
+      <rect x="40" y="1672" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1696" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1722" font-size="18" font-weight="700">执行请求的本地合并</text>
+      <text x="56" y="1746" font-size="14" fill="#334155">只在合并属于任务范围时执行项目既定策略；冲</text>
+      <text x="56" y="1766" font-size="14" fill="#334155">突调查、修复与重测。</text>
+    </g>
+    <g id="node-issue" data-kind="ai" data-row="8">
+      <title>可选关联或跳过 Issue — 已有引用先核实；需要新事项才查重后创建。Refs 不等于关闭；无 Issue 仍可开 PR。</title>
+      <rect x="40" y="1872" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="1896" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="1922" font-size="18" font-weight="700">可选关联或跳过 Issue</text>
+      <text x="56" y="1946" font-size="14" fill="#334155">已有引用先核实；需要新事项才查重后创建。Ref</text>
+      <text x="56" y="1966" font-size="14" fill="#334155">s 不等于关闭；无 Issue 仍可开 PR。</text>
+    </g>
+    <g id="node-publish" data-kind="ai" data-row="9">
+      <title>复用或创建目标 PR — 确认 remote/base/head SHA 和平台；按既定目标推送与创建，不重复建 PR。</title>
+      <rect x="40" y="2072" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2096" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2122" font-size="18" font-weight="700">复用或创建目标 PR</text>
+      <text x="56" y="2146" font-size="14" fill="#334155">确认 remote/base/head SHA 和平台；按既定目</text>
+      <text x="56" y="2166" font-size="14" fill="#334155">标推送与创建，不重复建 PR。</text>
+    </g>
+    <g id="node-checks" data-kind="check" data-row="10">
+      <title>核对 CI 与实际评审门 — queued/pending 是等待；失败修复同一分支；只认可目标 SHA 的真实证据。</title>
+      <rect x="450" y="2272" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2296" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2322" font-size="18" font-weight="700">核对 CI 与实际评审门</text>
+      <text x="466" y="2346" font-size="14" fill="#334155">queued/pending 是等待；失败修复同一分支；只</text>
+      <text x="466" y="2366" font-size="14" fill="#334155">认可目标 SHA 的真实证据。</text>
+    </g>
+    <g id="node-ci_wait" data-kind="ai" data-row="11">
+      <title>调查前置与等待检查 — 登录、工具、runner 和 CI 等待按原节点保存；就绪后重新核对 SHA，不绕过检查。</title>
+      <rect x="40" y="2472" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2496" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2522" font-size="18" font-weight="700">调查前置与等待检查</text>
+      <text x="56" y="2546" font-size="14" fill="#334155">登录、工具、runner 和 CI 等待按原节点保存；</text>
+      <text x="56" y="2566" font-size="14" fill="#334155">就绪后重新核对 SHA，不绕过检查。</text>
+    </g>
+    <g id="node-review" data-kind="human" data-row="12">
+      <title>需要的真实人工评审 — 仅当仓库实际要求或出现新业务决定时介入；已给定的合并目标不重复提问。</title>
+      <rect x="860" y="2672" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="2696" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="2722" font-size="18" font-weight="700">需要的真实人工评审</text>
+      <text x="876" y="2746" font-size="14" fill="#334155">仅当仓库实际要求或出现新业务决定时介入；已</text>
+      <text x="876" y="2766" font-size="14" fill="#334155">给定的合并目标不重复提问。</text>
+      <text x="876" y="2798" font-size="14" fill="#9a3412">介入条件：实际仓库评审规则要求，或检查后出</text>
+      <text x="876" y="2818" font-size="14" fill="#9a3412">现新的业务决定。</text>
+      <text x="876" y="2838" font-size="14" fill="#9a3412">恢复执行：批准：核对 head 后合并；修改要求</text>
+      <text x="876" y="2858" font-size="14" fill="#9a3412">：返工；未回答：保持等待。</text>
+    </g>
+    <g id="node-review_wait" data-kind="check" data-row="13">
+      <title>等待当前评审结果 — 未批准不假装通过；有效结果只恢复对应分支/SHA 的评审节点。</title>
+      <rect x="450" y="2966" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2990" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3016" font-size="18" font-weight="700">等待当前评审结果</text>
+      <text x="466" y="3040" font-size="14" fill="#334155">未批准不假装通过；有效结果只恢复对应分支/SH</text>
+      <text x="466" y="3060" font-size="14" fill="#334155">A 的评审节点。</text>
+    </g>
+    <g id="node-hosted_merge" data-kind="ai" data-row="14">
+      <title>执行请求的远程合并 — 适用检查与实际评审已满足且任务包含合并；执行前再次核对 head/base。</title>
+      <rect x="40" y="3166" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="3190" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="3216" font-size="18" font-weight="700">执行请求的远程合并</text>
+      <text x="56" y="3240" font-size="14" fill="#334155">适用检查与实际评审已满足且任务包含合并；执</text>
+      <text x="56" y="3260" font-size="14" fill="#334155">行前再次核对 head/base。</text>
+    </g>
+    <g id="node-cleanup" data-kind="check" data-row="15">
+      <title>验证结果并定向清理 — 核对真实合并和必要 Issue 状态；快进本地。仅清理已合并、无新工作、未被占用的任务分支。</title>
+      <rect x="450" y="3366" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="3390" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3416" font-size="18" font-weight="700">验证结果并定向清理</text>
+      <text x="466" y="3440" font-size="14" fill="#334155">核对真实合并和必要 Issue 状态；快进本地。仅</text>
+      <text x="466" y="3460" font-size="14" fill="#334155">清理已合并、无新工作、未被占用的任务分支。</text>
+    </g>
+    <g id="node-rollback" data-kind="ai" data-row="16">
+      <title>按本次范围回退 — 冲突合并 abort；共享提交按项目策略 revert。保留用户修改和其他分支，远程事项按具体决定处理。</title>
+      <rect x="40" y="3566" width="360" height="134" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="3590" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="3616" font-size="18" font-weight="700">按本次范围回退</text>
+      <text x="56" y="3640" font-size="14" fill="#334155">冲突合并 abort；共享提交按项目策略 revert。</text>
+      <text x="56" y="3660" font-size="14" fill="#334155">保留用户修改和其他分支，远程事项按具体决定</text>
+      <text x="56" y="3680" font-size="14" fill="#334155">处理。</text>
+    </g>
+    <g id="node-restore" data-kind="check" data-row="17">
+      <title>实际验证恢复结果 — 核对文件、提交与远程状态；恢复失败继续调查，不把取消视为已回退。</title>
+      <rect x="450" y="3786" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="3810" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3836" font-size="18" font-weight="700">实际验证恢复结果</text>
+      <text x="466" y="3860" font-size="14" fill="#334155">核对文件、提交与远程状态；恢复失败继续调查</text>
+      <text x="466" y="3880" font-size="14" fill="#334155">，不把取消视为已回退。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="18">
+      <title>交付当前真实状态 — 区分本地已验证、保留分支、PR 已开、等待、已合并和回退；列实际证据与未验证项。</title>
+      <rect x="450" y="3986" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="4010" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="4036" font-size="18" font-weight="700">交付当前真实状态</text>
+      <text x="466" y="4060" font-size="14" fill="#334155">区分本地已验证、保留分支、PR 已开、等待、已</text>
+      <text x="466" y="4080" font-size="14" fill="#334155">合并和回退；列实际证据与未验证项。</text>
+    </g>
+    <text x="425.0" y="2420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">排队或缺前置</text>
+    <text x="642.0" y="2420.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">仅要求开 PR：交付真实状</text>
+    <text x="642.0" y="2437.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">态</text>
+    <text x="425.0" y="2420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">检查通过；无额外评审门</text>
+    <text x="425.0" y="2437.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">；请求合并</text>
+    <text x="835.0" y="2420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">实际规则要求人工评审</text>
+    <text x="642.0" y="3514.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">结果核实；仅清理本次范</text>
+    <text x="642.0" y="3531.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">围</text>
+    <text x="630.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">取消或撤销</text>
+    <text x="835.0" y="1020.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">尚未回答</text>
+    <text x="425.0" y="3314.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">远程确认合并后同步</text>
+    <text x="425.0" y="526.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">状态已核对</text>
+    <text x="232.0" y="2020.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">可关联 Issue，也可跳过</text>
+    <text x="425.0" y="1820.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">验证提交关系与结果</text>
+    <text x="425.0" y="2220.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">读取目标 SHA 的真实检查</text>
+    <text x="642.0" y="3934.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复已验证</text>
+    <text x="835.0" y="2914.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">只需 PR/评审：保留分支</text>
+    <text x="630.0" y="2914.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">批准且任务包含合并</text>
+    <text x="835.0" y="2914.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">尚未获得真实结果</text>
+    <text x="425.0" y="3734.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">执行恢复后核验</text>
+    <text x="835.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">出现新的业务决定</text>
+    <text x="425.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">范围明确；默认本地</text>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">接收当前请求</text>
+    <text x="642.0" y="1620.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">仅开发/验证：保留本地分</text>
+    <text x="642.0" y="1637.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">支</text>
+    <text x="425.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">显式 hosted 请求</text>
+    <text x="425.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">local 且请求合并</text>
+    <text x="425.0" y="1420.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">执行针对性验证</text>
+    <text x="1280" y="1789.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">检查失败：修复后重测</text>
+    <text x="1306" y="2389.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">条件就绪：核对后恢复</text>
+    <text x="1332" y="1642.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">需要新的资源/范围决定</text>
+    <text x="1358" y="2089.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">出现新工作/清理范围取舍</text>
+    <text x="1384" y="718.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意或调整：核对后恢复</text>
+    <text x="1410" y="3693.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复失败：调查重试</text>
+    <text x="1436" y="2012.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">要求修改：返工</text>
+    <text x="1462" y="2836.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">收到有效评审</text>
+    <text x="1488" y="942.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">收到有效回答</text>
+    <text x="1514" y="1389.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">失败：修复同一任务</text>
+    <text x="28" y="4196" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>

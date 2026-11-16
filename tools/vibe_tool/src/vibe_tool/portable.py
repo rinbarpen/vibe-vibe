@@ -129,15 +129,18 @@ def _vibe(src, stage, target, options):
     assets = ('references/codegraph-workflow.json', 'references/codegraph-workflow.svg', 'scripts/render_codegraph_workflow.py',
               'references/ui-usability.md', 'references/ui-usability-workflow.json', 'references/ui-usability-workflow.svg',
               'references/readme-guide.md', 'references/setup-guide.md', 'references/docs-readability-workflow.json',
-              'references/docs-readability-workflow.svg', 'scripts/version_guard.py')
+              'references/docs-readability-workflow.svg', 'scripts/version_guard.py',
+              'references/git-collaboration.md', 'references/git-collaboration-workflow.json',
+              'references/git-collaboration-workflow.svg', 'scripts/git_collaboration.py')
     for relative in assets:
         _copy(src / relative, stage, relative)
     for directory in ('language-specs', 'decision-trees'):
         _tree(src / 'references' / directory, stage, '.cursor/references/' + directory)
-    for name in ('branching-strategy', 'pages-guide', 'pr-conventions', 'readme-guide', 'release-process', 'tag-convention', 'lifecycle-guide'):
+    for name in ('branching-strategy', 'pages-guide', 'pr-conventions', 'readme-guide', 'release-process', 'tag-convention', 'lifecycle-guide', 'git-collaboration'):
         if (src / f'references/{name}.md').is_file():
             _copy(src / f'references/{name}.md', stage, f'.cursor/references/{name}.md')
-    for name in ('docs-readability-workflow.json', 'docs-readability-workflow.svg'):
+    for name in ('docs-readability-workflow.json', 'docs-readability-workflow.svg',
+                 'git-collaboration-workflow.json', 'git-collaboration-workflow.svg'):
         _copy(src / 'references' / name, stage, '.cursor/references/' + name)
     _commands(src / 'commands', stage)
     _tree(src / 'templates', stage, '.cursor/templates')
