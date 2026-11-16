@@ -303,6 +303,9 @@ class DeliveryTests(Fixture):
             else:
                 self.assertEqual((target / name).read_bytes(), (MANIFEST / name).read_bytes())
         self.assertTrue((target / "rules/vibe-coding/commands/git-flow/COMMAND.md").is_file())
+        command = target / "rules/vibe-coding/commands/git-flow/COMMAND.md"
+        for link in re.findall(r"\]\(([^)#]+)\)", command.read_text()):
+            self.assertTrue(command.parent.joinpath(link).is_file(), link)
         self.ok(self.render(target))
         self.ok(self.run_command(["git", "init", "--quiet", "--initial-branch=main", target]))
         result = self.run_command([sys.executable, target / SCRIPT, "inspect", "--root", target])

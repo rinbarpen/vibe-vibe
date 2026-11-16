@@ -15,7 +15,7 @@ python3 scripts/git_collaboration.py inspect --root . --branch feat/search --bas
 
 检查器优先使用 NUL 分隔的 worktree 输出；旧 Git（已实测 2.34）使用普通 porcelain 格式，记录存在歧义时报错而不猜测路径。该格式和 NUL 选项见 [Git 官方 worktree 文档](https://git-scm.com/docs/git-worktree#_list_output_format)。
 
-需要执行时使用 [git-flow 命令指南](../commands/git-flow/COMMAND.md)。通用 harness 可直接读取该文件，不假定宿主自动注册了斜杠命令。
+需要执行时读取本项目规则包或旧版命令目录中的 `git-flow` 指南。通用 harness 可直接读取该文件，不假定宿主自动注册了斜杠命令；指南位置以当前安装布局为准。
 
 ## 本地路径：不依赖网络和平台工具
 
