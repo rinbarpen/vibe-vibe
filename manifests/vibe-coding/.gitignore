@@ -2,6 +2,7 @@
 .DS_Store
 Thumbs.db
 *.swp
+*.swo
 *~
 .*.sw?
 
@@ -10,6 +11,11 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Local tool state, backups, and navigation indexes
+.vibe-tool/
+.codegraph/
+.claude/settings.local.json
 
 # Dependencies
 node_modules/
@@ -20,7 +26,46 @@ env/
 __pycache__/
 *.pyc
 *.pyo
-.python-version
+# Keep .python-version and dependency lockfiles available for version control.
+
+# Reproducible tool and framework caches
+.cache/
+.tox/
+.nox/
+.hypothesis/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Go local compilation cache (go.mod, go.sum, and go.work stay trackable)
+.gocache/
+
+# JVM and .NET local caches and intermediate output
+.gradle/
+.kotlin/
+.vs/
+**/.nuget/packages/
+obj/
+
+# Dart and Flutter generated tool state (pubspec.lock stays trackable)
+.dart_tool/
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# C/C++ CMake and language-server caches (shared presets stay trackable)
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeUserPresets.json
+.ccls-cache/
 
 # Build
 dist/
@@ -49,6 +94,7 @@ logs/
 
 # Testing
 .coverage
+.coverage.*
 coverage/
 htmlcov/
 .pytest_cache/

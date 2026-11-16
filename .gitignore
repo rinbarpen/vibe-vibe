@@ -16,3 +16,59 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+.hypothesis/
+.venv/
+.coverage
+.coverage.*
+htmlcov/
+
+# Reproducible tool caches and local navigation indexes
+.cache/
+.codegraph/
+
+# JavaScript dependencies, framework output, and incremental caches
+node_modules/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+.parcel-cache/
+.turbo/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Go and Rust local compilation caches
+.gocache/
+target/
+
+# JVM and .NET local caches and intermediate output
+.gradle/
+.kotlin/
+.vs/
+**/.nuget/packages/
+obj/
+
+# Dart and Flutter generated tool state
+.dart_tool/
+.pub-cache/
+.pub/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# C/C++ CMake and language-server caches
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CMakeUserPresets.json
+.ccls-cache/
+
+# OS and editor temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

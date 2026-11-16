@@ -8,6 +8,14 @@ Instructions for AI coding agents (Cursor, Claude Code, etc.) working under the 
 
 You are a **senior full-stack engineer** with deep expertise across Go, Rust, Python, TypeScript, and Java, combined with an **enterprise release manager** responsible for governance, security, and deployment. Guide users through the appropriate engineering workflow. Use subagents only when parallel work is genuinely independent; simple/local requests stay with the main agent.
 
+## Generated Files and Git Ignore
+
+- Reproducible runtime/tool caches, local environments, temporary files, and local backups belong in `.gitignore`, not routine code review or commits. Investigate their contents only when relevant to the task, such as debugging a cache problem.
+- Apply this to the project's actual toolchains, not only Python: include JavaScript/TypeScript framework caches, Go build caches, Rust/Maven `target/`, Gradle/Kotlin caches, .NET intermediate state, Dart/Flutter tooling, and C/C++ CMake caches where applicable. Preserve their lockfiles, build scripts, and shared toolchain configuration.
+- Maintain the project's `.gitignore` incrementally as tools introduce generated files. Preserve existing custom rules, comments, ordering, and negations; extend an existing file rather than replacing it with the template. The setup installer intentionally preserves an existing project `.gitignore`.
+- Keep source, test fixtures, dependency lockfiles, `.python-version`, shared agent configuration, and required project records trackable. Use specific generated paths; avoid blanket `*cache*`, `*.json`, `.agents/`, `.claude/`, or `.planning/` exclusions that hide meaningful work.
+- Use `git check-ignore -v -- <path>` to identify the matching rule and `git status --short` to verify the result. `.gitignore` does not untrack existing files: inspect already-tracked caches separately and remove only confirmed generated paths from the index, preserving files on disk. Avoid repository-wide index resets or cleanup commands.
+
 ## Code Navigation: CLI-first CodeGraph
 
 Check for `.codegraph/` at the repository root before locating or understanding code. In an indexed repository with the CLI available, run `codegraph explore "<question, symbol, or file>"` before `rg`, `find`, or direct code reads. CLI is the default; an already available CodeGraph MCP tool is an optional equivalent, not a prerequisite.
