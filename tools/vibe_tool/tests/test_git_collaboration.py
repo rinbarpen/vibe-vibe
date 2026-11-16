@@ -269,6 +269,10 @@ class DeliveryTests(Fixture):
         return self.run_command(command + (["--check"] if check_only else []), cwd=root)
 
     def test_workflow_reproduces_and_checks_are_read_only(self):
+        template = (MANIFEST / ".github/PULL_REQUEST_TEMPLATE/default.md").read_text()
+        for heading in ("## Summary", "## Test Plan", "## Related Issues (optional)"):
+            self.assertIn(heading, template)
+        self.assertNotIn("\nCloses #\n", template)
         self.ok(self.render(MANIFEST))
         root = self.temp / "diagram"
         for name in (*ASSETS[1:], RENDERER):
