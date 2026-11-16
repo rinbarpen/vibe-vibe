@@ -27,7 +27,8 @@ MANIFEST = ROOT / "manifests/vibe-coding"
 SCRIPT = "scripts/git_collaboration.py"
 RENDERER = "scripts/render_codegraph_workflow.py"
 ASSETS = (SCRIPT, "references/git-collaboration.md",
-          "references/git-collaboration-workflow.json", "references/git-collaboration-workflow.svg")
+          "references/git-collaboration-workflow.json", "references/git-collaboration-workflow.svg",
+          "scripts/vibe-post-commit.sh")
 spec = importlib.util.spec_from_file_location("git_collaboration", MANIFEST / SCRIPT)
 flow = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(flow)
@@ -143,10 +144,11 @@ class InspectionTests(Fixture):
                          ["selected_remote"]["provider"], "github")
         bare = self.temp / "remote.git"
         self.ok(self.run_command(["git", "init", "--bare", "--quiet", bare]))
-        self.git(root, "remote", "set-url", "origin", str(bare))
-        self.assertFalse(flow.inspect_repo(root)["hosted_available"])
-        with self.assertRaisesRegex(flow.InspectionError, "local Git path"):
-            flow.inspect_repo(root, mode="hosted", provider="github")
+        for url in (str(bare), bare.as_uri(), bare.as_uri().replace("file://", "file://localhost", 1)):
+            self.git(root, "remote", "set-url", "origin", url)
+            self.assertFalse(flow.inspect_repo(root)["hosted_available"])
+            with self.assertRaisesRegex(flow.InspectionError, "local Git path"):
+                flow.inspect_repo(root, mode="hosted", provider="github")
 
     def test_credentials_and_query_strings_are_not_reported(self):
         root = self.repository()
@@ -280,7 +282,8 @@ class DeliveryTests(Fixture):
         nodes = {node["id"]: node for node in workflow["nodes"]}
         self.assertEqual(nodes["decision"]["kind"], "human")
         edges = {(e["from"], e["to"]) for e in workflow["edges"]}
-        self.assertTrue({("verify", "local_merge"), ("verify", "issue"),
+        self.assertTrue({("verify", "local_scope"), ("local_scope", "local_merge"),
+                         ("verify", "issue"), ("issue", "decision"),
                          ("decision", "scope_wait"), ("review_wait", "review"),
                          ("checks", "ci_wait"), ("restore", "done")} <= edges)
         self.assertEqual(ET.parse(root / ASSETS[3]).getroot().tag,
@@ -289,6 +292,26 @@ class DeliveryTests(Fixture):
         before = snapshot(root)
         self.assertEqual(self.render(root).returncode, 1)
         self.assertEqual(snapshot(root), before)
+
+    @unittest.skipIf(os.name == "nt", "optional post-commit helper uses POSIX shell")
+    def test_post_commit_host_probe_is_opt_in_even_when_gh_is_installed(self):
+        binary = self.temp / "fake bin"
+        binary.mkdir()
+        gh = binary / "gh"
+        gh.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> "$VIBE_GH_TEST_LOG"\n')
+        gh.chmod(0o755)
+        checker = binary / "vibe-check"
+        checker.write_text("#!/bin/sh\nexit 0\n")
+        checker.chmod(0o755)
+        log = self.temp / "gh-calls.txt"
+        with mock.patch.dict(os.environ, {
+            "PATH": str(binary) + os.pathsep + os.environ["PATH"],
+            "VIBE_GH_TEST_LOG": str(log),
+        }):
+            self.ok(self.run_command(["bash", MANIFEST / "scripts/vibe-post-commit.sh"]))
+            self.assertFalse(log.exists())
+            self.ok(self.run_command(["bash", MANIFEST / "scripts/vibe-post-commit.sh", "--hosted-github"]))
+            self.assertEqual(log.read_text(), "pr status\n")
 
     def test_portable_setup_ships_links_inspector_command_and_reproducible_diagram(self):
         source = self.sources()

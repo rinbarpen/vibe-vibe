@@ -131,7 +131,8 @@ def _vibe(src, stage, target, options):
               'references/readme-guide.md', 'references/setup-guide.md', 'references/docs-readability-workflow.json',
               'references/docs-readability-workflow.svg', 'scripts/version_guard.py',
               'references/git-collaboration.md', 'references/git-collaboration-workflow.json',
-              'references/git-collaboration-workflow.svg', 'scripts/git_collaboration.py')
+              'references/git-collaboration-workflow.svg', 'scripts/git_collaboration.py',
+              'scripts/vibe-post-commit.sh')
     for relative in assets:
         _copy(src / relative, stage, relative)
     for directory in ('language-specs', 'decision-trees'):

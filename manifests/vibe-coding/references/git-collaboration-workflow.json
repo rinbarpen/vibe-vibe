@@ -55,89 +55,110 @@
       "detail": "运行适用本地测试并核对提交；失败由 AI 返工，不以缺远程工具阻塞本地任务。"
     },
     {
+      "id": "local_scope",
+      "label": "核对本地交付范围",
+      "kind": "check",
+      "row": 7,
+      "detail": "只开发/验证就保留分支；原请求包含合并才执行本地 merge，不追加远程要求。"
+    },
+    {
       "id": "local_merge",
       "label": "执行请求的本地合并",
       "kind": "ai",
-      "row": 7,
+      "row": 8,
       "detail": "只在合并属于任务范围时执行项目既定策略；冲突调查、修复与重测。"
     },
     {
       "id": "issue",
       "label": "可选关联或跳过 Issue",
       "kind": "ai",
-      "row": 8,
-      "detail": "已有引用先核实；需要新事项才查重后创建。Refs 不等于关闭；无 Issue 仍可开 PR。"
+      "row": 9,
+      "detail": "按需读取已有描述/评论并关联，或直接跳过 Issue；需新事项才查重创建。新范围决定绑定线程与 SHA，Refs 不等于关闭。"
     },
     {
       "id": "publish",
       "label": "复用或创建目标 PR",
       "kind": "ai",
-      "row": 9,
+      "row": 10,
       "detail": "确认 remote/base/head SHA 和平台；按既定目标推送与创建，不重复建 PR。"
     },
     {
       "id": "checks",
       "label": "核对 CI 与实际评审门",
       "kind": "check",
-      "row": 10,
+      "row": 11,
       "detail": "queued/pending 是等待；失败修复同一分支；只认可目标 SHA 的真实证据。"
+    },
+    {
+      "id": "review_gate",
+      "label": "核对评审与合并范围",
+      "kind": "check",
+      "row": 12,
+      "detail": "已通过适用检查；按实际评审要求和原请求决定等待人、继续合并或交付 PR。"
     },
     {
       "id": "ci_wait",
       "label": "调查前置与等待检查",
       "kind": "ai",
-      "row": 11,
+      "row": 13,
       "detail": "登录、工具、runner 和 CI 等待按原节点保存；就绪后重新核对 SHA，不绕过检查。"
     },
     {
       "id": "review",
       "label": "需要的真实人工评审",
       "kind": "human",
-      "row": 12,
-      "detail": "仅当仓库实际要求或出现新业务决定时介入；已给定的合并目标不重复提问。",
+      "row": 14,
+      "detail": "读取真实 review/未解决线程，代码问题同分支修复并证据回复；只在实际规则要求或新业务决定处等待人。",
       "trigger": "实际仓库评审规则要求，或检查后出现新的业务决定。",
       "resume": "批准：核对 head 后合并；修改要求：返工；未回答：保持等待。"
     },
     {
       "id": "review_wait",
-      "label": "等待当前评审结果",
+      "label": "记录并等待评审",
+      "kind": "ai",
+      "row": 15,
+      "detail": "保存当前评审线程与 SHA；未批准不假装通过，收到有效结果后只恢复对应节点。"
+    },
+    {
+      "id": "review_result",
+      "label": "核对有效评审与目标",
       "kind": "check",
-      "row": 13,
-      "detail": "未批准不假装通过；有效结果只恢复对应分支/SHA 的评审节点。"
+      "row": 16,
+      "detail": "检查批准绑定的参与者、范围和 SHA；只评审不合并就交付，合并仍在范围才继续。"
     },
     {
       "id": "hosted_merge",
       "label": "执行请求的远程合并",
       "kind": "ai",
-      "row": 14,
+      "row": 17,
       "detail": "适用检查与实际评审已满足且任务包含合并；执行前再次核对 head/base。"
     },
     {
       "id": "cleanup",
       "label": "验证结果并定向清理",
       "kind": "check",
-      "row": 15,
+      "row": 18,
       "detail": "核对真实合并和必要 Issue 状态；快进本地。仅清理已合并、无新工作、未被占用的任务分支。"
     },
     {
       "id": "rollback",
       "label": "按本次范围回退",
       "kind": "ai",
-      "row": 16,
+      "row": 19,
       "detail": "冲突合并 abort；共享提交按项目策略 revert。保留用户修改和其他分支，远程事项按具体决定处理。"
     },
     {
       "id": "restore",
       "label": "实际验证恢复结果",
       "kind": "check",
-      "row": 17,
+      "row": 20,
       "detail": "核对文件、提交与远程状态；恢复失败继续调查，不把取消视为已回退。"
     },
     {
       "id": "done",
       "label": "交付当前真实状态",
       "kind": "terminal",
-      "row": 18,
+      "row": 21,
       "detail": "区分本地已验证、保留分支、PR 已开、等待、已合并和回退；列实际证据与未验证项。"
     }
   ],
@@ -203,18 +224,6 @@
       "kind": "rework"
     },
     {
-      "from": "verify",
-      "to": "done",
-      "label": "仅开发/验证：保留本地分支",
-      "kind": "normal"
-    },
-    {
-      "from": "verify",
-      "to": "local_merge",
-      "label": "local 且请求合并",
-      "kind": "normal"
-    },
-    {
       "from": "local_merge",
       "to": "cleanup",
       "label": "验证提交关系与结果",
@@ -223,7 +232,7 @@
     {
       "from": "verify",
       "to": "issue",
-      "label": "显式 hosted 请求",
+      "label": "显式 hosted 路径",
       "kind": "normal"
     },
     {
@@ -263,12 +272,6 @@
       "kind": "rework"
     },
     {
-      "from": "checks",
-      "to": "review",
-      "label": "实际规则要求人工评审",
-      "kind": "normal"
-    },
-    {
       "from": "review",
       "to": "review_wait",
       "label": "尚未获得真实结果",
@@ -285,30 +288,6 @@
       "to": "work",
       "label": "要求修改：返工",
       "kind": "rework"
-    },
-    {
-      "from": "review",
-      "to": "hosted_merge",
-      "label": "批准且任务包含合并",
-      "kind": "normal"
-    },
-    {
-      "from": "checks",
-      "to": "hosted_merge",
-      "label": "检查通过；无额外评审门；请求合并",
-      "kind": "normal"
-    },
-    {
-      "from": "checks",
-      "to": "done",
-      "label": "仅要求开 PR：交付真实状态",
-      "kind": "normal"
-    },
-    {
-      "from": "review",
-      "to": "done",
-      "label": "只需 PR/评审：保留分支",
-      "kind": "normal"
     },
     {
       "from": "hosted_merge",
@@ -345,6 +324,78 @@
       "to": "done",
       "label": "恢复已验证",
       "kind": "normal"
+    },
+    {
+      "from": "issue",
+      "to": "decision",
+      "label": "评论涉及新的需求/范围取舍",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "local_scope",
+      "label": "local 路径",
+      "kind": "normal"
+    },
+    {
+      "from": "local_scope",
+      "to": "local_merge",
+      "label": "请求包含合并",
+      "kind": "normal"
+    },
+    {
+      "from": "local_scope",
+      "to": "done",
+      "label": "仅保留分支",
+      "kind": "normal"
+    },
+    {
+      "from": "checks",
+      "to": "review_gate",
+      "label": "适用检查已通过",
+      "kind": "normal"
+    },
+    {
+      "from": "review_gate",
+      "to": "review",
+      "label": "需要真实评审",
+      "kind": "normal"
+    },
+    {
+      "from": "review_gate",
+      "to": "hosted_merge",
+      "label": "请求合并且无评审门",
+      "kind": "normal"
+    },
+    {
+      "from": "review_gate",
+      "to": "done",
+      "label": "仅开 PR：交付状态",
+      "kind": "normal"
+    },
+    {
+      "from": "review",
+      "to": "review_result",
+      "label": "获得有效结果",
+      "kind": "normal"
+    },
+    {
+      "from": "review_result",
+      "to": "hosted_merge",
+      "label": "合并仍在请求范围",
+      "kind": "normal"
+    },
+    {
+      "from": "review_result",
+      "to": "done",
+      "label": "只评审，不合并",
+      "kind": "normal"
+    },
+    {
+      "from": "review_result",
+      "to": "checks",
+      "label": "SHA/检查变化：重验",
+      "kind": "rework"
     }
   ]
 }

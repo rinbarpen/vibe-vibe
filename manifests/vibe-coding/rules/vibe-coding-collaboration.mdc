@@ -18,6 +18,7 @@ alwaysApply: true
 - 有 remote 不自动启用 hosted；用户请求 PR/MR、Issue 或远程合并时才进入该路径。多个 remote、base 或发布范围存在新取舍时再提问，已确认的输入沿用。
 - 使用项目实际平台：GitHub 用 gh，GitLab 用既有 glab/API，Gitee 用既有 API/界面；不默认创建远程、安装工具或改全局账号。`--provider=git` 的本地流程始终完整可用。
 - Issue 可复用、可关联，也可省略；新建前查重且需任务明确需要。`Refs` 仅表示关联，完整解决且需要关闭时才用 `Closes`，合并后核对实际状态。
+- 启用平台对话时读取 Issue 评论和 PR review 线程；同线程澄清、同分支修复并用提交/测试证据回复。保存评论链接/事件与 SHA，等待有效回答后恢复原节点；评论不自动扩大任务或代表批准，沿用用户认可的参与者与实际仓库规则。
 - 核对源分支、base、remote、仓库和 SHA，复用已有 PR 或按确认目标推送并创建。标题遵守项目约定，描述含 Summary / Test Plan、证据和未验证项；WIP 可用 Draft。
 
 ## 3. 检查、评审、合并

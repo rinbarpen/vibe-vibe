@@ -226,7 +226,7 @@ for asset in references/codegraph-workflow.json references/codegraph-workflow.sv
   references/readme-guide.md references/setup-guide.md \
   references/docs-readability-workflow.json references/docs-readability-workflow.svg \
   references/git-collaboration.md references/git-collaboration-workflow.json references/git-collaboration-workflow.svg \
-  scripts/git_collaboration.py; do
+  scripts/git_collaboration.py scripts/vibe-post-commit.sh; do
   copy_file "$MANIFEST_DIR/$asset" "$TARGET/$asset"
 done
 
@@ -489,6 +489,7 @@ echo "Next steps:"
 echo "  1. Review CLAUDE.md and customize for your project"
 echo "  2. Maintain VERSION and CHANGELOG.md together for every version bump"
 echo "  3. Run python3 scripts/version_guard.py check before publishing"
-echo "  4. Configure CI secrets and branch protection on your selected platform"
-echo "  5. Commit and push:"
-echo "       git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'"
+echo "  4. Use local branches/worktrees; opt into remote PR/Issue interaction only when requested"
+echo "  5. Review and commit only the intended task paths locally:"
+echo "       git status --short"
+echo "       git add -- <task-paths> && git commit -m 'feat: initialize project with Vibe Coding manifest'"

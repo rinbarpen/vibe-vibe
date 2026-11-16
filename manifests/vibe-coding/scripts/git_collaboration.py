@@ -33,7 +33,7 @@ def remote_info(name: str, url: str) -> dict:
     if "://" in url or url.startswith("file:"):
         try:
             parsed = urlsplit(url)
-            host = parsed.hostname
+            host = parsed.hostname if parsed.scheme != "file" else None
             repository = parsed.path.strip("/") if host else None
         except ValueError:
             pass
