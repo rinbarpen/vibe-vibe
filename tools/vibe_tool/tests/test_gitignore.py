@@ -19,7 +19,7 @@ from vibe_tool.setup import setup
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "manifests/vibe-coding"
 COMMON_CACHES = (
-    ".cache/tool/item", "pkg/.cache/tool/item",
+    ".cache/tool/item", "pkg/.cache/tool/item", ".cache/file with spaces",
     ".coverage", ".coverage.host.123", "htmlcov/index.html",
     ".DS_Store", "Thumbs.db",
     "draft.swp", "draft.swo", "draft~", ".codegraph/index.db",
@@ -41,7 +41,7 @@ LANGUAGE_CACHES = {
     "go": (".gocache/ab/hash", "service/.gocache/ab/hash"),
     "rust": ("target/debug/deps/item", "native/target/release/item"),
     "java-kotlin": (
-        ".gradle/caches/item", "app/.gradle/caches/item",
+        ".gradle/caches/item", "jvm-app/.gradle/caches/item",
         ".kotlin/sessions/item", "module/target/classes/App.class",
     ),
     "dotnet": (
@@ -101,10 +101,12 @@ class GitIgnoreTests(unittest.TestCase):
         return root
 
     def assert_ignored(self, root, paths):
-        result = self.git(root, "check-ignore", "--no-index", "--stdin",
-                          input="\n".join(paths) + "\n")
+        # NUL is both Git's unquoted path protocol and immune to Windows CRLF
+        # translation by subprocess text-mode stdin.
+        result = self.git(root, "check-ignore", "--no-index", "-z", "--stdin",
+                          input="\0".join(paths) + "\0")
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(set(result.stdout.splitlines()), set(paths))
+        self.assertEqual(set(filter(None, result.stdout.split("\0"))), set(paths))
 
     def source_repo(self):
         root = self.root / "source repo"
@@ -143,8 +145,8 @@ class GitIgnoreTests(unittest.TestCase):
         for name, source in (("repository", ROOT), ("manifest", MANIFEST)):
             with self.subTest(source=name):
                 root = self.repository(source / ".gitignore", name)
-                result = self.git(root, "check-ignore", "--no-index", "--stdin",
-                                  input="\n".join(TRACKABLE) + "\n")
+                result = self.git(root, "check-ignore", "--no-index", "-z", "--stdin",
+                                  input="\0".join(TRACKABLE) + "\0")
                 self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
                 self.assertEqual(result.stdout, "")
 
