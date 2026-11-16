@@ -43,7 +43,9 @@ class Fixture(unittest.TestCase):
     def setUp(self):
         directory = tempfile.TemporaryDirectory(prefix="vibe branch flow ")
         self.addCleanup(directory.cleanup)
-        self.temp = Path(directory.name)
+        # macOS exposes its temporary directory through /var -> /private/var.
+        # The staging guard intentionally rejects aliases in the caller path.
+        self.temp = Path(directory.name).resolve()
         patch = mock.patch.dict(os.environ, {
             "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
             "PYTHONDONTWRITEBYTECODE": "1", "PYTHONUTF8": "1",
