@@ -1,5 +1,11 @@
 # Branch Strategy Guide
 
+## 本地优先，远程按需
+
+无 remote、账号、PR 或 Issue 编号也支持独立本地分支与 worktree。已有 remote 不自动触发发布；任务要求 PR/MR 或远程合并时才使用实际平台。[完整交互流程](git-collaboration.md)覆盖范围选择、Issue 可选关联、CI/评审等待、恢复、合并、清理和回退。
+
+本地多任务先查看 `git branch -vv`、`git worktree list --porcelain` 和 `git status --short`，或运行项目根目录的 `python3 scripts/git_collaboration.py inspect --root .`。保护 dirty 修改；已被 worktree 占用的分支不强制切换。只开发时可保留分支，不强制合并或创建 PR。
+
 ## Strategy Comparison
 
 | 维度 | GitHub Flow | Git Flow | Trunk-based Development |
@@ -25,7 +31,8 @@
 ## Branch Naming Convention
 
 ```
-<type>/<issue-number>-<kebab-description>
+<type>/<kebab-description>
+# 关联已有 Issue 时可选：<type>/<issue-number>-<kebab-description>
 ```
 
 ### Types
@@ -48,27 +55,19 @@
 | `feat/42-add-login` | 功能分支（含 issue 编号） |
 | `fix/87-npe-on-null` | 修复分支（含 issue 编号） |
 
+Issue 编号不作为创建本地分支或 PR 的前提，例如 `feat/search`、`fix/cache-rules` 均有效。上表是可选团队策略示例，不强制启用 GitHub 或 Git Flow；review 数与保护规则以实际项目为准。
+
 ## Branch Lifecycle
 
-```
-创建 feature 分支
-    ↓
-开发 + commits（遵循 Conventional Commits）
-    ↓
-提交 PR（使用 PR 模板）
-    ↓
-CI 自动运行（lint → test → build → coverage）
-    ↓
-Code review（CODEOWNERS 自动分配）
-    ↓
-合并（squash / merge commit）
-    ↓
-自动删除源分支
-```
+- **本地**：核对任务 → 隔离分支/worktree → 实现、提交与本地验证 → 保留分支，或按请求本地合并 → 核实结果并定向清理。
+- **显式远程**：沿用同一本地基线 → 可选 Issue 关联 → 推送并复用/创建 PR → 真实 CI/评审与等待恢复 → 按请求合并 → 同步本地并定向清理。
+- 没有要求合并就不强制合并；PR 没有关联 Issue 也有效。保护规则只读取实际项目配置，不自动套用示例 review 数。
+
+[协作流程图](git-collaboration-workflow.svg) · [图源](git-collaboration-workflow.json)。图表示规则，不是任务状态。
 
 ## Branch Protection Rules
 
-在 GitHub Web UI 中配置（Settings > Branches > Add rule）：
+以下是启用 GitHub 托管时可供团队选用的示例，并非本地流程的前提或对所有仓库的固定要求；执行时读取实际配置，不自动改保护规则。在 GitHub Web UI 中配置（Settings > Branches > Add rule）：
 
 ### main 分支保护
 

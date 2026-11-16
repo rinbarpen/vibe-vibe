@@ -1,5 +1,7 @@
 # PR Conventions Guide
 
+本指南只在显式启用远程 PR 协作时适用。本地多分支不要求 PR 或 Issue；PR 也可不关联 Issue。完整路由、等待/恢复和回退见[本地优先协作契约](git-collaboration.md)。已有 Issue 用 `Refs` 关联；仅当完整解决且需要关闭时用 `Closes`，合并后核对实际关闭状态。
+
 ## PR Title Format
 
 所有 PR 标题必须遵循以下格式（由 `pr-conventions.yml` 强制检查）：

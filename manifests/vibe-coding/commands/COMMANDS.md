@@ -1,6 +1,6 @@
 # Vibe Coding Commands
 
-Complete command index for the unified development manifest. All commands are available after initialization under `.cursor/commands/`.
+Command guides for the unified development manifest. Legacy init installs guides under `.cursor/commands/`; portable setup exposes them in `rules/vibe-coding/commands/`. A guide can be read by any file-capable harness; slash-command registration depends on the actual host.
 
 ## Planning & Architecture
 
@@ -47,7 +47,15 @@ Complete command index for the unified development manifest. All commands are av
 | `/update-examples` | `update-examples/COMMAND.md` | Sync examples/ with current implementation |
 | `/update-scripts` | `update-scripts/COMMAND.md` | Sync scripts/ utilities with project state |
 
-## GitHub Operations
+## Local Git and Optional Hosted Collaboration
+
+| Guide | File | Description |
+| --- | --- | --- |
+| `git-flow [local|hosted]` | `git-flow/COMMAND.md` | Local branches/worktrees by default; optional PR/Issue interaction only when requested |
+
+`python3 scripts/git_collaboration.py inspect --root .` is read-only and offline. A configured remote does not opt the task into publishing; Issue linkage is independently optional.
+
+## GitHub Operations (only when selected)
 
 | Command | Description |
 |---------|-------------|

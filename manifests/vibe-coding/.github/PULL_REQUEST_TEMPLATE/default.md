@@ -3,14 +3,13 @@ name: Pull Request
 about: 提交代码变更
 ---
 
-## Description
+## Summary
 
 <!-- 改了什么，为什么改 -->
 
-## Related Issues
+## Related Issues (optional)
 
-Closes #
-Relates to #
+<!-- 无关联 Issue 可留空或写 None。Refs #N 仅关联；只有本 PR 完整解决且需要关闭时才使用 Closes #N。 -->
 
 ## Type of Change
 
@@ -30,7 +29,7 @@ Relates to #
 - [ ] 更新了文档
 - [ ] 没有新增 warning
 
-## Testing
+## Test Plan
 
 <!-- 如何验证这个改动 -->
 

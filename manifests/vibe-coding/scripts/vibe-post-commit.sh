@@ -1,8 +1,17 @@
 #!/bin/bash
 # vibe-post-commit: Commit 后的自动化维护脚本
-# 职责：更新文档、生成测试、同步 GitHub 状态
+# 职责：本地维护；GitHub 状态仅在显式 --hosted-github 时查询
 
 set -e
+
+HOSTED_GITHUB=false
+for argument in "$@"; do
+    case "$argument" in
+        --hosted-github) HOSTED_GITHUB=true ;;
+        --help|-h) echo "Usage: vibe-post-commit.sh [--hosted-github]"; exit 0 ;;
+        *) echo "Unknown option: $argument" >&2; exit 2 ;;
+    esac
+done
 
 echo "🚀 Running Vibe Coding Post-Commit Automation..."
 
@@ -30,8 +39,8 @@ if command -v vibe-check &> /dev/null; then
     vibe-check
 fi
 
-# 3. GitHub 状态检查 (如果使用 gh CLI)
-if command -v gh &> /dev/null; then
+# 3. 本地任务不因安装了 gh 而自动联网。
+if $HOSTED_GITHUB && command -v gh &> /dev/null; then
     echo "🐙 Checking GitHub status..."
     gh pr status || echo "No active PR found."
 fi

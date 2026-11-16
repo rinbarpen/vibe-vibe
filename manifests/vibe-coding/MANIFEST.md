@@ -233,11 +233,16 @@ When the project spans multiple languages:
 
 ## Version Records and Code Hosting
 
+- Local Git branches and worktrees are the default collaboration foundation; a remote, hosting account, PR, and Issue number are not prerequisites. Use `<type>/<description>` or optionally `<type>/<issue>-<description>`.
+- A configured remote does not enable publication automatically. Opt into hosted PR/Issue interaction only when requested; reuse an existing Issue or skip Issue linkage. Follow the [local-first collaboration contract](references/git-collaboration.md), [workflow](references/git-collaboration-workflow.svg), and [editable source](references/git-collaboration-workflow.json).
+- Inspect branches, occupied worktrees, and optional remotes without writes/network: `python3 scripts/git_collaboration.py inspect --root .`. The `git-flow` command guide describes execution; inspection itself never creates branches, Issues, PRs, or remote state.
 - `VERSION` is the canonical SemVer source. Every version-number change must add a meaningful, categorized `CHANGELOG.md` entry in the same change and align existing package metadata.
 - Run `python3 scripts/version_guard.py check --base-ref <base>` for a version bump and `check --tag vX.Y.Z` before release. Use `notes --tag vX.Y.Z --output release_notes.md` for exact notes.
 - `--provider=git|github|gitlab|gitee` selects local Git only or one hosted CI/release pipeline. GitHub is the default; do not install unrelated host pipelines. Optional `scripts/ci.sh` and `scripts/build.sh` are POSIX hooks; deployment is explicit, never implied by a release.
 
-## GitHub Enterprise Automation
+## GitHub Enterprise Automation (Optional Hosted Path)
+
+Apply this section only when the task opts into the configured GitHub workflow. Plain local Git tasks do not require host automation or an Issue.
 
 ### Subagent Dispatching for GitHub Ops
 
@@ -393,12 +398,13 @@ See `references/decision-trees/language-selection.md` for the full decision tree
 ## Enterprise Conventions
 
 ### Branch Naming
-- Format: `<type>/<issue-number>-<kebab-description>`
-- Examples: `feat/42-user-auth`, `fix/87-npe-on-null`, `hotfix/v1.2.3`, `release/v2.0.0`
-- Feature branches auto-deleted after merge
-- Main branch protection: 2 reviews + all status checks + up-to-date
+- Format: `<type>/<kebab-description>`; an Issue number is optional: `<type>/<issue-number>-<kebab-description>`.
+- Examples: `feat/user-auth`, `fix/cache-rules`, `feat/42-user-auth`, `hotfix/v1.2.3`, `release/v2.0.0`.
+- Support independent local branches/worktrees; preserve dirty work and other tasks. Delete only a merged task branch whose tip has no new work and which is not occupied by another worktree, when cleanup is in scope.
+- Hosted branch protection and review requirements come from the actual project, not an assumed review count. They apply only to the enabled hosting workflow.
 
 ### PR Conventions
+- PRs and Issues are optional hosted enhancements, not requirements for local development. A PR may have no Issue; a verified local branch may be retained without merging.
 - Title: `<type>(<scope>): <description>` — enforced by CI
 - Size labels: XS(0-10) / S(11-50) / M(51-200) / L(201-800) / XL(>800)
 - Merge strategy: feature → squash, release → merge commit, hotfix → merge commit

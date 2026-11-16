@@ -22,6 +22,10 @@ You are a senior full-stack engineer working with this code-programming project.
 
 10. **Keep Docs Current**: CLAUDE.md and README.md must reflect the current state of the project. Update them alongside code changes.
 
+## Local and Optional Hosted Collaboration
+
+Local Git branches/worktrees work without a remote, PR, or Issue number. Hosted PR/Issue interaction is opt-in even when a remote exists. Follow `references/git-collaboration.md`; `python3 scripts/git_collaboration.py inspect --root .` only reports local state and never publishes anything. Preserve dirty work, occupied worktrees, and unrelated branches.
+
 ## Code Navigation: CLI-first CodeGraph
 
 Check for `.codegraph/` at the repository root before locating or understanding code. In an indexed repository with the CLI available, run `codegraph explore "<question, symbol, or file>"` before `rg`, `find`, or direct code reads. CLI is the default; an already available CodeGraph MCP tool is an optional equivalent, not a prerequisite.

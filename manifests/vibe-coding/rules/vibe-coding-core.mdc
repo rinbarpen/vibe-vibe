@@ -60,11 +60,13 @@ When uncertain, consult `references/language-specs/` for the target language.
 
 ## 6. Git-Native Workflow
 
+- Local branches/worktrees are the foundation; remote PR/Issue interaction is optional and explicit. A remote does not automatically enable publishing, and an Issue number is not required. Follow `references/git-collaboration.md`; inspect with `python3 scripts/git_collaboration.py inspect --root .` without writes or network.
+
 - Conventional commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `chore:`, `perf:`, `ci:`
 - Commits must clearly describe "Why" not just "What".
 - PRs must include: summary of changes, test plan, evidence of quality gate passing.
 - Use plain Git for commits, branches, and tags; use the selected host's CLI/API only for host-specific operations (`gh` on GitHub).
-- Post-commit: run `vibe-post-commit.sh` to sync docs and state.
+- Use configured local post-commit maintenance when applicable. The optional `vibe-post-commit.sh` helper queries GitHub only with explicit `--hosted-github`; plain local commits never require `gh` or network access.
 
 ## 7. Delivery Quality
 

@@ -224,7 +224,9 @@ copy_file "$MANIFEST_DIR/scripts/version_guard.py" "$TARGET/scripts/version_guar
 for asset in references/codegraph-workflow.json references/codegraph-workflow.svg scripts/render_codegraph_workflow.py \
   references/ui-usability.md references/ui-usability-workflow.json references/ui-usability-workflow.svg \
   references/readme-guide.md references/setup-guide.md \
-  references/docs-readability-workflow.json references/docs-readability-workflow.svg; do
+  references/docs-readability-workflow.json references/docs-readability-workflow.svg \
+  references/git-collaboration.md references/git-collaboration-workflow.json references/git-collaboration-workflow.svg \
+  scripts/git_collaboration.py scripts/vibe-post-commit.sh; do
   copy_file "$MANIFEST_DIR/$asset" "$TARGET/$asset"
 done
 
@@ -368,8 +370,13 @@ if [[ -d "$MANIFEST_DIR/references/decision-trees" ]]; then
   done
 fi
 
+# Keep relative workflow links valid in legacy reference/command guides.
+for asset in git-collaboration-workflow.json git-collaboration-workflow.svg; do
+  copy_file "$MANIFEST_DIR/references/$asset" "$TARGET/.cursor/references/$asset"
+done
+
 # Enterprise references
-for ref in branching-strategy pages-guide pr-conventions readme-guide release-process tag-convention lifecycle-guide; do
+for ref in branching-strategy pages-guide pr-conventions readme-guide release-process tag-convention lifecycle-guide git-collaboration; do
   ref_file="$MANIFEST_DIR/references/${ref}.md"
   [[ -f "$ref_file" ]] || continue
   copy_file "$ref_file" "$TARGET/.cursor/references/${ref}.md"
@@ -482,6 +489,7 @@ echo "Next steps:"
 echo "  1. Review CLAUDE.md and customize for your project"
 echo "  2. Maintain VERSION and CHANGELOG.md together for every version bump"
 echo "  3. Run python3 scripts/version_guard.py check before publishing"
-echo "  4. Configure CI secrets and branch protection on your selected platform"
-echo "  5. Commit and push:"
-echo "       git add -A && git commit -m 'feat: initialize project with Vibe Coding manifest'"
+echo "  4. Use local branches/worktrees; opt into remote PR/Issue interaction only when requested"
+echo "  5. Review and commit only the intended task paths locally:"
+echo "       git status --short"
+echo "       git add -- <task-paths> && git commit -m 'feat: initialize project with Vibe Coding manifest'"

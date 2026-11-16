@@ -216,6 +216,9 @@ def _is_resource(name: str, relative: Path, options: dict[str, str]) -> bool:
             "references/ui-usability-workflow.svg",
             "references/readme-guide.md", "references/setup-guide.md",
             "references/docs-readability-workflow.json", "references/docs-readability-workflow.svg",
+            "references/git-collaboration.md", "references/git-collaboration-workflow.json",
+            "references/git-collaboration-workflow.svg", "scripts/git_collaboration.py",
+            "scripts/vibe-post-commit.sh",
         }:
             return True
         provider = options.get("provider") or "github"
