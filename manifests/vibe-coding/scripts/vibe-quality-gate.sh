@@ -85,6 +85,17 @@ if $HAS_JAVA; then
     check "Java: tests" "mvn test 2>/dev/null || ./gradlew test 2>/dev/null || echo '  (no test runner found)'"
 fi
 
+# Optional structure gate: unlike historical best-effort probes above, preserve
+# this check's actual status. This helper remains an optional POSIX entrypoint.
+if [ -f architecture/structure.json ]; then
+    structure_args=(check --root .)
+    [ ! -f architecture/structure-baseline.json ] || structure_args+=(--baseline architecture/structure-baseline.json)
+    if command -v python3 >/dev/null 2>&1; then structure_python=python3; else structure_python=python; fi
+    "$structure_python" scripts/check_structure.py "${structure_args[@]}" || exit $?
+else
+    echo "  Structure: not configured; no architecture pass claimed"
+fi
+
 # ── Gate 3: Security ──────────────────────────────────────
 echo "[3/5] Security Gate"
 check "Secrets scan" '! grep -rn "AKIA[0-9A-Z]\{16\}\|ghp_\|gho_\|ghu_\|ghs_\|github_pat_" --include="*.go" --include="*.rs" --include="*.py" --include="*.ts" --include="*.tsx" --include="*.java" . 2>/dev/null | grep -v node_modules | grep -v ".env" | grep -v ".git/" || echo "  (scan complete, no secrets found)"'

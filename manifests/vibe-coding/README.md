@@ -22,6 +22,7 @@ vibe init vibe-coding ./my-app --scenario=fullstack-web --provider=git
 | 任务 | 入口 |
 | --- | --- |
 | 本地多分支、可选 PR / Issue | [协作契约](references/git-collaboration.md)；默认本地，remote 和 Issue 均非前提 |
+| 管理模块、依赖和结构变更 | [代码结构治理](references/code-structure.md)；项目契约、只读检查与可审查存量基线 |
 | 日常功能与修复 | [项目协作规则](MANIFEST.md)；按任务规模选择直接修改或实现流程 |
 | 简化界面、验证真实操作 | [UI/UX 契约](references/ui-usability.md) |
 | 整理 README 与使用说明 | [面向读者的写作约定](references/readme-guide.md) |
@@ -44,6 +45,7 @@ UI/UX 文案约束：**Avoid unnecessary secondary labels and descriptions. Let 
 - [UI 操作验收流程图](references/ui-usability-workflow.svg) · [图源](references/ui-usability-workflow.json)
 - [文档写作与验收流程图](references/docs-readability-workflow.svg) · [图源](references/docs-readability-workflow.json)
 - [本地多分支与可选 PR / Issue 流程图](references/git-collaboration-workflow.svg) · [图源](references/git-collaboration-workflow.json)
+- [代码结构治理流程图](references/code-structure-workflow.svg) · [图源](references/code-structure-workflow.json)
 - [CodeGraph 查询流程图](references/codegraph-workflow.svg) · [图源](references/codegraph-workflow.json)
 
 ### 可选 CodeGraph
@@ -64,6 +66,8 @@ python3 scripts/render_codegraph_workflow.py --source references/codegraph-workf
 python3 scripts/render_codegraph_workflow.py --source references/codegraph-workflow.json --output references/codegraph-workflow.svg --check
 python3 scripts/render_codegraph_workflow.py --source references/git-collaboration-workflow.json --output references/git-collaboration-workflow.svg
 python3 scripts/render_codegraph_workflow.py --source references/git-collaboration-workflow.json --output references/git-collaboration-workflow.svg --check
+python scripts/render_codegraph_workflow.py --source references/code-structure-workflow.json --output references/code-structure-workflow.svg
+python scripts/render_codegraph_workflow.py --source references/code-structure-workflow.json --output references/code-structure-workflow.svg --check
 ```
 
 只读文档结构检查：

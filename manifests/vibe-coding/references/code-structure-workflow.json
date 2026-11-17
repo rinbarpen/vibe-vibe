@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "title": "项目代码结构治理与渐进维护",
+  "description": "项目专属模块契约与真实静态检查；区分存量债务、新增问题和拓扑漂移，AI 自主处理实现与验证，仅新增业务边界或风险取舍交由人决定。",
+  "nodes": [
+    {
+      "id": "start",
+      "label": "代码结构治理请求",
+      "kind": "terminal",
+      "row": 0,
+      "detail": "已有项目、当前任务与约定；图描述规则而非状态。"
+    },
+    {
+      "id": "inspect",
+      "label": "调查源码与构建配置",
+      "kind": "ai",
+      "row": 1,
+      "detail": "读取现有契约、实际布局与别名；不强套目录，不要求建立索引。"
+    },
+    {
+      "id": "contract",
+      "label": "明确模块与项目契约",
+      "kind": "ai",
+      "row": 2,
+      "detail": "职责、归属、公开接口、依赖方向和文档；保留项目数据。"
+    },
+    {
+      "id": "check",
+      "label": "只读检查并核对覆盖",
+      "kind": "check",
+      "row": 3,
+      "detail": "新旧违规、循环、拓扑漂移与解析缺口；保留真实退出状态。"
+    },
+    {
+      "id": "decision",
+      "label": "决定新边界或风险取舍",
+      "kind": "human",
+      "row": 6,
+      "detail": "提供当前版本、证据、候选与影响；不是每次技术整理都需审批。",
+      "trigger": "新的业务边界、不兼容接口或接受新增风险。",
+      "resume": "真实答复后核对版本，从模块契约恢复；取消则执行并验证回退。"
+    },
+    {
+      "id": "wait",
+      "label": "等待当前有效决定",
+      "kind": "check",
+      "row": 7,
+      "detail": "未答复不视为同意；独立工作不受影响。"
+    },
+    {
+      "id": "repair",
+      "label": "修实现或补原生证据",
+      "kind": "ai",
+      "row": 9,
+      "detail": "在已确认边界内测试与渐进重构；不扩大排除或静默更新债务。"
+    },
+    {
+      "id": "snapshot",
+      "label": "审查文档与结构候选",
+      "kind": "ai",
+      "row": 10,
+      "detail": "首次采用或合法结构变更：核对文档，保存选定快照及明确接受的存量基线。"
+    },
+    {
+      "id": "verify",
+      "label": "复验结构与真实行为",
+      "kind": "check",
+      "row": 11,
+      "detail": "无新恶化、无漂移、覆盖范围可见；原生构建测试与文档语义分别验证。"
+    },
+    {
+      "id": "deliver",
+      "label": "交付证据与剩余债务",
+      "kind": "ai",
+      "row": 12,
+      "detail": "本地即可交付；PR/Issue 可选，快照/候选不代表人工批准。"
+    },
+    {
+      "id": "rollback",
+      "label": "恢复本次拥有的修改",
+      "kind": "ai",
+      "row": 13,
+      "detail": "使用已保存原件与哈希，保留他人后续编辑；不直接重置整个仓库。"
+    },
+    {
+      "id": "restore",
+      "label": "验证回退后的状态",
+      "kind": "check",
+      "row": 14,
+      "detail": "核对源码、契约、文档和已有测试，不假称回退成功。"
+    },
+    {
+      "id": "done",
+      "label": "交付或已验证取消",
+      "kind": "terminal",
+      "row": 15,
+      "detail": "保留真实证据，结束本次结构治理。"
+    },
+    {
+      "id": "violations",
+      "label": "区分违规与覆盖缺口",
+      "kind": "check",
+      "row": 4,
+      "detail": "输入有效后核对新增/恶化问题；存量基线只保留已接受的债务。"
+    },
+    {
+      "id": "scope",
+      "label": "核对当前决策边界",
+      "kind": "check",
+      "row": 5,
+      "detail": "已有约定内的技术工作直接继续；仅新的业务边界或风险取舍请求人决定。"
+    },
+    {
+      "id": "topology",
+      "label": "判断是否有意结构变更",
+      "kind": "check",
+      "row": 8,
+      "detail": "初次采用或有意增删文件/边，需要对比候选；纯内部修改沿现有快照。"
+    }
+  ],
+  "edges": [
+    {
+      "from": "start",
+      "to": "inspect",
+      "label": "读取任务",
+      "kind": "normal"
+    },
+    {
+      "from": "inspect",
+      "to": "contract",
+      "label": "核实已有布局",
+      "kind": "normal"
+    },
+    {
+      "from": "contract",
+      "to": "check",
+      "label": "运行结构检查",
+      "kind": "normal"
+    },
+    {
+      "from": "check",
+      "to": "inspect",
+      "label": "归属或输入待核实",
+      "kind": "rework"
+    },
+    {
+      "from": "repair",
+      "to": "check",
+      "label": "修复后重验",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "wait",
+      "label": "尚无有效答复",
+      "kind": "normal"
+    },
+    {
+      "from": "wait",
+      "to": "decision",
+      "label": "收到真实答复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "contract",
+      "label": "同意或调整后恢复",
+      "kind": "rework"
+    },
+    {
+      "from": "decision",
+      "to": "rollback",
+      "label": "取消本次修改",
+      "kind": "normal"
+    },
+    {
+      "from": "snapshot",
+      "to": "verify",
+      "label": "保存已审查候选",
+      "kind": "normal"
+    },
+    {
+      "from": "verify",
+      "to": "repair",
+      "label": "验证失败",
+      "kind": "rework"
+    },
+    {
+      "from": "verify",
+      "to": "deliver",
+      "label": "证据齐全",
+      "kind": "normal"
+    },
+    {
+      "from": "deliver",
+      "to": "done",
+      "label": "如实交付",
+      "kind": "normal"
+    },
+    {
+      "from": "rollback",
+      "to": "restore",
+      "label": "恢复后检查",
+      "kind": "normal"
+    },
+    {
+      "from": "restore",
+      "to": "rollback",
+      "label": "恢复未完成",
+      "kind": "rework"
+    },
+    {
+      "from": "restore",
+      "to": "done",
+      "label": "已验证回退",
+      "kind": "normal"
+    },
+    {
+      "from": "check",
+      "to": "violations",
+      "label": "输入与归属已核实",
+      "kind": "normal"
+    },
+    {
+      "from": "violations",
+      "to": "repair",
+      "label": "违规或提取缺口",
+      "kind": "normal"
+    },
+    {
+      "from": "violations",
+      "to": "scope",
+      "label": "结构问题已处理",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "decision",
+      "label": "需要新增业务决定",
+      "kind": "normal"
+    },
+    {
+      "from": "scope",
+      "to": "topology",
+      "label": "在现有决定内继续",
+      "kind": "normal"
+    },
+    {
+      "from": "topology",
+      "to": "snapshot",
+      "label": "采用或有意漂移",
+      "kind": "normal"
+    },
+    {
+      "from": "topology",
+      "to": "verify",
+      "label": "当前拓扑无变化",
+      "kind": "normal"
+    }
+  ]
+}

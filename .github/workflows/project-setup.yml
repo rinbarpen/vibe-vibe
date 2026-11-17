@@ -53,6 +53,8 @@ jobs:
         run: python -m unittest discover -s tools/vibe_tool/tests -p test_gitignore.py -v
       - name: Offline local branches and optional hosted interaction
         run: python -m unittest discover -s tools/vibe_tool/tests -p test_git_collaboration.py -v
+      - name: Code structure boundaries, debt and resource preservation
+        run: python -m unittest discover -s tools/vibe_tool/tests -p test_code_structure.py -v
       - name: Read-only workflow drift check
         run: python scripts/render-manifest-workflow.py --source docs/project-setup-workflow.json --output docs/project-setup-workflow.svg --check
       - name: Read-only project-management drift check

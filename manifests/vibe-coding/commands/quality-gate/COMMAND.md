@@ -30,6 +30,12 @@ Run applicable quality checks at an appropriate commit or release boundary; use 
 - Verify README.md is current
 - **Exit**: Documentation is accurate
 
+### Code Structure (when configured or structural changes are in scope)
+- Follow the project-root `references/code-structure.md`; run `python scripts/check_structure.py check --root .`, with an explicit reviewed debt baseline when applicable.
+- New/worsening boundary/size/cycle violations, analysis blockers and topology drift must be addressed, not swallowed as skipped/pass. Confirm native build/tests and docs semantics separately.
+- Existing internal-only small changes do not force architecture redesign. First governance adoption authors the actual project contract; absent configuration is "not configured", not a passing architecture gate.
+- CI runs check only, never automatic baseline/snapshot renewal. Accepting candidates is a reviewed project-data change, not a test fix.
+
 ## Manual Checklist
 
 Before calling `/quality-gate`, confirm:
