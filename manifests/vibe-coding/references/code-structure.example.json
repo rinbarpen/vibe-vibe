@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_roots": ["src"],
+  "exclude": ["**/generated/**"],
+  "external_prefixes": ["typing", "collections"],
+  "snapshot": "architecture/structure-snapshot.json",
+  "modules": [
+    {
+      "name": "domain",
+      "paths": ["src/domain"],
+      "responsibility": "核心业务规则，不依赖界面或存储实现",
+      "allowed_dependencies": [],
+      "public_paths": ["src/domain/api.py"],
+      "import_prefixes": ["domain"],
+      "entrypoints": [],
+      "docs": ["docs/architecture.md"]
+    },
+    {
+      "name": "application",
+      "paths": ["src/application"],
+      "responsibility": "应用用例编排，通过 domain 的公开接口调用业务规则",
+      "allowed_dependencies": ["domain"],
+      "public_paths": [],
+      "import_prefixes": ["application"],
+      "entrypoints": ["src/application/main.py"],
+      "docs": ["docs/architecture.md"]
+    }
+  ]
+}

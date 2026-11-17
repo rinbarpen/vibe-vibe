@@ -26,6 +26,7 @@ Command guides for the unified development manifest. Legacy init installs guides
 
 | Command | File | Description |
 |---------|------|-------------|
+| `/structure-check` | `structure-check/COMMAND.md` | Maintain project-owned module boundaries, check topology and review existing debt |
 | `/quality-gate` | `quality-gate/COMMAND.md` | Run applicable lint, test, security, embedded-review confirmation, and documentation checks |
 | `/deploy-check` | `deploy-check/COMMAND.md` | Pre-deployment verification: CI status, migration reversibility, rollback plan, env vars |
 

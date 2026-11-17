@@ -327,6 +327,14 @@ Unified Development Manifest — full lifecycle engineering from idea to product
 | `gh pr create --fill` | Create PR from current branch |
 | `gh pr checks` | Monitor CI status |
 
+## Code Structure Governance
+
+Read the project-owned `architecture/structure.json` before structural changes. Keep its module responsibilities, source ownership, public interfaces, allowed dependencies, entrypoints and architecture docs aligned with actual code; preserve language-native layouts. First adoption investigates the existing project, not a forced directory migration. Follow the project-root `references/code-structure.md`.
+
+Run `python scripts/check_structure.py check --root .`; use `--baseline architecture/structure-baseline.json` only for reviewed existing debt. The offline checker reports new/worsening violations, actual module cycles, private imports, coverage blockers and topology drift. Built-in static extraction covers Python/JS/TS/Go/Rust/Java declarations; other languages/complex cases require hash-bound native evidence, with native build/tests retained. Missing configuration or analysis coverage is not a pass.
+
+Snapshot/baseline commands return candidates on stdout only. Review topology changes and synchronize architecture docs before saving candidates; never renew debt or loosen boundaries just to turn a check green. Project data under `architecture/` survives template refresh. AI handles investigation, implementation, validation and maintenance within existing decisions; ask the user only for new business boundaries, incompatible interfaces or new risk acceptance, then resume from the confirmed current version.
+
 ## Architecture
 
 ```
@@ -431,7 +439,7 @@ See `references/cloud-platforms/` for per-platform deployment guides and CI/CD i
 
 - KISS, DRY, YAGNI — start simple, refactor when pressure is real
 - Immutability by default — never mutate in place, always return new copies
-- Many small files over few large ones (200-400 lines typical, 800 max)
+- Prefer cohesive, focused modules; use project-defined size budgets from the structure contract. Investigate large files rather than mechanically splitting them.
 - Domain-driven organization, not type-driven
 - Full type annotations in typed languages
 - Write idiomatic code for each language, not translated patterns

@@ -226,14 +226,23 @@ for asset in references/codegraph-workflow.json references/codegraph-workflow.sv
   references/readme-guide.md references/setup-guide.md \
   references/docs-readability-workflow.json references/docs-readability-workflow.svg \
   references/git-collaboration.md references/git-collaboration-workflow.json references/git-collaboration-workflow.svg \
-  scripts/git_collaboration.py scripts/vibe-post-commit.sh; do
+  scripts/git_collaboration.py scripts/vibe-post-commit.sh \
+  references/code-structure.md \
+  references/code-structure.example.json \
+  references/code-structure-workflow.json \
+  references/code-structure-workflow.svg \
+  scripts/check_structure.py \
+  scripts/structure_contract.py \
+  scripts/structure_imports.py \
+  scripts/structure_check.py \
+  scripts/vibe-quality-gate.sh; do
   copy_file "$MANIFEST_DIR/$asset" "$TARGET/$asset"
 done
 
 # ── Zone 3: Install Rules ──
 echo ""
 echo "── Zone 3: Rules ──"
-for file in "$MANIFEST_DIR/rules"/*.mdc; do
+for file in "$MANIFEST_DIR/rules"/*.mdc "$MANIFEST_DIR/rules"/*.md; do
   [[ -f "$file" ]] || continue
   filename=$(basename "$file")
   dest="$TARGET/.cursor/rules/$filename"

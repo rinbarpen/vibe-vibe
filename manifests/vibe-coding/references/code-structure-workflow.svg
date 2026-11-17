@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1676" height="3468" viewBox="0 0 1676 3468" role="img" aria-labelledby="workflow-title workflow-description">
+  <title id="workflow-title">项目代码结构治理与渐进维护</title>
+  <desc id="workflow-description">项目专属模块契约与真实静态检查；区分存量债务、新增问题和拓扑漂移，AI 自主处理实现与验证，仅新增业务边界或风险取舍交由人决定。 设计规范示意，不代表实时运行状态。左侧 AI 执行，中间 AI 判定与校验，右侧人工决策；橙色虚线表示返工。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#64748b"/></marker><marker id="rework-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L8,4 L0,8 Z" fill="#c2410c"/></marker></defs>
+  <g font-family="system-ui, -apple-system, 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif" fill="#0f172a">
+    <rect width="1676" height="3468" fill="#ffffff"/>
+    <text x="28" y="38" font-size="26" font-weight="700">项目代码结构治理与渐进维护</text>
+    <text x="28" y="70" font-size="14" fill="#475569">项目专属模块契约与真实静态检查；区分存量债务、新增问题和拓扑漂移，AI 自主处理实现与验证，仅新增业务边界或风险取舍交由人决定。</text>
+    <text x="28" y="94" font-size="13" fill="#64748b">设计规范 · 静态流程示意，不代表执行状态 · 实线：正常流转；橙色虚线：返工</text>
+    <rect x="20" y="128" width="400" height="3274" rx="14" fill="#f8faff" stroke="#e2e8f0"/>
+    <text x="220" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 自主执行</text>
+    <rect x="430" y="128" width="400" height="3274" rx="14" fill="#f6fbf9" stroke="#e2e8f0"/>
+    <text x="630" y="157" text-anchor="middle" font-size="16" font-weight="700">AI 判定 / 校验与起止</text>
+    <rect x="840" y="128" width="400" height="3274" rx="14" fill="#fffbf5" stroke="#e2e8f0"/>
+    <text x="1040" y="157" text-anchor="middle" font-size="16" font-weight="700">人工决策门</text>
+    <path data-from="check" data-to="violations" d="M 630.0,892 V 935.0 H 630.0 V 978" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="contract" data-to="check" d="M 220.0,692 V 735.0 H 630.0 V 778" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="rollback" d="M 1040.0,1586 V 1629.0 H 24 V 2828 H 220.0 V 2852" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="decision" data-to="wait" d="M 1040.0,1586 V 1629.0 H 630.0 V 1672" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="deliver" data-to="done" d="M 220.0,2766 V 2809.0 H 434 V 3228 H 630.0 V 3252" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="inspect" data-to="contract" d="M 220.0,492 V 535.0 H 220.0 V 578" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="restore" data-to="done" d="M 630.0,3166 V 3209.0 H 630.0 V 3252" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="rollback" data-to="restore" d="M 220.0,2966 V 3009.0 H 630.0 V 3052" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="scope" data-to="decision" d="M 630.0,1292 V 1335.0 H 1040.0 V 1378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="scope" data-to="topology" d="M 630.0,1292 V 1335.0 H 434 V 1828 H 630.0 V 1852" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="snapshot" data-to="verify" d="M 220.0,2366 V 2409.0 H 630.0 V 2452" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="start" data-to="inspect" d="M 630.0,292 V 335.0 H 220.0 V 378" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="topology" data-to="snapshot" d="M 630.0,1966 V 2009.0 H 24 V 2228 H 220.0 V 2252" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="topology" data-to="verify" d="M 630.0,1966 V 2009.0 H 630.0 V 2452" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="verify" data-to="deliver" d="M 630.0,2566 V 2609.0 H 220.0 V 2652" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="violations" data-to="repair" d="M 630.0,1092 V 1135.0 H 220.0 V 2052" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="violations" data-to="scope" d="M 630.0,1092 V 1135.0 H 630.0 V 1178" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path data-from="check" data-to="inspect" d="M 810,835.0 H 1270 V 355 H 220.0 V 378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="decision" data-to="contract" d="M 1220,1482.0 H 1296 V 555 H 220.0 V 578" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="repair" data-to="check" d="M 400,2109.0 H 1322 V 755 H 630.0 V 778" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="restore" data-to="rollback" d="M 810,3109.0 H 1348 V 2829 H 220.0 V 2852" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="verify" data-to="repair" d="M 810,2509.0 H 1374 V 2029 H 220.0 V 2052" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <path data-from="wait" data-to="decision" d="M 810,1719.0 H 1400 V 1355 H 1040.0 V 1378" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#rework-arrow)"/>
+    <g id="node-start" data-kind="terminal" data-row="0">
+      <title>代码结构治理请求 — 已有项目、当前任务与约定；图描述规则而非状态。</title>
+      <rect x="450" y="178" width="360" height="114" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="202" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="228" font-size="18" font-weight="700">代码结构治理请求</text>
+      <text x="466" y="252" font-size="14" fill="#334155">已有项目、当前任务与约定；图描述规则而非状</text>
+      <text x="466" y="272" font-size="14" fill="#334155">态。</text>
+    </g>
+    <g id="node-inspect" data-kind="ai" data-row="1">
+      <title>调查源码与构建配置 — 读取现有契约、实际布局与别名；不强套目录，不要求建立索引。</title>
+      <rect x="40" y="378" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="402" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="428" font-size="18" font-weight="700">调查源码与构建配置</text>
+      <text x="56" y="452" font-size="14" fill="#334155">读取现有契约、实际布局与别名；不强套目录，</text>
+      <text x="56" y="472" font-size="14" fill="#334155">不要求建立索引。</text>
+    </g>
+    <g id="node-contract" data-kind="ai" data-row="2">
+      <title>明确模块与项目契约 — 职责、归属、公开接口、依赖方向和文档；保留项目数据。</title>
+      <rect x="40" y="578" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="602" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="628" font-size="18" font-weight="700">明确模块与项目契约</text>
+      <text x="56" y="652" font-size="14" fill="#334155">职责、归属、公开接口、依赖方向和文档；保留</text>
+      <text x="56" y="672" font-size="14" fill="#334155">项目数据。</text>
+    </g>
+    <g id="node-check" data-kind="check" data-row="3">
+      <title>只读检查并核对覆盖 — 新旧违规、循环、拓扑漂移与解析缺口；保留真实退出状态。</title>
+      <rect x="450" y="778" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="802" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="828" font-size="18" font-weight="700">只读检查并核对覆盖</text>
+      <text x="466" y="852" font-size="14" fill="#334155">新旧违规、循环、拓扑漂移与解析缺口；保留真</text>
+      <text x="466" y="872" font-size="14" fill="#334155">实退出状态。</text>
+    </g>
+    <g id="node-violations" data-kind="check" data-row="4">
+      <title>区分违规与覆盖缺口 — 输入有效后核对新增/恶化问题；存量基线只保留已接受的债务。</title>
+      <rect x="450" y="978" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1002" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1028" font-size="18" font-weight="700">区分违规与覆盖缺口</text>
+      <text x="466" y="1052" font-size="14" fill="#334155">输入有效后核对新增/恶化问题；存量基线只保留</text>
+      <text x="466" y="1072" font-size="14" fill="#334155">已接受的债务。</text>
+    </g>
+    <g id="node-scope" data-kind="check" data-row="5">
+      <title>核对当前决策边界 — 已有约定内的技术工作直接继续；仅新的业务边界或风险取舍请求人决定。</title>
+      <rect x="450" y="1178" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1202" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1228" font-size="18" font-weight="700">核对当前决策边界</text>
+      <text x="466" y="1252" font-size="14" fill="#334155">已有约定内的技术工作直接继续；仅新的业务边</text>
+      <text x="466" y="1272" font-size="14" fill="#334155">界或风险取舍请求人决定。</text>
+    </g>
+    <g id="node-decision" data-kind="human" data-row="6">
+      <title>决定新边界或风险取舍 — 提供当前版本、证据、候选与影响；不是每次技术整理都需审批。</title>
+      <rect x="860" y="1378" width="360" height="208" rx="10" fill="#fff7ed" stroke="#c2410c" stroke-width="1.8"/>
+      <text x="876" y="1402" font-size="12" fill="#c2410c" font-weight="700">人工决策</text>
+      <text x="876" y="1428" font-size="18" font-weight="700">决定新边界或风险取舍</text>
+      <text x="876" y="1452" font-size="14" fill="#334155">提供当前版本、证据、候选与影响；不是每次技</text>
+      <text x="876" y="1472" font-size="14" fill="#334155">术整理都需审批。</text>
+      <text x="876" y="1504" font-size="14" fill="#9a3412">介入条件：新的业务边界、不兼容接口或接受新</text>
+      <text x="876" y="1524" font-size="14" fill="#9a3412">增风险。</text>
+      <text x="876" y="1544" font-size="14" fill="#9a3412">恢复执行：真实答复后核对版本，从模块契约恢</text>
+      <text x="876" y="1564" font-size="14" fill="#9a3412">复；取消则执行并验证回退。</text>
+    </g>
+    <g id="node-wait" data-kind="check" data-row="7">
+      <title>等待当前有效决定 — 未答复不视为同意；独立工作不受影响。</title>
+      <rect x="450" y="1672" width="360" height="94" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1696" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1722" font-size="18" font-weight="700">等待当前有效决定</text>
+      <text x="466" y="1746" font-size="14" fill="#334155">未答复不视为同意；独立工作不受影响。</text>
+    </g>
+    <g id="node-topology" data-kind="check" data-row="8">
+      <title>判断是否有意结构变更 — 初次采用或有意增删文件/边，需要对比候选；纯内部修改沿现有快照。</title>
+      <rect x="450" y="1852" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="1876" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="1902" font-size="18" font-weight="700">判断是否有意结构变更</text>
+      <text x="466" y="1926" font-size="14" fill="#334155">初次采用或有意增删文件/边，需要对比候选；纯</text>
+      <text x="466" y="1946" font-size="14" fill="#334155">内部修改沿现有快照。</text>
+    </g>
+    <g id="node-repair" data-kind="ai" data-row="9">
+      <title>修实现或补原生证据 — 在已确认边界内测试与渐进重构；不扩大排除或静默更新债务。</title>
+      <rect x="40" y="2052" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2076" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2102" font-size="18" font-weight="700">修实现或补原生证据</text>
+      <text x="56" y="2126" font-size="14" fill="#334155">在已确认边界内测试与渐进重构；不扩大排除或</text>
+      <text x="56" y="2146" font-size="14" fill="#334155">静默更新债务。</text>
+    </g>
+    <g id="node-snapshot" data-kind="ai" data-row="10">
+      <title>审查文档与结构候选 — 首次采用或合法结构变更：核对文档，保存选定快照及明确接受的存量基线。</title>
+      <rect x="40" y="2252" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2276" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2302" font-size="18" font-weight="700">审查文档与结构候选</text>
+      <text x="56" y="2326" font-size="14" fill="#334155">首次采用或合法结构变更：核对文档，保存选定</text>
+      <text x="56" y="2346" font-size="14" fill="#334155">快照及明确接受的存量基线。</text>
+    </g>
+    <g id="node-verify" data-kind="check" data-row="11">
+      <title>复验结构与真实行为 — 无新恶化、无漂移、覆盖范围可见；原生构建测试与文档语义分别验证。</title>
+      <rect x="450" y="2452" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="2476" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="2502" font-size="18" font-weight="700">复验结构与真实行为</text>
+      <text x="466" y="2526" font-size="14" fill="#334155">无新恶化、无漂移、覆盖范围可见；原生构建测</text>
+      <text x="466" y="2546" font-size="14" fill="#334155">试与文档语义分别验证。</text>
+    </g>
+    <g id="node-deliver" data-kind="ai" data-row="12">
+      <title>交付证据与剩余债务 — 本地即可交付；PR/Issue 可选，快照/候选不代表人工批准。</title>
+      <rect x="40" y="2652" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2676" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2702" font-size="18" font-weight="700">交付证据与剩余债务</text>
+      <text x="56" y="2726" font-size="14" fill="#334155">本地即可交付；PR/Issue 可选，快照/候选不代</text>
+      <text x="56" y="2746" font-size="14" fill="#334155">表人工批准。</text>
+    </g>
+    <g id="node-rollback" data-kind="ai" data-row="13">
+      <title>恢复本次拥有的修改 — 使用已保存原件与哈希，保留他人后续编辑；不直接重置整个仓库。</title>
+      <rect x="40" y="2852" width="360" height="114" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.8"/>
+      <text x="56" y="2876" font-size="12" fill="#2563eb" font-weight="700">AI 执行</text>
+      <text x="56" y="2902" font-size="18" font-weight="700">恢复本次拥有的修改</text>
+      <text x="56" y="2926" font-size="14" fill="#334155">使用已保存原件与哈希，保留他人后续编辑；不</text>
+      <text x="56" y="2946" font-size="14" fill="#334155">直接重置整个仓库。</text>
+    </g>
+    <g id="node-restore" data-kind="check" data-row="14">
+      <title>验证回退后的状态 — 核对源码、契约、文档和已有测试，不假称回退成功。</title>
+      <rect x="450" y="3052" width="360" height="114" rx="10" fill="#ecfdf5" stroke="#047857" stroke-width="1.8"/>
+      <text x="466" y="3076" font-size="12" fill="#047857" font-weight="700">AI 判定 / 校验</text>
+      <text x="466" y="3102" font-size="18" font-weight="700">验证回退后的状态</text>
+      <text x="466" y="3126" font-size="14" fill="#334155">核对源码、契约、文档和已有测试，不假称回退</text>
+      <text x="466" y="3146" font-size="14" fill="#334155">成功。</text>
+    </g>
+    <g id="node-done" data-kind="terminal" data-row="15">
+      <title>交付或已验证取消 — 保留真实证据，结束本次结构治理。</title>
+      <rect x="450" y="3252" width="360" height="94" rx="26" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+      <text x="466" y="3276" font-size="12" fill="#475569" font-weight="700">起点 / 交付</text>
+      <text x="466" y="3302" font-size="18" font-weight="700">交付或已验证取消</text>
+      <text x="466" y="3326" font-size="14" fill="#334155">保留真实证据，结束本次结构治理。</text>
+    </g>
+    <text x="642.0" y="926.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">输入与归属已核实</text>
+    <text x="425.0" y="726.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">运行结构检查</text>
+    <text x="630.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">取消本次修改</text>
+    <text x="835.0" y="1620.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">尚无有效答复</text>
+    <text x="425.0" y="2800.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">如实交付</text>
+    <text x="232.0" y="526.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">核实已有布局</text>
+    <text x="642.0" y="3200.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">已验证回退</text>
+    <text x="425.0" y="3000.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复后检查</text>
+    <text x="835.0" y="1326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">需要新增业务决定</text>
+    <text x="642.0" y="1326.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">在现有决定内继续</text>
+    <text x="425.0" y="2400.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">保存已审查候选</text>
+    <text x="425.0" y="326.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">读取任务</text>
+    <text x="425.0" y="2000.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">采用或有意漂移</text>
+    <text x="642.0" y="2000.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">当前拓扑无变化</text>
+    <text x="425.0" y="2600.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">证据齐全</text>
+    <text x="425.0" y="1126.0" text-anchor="middle" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">违规或提取缺口</text>
+    <text x="642.0" y="1126.0" text-anchor="start" font-size="12" fill="#64748b" stroke="#ffffff" stroke-width="4" paint-order="stroke">结构问题已处理</text>
+    <text x="1280" y="595.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">归属或输入待核实</text>
+    <text x="1306" y="1018.5" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">同意或调整后恢复</text>
+    <text x="1332" y="1432.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">修复后重验</text>
+    <text x="1358" y="2969.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">恢复未完成</text>
+    <text x="1384" y="2269.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">验证失败</text>
+    <text x="1410" y="1537.0" text-anchor="start" font-size="12" fill="#c2410c" stroke="#ffffff" stroke-width="4" paint-order="stroke">收到真实答复</text>
+    <text x="28" y="3442" font-size="12" fill="#64748b">schema_version: 1 · 人工节点必须定义介入条件与恢复位置 · 修改 JSON 后重新生成并执行 --check</text>
+  </g>
+</svg>
