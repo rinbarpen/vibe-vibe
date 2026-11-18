@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/rczx/miniconda3/bin/python",
+    "-c",
+    "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/format-and-review.md').exists(); assert 'format-and-review.md' not in (p/'SKILL.md').read_text(); assert (p/'references/parallel-chapters.md').is_file(); assert (p/'references/figures-and-tables.md').is_file(); print('BASELINE: chapter/asset concurrency exists; Office final QA is referenced, but parallel review dimensions and format/review joins lack an explicit z-writing contract.')"
+  ],
+  "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+  "stdout": "BASELINE: chapter/asset concurrency exists; Office final QA is referenced, but parallel review dimensions and format/review joins lack an explicit z-writing contract.\n",
+  "stderr": "",
+  "exit_status": 0
+}

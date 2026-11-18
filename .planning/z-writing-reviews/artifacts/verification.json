@@ -1,0 +1,191 @@
+{
+  "status": "verified",
+  "change": "Format preparation and multidimensional parallel review with immutable snapshots, single file writers, evidence-bounded findings and current-version QA; no new runtime scheduler.",
+  "changed_paths": [
+    {
+      "path": "mine/z-writing/SKILL.md",
+      "before": {
+        "sha256": "d683b2f85c3c9240f5194ad5814ef895a1f8f8278647497612a7e5f8b18e5887",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "c4691b1abfc04bc2ca5fdc75aa05e1ce5a0b5858fac648851f3222d2b081eac9",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/parallel-chapters.md",
+      "before": {
+        "sha256": "90494d06f0364a9b53241261d80213794bd67b69139e10add5507b2af78d947e",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "c787b984d10472a13b85327f054cff5ae2f114e638b73a5ceb8bf57f144734e8",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/figures-and-tables.md",
+      "before": {
+        "sha256": "1cdb74e3c9f72de48b1dc1f4bd8a7101c07ecb979a11dc6582971b64c69a286b",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "d8f3c3243ce5fea331237a3f05882864574dec9672cf75e38ed2f9a0b1974f7c",
+        "mode": 384
+      }
+    },
+    {
+      "path": "mine/z-writing/references/format-and-review.md",
+      "before": null,
+      "after": {
+        "sha256": "56276e9872633c7de2abdfdf2b8f6dab982b91eef84140a9ab3ff532c9038889",
+        "mode": 384
+      }
+    },
+    {
+      "path": "tools/vibe_tool/tests/test_z_writing.py",
+      "before": {
+        "sha256": "fc64df81a3631f9d7ec38d43e1d33ccdd484d913b3597f3e6792f2a54cf83080",
+        "mode": 384
+      },
+      "after": {
+        "sha256": "5d804f8bb845bb6a3a1b40aa739079cb4f97c6deab4e76d780a3bdb1f3714164",
+        "mode": 384
+      }
+    }
+  ],
+  "package": {
+    "path": "z-writing.skill",
+    "sha256": "cdcb66fa3d7ec65cad034bd95294d04bdd3d31c07b2796bb6043cadfefe1c4b9",
+    "members": 519
+  },
+  "commands": [
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-c",
+        "from pathlib import Path; p=Path('mine/z-writing'); assert not (p/'references/format-and-review.md').exists(); assert 'format-and-review.md' not in (p/'SKILL.md').read_text(); assert (p/'references/parallel-chapters.md').is_file(); assert (p/'references/figures-and-tables.md').is_file(); print('BASELINE: chapter/asset concurrency exists; Office final QA is referenced, but parallel review dimensions and format/review joins lack an explicit z-writing contract.')"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "BASELINE: chapter/asset concurrency exists; Office final QA is referenced, but parallel review dimensions and format/review joins lack an explicit z-writing contract.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "--check",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-reviews/artifacts/z-writing-reviews.patch"
+      ],
+      "cwd": "/tmp/z-writing-reviews-patch-_jij2o9c/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "git",
+        "apply",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-reviews/artifacts/z-writing-reviews.patch"
+      ],
+      "cwd": "/tmp/z-writing-reviews-patch-_jij2o9c/repo",
+      "stdout": "",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-reviews/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-reviews-patch-_jij2o9c/repo",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 5 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-reviews/artifacts/rollback.py",
+        "--root",
+        "/tmp/z-writing-reviews-patch-_jij2o9c/repo"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Restored and verified 5 paths; Git index untouched.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/workspace/rinbarpen/projects/vibe-coding/.planning/z-writing-reviews/artifacts/rollback.py",
+        "--dry-run"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Would restore 5 paths; no writes.\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "-m",
+        "vibe_tool",
+        "add",
+        "skill",
+        "z-writing",
+        "/tmp/z-writing-reviews-install-0l3i9z_c/project"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "  COPY  z-writing\nProject registered: project\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "/home/rczx/miniconda3/bin/python",
+        "/home/rczx/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/tmp/z-writing-reviews-install-0l3i9z_c/archive-check/z-writing"
+      ],
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "Skill is valid!\n",
+      "stderr": "",
+      "exit_status": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=tools/vibe_tool/src uv run --no-project --offline --with python-docx --with openpyxl --with python-pptx --with pypdf --with pillow --with pytest python -m pytest tools/vibe_tool/tests/test_z_writing.py tools/vibe_tool/tests/test_project_update.py tools/vibe_tool/tests/test_office_skill_separation.py tools/vibe_tool/tests/test_writing_design_sources.py -q -rs -p no:cacheprovider",
+      "cwd": "/home/rczx/workspace/rinbarpen/projects/vibe-coding",
+      "stdout": "........................................................................ [ 86%]\n...........                                                         [100%]\n83 passed, 5 subtests passed in 32.44s\n",
+      "stderr": "",
+      "exit_status": 0
+    }
+  ],
+  "limits": [
+    "No user manuscript, source dataset, Office final-file QA or model-driven writing/asset orchestration was executed; two independent agents review this protocol only.",
+    "Automated tests validate packaging, update/restore behavior and preservation of existing user chapters, figure sources and review reports; they do not establish manuscript merit or final rendered layout."
+  ],
+  "independent_protocol_reviews": {
+    "scope": "Two concurrent independent read-only protocol reviews, not user-manuscript QA.",
+    "snapshot": {
+      "mine/z-writing/SKILL.md": "c4691b1abfc04bc2ca5fdc75aa05e1ce5a0b5858fac648851f3222d2b081eac9",
+      "mine/z-writing/references/parallel-chapters.md": "c787b984d10472a13b85327f054cff5ae2f114e638b73a5ceb8bf57f144734e8",
+      "mine/z-writing/references/figures-and-tables.md": "d8f3c3243ce5fea331237a3f05882864574dec9672cf75e38ed2f9a0b1974f7c",
+      "mine/z-writing/references/format-and-review.md": "56276e9872633c7de2abdfdf2b8f6dab982b91eef84140a9ab3ff532c9038889"
+    },
+    "reports": [
+      {
+        "path": "reviews/format-review.md",
+        "sha256": "ecbf122973d22ca9e6429e1af8e7534719ebc73e44d3b6fc7d1cfe4696dbd6ea"
+      },
+      {
+        "path": "reviews/protocol-review.md",
+        "sha256": "74fbf03bbd23b030b6c0a2b072c5577941fce9d6d82ce1510a0352246a986ab1"
+      }
+    ]
+  }
+}

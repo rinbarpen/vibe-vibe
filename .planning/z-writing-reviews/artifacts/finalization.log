@@ -1,0 +1,14 @@
+git 0 
+git 0 
+/home/rczx/miniconda3/bin/python 0 Would restore 5 paths; no writes.
+
+/home/rczx/miniconda3/bin/python 0 Restored and verified 5 paths; Git index untouched.
+
+/home/rczx/miniconda3/bin/python 0 Would restore 5 paths; no writes.
+
+/home/rczx/miniconda3/bin/python 0   COPY  z-writing
+Project registered: project
+
+/home/rczx/miniconda3/bin/python 0 Skill is valid!
+
+VERIFIED: 5 changed paths; 519 archive members; patch replay, installation and rollback passed.
